@@ -1,0 +1,67 @@
+<ion-list *ngIf="!showAddressPanel">
+  <ion-list-header>Select  Address</ion-list-header>
+
+  <ion-item>
+    <ion-label>Addresses</ion-label>
+    <ion-select  cancelText="Add New Address" okText="ok"
+    (ionCancel)=" addNewAddress()"
+    (ionChange)="addressChanged($event)"
+    value="{{currentId}}">
+      <ion-select-option *ngFor="let address of addresses" value="{{address.id}}">{{address.name}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  
+
+  </ion-list>
+
+  <ion-scroll *ngIf="showAddressPanel" padding>
+
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-buttons>
+          <ion-button (click)="dismiss()">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+          <ion-title>Add New Address</ion-title>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-item>
+      <ion-label position="floating">Name</ion-label>
+      <ion-input type="text" [(ngModel)]="address.name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Phone</ion-label>
+      <ion-input type="text" [(ngModel)]="address.phone"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Alternate Phone</ion-label>
+      <ion-input type="number" [(ngModel)]="address.alternatePhone"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">House Number / Building Name</ion-label>
+      <ion-input type="text" [(ngModel)]="address.houseNoOrBuildingName"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">City</ion-label>
+      <ion-input type="text" [(ngModel)]="address.city"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating" >Landmark</ion-label>
+      <ion-input type="text" [(ngModel)]="address.landmark"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating" >Pincode</ion-label>
+      <ion-input type="number" [(ngModel)]="address.pincode"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating" [(ngModel)]="address.state">State</ion-label>
+      <ion-input type="text"></ion-input>
+    </ion-item>
+ 
+    <ion-footer>
+        <ion-button margin expand="block" (click)="saveAddress()">Add</ion-button>
+    </ion-footer>
+
+  </ion-scroll>

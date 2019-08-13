@@ -1,0 +1,147 @@
+<ion-grid no-padding margin *ngIf="viewType === 'minimal'">
+  <ion-row>
+    <ion-col size="4" text-center no-padding>
+      <ion-label class="highlight">{{ cartSize + " Items" }}</ion-label>
+    </ion-col>
+    <ion-col size="4" text-center no-padding>
+      <ion-label class="highlight">{{
+        "Total: " + "&#8364; " + (totalPrice | number: "1.1-2")
+      }}</ion-label>
+    </ion-col>
+    <ion-col size="4" text-center no-padding [routerLink]="['/basket']">
+      <ion-label  class="cursor highlight">View Cart</ion-label>
+      <ion-label class="button-cart highlight" routerLinkActive="router-link-active">
+        <ion-icon name="basket" slot="icon-only"></ion-icon>
+      </ion-label>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+
+<div *ngIf="viewType === 'full'">
+  <!--No Orders Start-->
+  <ion-grid *ngIf="orderLines.length === 0" class="bg-grey">
+    <ion-row justify-content-center class="ion-margin-top ">
+      <ion-col size="12" text-center>
+        <ion-label class="fntbig-cursive">
+          Order total
+        </ion-label>
+        <ion-text class="fntbig-cursive" >(0 items)</ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row justify-content-center>
+      <ion-col size="12" text-center>
+        <p class="fntbig grey">&#8364;0</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid *ngIf="orderLines.length === 0">
+    <ion-row>
+      <ion-col justify-content-center>
+        <ion-card class="vertical-align-center h35">
+          <ion-card-content text-center>
+            <ion-icon class="cart" name="basket"></ion-icon>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <!--No Orders End-->
+
+  <!--Orders List Start-->
+  <ion-grid class="bg-grey" *ngIf="orderLines.length > 0">
+    <ion-row justify-content-center class="ion-margin-top">
+      <ion-col size="12" text-center>
+        <ion-label class="fntbig-cursive">
+          Order total
+        </ion-label>
+        <ion-text class="fntbig-cursive">{{ "(" + orderLines.length + " items)" }}</ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row justify-content-center>
+      <ion-col size="12" text-center>
+        <p class="fntbig">&#8364;{{ totalPrice | number: "1.1-2" }}</p>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="totalPrice < store.minAmount">
+      <ion-col size="12" text-center>
+        <ion-text text-center
+          >Spend {{ store.minAmount - total }} More for delivery</ion-text
+        >
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-button *ngIf="currentSegment==='delivery'"
+          [disabled]="selectedAddress === undefined"
+          color="primary" expand="full" (click)="checkout()"
+          >Checkout</ion-button
+        >
+        <ion-button *ngIf="currentSegment==='collection'" color="primary" expand="full" (click)="checkout()"
+        >Checkout</ion-button
+      >
+      </ion-col>
+      <ion-col size="12">
+        <ion-item (click)="presentAllergyModal()" lines="full">
+          <ion-icon
+            color="primary"
+            class="icon-big"
+            name="alert"
+            slot="start"
+          ></ion-icon>
+          <ion-text color="primary" class="underline">
+            <p>
+              If you or someone you're ordering for has a food allergy or
+              intolerance , click here
+            </p>
+          </ion-text>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <!--Orders List End-->
+
+  <ion-segment
+    (ionChange)="segmenChanged($event)"
+    *ngIf="orderLines.length !== 0"
+  >
+    <ion-segment-button value="collection">Collection</ion-segment-button>
+    <ion-segment-button value="delivery" checked>Delivery</ion-segment-button>
+  </ion-segment>
+
+  <div>
+    <app-delivery-item-details
+      *ngIf="orderLines !== undefined"
+      [orders]="orderLines"
+    ></app-delivery-item-details>
+  </div>
+</div>
+
+<ion-footer *ngIf="viewType === 'full' &&  currentSegment === 'delivery'
+&& orderLines.length > 0">
+  
+</ion-footer>
+
+<!-- 
+<app-address-list 
+    *ngIf="customer !== undefined"
+    [customer]="customer" 
+    (addressSelected)="addressSelectedEven($event)">
+  </app-address-list>
+<ion-grid *ngIf="orderLines !== undefined && orderLines.length > 0">
+    <ion-row>
+      <ion-col text-center size="12">
+        <ion-text color="medium">
+          <p>
+            Leave a note for the restaurant with anything they need to know
+            (e.g. the doorbell doesn't work). Do not include any details about
+            allergy.
+          </p>
+        </ion-text>
+        <textarea
+          [(ngModel)]="note"
+          class="textArea"
+          placeholder="e.g. the doorbell doesn't work.Do not include any details about allergy"
+        ></textarea>
+      </ion-col>
+    </ion-row>
+  </ion-grid> -->

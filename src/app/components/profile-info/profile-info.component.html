@@ -1,0 +1,34 @@
+<ion-card>
+  <ion-card-content>
+    <ion-item lines="none">
+      <ion-avatar>
+        <ion-img
+          *ngIf="customer.photo === null"
+          src="assets/images/user.png"
+          class="profileImage"
+        ></ion-img>
+        <ion-img
+          class="profileImage"
+          *ngIf="customer.photo !== null"
+          [src]="
+            'data:' + customer.photoContentType + ';base64,' + customer.photo
+          "
+        ></ion-img>
+      </ion-avatar>
+      <ion-text class="mg-left" *ngIf="customer !== null && keyCloakUser !== null">
+        <h2>{{ customer.name }}</h2>
+        <p>{{ keyCloakUser.email }}</p>
+        <p *ngIf="contact !== undefined">{{contact.mobileNumber}}</p>
+      </ion-text>
+    </ion-item>
+  </ion-card-content>
+  <ion-card-footer>
+    <ion-item>
+      <ion-buttons slot="end">
+        <ion-button (click)="presentEditProfileComponent()">
+          <ion-icon name="create"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-card-footer>
+</ion-card>

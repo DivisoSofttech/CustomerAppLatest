@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-menu-button slot="start" auto-hide="true"></ion-menu-button>
+      <ion-title>Basket</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-cart
+    *ngIf="store !== undefined"
+    [store]="store"
+    [viewType]="'full'"
+  ></app-cart>
+</ion-content>

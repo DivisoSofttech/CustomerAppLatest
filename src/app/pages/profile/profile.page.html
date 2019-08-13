@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-menu-button slot="start" auto-hide="true"></ion-menu-button>
+      <ion-title>Profile</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-profile-info *ngIf="customer != undefined" [customer]="customer"
+  [keyCloakUser]="keyCloakUser"
+  [contact]="contact"
+  ></app-profile-info>
+
+  <ion-segment 
+  (ionChange)="segmentChanged($event)"
+  [(ngModel)]="currentSegment"
+  >
+    <ion-segment-button value="frequently" checked>
+      <ion-label>
+        Frequent
+      </ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="favourite">
+      <ion-label>
+        Favourites
+      </ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="history">
+      <ion-label>History</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-slides>
+    <ion-slide>
+      <app-frequently-ordered-list 
+      *ngIf="keyCloakUser !== undefined"
+      [keyCloakUser]="keyCloakUser"></app-frequently-ordered-list>
+    </ion-slide>
+    <ion-slide>
+      <app-favourite-list>
+      </app-favourite-list>
+    </ion-slide>
+    <ion-slide>
+      <app-history-list></app-history-list>
+    </ion-slide>
+  </ion-slides>
+</ion-content>

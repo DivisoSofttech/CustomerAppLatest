@@ -1,0 +1,33 @@
+ion-list-header {
+    font-size: 20px;
+    color: #595d6b;
+    font-weight: bold;
+    font-family: monospace;
+}
+
+ion-content {
+    height: 66vh;
+}
+
+.icon-grid {
+    border-bottom: 1px solid #f3e4e4;
+    border-top: 1px solid #f3e4e4;
+}
+
+ion-col ion-text {
+    font-size: 75%;
+}
+.el-bl {
+    display: block;
+}
+
+.sortFilters {
+    width: 95vw;
+    border: 1px solid #e6dcdc;
+    margin: auto;
+    margin-top: 10px;
+}
+
+ion-list {
+    width: 100%;
+}

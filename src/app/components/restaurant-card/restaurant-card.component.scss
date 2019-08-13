@@ -1,0 +1,35 @@
+.imageShow {
+  position: relative;
+  top: 0%;
+  height: 14vh;
+  width: 14vh;
+}
+
+ion-card-header {
+  padding: 2vw 0vw;
+}
+
+.overlay {
+  position: relative;
+  bottom: 180px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 2vh;
+  height: 180px;
+}
+
+.container {
+  height: 50vh;
+}
+
+h2 {
+  font-size: 18px;
+}
+
+.medium {
+  font-size: 14px;
+}
+
+.small {
+  font-size: 11px;
+}

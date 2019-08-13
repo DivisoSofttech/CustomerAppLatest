@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-button (click)="nonSaveDismiss()" slot="start">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+      <ion-title no-padding>Edit Profile</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+  <div>
+
+    <ion-icon *ngIf="customer.photo" (click)="removeImage()"  float-right slot="icon-only" name="close"></ion-icon>
+    <img (click)="selectImage($event)" *ngIf="!customer.photo" src="assets/images/user.png" slot="end" class="img" />
+    <ion-img class="profileImage" (click)="selectImage($event)" *ngIf="customer.photo"
+      [src]="'data:' + customer.photoContentType + ';base64,' + customer.photo" slot="end">
+    </ion-img>
+
+  </div>
+
+  <ion-item>
+    <ion-input placeholder="Enter Your Name" text-center *ngIf="customer != undefined" [(ngModel)]="customer.name">
+    </ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input placeholder="Enter Your Email" text-center *ngIf="profileKeycloak != undefined"
+      [(ngModel)]="profileKeycloak.email"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input text-center *ngIf="profileKeycloak != undefined" [(ngModel)]="profileKeycloak.preferred_username"
+      disabled></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input placeholder="Enter Your Mobile Number" text-center *ngIf="contact != undefined"
+      [(ngModel)]="contact.mobileNumber"></ion-input>
+  </ion-item>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="update()">
+      <ion-icon name="save"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

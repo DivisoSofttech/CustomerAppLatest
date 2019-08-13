@@ -1,0 +1,73 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-title>Login</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-segment (ionChange)="slide($event)" [value]="value">
+    <ion-segment-button value="login">
+      <ion-label>Login</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="signup">
+      <ion-label>Register</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  
+  <ion-content padding>
+    <ion-slides #slides (ionSlideDidChange)="slideChange()">
+      <ion-slide>
+        <ion-grid margin-top>
+          <ion-row justify-content-center text-center class="centre">
+            <ion-col size="6" justify-content-center>
+              <div class="circle">
+                <ion-icon class="large-icon" name="person"></ion-icon>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row justify-content-center class="centre">
+            <ion-col text-center class="container-box">
+              <ion-item class="item-inner">
+                <ion-label color="medium" position="floating">Username or Email</ion-label>
+                <ion-input [(ngModel)]="username" background="light"></ion-input>
+              </ion-item>
+              <ion-item class="item-inner">
+                <ion-label color="medium" position="floating">Password</ion-label>
+                <ion-input [(ngModel)]="password" type="password"></ion-input>
+              </ion-item>
+              <ion-button [disabled]="loginDisabled()" (click)="login()" expand="block" margin-top margin-bottom>Login
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-slide>
+      <ion-slide>
+        <ion-grid margin-top>
+          <ion-row justify-content-center>
+            <ion-col size="6" text-center>
+              <div class="circle">
+                <ion-icon class="large-icon" name="person"></ion-icon>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row justify-content-center class="centre">
+            <ion-col text-center class="container-box">
+              <ion-item class="item-inner">
+                <ion-label color="medium" position="floating">Username</ion-label>
+                <ion-input [(ngModel)]="username" background="light"></ion-input>
+              </ion-item>
+              <ion-item class="item-inner">
+                <ion-label color="medium" position="floating">Email</ion-label>
+                <ion-input [(ngModel)]="email" background="light"></ion-input>
+              </ion-item>
+              <ion-item class="item-inner">
+                <ion-label color="medium" position="floating">Password</ion-label>
+                <ion-input [(ngModel)]="password" type="password"></ion-input>
+              </ion-item>
+              <ion-button [disabled]="registerDisabled()" (click)="signup()" expand="block" margin-top margin-bottom>
+                Register</ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-slide>
+    </ion-slides>
+  </ion-content>

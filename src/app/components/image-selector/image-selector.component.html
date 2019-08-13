@@ -1,0 +1,35 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons>
+           
+          <ion-button  (click) = "dismiss()">
+          <ion-icon name = "close" ></ion-icon>
+          </ion-button>
+         
+        </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+<ion-content>
+<div [ngClass]="data.image?'':'hidden'" >
+    <img-cropper  #cropper [image]="data"  [settings]="cropperSettings"></img-cropper>
+</div>
+<ion-item>
+  <ion-buttons>
+    <ion-button>
+      <label class="btn btn-primary">
+          Upload
+          <input
+            id="file_input_file"
+            class="none hidden"
+            type="file"
+            (change)="onChange($event)"
+          />
+        </label>
+      </ion-button>
+        <ion-button  (click) = "save()">
+            Save
+            </ion-button>
+  </ion-buttons>
+    
+</ion-item>
+</ion-content>

@@ -1,0 +1,66 @@
+<ion-card no-padding>
+  <ion-card-content>
+    <ion-textarea text-left
+    no-padding
+    [(ngModel)]="review.review"
+    rows="1"
+    type="text"
+    placeholder="Type in your thoughts..."
+  ></ion-textarea>
+  </ion-card-content>
+  <ion-card-footer>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <rating
+            [rate]="rate.rating"
+            (rateChange)="updateRating($event)"
+          ></rating>
+        </ion-col>
+        <ion-col text-right>
+          <ion-button (click)="postReview()" fill="medium">
+            <ion-icon slot="icon-only" name="send"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-footer>
+</ion-card>
+
+<app-loading
+*ngIf="showReviewLoading === true"
+[type]="'review'"
+></app-loading>
+
+<ion-list>
+ <ion-card no-padding  *ngFor="let rr of rateReviews">
+   <ion-card-content no-padding>
+      <ion-item>
+          <ion-grid>
+            <ion-row>
+              <ion-col size="12">
+                <ion-text>
+                  <p>{{
+                      rr.review.review
+                    }}</p>
+                </ion-text>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                  <rating
+                  [rate]="rr.rating.rating"
+                  [readonly]="true"
+                ></rating>
+              </ion-col>
+              <ion-col class="reviews">
+                <ion-text>
+                    <strong>{{ rr.review.userName | uppercase }}</strong>
+                </ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+   </ion-card-content>
+ </ion-card>
+</ion-list>

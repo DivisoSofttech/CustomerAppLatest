@@ -1,0 +1,40 @@
+<ion-toolbar *ngIf="showSearchBar === false">
+  <ion-buttons slot="start">
+    <ion-back-button></ion-back-button>
+    <ion-title>{{ name.substring(0, 15) + "..." | uppercase }}</ion-title>
+  </ion-buttons>
+  <ion-buttons slot="end">
+    <ion-button (click)="toggleSearchBar()">
+      <ion-icon name="search"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>
+
+<ion-toolbar *ngIf="showSearchBar === true">
+  <ion-searchbar
+    showCancelButton
+    debounce="500"
+    (ionCancel)="toggleSearchBar()"
+    (ionChange)="searchProducts($event, 0)"
+  ></ion-searchbar>
+</ion-toolbar>
+
+<ion-content class="container" 
+  [style.display]="(stockCurrents.length > 0 && showSearchBar === true) ? 'block' : 'none'"
+  *ngIf="showSearchBar === true">
+  <ion-list>
+    <app-product-card
+      *ngFor="let stockCurrent of stockCurrents"
+      [store]="store"
+      [stockCurrent]="stockCurrent"
+    ></app-product-card>
+  </ion-list>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreData($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

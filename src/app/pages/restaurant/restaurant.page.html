@@ -1,0 +1,43 @@
+<ion-header>
+  <app-header (placeChanged)="updatedLocation($event)"></app-header>
+</ion-header>
+<ion-content>
+  <app-banner></app-banner>
+
+  <ion-list>
+    <div class="highlightText">
+      <ion-label>
+        <h2>What's Nearby!</h2>
+      </ion-label>
+    </div>
+    <app-restaurant-card
+      *ngFor="let store of stores"
+      [store]="store"
+    ></app-restaurant-card>
+  </ion-list>
+
+  <app-loading *ngIf="showLoading === true" [type]="'restaurant'"></app-loading>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreStores($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+    >
+    </ion-refresher-content>
+  </ion-refresher>
+</ion-content>
+<ion-footer>
+  <app-filter
+    *ngIf="showFilters"
+    (closeFilter)="toggleFilteromponent()"
+  ></app-filter>
+  <app-footer (filter)="toggleFilteromponent()"></app-footer>
+</ion-footer>

@@ -1,0 +1,265 @@
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["pages-login-signup-login-signup-module"],{
+
+/***/ "./node_modules/raw-loader/index.js!./src/app/pages/login-signup/login-signup.page.html":
+/*!*************************************************************************************!*\
+  !*** ./node_modules/raw-loader!./src/app/pages/login-signup/login-signup.page.html ***!
+  \*************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<ion-header>\n    <ion-toolbar>\n      <ion-title>Login</ion-title>\n    </ion-toolbar>\n  </ion-header>\n  \n  <ion-segment (ionChange)=\"slide($event)\" [value]=\"value\">\n    <ion-segment-button value=\"login\">\n      <ion-label>Login</ion-label>\n    </ion-segment-button>\n    <ion-segment-button value=\"signup\">\n      <ion-label>Register</ion-label>\n    </ion-segment-button>\n  </ion-segment>\n  \n  <ion-content padding>\n    <ion-slides #slides (ionSlideDidChange)=\"slideChange()\">\n      <ion-slide>\n        <ion-grid margin-top>\n          <ion-row justify-content-center text-center class=\"centre\">\n            <ion-col size=\"6\" justify-content-center>\n              <div class=\"circle\">\n                <ion-icon class=\"large-icon\" name=\"person\"></ion-icon>\n              </div>\n            </ion-col>\n          </ion-row>\n          <ion-row justify-content-center class=\"centre\">\n            <ion-col text-center class=\"container-box\">\n              <ion-item class=\"item-inner\">\n                <ion-label color=\"medium\" position=\"floating\">Username or Email</ion-label>\n                <ion-input [(ngModel)]=\"username\" background=\"light\"></ion-input>\n              </ion-item>\n              <ion-item class=\"item-inner\">\n                <ion-label color=\"medium\" position=\"floating\">Password</ion-label>\n                <ion-input [(ngModel)]=\"password\" type=\"password\"></ion-input>\n              </ion-item>\n              <ion-button [disabled]=\"loginDisabled()\" (click)=\"login()\" expand=\"block\" margin-top margin-bottom>Login\n              </ion-button>\n            </ion-col>\n          </ion-row>\n        </ion-grid>\n      </ion-slide>\n      <ion-slide>\n        <ion-grid margin-top>\n          <ion-row justify-content-center>\n            <ion-col size=\"6\" text-center>\n              <div class=\"circle\">\n                <ion-icon class=\"large-icon\" name=\"person\"></ion-icon>\n              </div>\n            </ion-col>\n          </ion-row>\n          <ion-row justify-content-center class=\"centre\">\n            <ion-col text-center class=\"container-box\">\n              <ion-item class=\"item-inner\">\n                <ion-label color=\"medium\" position=\"floating\">Username</ion-label>\n                <ion-input [(ngModel)]=\"username\" background=\"light\"></ion-input>\n              </ion-item>\n              <ion-item class=\"item-inner\">\n                <ion-label color=\"medium\" position=\"floating\">Email</ion-label>\n                <ion-input [(ngModel)]=\"email\" background=\"light\"></ion-input>\n              </ion-item>\n              <ion-item class=\"item-inner\">\n                <ion-label color=\"medium\" position=\"floating\">Password</ion-label>\n                <ion-input [(ngModel)]=\"password\" type=\"password\"></ion-input>\n              </ion-item>\n              <ion-button [disabled]=\"registerDisabled()\" (click)=\"signup()\" expand=\"block\" margin-top margin-bottom>\n                Register</ion-button>\n            </ion-col>\n          </ion-row>\n        </ion-grid>\n      </ion-slide>\n    </ion-slides>\n  </ion-content>"
+
+/***/ }),
+
+/***/ "./src/app/pages/login-signup/login-signup.module.ts":
+/*!***********************************************************!*\
+  !*** ./src/app/pages/login-signup/login-signup.module.ts ***!
+  \***********************************************************/
+/*! exports provided: LoginSignupPageModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginSignupPageModule", function() { return LoginSignupPageModule; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm2015/common.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm2015/forms.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
+/* harmony import */ var _login_signup_page__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./login-signup.page */ "./src/app/pages/login-signup/login-signup.page.ts");
+
+
+
+
+
+
+
+const routes = [
+    {
+        path: '',
+        component: _login_signup_page__WEBPACK_IMPORTED_MODULE_6__["LoginSignupPage"]
+    }
+];
+let LoginSignupPageModule = class LoginSignupPageModule {
+};
+LoginSignupPageModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
+        imports: [
+            _angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"],
+            _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormsModule"],
+            _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["IonicModule"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_4__["RouterModule"].forChild(routes)
+        ],
+        declarations: [_login_signup_page__WEBPACK_IMPORTED_MODULE_6__["LoginSignupPage"]]
+    })
+], LoginSignupPageModule);
+
+
+
+/***/ }),
+
+/***/ "./src/app/pages/login-signup/login-signup.page.scss":
+/*!***********************************************************!*\
+  !*** ./src/app/pages/login-signup/login-signup.page.scss ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ".cursor {\n  cursor: pointer;\n}\n\n.large-icon {\n  font-size: 125px;\n  opacity: 0.4;\n}\n\n.circle {\n  display: inline-block;\n  background-color: aliceblue;\n  border-radius: 50%;\n  height: 135px;\n  width: 135px;\n}\n\n.centre {\n  text-align: center;\n}\n\n.container-box {\n  width: 100%;\n  max-width: 750px;\n  display: inline-block;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvcGFnZXMvbG9naW4tc2lnbnVwL2xvZ2luLXNpZ251cC5wYWdlLnNjc3MiLCJzcmMvYXBwL3BhZ2VzL2xvZ2luLXNpZ251cC9sb2dpbi1zaWdudXAucGFnZS5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksZUFBQTtBQ0NKOztBREVBO0VBQ0ksZ0JBQUE7RUFDQSxZQUFBO0FDQ0o7O0FERUE7RUFDSSxxQkFBQTtFQUNBLDJCQUFBO0VBQ0Esa0JBQUE7RUFDQSxhQUFBO0VBQ0EsWUFBQTtBQ0NKOztBREVBO0VBQ0ksa0JBQUE7QUNDSjs7QURFQTtFQUNJLFdBQUE7RUFDQSxnQkFBQTtFQUNBLHFCQUFBO0FDQ0oiLCJmaWxlIjoic3JjL2FwcC9wYWdlcy9sb2dpbi1zaWdudXAvbG9naW4tc2lnbnVwLnBhZ2Uuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5jdXJzb3Ige1xuICAgIGN1cnNvcjogcG9pbnRlcjtcbn1cblxuLmxhcmdlLWljb24ge1xuICAgIGZvbnQtc2l6ZTogMTI1cHg7XG4gICAgb3BhY2l0eTogLjQ7XG59XG5cbi5jaXJjbGUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiBhbGljZWJsdWU7XG4gICAgYm9yZGVyLXJhZGl1czogNTAlO1xuICAgIGhlaWdodDogMTM1cHg7XG4gICAgd2lkdGg6IDEzNXB4O1xufVxuXG4uY2VudHJlIHtcbiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7XG59XG5cbi5jb250YWluZXItYm94IHtcbiAgICB3aWR0aDogMTAwJTtcbiAgICBtYXgtd2lkdGg6IDc1MHB4O1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbn0iLCIuY3Vyc29yIHtcbiAgY3Vyc29yOiBwb2ludGVyO1xufVxuXG4ubGFyZ2UtaWNvbiB7XG4gIGZvbnQtc2l6ZTogMTI1cHg7XG4gIG9wYWNpdHk6IDAuNDtcbn1cblxuLmNpcmNsZSB7XG4gIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgYmFja2dyb3VuZC1jb2xvcjogYWxpY2VibHVlO1xuICBib3JkZXItcmFkaXVzOiA1MCU7XG4gIGhlaWdodDogMTM1cHg7XG4gIHdpZHRoOiAxMzVweDtcbn1cblxuLmNlbnRyZSB7XG4gIHRleHQtYWxpZ246IGNlbnRlcjtcbn1cblxuLmNvbnRhaW5lci1ib3gge1xuICB3aWR0aDogMTAwJTtcbiAgbWF4LXdpZHRoOiA3NTBweDtcbiAgZGlzcGxheTogaW5saW5lLWJsb2NrO1xufSJdfQ== */"
+
+/***/ }),
+
+/***/ "./src/app/pages/login-signup/login-signup.page.ts":
+/*!*********************************************************!*\
+  !*** ./src/app/pages/login-signup/login-signup.page.ts ***!
+  \*********************************************************/
+/*! exports provided: LoginSignupPage */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginSignupPage", function() { return LoginSignupPage; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _services_security_keycloak_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../services/security/keycloak.service */ "./src/app/services/security/keycloak.service.ts");
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var src_app_api_services_query_resource_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/api/services/query-resource.service */ "./src/app/api/services/query-resource.service.ts");
+/* harmony import */ var src_app_api_services__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/api/services */ "./src/app/api/services.ts");
+/* harmony import */ var src_app_services_util__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/services/util */ "./src/app/services/util.ts");
+/* harmony import */ var src_app_api_api_configuration__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/api/api-configuration */ "./src/app/api/api-configuration.ts");
+
+
+
+
+
+
+
+
+let LoginSignupPage = class LoginSignupPage {
+    constructor(keycloakService, queryResourceService, commandResourceService, util, apiConfiguration) {
+        this.keycloakService = keycloakService;
+        this.queryResourceService = queryResourceService;
+        this.commandResourceService = commandResourceService;
+        this.util = util;
+        this.apiConfiguration = apiConfiguration;
+        this.username = '';
+        this.password = '';
+        this.email = '';
+        this.loginTab = true;
+        this.value = 'login';
+    }
+    ngOnInit() {
+        this.isLoggedIn();
+    }
+    // Login and Register Methods
+    login() {
+        this.util.createLoader()
+            .then(loader => {
+            loader.present();
+            this.keycloakService.authenticate({ username: this.username, password: this.password }, () => {
+                loader.dismiss();
+                this.createUserIfNotExists(this.username);
+                this.util.navigateRoot();
+            }, () => {
+                loader.dismiss();
+                this.util.createToast('Invalid Username / Password');
+            });
+        });
+    }
+    signup() {
+        this.util.createLoader()
+            .then(loader => {
+            loader.present();
+            const user = { username: this.username, email: this.email };
+            this.keycloakService.createAccount(user, this.password, (res) => {
+                loader.dismiss();
+                this.login();
+            }, (err) => {
+                loader.dismiss();
+                if (err.response.status === 409) {
+                    this.util.createToast('User Already Exists');
+                    this.slideChange();
+                }
+                else {
+                    this.util.createToast('Cannot Register User. Please Try Later');
+                }
+            });
+            // Remove this later
+        });
+    }
+    isLoggedIn() {
+        this.keycloakService
+            .isAuthenticated()
+            .then(() => {
+            this.util.navigateRoot();
+        })
+            .catch(() => {
+            console.log('Not Logged In');
+        });
+    }
+    createUserIfNotExists(reference) {
+        this.util.createLoader().then(loader => {
+            loader.present();
+            console.log('Checking if User Exists in MicroService Else Create');
+            this.queryResourceService
+                .findCustomerByReferenceUsingGET(reference)
+                .subscribe(customer => {
+                console.log('Got Customer', customer);
+                loader.dismiss();
+                this.util.navigateRoot();
+            }, err => {
+                if (err.status === 500) {
+                    // Check if server is reachable
+                    const url = this.apiConfiguration.rootUrl.slice(2, this.apiConfiguration.rootUrl.length);
+                    this.commandResourceService
+                        .createCustomerUsingPOST({
+                        reference: this.username,
+                        name: this.username
+                    })
+                        .subscribe(customer => {
+                        console.log('Customer Created', customer);
+                        loader.dismiss();
+                        this.util.navigateRoot();
+                    }, eror => {
+                        console.log(eror);
+                        loader.dismiss();
+                        this.util.createToast('Server is Unreachable');
+                    });
+                }
+            });
+        });
+    }
+    // View Related Methods
+    loginDisabled() {
+        if (this.username === '' || this.password === '') {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    registerDisabled() {
+        if (this.username === '' || this.password === '' || this.email === '') {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    slide(value) {
+        this.value = value.detail.value;
+        if (this.value === 'login') {
+            this.slides.slideTo(0);
+        }
+        else {
+            this.slides.slideTo(1);
+        }
+    }
+    slideChange() {
+        let currentSlide;
+        this.slides.getActiveIndex().then(num => {
+            currentSlide = num;
+            if (this.value === 'login' && currentSlide !== 0) {
+                this.value = 'signup';
+            }
+            else if (this.value === 'signup' && currentSlide !== 1) {
+                this.value = 'login';
+            }
+        });
+    }
+    setSlideValue() {
+        this.slideChange();
+        return 1;
+    }
+};
+LoginSignupPage.ctorParameters = () => [
+    { type: _services_security_keycloak_service__WEBPACK_IMPORTED_MODULE_1__["KeycloakService"] },
+    { type: src_app_api_services_query_resource_service__WEBPACK_IMPORTED_MODULE_4__["QueryResourceService"] },
+    { type: src_app_api_services__WEBPACK_IMPORTED_MODULE_5__["CommandResourceService"] },
+    { type: src_app_services_util__WEBPACK_IMPORTED_MODULE_6__["Util"] },
+    { type: src_app_api_api_configuration__WEBPACK_IMPORTED_MODULE_7__["ApiConfiguration"] }
+];
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewChild"])('slides', null),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonSlides"])
+], LoginSignupPage.prototype, "slides", void 0);
+LoginSignupPage = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Component"])({
+        selector: 'app-login-signup',
+        template: __webpack_require__(/*! raw-loader!./login-signup.page.html */ "./node_modules/raw-loader/index.js!./src/app/pages/login-signup/login-signup.page.html"),
+        styles: [__webpack_require__(/*! ./login-signup.page.scss */ "./src/app/pages/login-signup/login-signup.page.scss")]
+    }),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services_security_keycloak_service__WEBPACK_IMPORTED_MODULE_1__["KeycloakService"],
+        src_app_api_services_query_resource_service__WEBPACK_IMPORTED_MODULE_4__["QueryResourceService"],
+        src_app_api_services__WEBPACK_IMPORTED_MODULE_5__["CommandResourceService"],
+        src_app_services_util__WEBPACK_IMPORTED_MODULE_6__["Util"],
+        src_app_api_api_configuration__WEBPACK_IMPORTED_MODULE_7__["ApiConfiguration"]])
+], LoginSignupPage);
+
+
+
+/***/ })
+
+}]);
+//# sourceMappingURL=pages-login-signup-login-signup-module-es2015.js.map

@@ -1,0 +1,130 @@
+<div *ngIf="type === 'restaurant'">
+  <ion-card no-padding *ngFor="let store of [1, 2, 3, 4, 5]">
+    <ion-card-header>
+      <ion-item lines="full">
+        <ion-thumbnail slot="start">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-thumbnail>
+        <ion-label>
+          <ion-text word-wrap text-wrap class="category">
+            <ion-skeleton-text animated></ion-skeleton-text>
+            <ion-skeleton-text animated></ion-skeleton-text>
+            <ion-skeleton-text animated></ion-skeleton-text>
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-text>
+        </ion-label>
+      </ion-item>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid no-padding>
+        <ion-row>
+          <ion-col size="7" text-center no-padding>
+            <rating [rate]="'5'" [readonly]="true"></rating>
+          </ion-col>
+          <ion-col size="3" text-center no-padding>
+            <ion-buttons>
+              <ion-button fill="none" disabled>
+                <ion-skeleton-text animated></ion-skeleton-text>
+              </ion-button>
+            </ion-buttons>
+          </ion-col>
+          <ion-col size="2" text-center no-padding>
+            <ion-buttons justify-content-center>
+              <ion-button fill="none">
+                <ion-skeleton-text animated></ion-skeleton-text>
+              </ion-button>
+            </ion-buttons>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+</div>
+
+<div *ngIf="type === 'product'">
+  <ion-card no-padding *ngFor="let store of [1, 2, 3, 4, 5]">
+    <ion-item lines="none">
+      <ion-thumbnail>
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-thumbnail>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col class="title-card" margin-top padding-top>
+              <ion-card-title>
+                <ion-skeleton-text animated></ion-skeleton-text>
+              </ion-card-title>
+              <ion-text
+                ><strong>
+                  <ion-skeleton-text animated></ion-skeleton-text> </strong
+              ></ion-text>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="7">
+              <ion-buttons>
+                <ion-button color="medium">
+                  <ion-icon name="remove"></ion-icon>
+                </ion-button>
+                <ion-button fill="none" disabled>
+                  <ion-skeleton-text animated></ion-skeleton-text
+                ></ion-button>
+                <ion-button color="medium">
+                  <ion-icon name="add"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-item>
+  </ion-card>
+</div>
+
+
+<div *ngIf="type === 'restaurant-detail'" class="restaurantCard">
+  <ion-card>
+    <ion-card-subtitle>
+      <ion-thumbnail>
+          <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-thumbnail>
+    </ion-card-subtitle>
+    <ion-card-content>
+        <ion-skeleton-text animated></ion-skeleton-text>
+    </ion-card-content>
+    <ion-card-footer>
+      <rating></rating>
+        <ion-skeleton-text animated></ion-skeleton-text>
+    </ion-card-footer>
+  </ion-card>
+</div>
+
+<div *ngIf="type === 'review'">
+    <ion-card no-padding *ngFor="let store of [1, 2, 3, 4, 5]">
+        <ion-card-content no-padding>
+           <ion-item>
+               <ion-grid>
+                 <ion-row>
+                   <ion-col size="12">
+                     <ion-text>
+                        <ion-skeleton-text animated></ion-skeleton-text>
+                     </ion-text>
+                   </ion-col>
+                 </ion-row>
+                 <ion-row>
+                   <ion-col>
+                       <rating
+                       [readonly]="true"
+                     ></rating>
+                   </ion-col>
+                   <ion-col class="reviews">
+                     <ion-text>
+                        <ion-skeleton-text animated></ion-skeleton-text>                     </ion-text>
+                   </ion-col>
+                 </ion-row>
+               </ion-grid>
+             </ion-item>
+        </ion-card-content>
+      </ion-card>
+</div>
+

@@ -1,0 +1,67 @@
+<ion-scroll *ngIf="showFilters === false">
+  <ion-grid no-padding>
+    <ion-row inline class="sortFilters">
+      <ion-col text-center size="3">
+        <ion-button fill="none" (click)="setFilterType(filterTypes.TOP_RATED)">
+          <ion-icon name="star-half" slot="icon-only"></ion-icon>
+        </ion-button>
+        <ion-text color="medium" class="el-bl">Top Rated</ion-text>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-list>
+          <ion-radio-group [(ngModel)]="deliveryType">
+            <ion-list-header>
+              <ion-label>Delivery Type</ion-label>
+            </ion-list-header>
+              <ion-select [(ngModel)]="deliveryType">
+                <ion-select-option
+                  *ngFor="let deliver of ['Both', 'Delivery', 'Collection']"
+                  value="{{ deliver }}"
+                >
+                  {{ deliver }}
+                </ion-select-option>
+              </ion-select>
+          </ion-radio-group>
+        </ion-list>
+      </ion-col>
+      <ion-col>
+        <ion-list>
+          <ion-list-header>Cuisines</ion-list-header>
+          <ion-item>
+            <ion-label>All</ion-label>
+            <ion-checkbox slot="end" value="all"></ion-checkbox>
+          </ion-item>
+          <ion-item *ngFor="let category of categories">
+            <ion-label>{{ category.key }} ({{ category.count }})_</ion-label>
+            <ion-checkbox slot="end" value="{{ category.name }}"></ion-checkbox>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button
+          expand="block"
+          size="small"
+          fill="outline"
+          (click)="closeEvent()"
+        >
+          Close
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button expand="block" size="small" fill="outline">
+          Apply
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-scroll>

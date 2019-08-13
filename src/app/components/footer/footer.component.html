@@ -1,0 +1,15 @@
+<ion-segment slot="end" [value]="currentRoute">
+    <ion-segment-button value="restaurant" (click)="goTo('/restaurant')">
+        <ion-icon name="list"></ion-icon>
+    </ion-segment-button>  
+  <ion-segment-button value="basket" (click)="goTo('/basket')">
+    <ion-icon name="basket"></ion-icon>
+    <ion-badge color="primary"><strong>{{orderCount}}</strong></ion-badge>
+  </ion-segment-button>    
+  <ion-segment-button value="profile" (click)="goTo('/profile')">
+    <ion-icon name="person"></ion-icon>
+  </ion-segment-button>  
+  <ion-segment-button (click)="emitFilterClick()">
+    <ion-icon name="funnel"></ion-icon>
+  </ion-segment-button>
+</ion-segment>
