@@ -112,7 +112,7 @@ let LoginSignupPage = class LoginSignupPage {
     }
     ngOnInit() {
         this.isLoggedIn();
-        this.menuController.enable(false);
+        // this.menuController.enable(false);
     }
     // Login and Register Methods
     login() {

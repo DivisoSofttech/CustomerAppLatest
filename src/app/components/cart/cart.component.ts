@@ -19,7 +19,7 @@ import { OrderService } from 'src/app/services/order.service';
 export class CartComponent implements OnInit {
   @Input() viewType = 'minimal';
 
-  @Input() store = {};
+  @Input() store;
 
   currentSegment = 'delivery';
 
@@ -44,7 +44,6 @@ export class CartComponent implements OnInit {
     private modalController: ModalController,
     private navController: NavController,
     private queryResource: QueryResourceService,
-    private orderCommandResource: OrderCommandResourceService,
     private storage: Storage,
     private util: Util
   ) {}
@@ -81,29 +80,20 @@ export class CartComponent implements OnInit {
       this.cartSize = data.length;
       this.totalPrice = this.cart.totalPrice;
       this.orderLines = data;
-      if (data !== undefined) {
-        this.getStore();
+      if (this.cart.currentShop !== undefined &&
+        data !== undefined && this.store !== this.cart.currentShop) {
+        this.store = this.cart.currentShop;
+        this.getStoreSettings();
       }
     });
   }
 
-  getStore() {
+  getStoreSettings() {
     this.queryResource
-      .findStoreByRegisterNumberUsingGET(this.cart.currentShop.regNo)
-      .subscribe(
-        result => {
-          console.log('Got Store', result);
-          this.store = result;
-          this.queryResource
-            .getStoreSettingsUsingGET(result.regNo)
-            .subscribe(setting => {
-              this.storeSetting = setting;
-            });
-        },
-        err => {
-          console.log('Error fetching store data', err);
-        }
-      );
+    .getStoreSettingsUsingGET(this.store.regNo)
+    .subscribe(setting => {
+      this.storeSetting = setting;
+    });
   }
 
   async presentAllergyModal() {

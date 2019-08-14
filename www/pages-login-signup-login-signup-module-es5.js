@@ -115,7 +115,7 @@ var LoginSignupPage = /** @class */ (function () {
     }
     LoginSignupPage.prototype.ngOnInit = function () {
         this.isLoggedIn();
-        this.menuController.enable(false);
+        // this.menuController.enable(false);
     };
     // Login and Register Methods
     LoginSignupPage.prototype.login = function () {

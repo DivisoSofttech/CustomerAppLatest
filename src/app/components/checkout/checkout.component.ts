@@ -45,6 +45,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   setAddress(event) {
+    this.selectedAddress = event;
     this.orderService.setAddress(this.selectedAddress);
   }
 

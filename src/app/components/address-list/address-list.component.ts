@@ -69,7 +69,7 @@ export class AddressListComponent implements OnInit {
       componentProps: { showAddressPanel: true , customer: this.customer}
     });
     modal.onDidDismiss().then((data: any) => {
-      if (data !== undefined) {
+      if (data.data !== undefined) {
         console.log(data.data.name);
         this.addresses.push(data.data);
         this.addressSelected.emit(data.data);
@@ -81,6 +81,7 @@ export class AddressListComponent implements OnInit {
   }
 
   addressChanged(event) {
+    console.log('Address Changed');
     this.addresses.forEach(a => {
       if(a.id == event.detail.value) {
         this.addressSelected.emit(a);

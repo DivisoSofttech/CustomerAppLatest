@@ -42,6 +42,7 @@ export class CartService {
 
   addProduct(product: Product, stockCurrent: StockCurrent, shop: Store) {
     if (this.currentShopId === 0) {
+      console.log('Shop From CartService ' , shop);
       this.currentShop = shop;
       this.currentShopId = shop.id;
     }

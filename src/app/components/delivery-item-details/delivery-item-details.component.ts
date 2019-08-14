@@ -62,5 +62,9 @@ export class DeliveryItemDetailsComponent implements OnInit {
     });
   }
 
+  getOffers() {
+  
+  }
+
 
 }

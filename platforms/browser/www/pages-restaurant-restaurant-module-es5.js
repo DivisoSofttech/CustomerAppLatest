@@ -122,12 +122,12 @@ var RestaurantPage = /** @class */ (function () {
         this.stores = [];
     }
     RestaurantPage.prototype.ngOnInit = function () {
-        this.getStores();
     };
     RestaurantPage.prototype.updatedLocation = function (event) {
         console.log('Location Changed', event);
         this.filter.currentCordinates = event.latLon;
         this.filter.setFilter(_services_filter_service__WEBPACK_IMPORTED_MODULE_1__["FILTER_TYPES"].DISTANCE_WISE);
+        this.getStores();
     };
     RestaurantPage.prototype.getStores = function () {
         var _this = this;

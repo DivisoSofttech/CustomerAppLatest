@@ -780,7 +780,7 @@ module.exports = "<ion-app>\n  <ion-split-pane>\n    <ion-menu type=\"overlay\">
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-list *ngIf=\"!showAddressPanel\">\n  <ion-list-header>Select  Address</ion-list-header>\n\n  <ion-item>\n    <ion-label>Addresses</ion-label>\n    <ion-select  cancelText=\"Add New Address\" okText=\"ok\"\n    (ionCancel)=\" addNewAddress()\"\n    (ionChange)=\"addressChanged($event)\"\n    value=\"{{currentId}}\">\n      <ion-select-option *ngFor=\"let address of addresses\" value=\"{{address.id}}\">{{address.name}}</ion-select-option>\n    </ion-select>\n  </ion-item>\n  \n\n  </ion-list>\n\n  <ion-scroll *ngIf=\"showAddressPanel\" padding>\n\n    <ion-header>\n      <ion-toolbar color=\"primary\">\n        <ion-buttons>\n          <ion-button (click)=\"dismiss()\">\n            <ion-icon name=\"close\"></ion-icon>\n          </ion-button>\n          <ion-title>Add New Address</ion-title>\n        </ion-buttons>\n      </ion-toolbar>\n    </ion-header>\n\n    <ion-item>\n      <ion-label position=\"floating\">Name</ion-label>\n      <ion-input type=\"text\" [(ngModel)]=\"address.name\"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label position=\"floating\">Phone</ion-label>\n      <ion-input type=\"text\" [(ngModel)]=\"address.phone\"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label position=\"floating\">Alternate Phone</ion-label>\n      <ion-input type=\"number\" [(ngModel)]=\"address.alternatePhone\"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label position=\"floating\">House Number / Building Name</ion-label>\n      <ion-input type=\"text\" [(ngModel)]=\"address.houseNoOrBuildingName\"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label position=\"floating\">City</ion-label>\n      <ion-input type=\"text\" [(ngModel)]=\"address.city\"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label position=\"floating\" >Landmark</ion-label>\n      <ion-input type=\"text\" [(ngModel)]=\"address.landmark\"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label position=\"floating\" >Pincode</ion-label>\n      <ion-input type=\"number\" [(ngModel)]=\"address.pincode\"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label position=\"floating\" [(ngModel)]=\"address.state\">State</ion-label>\n      <ion-input type=\"text\"></ion-input>\n    </ion-item>\n \n    <ion-footer>\n        <ion-button margin expand=\"block\" (click)=\"saveAddress()\">Add</ion-button>\n    </ion-footer>\n\n  </ion-scroll>"
+module.exports = "<ion-list *ngIf=\"!showAddressPanel\">\n  <ion-list-header>Select  Address</ion-list-header>\n\n  <ion-item>\n    <ion-label>Addresses</ion-label>\n    <ion-select  cancelText=\"Add New Address\" okText=\"ok\"\n    (ionCancel)=\" addNewAddress()\"\n    (ionChange)=\"addressChanged($event)\"\n    value=\"{{currentId}}\">\n      <ion-select-option *ngFor=\"let address of addresses\" value=\"{{address.id}}\">{{address.name}}</ion-select-option>\n    </ion-select>\n  </ion-item>\n  \n\n  </ion-list>\n\n  <ion-scroll *ngIf=\"showAddressPanel\">\n\n    <ion-header>\n      <ion-toolbar color=\"primary\">\n        <ion-buttons>\n          <ion-button (click)=\"dismiss(undefined)\">\n            <ion-icon name=\"close\"></ion-icon>\n          </ion-button>\n          <ion-title>Add New Address</ion-title>\n        </ion-buttons>\n      </ion-toolbar>\n    </ion-header>\n\n    <ion-item>\n      <ion-label position=\"floating\">Name</ion-label>\n      <ion-input type=\"text\" [(ngModel)]=\"address.name\"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label position=\"floating\">Phone</ion-label>\n      <ion-input type=\"text\" [(ngModel)]=\"address.phone\"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label position=\"floating\">Alternate Phone</ion-label>\n      <ion-input type=\"number\" [(ngModel)]=\"address.alternatePhone\"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label position=\"floating\">House Number / Building Name</ion-label>\n      <ion-input type=\"text\" [(ngModel)]=\"address.houseNoOrBuildingName\"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label position=\"floating\">City</ion-label>\n      <ion-input type=\"text\" [(ngModel)]=\"address.city\"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label position=\"floating\" >Landmark</ion-label>\n      <ion-input type=\"text\" [(ngModel)]=\"address.landmark\"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label position=\"floating\" >Pincode</ion-label>\n      <ion-input type=\"number\" [(ngModel)]=\"address.pincode\"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label position=\"floating\" [(ngModel)]=\"address.state\">State</ion-label>\n      <ion-input type=\"text\"></ion-input>\n    </ion-item>\n \n    <ion-footer>\n        <ion-button margin expand=\"block\" (click)=\"saveAddress()\">Add</ion-button>\n    </ion-footer>\n\n  </ion-scroll>"
 
 /***/ }),
 
@@ -813,7 +813,7 @@ module.exports = "<ion-slides #slides [options]=\"slideOpts\" autoplayDisableOnI
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-grid no-padding margin *ngIf=\"viewType === 'minimal'\">\n  <ion-row>\n    <ion-col size=\"4\" text-center no-padding>\n      <ion-label class=\"highlight\">{{ cartSize + \" Items\" }}</ion-label>\n    </ion-col>\n    <ion-col size=\"4\" text-center no-padding>\n      <ion-label class=\"highlight\">{{\n        \"Total: \" + \"&#8364; \" + (totalPrice | number: \"1.1-2\")\n      }}</ion-label>\n    </ion-col>\n    <ion-col size=\"4\" text-center no-padding [routerLink]=\"['/basket']\">\n      <ion-label  class=\"cursor highlight\">View Cart</ion-label>\n      <ion-label class=\"button-cart highlight\" routerLinkActive=\"router-link-active\">\n        <ion-icon name=\"basket\" slot=\"icon-only\"></ion-icon>\n      </ion-label>\n    </ion-col>\n  </ion-row>\n</ion-grid>\n\n<div *ngIf=\"viewType === 'full'\">\n  <!--No Orders Start-->\n  <ion-grid *ngIf=\"orderLines.length === 0\" class=\"bg-grey\">\n    <ion-row justify-content-center class=\"ion-margin-top \">\n      <ion-col size=\"12\" text-center>\n        <ion-label class=\"fntbig-cursive\">\n          Order total\n        </ion-label>\n        <ion-text class=\"fntbig-cursive\" >(0 items)</ion-text>\n      </ion-col>\n    </ion-row>\n    <ion-row justify-content-center>\n      <ion-col size=\"12\" text-center>\n        <p class=\"fntbig grey\">&#8364;0</p>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n  <ion-grid *ngIf=\"orderLines.length === 0\">\n    <ion-row>\n      <ion-col justify-content-center>\n        <ion-card class=\"vertical-align-center h35\">\n          <ion-card-content text-center>\n            <ion-icon class=\"cart\" name=\"basket\"></ion-icon>\n          </ion-card-content>\n        </ion-card>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n  <!--No Orders End-->\n\n  <!--Orders List Start-->\n  <ion-grid class=\"bg-grey\" *ngIf=\"orderLines.length > 0\">\n    <ion-row justify-content-center class=\"ion-margin-top\">\n      <ion-col size=\"12\" text-center>\n        <ion-label class=\"fntbig-cursive\">\n          Order total\n        </ion-label>\n        <ion-text class=\"fntbig-cursive\">{{ \"(\" + orderLines.length + \" items)\" }}</ion-text>\n      </ion-col>\n    </ion-row>\n    <ion-row justify-content-center>\n      <ion-col size=\"12\" text-center>\n        <p class=\"fntbig\">&#8364;{{ totalPrice | number: \"1.1-2\" }}</p>\n      </ion-col>\n    </ion-row>\n    <ion-row *ngIf=\"totalPrice < store.minAmount\">\n      <ion-col size=\"12\" text-center>\n        <ion-text text-center\n          >Spend {{ store.minAmount - total }} More for delivery</ion-text\n        >\n      </ion-col>\n    </ion-row>\n    <ion-row>\n      <ion-col size=\"12\">\n        <ion-button *ngIf=\"currentSegment==='delivery'\"\n          color=\"primary\" expand=\"full\" (click)=\"checkout()\"\n          >Checkout</ion-button\n        >\n        <ion-button *ngIf=\"currentSegment==='collection'\" color=\"primary\" expand=\"full\" (click)=\"checkout()\"\n        >Checkout</ion-button\n      >\n      </ion-col>\n      <ion-col size=\"12\">\n        <ion-item (click)=\"presentAllergyModal()\" lines=\"full\">\n          <ion-icon\n            color=\"primary\"\n            class=\"icon-big\"\n            name=\"alert\"\n            slot=\"start\"\n          ></ion-icon>\n          <ion-text color=\"primary\" class=\"underline\">\n            <p>\n              If you or someone you're ordering for has a food allergy or\n              intolerance , click here\n            </p>\n          </ion-text>\n        </ion-item>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n  <!--Orders List End-->\n\n  <ion-segment\n    (ionChange)=\"segmenChanged($event)\"\n    *ngIf=\"orderLines.length !== 0\"\n  >\n    <ion-segment-button value=\"collection\">Collection</ion-segment-button>\n    <ion-segment-button value=\"delivery\" checked>Delivery</ion-segment-button>\n  </ion-segment>\n\n  <div>\n    <app-delivery-item-details\n      *ngIf=\"orderLines !== undefined && storeSetting !== undefined\"\n      [orders]=\"orderLines\"\n      [store]=\"store\"\n      [storeSetting]=\"storeSetting\"\n    ></app-delivery-item-details>\n  </div>\n</div>\n\n<ion-footer *ngIf=\"viewType === 'full' &&  currentSegment === 'delivery'\n&& orderLines.length > 0\">\n  \n</ion-footer>\n"
+module.exports = "<ion-grid no-padding margin *ngIf=\"viewType === 'minimal'\">\n  <ion-row>\n    <ion-col size=\"4\" text-center no-padding>\n      <ion-label class=\"highlight\">{{ cartSize + \" Items\" }}</ion-label>\n    </ion-col>\n    <ion-col size=\"4\" text-center no-padding>\n      <ion-label class=\"highlight\">{{\n        \"Total: \" + \"&#8364; \" + (totalPrice | number: \"1.1-2\")\n      }}</ion-label>\n    </ion-col>\n    <ion-col size=\"4\" text-center no-padding [routerLink]=\"['/basket']\">\n      <ion-label  class=\"cursor highlight\">View Cart</ion-label>\n      <ion-label class=\"button-cart highlight\" routerLinkActive=\"router-link-active\">\n        <ion-icon name=\"basket\" slot=\"icon-only\"></ion-icon>\n      </ion-label>\n    </ion-col>\n  </ion-row>\n</ion-grid>\n\n<div *ngIf=\"viewType === 'full'\">\n  <!--No Orders Start-->\n  <ion-grid *ngIf=\"orderLines.length === 0\" class=\"bg-grey\">\n    <ion-row justify-content-center class=\"ion-margin-top \">\n      <ion-col size=\"12\" text-center>\n        <ion-label class=\"fntbig-cursive\">\n          Order total\n        </ion-label>\n        <ion-text class=\"fntbig-cursive\" >(0 items)</ion-text>\n      </ion-col>\n    </ion-row>\n    <ion-row justify-content-center>\n      <ion-col size=\"12\" text-center>\n        <p class=\"fntbig grey\">&#8364;0</p>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n  <ion-grid *ngIf=\"orderLines.length === 0\">\n    <ion-row>\n      <ion-col justify-content-center>\n        <ion-card class=\"vertical-align-center h35\">\n          <ion-card-content text-center>\n            <ion-icon class=\"cart\" name=\"basket\"></ion-icon>\n          </ion-card-content>\n        </ion-card>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n  <!--No Orders End-->\n\n  <!--Orders List Start-->\n  <ion-grid class=\"bg-grey\" *ngIf=\"orderLines.length > 0\">\n    <ion-row justify-content-center class=\"ion-margin-top\">\n      <ion-col size=\"12\" text-center>\n        <ion-label class=\"fntbig-cursive\">\n          Order total\n        </ion-label>\n        <ion-text class=\"fntbig-cursive\">{{ \"(\" + orderLines.length + \" items)\" }}</ion-text>\n      </ion-col>\n    </ion-row>\n    <ion-row justify-content-center>\n      <ion-col size=\"12\" text-center>\n        <p class=\"fntbig\">&#8364;{{ totalPrice | number: \"1.1-2\" }}</p>\n      </ion-col>\n    </ion-row>\n    <ion-row *ngIf=\"totalPrice < store.minAmount\">\n      <ion-col size=\"12\" text-center>\n        <ion-text text-center\n          >Spend {{ store.minAmount - total }} More for delivery</ion-text\n        >\n      </ion-col>\n    </ion-row>\n    <ion-row>\n      <ion-col size=\"12\">\n        <ion-button *ngIf=\"currentSegment==='delivery'\"\n          color=\"primary\" expand=\"full\" (click)=\"continue('delivery')\"\n          >Continue</ion-button\n        >\n        <ion-button *ngIf=\"currentSegment==='collection'\" color=\"primary\" expand=\"full\" (click)=\"continue('collection')\"\n        >Continue</ion-button\n      >\n      </ion-col>\n      <ion-col size=\"12\">\n        <ion-item (click)=\"presentAllergyModal()\" lines=\"full\">\n          <ion-icon\n            color=\"primary\"\n            class=\"icon-big\"\n            name=\"alert\"\n            slot=\"start\"\n          ></ion-icon>\n          <ion-text color=\"primary\" class=\"underline\">\n            <p>\n              If you or someone you're ordering for has a food allergy or\n              intolerance , click here\n            </p>\n          </ion-text>\n        </ion-item>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n  <!--Orders List End-->\n\n  <ion-segment\n    (ionChange)=\"segmenChanged($event)\"\n    *ngIf=\"orderLines.length !== 0\"\n  >\n    <ion-segment-button value=\"collection\">Collection</ion-segment-button>\n    <ion-segment-button value=\"delivery\" checked>Delivery</ion-segment-button>\n  </ion-segment>\n\n  <div>\n    <app-delivery-item-details\n      [orders]=\"orderLines\"\n      [store]=\"store\"\n      [storeSetting]=\"storeSetting\"\n    ></app-delivery-item-details>\n  </div>\n</div>\n\n<ion-footer *ngIf=\"viewType === 'full' &&  currentSegment === 'delivery'\n&& orderLines.length > 0\">\n  \n</ion-footer>\n"
 
 /***/ }),
 
@@ -824,7 +824,7 @@ module.exports = "<ion-grid no-padding margin *ngIf=\"viewType === 'minimal'\">\
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n\n<app-address-list \n    *ngIf=\"customer !== undefined\"\n    [customer]=\"customer\" \n    (addressSelected)=\"addressSelectedEven($event)\">\n  </app-address-list>\n<ion-grid *ngIf=\"orderLines !== undefined && orderLines.length > 0\">\n    <ion-row>\n      <ion-col text-center size=\"12\">\n        <ion-text color=\"medium\">\n          <p>\n            Leave a note for the restaurant with anything they need to know\n            (e.g. the doorbell doesn't work). Do not include any details about\n            allergy.\n          </p>\n        </ion-text>\n        <textarea\n          [(ngModel)]=\"note\"\n          class=\"textArea\"\n          placeholder=\"e.g. the doorbell doesn't work.Do not include any details about allergy\"\n        ></textarea>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n"
+module.exports = "<ion-header>\n  <ion-toolbar color=\"primary\">\n    <ion-buttons>\n        <ion-back-button></ion-back-button>\n        <ion-title>Add Address</ion-title>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n<ion-content>\n<app-address-list \n*ngIf=\"customer !== undefined\"\n[customer]=\"customer\" \n(addressSelected)=\"addressSelectedEvent($event)\">\n</app-address-list>\n<ion-grid>\n<ion-row>\n  <ion-col text-left size=\"12\">\n    <ion-text color=\"medium\">\n      <p>\n        Leave a note for the restaurant with anything they need to know\n        (e.g. the doorbell doesn't work). Do not include any details about\n        allergy.\n      </p>\n    </ion-text>\n    <textarea\n      [(ngModel)]=\"note\"\n      class=\"textArea\"\n      placeholder=\"E.g. The doorbell doesn't work.Do not include any details about allergy\"\n    ></textarea>\n  </ion-col>\n</ion-row>\n</ion-grid>\n\n</ion-content>\n<ion-footer>\n  <ion-button expand=\"full\" margin [disabled]=\"selectedAddress === undefined\">Checkout</ion-button>\n</ion-footer>"
 
 /***/ }),
 
@@ -835,7 +835,7 @@ module.exports = "\n\n<app-address-list \n    *ngIf=\"customer !== undefined\"\n
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-list can-swipe=\"true\" *ngIf=\"products.length === orders.length\">\n  <ion-item-sliding *ngFor=\"let ticket of orders, let i = index\">\n    <ion-item-options side=\"start\">\n      <ion-item-option color=\"primary\" (click)=\"increaseProductCount(products[i])\">\n          <ion-icon name=\"add\"></ion-icon>\n      </ion-item-option>\n      <ion-item-option color=\"warning\" (click)=\"decreaseProductCount(products[i])\">\n        <ion-icon name=\"remove\"></ion-icon>\n      </ion-item-option>\n    </ion-item-options>\n    <ion-item >\n      <ion-label text-start class=\"wrap\">{{products[i].name}}</ion-label>\n      <ion-label text-center>{{'x' +ticket.quantity}}</ion-label>\n      <ion-label text-end>&#8364;{{(ticket.total |  number : '1.1-2')+ '   '}}</ion-label>\n    </ion-item>\n    <ion-item-options side=\"end\">\n      <ion-item-option color=\"danger\" (click)=\"removeTicket(i)\">\n        <ion-icon slot=\"icon-only\" name=\"trash\"></ion-icon>\n      </ion-item-option>\n    </ion-item-options>\n  </ion-item-sliding>\n  <ion-item *ngIf=\"storeSetting !== undefined\">\n      <ion-label text-start>Delivery charge</ion-label>\n      <ion-label text-center> </ion-label>\n      <ion-label text-end>{{storeSetting.deliveryCharge}}</ion-label>\n    </ion-item>\n    <ion-item *ngIf=\"storeSetting !== undefined\">\n      <ion-label text-start>Subtotal</ion-label>\n      <ion-label text-center> </ion-label>\n      <ion-label text-end>{{totalPrice + storeSetting.deliveryCharge}}</ion-label>\n    </ion-item>\n</ion-list>\n"
+module.exports = "<ion-list can-swipe=\"true\" *ngIf=\"products.length === orders.length\">\n  <ion-item-sliding *ngFor=\"let ticket of orders; let i = index\">\n    <ion-item-options side=\"start\">\n      <ion-item-option\n        color=\"primary\"\n        (click)=\"increaseProductCount(products[i])\"\n      >\n        <ion-icon name=\"add\"></ion-icon>\n      </ion-item-option>\n      <ion-item-option\n        color=\"warning\"\n        (click)=\"decreaseProductCount(products[i])\"\n      >\n        <ion-icon name=\"remove\"></ion-icon>\n      </ion-item-option>\n    </ion-item-options>\n    <ion-item>\n      <ion-label text-start class=\"wrap\">{{ products[i].name }}</ion-label>\n      <ion-label text-center>{{ \"x\" + ticket.quantity }}</ion-label>\n      <ion-label text-end\n        >&#8364;{{ (ticket.total | number: \"1.1-2\") + \"   \" }}</ion-label\n      >\n    </ion-item>\n    <ion-item-options side=\"end\">\n      <ion-item-option color=\"danger\" (click)=\"removeTicket(i)\">\n        <ion-icon slot=\"icon-only\" name=\"trash\"></ion-icon>\n      </ion-item-option>\n    </ion-item-options>\n  </ion-item-sliding>\n  <ion-item *ngIf=\"storeSetting !== undefined\">\n    <ion-label text-start>Delivery charge</ion-label>\n    <ion-label text-center> </ion-label>\n    <ion-label text-end>{{ storeSetting.deliveryCharge }}</ion-label>\n  </ion-item>\n  <ion-item *ngIf=\"storeSetting !== undefined\">\n    <ion-label text-start>Subtotal</ion-label>\n    <ion-label text-center> </ion-label>\n    <ion-label text-end>{{\n      totalPrice + storeSetting.deliveryCharge\n    }}</ion-label>\n  </ion-item>\n</ion-list>\n\n<ion-list>\n  <ion-item>\n    <ion-label class=\"discountBadge\" slot=\"start\">\n      50%\n    </ion-label>\n    <div>\n      <ion-text slot=\"start\">\n        sjshjsjhsjhshjhsjhsjhjshjshshjhshjshsh sjsjhsjhsjhsjshjhsjhsjh\n      </ion-text>\n    </div>\n  </ion-item>\n</ion-list>\n"
 
 /***/ }),
 
@@ -956,7 +956,7 @@ module.exports = "<div id=\"map_canvas\">\n</div>"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-card\nno-padding\nid=\"{{ stockCurrent.product.id }}\"\n>\n<div class=\"ribbon\">\n  <span class=\"ribbon1\">\n    <span>50% off</span>\n  </span>\n</div>\n<ion-item lines=\"none\">\n  <ion-thumbnail>\n      <ion-img\n    [src]=\"\n      'data:' +\n      stockCurrent.product.imageContentType +\n      ';base64,' +\n      stockCurrent.product.image\n    \"\n    class=\"imageShow\"\n  >\n  </ion-img>\n  </ion-thumbnail>\n  <ion-card-content>\n    <ion-grid>\n      <ion-row (click)=\"closeOpen(i)\">\n        <ion-col class=\"title-card\" margin-top padding-top>\n          <ion-card-title>{{ stockCurrent.product.name }}</ion-card-title>\n          <ion-text\n            ><strong>&#8364;{{ stockCurrent.sellPrice }}</strong></ion-text\n          >\n        </ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col size=\"10\">\n          <ion-buttons>\n            <ion-button (click)=\"remove(i, stockCurrent)\" color=\"medium\">\n              <ion-icon name=\"remove\"></ion-icon>\n            </ion-button>\n            <ion-button fill=\"none\" disabled>{{\n              orderCount\n            }}</ion-button>\n            <ion-button (click)=\"add(i, stockCurrent)\" color=\"medium\">\n              <ion-icon name=\"add\"></ion-icon>\n            </ion-button>\n          </ion-buttons>\n        </ion-col>\n        <ion-col size=\"2\">\n          <ion-buttons>\n            <ion-button\n              fill=\"none\"\n              (click)=\"addToFavourite(stockCurrent.product)\"\n              *ngIf=\"!isFavourite\"\n            >\n              <ion-icon\n                slot=\"icon-only\"\n                name=\"heart-empty\"\n              ></ion-icon>\n            </ion-button>\n            <ion-button\n              fill=\"none\"\n              (click)=\"removeFromFavourite(stockCurrent.product)\"\n              *ngIf=\"isFavourite\"\n            >\n              <ion-icon\n                color=\"danger\"\n                slot=\"icon-only\"\n                name=\"heart\"\n              ></ion-icon>\n            </ion-button>\n          </ion-buttons>\n        </ion-col>\n      </ion-row>\n    </ion-grid>\n  </ion-card-content>\n</ion-item>\n\n</ion-card>"
+module.exports = "<ion-card no-padding id=\"{{ stockCurrent.product.id }}\">\n  <div class=\"ribbon\">\n    <span class=\"ribbon1\">\n      <span>50% off</span>\n    </span>\n  </div>\n  <ion-item lines=\"none\">\n    <ion-thumbnail>\n      <ion-img\n        [src]=\"\n          'data:' +\n          stockCurrent.product.imageContentType +\n          ';base64,' +\n          stockCurrent.product.image\n        \"\n        class=\"imageShow\"\n      >\n      </ion-img>\n    </ion-thumbnail>\n    <ion-card-content>\n      <ion-grid>\n        <ion-row (click)=\"toggleDescription()\">\n          <ion-col class=\"title-card\" margin-top padding-top>\n            <ion-card-title>{{ stockCurrent.product.name }}</ion-card-title>\n            <ion-text\n              ><strong>&#8364;{{ stockCurrent.sellPrice }}</strong></ion-text\n            >\n          </ion-col>\n        </ion-row>\n        <ion-row>\n          <ion-col size=\"10\">\n            <ion-buttons>\n              <ion-button (click)=\"remove(i, stockCurrent)\" color=\"medium\">\n                <ion-icon name=\"remove\"></ion-icon>\n              </ion-button>\n              <ion-button fill=\"none\" disabled>{{ orderCount }}</ion-button>\n              <ion-button (click)=\"add(i, stockCurrent)\" color=\"medium\">\n                <ion-icon name=\"add\"></ion-icon>\n              </ion-button>\n            </ion-buttons>\n          </ion-col>\n          <ion-col size=\"2\">\n            <ion-buttons>\n              <ion-button\n                fill=\"none\"\n                (click)=\"addToFavourite(stockCurrent.product)\"\n                *ngIf=\"!isFavourite\"\n              >\n                <ion-icon slot=\"icon-only\" name=\"heart-empty\"></ion-icon>\n              </ion-button>\n              <ion-button\n                fill=\"none\"\n                (click)=\"removeFromFavourite(stockCurrent.product)\"\n                *ngIf=\"isFavourite\"\n              >\n                <ion-icon\n                  color=\"danger\"\n                  slot=\"icon-only\"\n                  name=\"heart\"\n                ></ion-icon>\n              </ion-button>\n            </ion-buttons>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-card-content>\n  </ion-item>\n  <div *ngIf=\"showDescription === true && stockCurrent !== null\">\n    <!--Change to stockCurrent.product.description-->\n    <p>{{ stockCurrent.product.name }}</p>\n  </div>\n</ion-card>\n"
 
 /***/ }),
 
@@ -2572,62 +2572,14 @@ var OrderCommandResourceService = /** @class */ (function (_super) {
         return this.initiateOrderUsingPOSTResponse(order).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) { return _r.body; }));
     };
     /**
-     * @param params The `OrderCommandResourceService.CreateAddressUsingPOSTParams` containing the following parameters:
-     *
-     * - `state`:
-     *
-     * - `roadNameAreaOrStreet`:
-     *
-     * - `pincode`:
-     *
-     * - `phone`:
-     *
-     * - `name`:
-     *
-     * - `landmark`:
-     *
-     * - `id`:
-     *
-     * - `houseNoOrBuildingName`:
-     *
-     * - `customerId`:
-     *
-     * - `city`:
-     *
-     * - `alternatePhone`:
-     *
-     * - `addressType`:
-     *
+     * @param addressDTO addressDTO
      * @return OK
      */
-    OrderCommandResourceService.prototype.createAddressUsingPOSTResponse = function (params) {
+    OrderCommandResourceService.prototype.createAddressUsingPOSTResponse = function (addressDTO) {
         var __params = this.newParams();
         var __headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
         var __body = null;
-        if (params.state != null)
-            __params = __params.set('state', params.state.toString());
-        if (params.roadNameAreaOrStreet != null)
-            __params = __params.set('roadNameAreaOrStreet', params.roadNameAreaOrStreet.toString());
-        if (params.pincode != null)
-            __params = __params.set('pincode', params.pincode.toString());
-        if (params.phone != null)
-            __params = __params.set('phone', params.phone.toString());
-        if (params.name != null)
-            __params = __params.set('name', params.name.toString());
-        if (params.landmark != null)
-            __params = __params.set('landmark', params.landmark.toString());
-        if (params.id != null)
-            __params = __params.set('id', params.id.toString());
-        if (params.houseNoOrBuildingName != null)
-            __params = __params.set('houseNoOrBuildingName', params.houseNoOrBuildingName.toString());
-        if (params.customerId != null)
-            __params = __params.set('customerId', params.customerId.toString());
-        if (params.city != null)
-            __params = __params.set('city', params.city.toString());
-        if (params.alternatePhone != null)
-            __params = __params.set('alternatePhone', params.alternatePhone.toString());
-        if (params.addressType != null)
-            __params = __params.set('addressType', params.addressType.toString());
+        __body = addressDTO;
         var req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('POST', this.rootUrl + "/api/command/orders/addresses", __body, {
             headers: __headers,
             params: __params,
@@ -2638,36 +2590,11 @@ var OrderCommandResourceService = /** @class */ (function (_super) {
         }));
     };
     /**
-     * @param params The `OrderCommandResourceService.CreateAddressUsingPOSTParams` containing the following parameters:
-     *
-     * - `state`:
-     *
-     * - `roadNameAreaOrStreet`:
-     *
-     * - `pincode`:
-     *
-     * - `phone`:
-     *
-     * - `name`:
-     *
-     * - `landmark`:
-     *
-     * - `id`:
-     *
-     * - `houseNoOrBuildingName`:
-     *
-     * - `customerId`:
-     *
-     * - `city`:
-     *
-     * - `alternatePhone`:
-     *
-     * - `addressType`:
-     *
+     * @param addressDTO addressDTO
      * @return OK
      */
-    OrderCommandResourceService.prototype.createAddressUsingPOST = function (params) {
-        return this.createAddressUsingPOSTResponse(params).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) { return _r.body; }));
+    OrderCommandResourceService.prototype.createAddressUsingPOST = function (addressDTO) {
+        return this.createAddressUsingPOSTResponse(addressDTO).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) { return _r.body; }));
     };
     /**
      * @param params The `OrderCommandResourceService.GetAllSavedAddressUsingGETParams` containing the following parameters:
@@ -2912,6 +2839,30 @@ var QueryResourceService = /** @class */ (function (_super) {
         return _super.call(this, config, http) || this;
     }
     /**
+     * @param productId productId
+     * @return OK
+     */
+    QueryResourceService.prototype.findAuxilariesByProductIdUsingGETResponse = function (productId) {
+        var __params = this.newParams();
+        var __headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
+        var __body = null;
+        var req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('GET', this.rootUrl + ("/api/query/auxilaries-productId/" + productId), __body, {
+            headers: __headers,
+            params: __params,
+            responseType: 'json'
+        });
+        return this.http.request(req).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["filter"])(function (_r) { return _r instanceof _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpResponse"]; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) {
+            return _r;
+        }));
+    };
+    /**
+     * @param productId productId
+     * @return OK
+     */
+    QueryResourceService.prototype.findAuxilariesByProductIdUsingGET = function (productId) {
+        return this.findAuxilariesByProductIdUsingGETResponse(productId).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) { return _r.body; }));
+    };
+    /**
      * @param id id
      * @return OK
      */
@@ -3150,6 +3101,10 @@ var QueryResourceService = /** @class */ (function (_super) {
     /**
      * @param params The `QueryResourceService.SearchByNearestLocationUsingGETParams` containing the following parameters:
      *
+     * - `latLon`: latLon
+     *
+     * - `kiloMeter`: kiloMeter
+     *
      * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
      *
      * - `size`: Size of a page
@@ -3168,7 +3123,7 @@ var QueryResourceService = /** @class */ (function (_super) {
             __params = __params.set('size', params.size.toString());
         if (params.page != null)
             __params = __params.set('page', params.page.toString());
-        var req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('GET', this.rootUrl + "/api/query/findByNearestLocation", __body, {
+        var req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('GET', this.rootUrl + ("/api/query/findByNearestLocation/" + params.latLon + "/" + params.kiloMeter), __body, {
             headers: __headers,
             params: __params,
             responseType: 'json'
@@ -3179,6 +3134,10 @@ var QueryResourceService = /** @class */ (function (_super) {
     };
     /**
      * @param params The `QueryResourceService.SearchByNearestLocationUsingGETParams` containing the following parameters:
+     *
+     * - `latLon`: latLon
+     *
+     * - `kiloMeter`: kiloMeter
      *
      * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
      *
@@ -4174,6 +4133,30 @@ var QueryResourceService = /** @class */ (function (_super) {
         return this.findAndSortStoreBydeliveryTimeUsingGETResponse(params).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) { return _r.body; }));
     };
     /**
+     * @param categoryName categoryName
+     * @return OK
+     */
+    QueryResourceService.prototype.findStockCurrentByCategoryNameUsingGETResponse = function (categoryName) {
+        var __params = this.newParams();
+        var __headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
+        var __body = null;
+        var req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('GET', this.rootUrl + ("/api/query/stock-current-by-categoryname/" + categoryName), __body, {
+            headers: __headers,
+            params: __params,
+            responseType: 'json'
+        });
+        return this.http.request(req).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["filter"])(function (_r) { return _r instanceof _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpResponse"]; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) {
+            return _r;
+        }));
+    };
+    /**
+     * @param categoryName categoryName
+     * @return OK
+     */
+    QueryResourceService.prototype.findStockCurrentByCategoryNameUsingGET = function (categoryName) {
+        return this.findStockCurrentByCategoryNameUsingGETResponse(categoryName).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) { return _r.body; }));
+    };
+    /**
      * @param params The `QueryResourceService.SearchStockCurrentsUsingGETParams` containing the following parameters:
      *
      * - `searchTerm`: searchTerm
@@ -4349,9 +4332,7 @@ var QueryResourceService = /** @class */ (function (_super) {
         var __params = this.newParams();
         var __headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
         var __body = null;
-        if (IDPCode != null)
-            __params = __params.set('IDPCode', IDPCode.toString());
-        var req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('GET', this.rootUrl + "/api/query/storeAddress", __body, {
+        var req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('GET', this.rootUrl + ("/api/query/storeAddress/" + IDPCode), __body, {
             headers: __headers,
             params: __params,
             responseType: 'json'
@@ -4421,9 +4402,7 @@ var QueryResourceService = /** @class */ (function (_super) {
         var __params = this.newParams();
         var __headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
         var __body = null;
-        if (IDPCode != null)
-            __params = __params.set('IDPCode', IDPCode.toString());
-        var req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('GET', this.rootUrl + "/api/query/storeSettings", __body, {
+        var req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('GET', this.rootUrl + ("/api/query/storeSettings/" + IDPCode), __body, {
             headers: __headers,
             params: __params,
             responseType: 'json'
@@ -4797,6 +4776,7 @@ var QueryResourceService = /** @class */ (function (_super) {
     QueryResourceService.prototype.findAllUserRatingsUsingGET = function (params) {
         return this.findAllUserRatingsUsingGETResponse(params).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) { return _r.body; }));
     };
+    QueryResourceService.findAuxilariesByProductIdUsingGETPath = '/api/query/auxilaries-productId/{productId}';
     QueryResourceService.findContactByIdUsingGETPath = '/api/query/contacts/{id}';
     QueryResourceService.findCustomerByReferenceUsingGETPath = '/api/query/customers/findByReference/{reference}';
     QueryResourceService.findCustomerByIdUsingGETPath = '/api/query/customers/{id}';
@@ -4804,7 +4784,7 @@ var QueryResourceService = /** @class */ (function (_super) {
     QueryResourceService.findDeliveryInfoByStoreIdUsingGETPath = '/api/query/deliveryinfoByStoreId/{storeId}';
     QueryResourceService.findAllCategoriesUsingGETPath = '/api/query/findAllCategories/{iDPcode}';
     QueryResourceService.findAllCustomersWithoutSearchUsingGETPath = '/api/query/findAllCustomers';
-    QueryResourceService.searchByNearestLocationUsingGETPath = '/api/query/findByNearestLocation';
+    QueryResourceService.searchByNearestLocationUsingGETPath = '/api/query/findByNearestLocation/{latLon}/{kiloMeter}';
     QueryResourceService.findCategoryAndCountUsingGETPath = '/api/query/findCategoryAndCount';
     QueryResourceService.findProductByCategoryIdAndUserIdUsingGETPath = '/api/query/findProductByCategoryIdAndUserId/{categoryId}/{userId}';
     QueryResourceService.findAllProductBySearchTermUsingGETPath = '/api/query/findProductBySearchTerm/{searchTerm}';
@@ -4829,15 +4809,16 @@ var QueryResourceService = /** @class */ (function (_super) {
     QueryResourceService.findReviewsByStoreIdUsingGETPath = '/api/query/review/{userName}';
     QueryResourceService.findAllReviewsUsingGETPath = '/api/query/reviews';
     QueryResourceService.findAndSortStoreBydeliveryTimeUsingGETPath = '/api/query/sortStoreByMinAmount';
+    QueryResourceService.findStockCurrentByCategoryNameUsingGETPath = '/api/query/stock-current-by-categoryname/{categoryName}';
     QueryResourceService.searchStockCurrentsUsingGETPath = '/api/query/stock-current/{searchTerm}';
     QueryResourceService.findOneStockCurrentUsingGETPath = '/api/query/stock-currents/{id}';
     QueryResourceService.findStockCurrentByStoreIdUsingGETPath = '/api/query/stockcurrent/{storeId}';
     QueryResourceService.findStoreTypeByStoreIdUsingGETPath = '/api/query/store-type/{storeId}';
     QueryResourceService.findStoreByRegisterNumberUsingGETPath = '/api/query/store/{regNo}';
-    QueryResourceService.getStoreAddressUsingGETPath = '/api/query/storeAddress';
+    QueryResourceService.getStoreAddressUsingGETPath = '/api/query/storeAddress/{IDPCode}';
     QueryResourceService.findStoreByLocationNameUsingGETPath = '/api/query/storeByLocationName/{locationName}';
     QueryResourceService.findStoreByRatingUsingGETPath = '/api/query/storeByRating';
-    QueryResourceService.getStoreSettingsUsingGETPath = '/api/query/storeSettings';
+    QueryResourceService.getStoreSettingsUsingGETPath = '/api/query/storeSettings/{IDPCode}';
     QueryResourceService.findAllStoresUsingGETPath = '/api/query/stores';
     QueryResourceService.findStoreBannersUsingGETPath = '/api/query/stores/banners';
     QueryResourceService.getAllStoreTypesUsingGETPath = '/api/query/stores/storeTypes';
@@ -5045,6 +5026,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_security_auth_guard_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./services/security/auth-guard.service */ "./src/app/services/security/auth-guard.service.ts");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _components_checkout_checkout_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/checkout/checkout.component */ "./src/app/components/checkout/checkout.component.ts");
+
 
 
 
@@ -5059,7 +5042,8 @@ var routes = [
     { path: 'restaurant', loadChildren: './pages/restaurant/restaurant.module#RestaurantPageModule', canActivate: [_services_security_auth_guard_service__WEBPACK_IMPORTED_MODULE_1__["AuthGuardService"]] },
     { path: 'store/:id', loadChildren: './pages/store/store.module#StorePageModule', canActivate: [_services_security_auth_guard_service__WEBPACK_IMPORTED_MODULE_1__["AuthGuardService"]] },
     { path: 'basket', loadChildren: './pages/basket/basket.module#BasketPageModule', canActivate: [_services_security_auth_guard_service__WEBPACK_IMPORTED_MODULE_1__["AuthGuardService"]] },
-    { path: 'profile', loadChildren: './pages/profile/profile.module#ProfilePageModule' },
+    { path: 'profile', loadChildren: './pages/profile/profile.module#ProfilePageModule', canActivate: [_services_security_auth_guard_service__WEBPACK_IMPORTED_MODULE_1__["AuthGuardService"]] },
+    { path: 'checkout', component: _components_checkout_checkout_component__WEBPACK_IMPORTED_MODULE_4__["CheckoutComponent"], canActivate: [_services_security_auth_guard_service__WEBPACK_IMPORTED_MODULE_1__["AuthGuardService"]] },
 ];
 var AppRoutingModule = /** @class */ (function () {
     function AppRoutingModule() {
@@ -5211,6 +5195,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ionic_native_camera_ngx__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @ionic-native/camera/ngx */ "./node_modules/@ionic-native/camera/ngx/index.js");
 /* harmony import */ var _components_components_module__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./components/components.module */ "./src/app/components/components.module.ts");
 /* harmony import */ var _agm_core__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @agm/core */ "./node_modules/@agm/core/index.js");
+/* harmony import */ var _services_order_service__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./services/order.service */ "./src/app/services/order.service.ts");
+/* harmony import */ var _components_checkout_checkout_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./components/checkout/checkout.component */ "./src/app/components/checkout/checkout.component.ts");
+
+
 
 
 
@@ -5241,7 +5229,7 @@ var AppModule = /** @class */ (function () {
     AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_10__["NgModule"])({
             declarations: [_app_component__WEBPACK_IMPORTED_MODULE_16__["AppComponent"]],
-            entryComponents: [],
+            entryComponents: [_components_checkout_checkout_component__WEBPACK_IMPORTED_MODULE_25__["CheckoutComponent"]],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_11__["BrowserModule"],
                 _angular_common_http__WEBPACK_IMPORTED_MODULE_18__["HttpClientModule"],
@@ -5250,6 +5238,7 @@ var AppModule = /** @class */ (function () {
                 // Extra Modules
                 ngx_img_cropper__WEBPACK_IMPORTED_MODULE_6__["ImageCropperModule"],
                 _configs_configs_module__WEBPACK_IMPORTED_MODULE_9__["ConfigsModule"],
+                _components_components_module__WEBPACK_IMPORTED_MODULE_22__["ComponentsModule"],
                 _ionic_storage__WEBPACK_IMPORTED_MODULE_19__["IonicStorageModule"].forRoot({
                     name: '__mydb',
                     driverOrder: ['indexeddb', 'sqlite', 'websql']
@@ -5274,6 +5263,7 @@ var AppModule = /** @class */ (function () {
                 _services_filter_service__WEBPACK_IMPORTED_MODULE_3__["FilterService"],
                 _services_favourite_service__WEBPACK_IMPORTED_MODULE_2__["FavouriteService"],
                 _services_cart_service__WEBPACK_IMPORTED_MODULE_1__["CartService"],
+                _services_order_service__WEBPACK_IMPORTED_MODULE_24__["OrderService"],
                 {
                     provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_18__["HTTP_INTERCEPTORS"],
                     useClass: _services_security_auth_interceptor__WEBPACK_IMPORTED_MODULE_8__["AuthInterceptor"],
@@ -5331,6 +5321,7 @@ var AddressListComponent = /** @class */ (function () {
     }
     AddressListComponent_1 = AddressListComponent;
     AddressListComponent.prototype.ngOnInit = function () {
+        console.log('Address List', this.customer);
         if (this.showAddressPanel === false) {
             this.getAllAdress(0);
         }
@@ -5338,7 +5329,7 @@ var AddressListComponent = /** @class */ (function () {
     AddressListComponent.prototype.getAllAdress = function (i) {
         var _this = this;
         this.orderCommandResource.getAllSavedAddressUsingGET({
-            customerId: this.customer.regNo,
+            customerId: this.customer.reference,
             page: i
         })
             .subscribe(function (paddress) {
@@ -5356,6 +5347,7 @@ var AddressListComponent = /** @class */ (function () {
     };
     AddressListComponent.prototype.saveAddress = function () {
         var _this = this;
+        this.address.customerId = this.customer.reference;
         this.orderCommandResource
             .createAddressUsingPOST(this.address)
             .subscribe(function (address) {
@@ -5372,12 +5364,12 @@ var AddressListComponent = /** @class */ (function () {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.modalController.create({
                             component: AddressListComponent_1,
-                            componentProps: { showAddressPanel: true }
+                            componentProps: { showAddressPanel: true, customer: this.customer }
                         })];
                     case 1:
                         modal = _a.sent();
                         modal.onDidDismiss().then(function (data) {
-                            if (data !== undefined) {
+                            if (data.data !== undefined) {
                                 console.log(data.data.name);
                                 _this.addresses.push(data.data);
                                 _this.addressSelected.emit(data.data);
@@ -5392,6 +5384,7 @@ var AddressListComponent = /** @class */ (function () {
     };
     AddressListComponent.prototype.addressChanged = function (event) {
         var _this = this;
+        console.log('Address Changed');
         this.addresses.forEach(function (a) {
             if (a.id == event.detail.value) {
                 _this.addressSelected.emit(a);
@@ -5607,10 +5600,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_cart_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../../services/cart.service */ "./src/app/services/cart.service.ts");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
-/* harmony import */ var src_app_api_services__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/api/services */ "./src/app/api/services.ts");
-/* harmony import */ var src_app_services_util__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/services/util */ "./src/app/services/util.ts");
-/* harmony import */ var _checkout_checkout_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../checkout/checkout.component */ "./src/app/components/checkout/checkout.component.ts");
-
+/* harmony import */ var src_app_services_util__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/services/util */ "./src/app/services/util.ts");
+/* harmony import */ var src_app_services_order_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/services/order.service */ "./src/app/services/order.service.ts");
 
 
 
@@ -5621,15 +5612,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var CartComponent = /** @class */ (function () {
-    function CartComponent(cart, modalController, queryResource, orderCommandResource, storage, util) {
+    function CartComponent(cart, orderService, modalController, navController, queryResource, storage, util) {
         this.cart = cart;
+        this.orderService = orderService;
         this.modalController = modalController;
+        this.navController = navController;
         this.queryResource = queryResource;
-        this.orderCommandResource = orderCommandResource;
         this.storage = storage;
         this.util = util;
         this.viewType = 'minimal';
-        this.store = {};
         this.currentSegment = 'delivery';
         this.cartSize = 0;
         this.totalPrice = 0;
@@ -5643,8 +5634,7 @@ var CartComponent = /** @class */ (function () {
     };
     CartComponent.prototype.getCustomer = function () {
         var _this = this;
-        this.util.createLoader()
-            .then(function (loader) {
+        this.util.createLoader().then(function (loader) {
             loader.present();
             _this.storage.get('user').then(function (user) {
                 _this.queryResource
@@ -5666,24 +5656,19 @@ var CartComponent = /** @class */ (function () {
             _this.cartSize = data.length;
             _this.totalPrice = _this.cart.totalPrice;
             _this.orderLines = data;
-            if (data !== undefined) {
-                _this.getStore();
+            if (_this.cart.currentShop !== undefined &&
+                data !== undefined && _this.store !== _this.cart.currentShop) {
+                _this.store = _this.cart.currentShop;
+                _this.getStoreSettings();
             }
         });
     };
-    CartComponent.prototype.getStore = function () {
+    CartComponent.prototype.getStoreSettings = function () {
         var _this = this;
         this.queryResource
-            .findStoreByRegisterNumberUsingGET(this.cart.currentShop.regNo)
-            .subscribe(function (result) {
-            console.log('Got Store', result);
-            _this.store = result;
-            _this.queryResource.getStoreSettingsUsingGET(result.regNo)
-                .subscribe(function (setting) {
-                _this.storeSetting = setting;
-            });
-        }, function (err) {
-            console.log('Error fetching store data', err);
+            .getStoreSettingsUsingGET(this.store.regNo)
+            .subscribe(function (setting) {
+            _this.storeSetting = setting;
         });
     };
     CartComponent.prototype.presentAllergyModal = function () {
@@ -5704,7 +5689,7 @@ var CartComponent = /** @class */ (function () {
             });
         });
     };
-    CartComponent.prototype.checkout = function () {
+    CartComponent.prototype.continue = function (deliveryType) {
         var grandtotal = 0;
         this.orderLines.forEach(function (orderLine) {
             grandtotal += orderLine.pricePerUnit * orderLine.quantity;
@@ -5714,41 +5699,24 @@ var CartComponent = /** @class */ (function () {
             customerId: this.customer.name,
             orderLines: this.orderLines,
             grandTotal: grandtotal,
-            storeId: this.cart.storeId,
+            storeId: this.cart.storeId
         };
-        this.presentCheckOutModal(order);
-    };
-    CartComponent.prototype.addressSelectedEven = function (event) {
-        console.log('Address Selected', event);
-        this.selectedAddress = event;
-    };
-    CartComponent.prototype.presentCheckOutModal = function (o) {
-        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
-            var modal;
-            return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.modalController.create({
-                            component: _checkout_checkout_component__WEBPACK_IMPORTED_MODULE_9__["CheckoutComponent"],
-                            componentProps: { order: o }
-                        })];
-                    case 1:
-                        modal = _a.sent();
-                        modal.present();
-                        return [2 /*return*/];
-                }
-            });
-        });
+        this.orderService.setCustomer(this.customer);
+        this.orderService.setOrder(order);
+        this.orderService.setDeliveryType(deliveryType);
+        this.navController.navigateForward('/checkout');
     };
     CartComponent.prototype.segmenChanged = function (event) {
         this.currentSegment = event.detail.value;
     };
     CartComponent.ctorParameters = function () { return [
         { type: _services_cart_service__WEBPACK_IMPORTED_MODULE_4__["CartService"] },
+        { type: src_app_services_order_service__WEBPACK_IMPORTED_MODULE_8__["OrderService"] },
         { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_6__["ModalController"] },
+        { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_6__["NavController"] },
         { type: src_app_api_services_query_resource_service__WEBPACK_IMPORTED_MODULE_2__["QueryResourceService"] },
-        { type: src_app_api_services__WEBPACK_IMPORTED_MODULE_7__["OrderCommandResourceService"] },
         { type: _ionic_storage__WEBPACK_IMPORTED_MODULE_1__["Storage"] },
-        { type: src_app_services_util__WEBPACK_IMPORTED_MODULE_8__["Util"] }
+        { type: src_app_services_util__WEBPACK_IMPORTED_MODULE_7__["Util"] }
     ]; };
     tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_5__["Input"])(),
@@ -5765,11 +5733,12 @@ var CartComponent = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./cart.component.scss */ "./src/app/components/cart/cart.component.scss")]
         }),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services_cart_service__WEBPACK_IMPORTED_MODULE_4__["CartService"],
+            src_app_services_order_service__WEBPACK_IMPORTED_MODULE_8__["OrderService"],
             _ionic_angular__WEBPACK_IMPORTED_MODULE_6__["ModalController"],
+            _ionic_angular__WEBPACK_IMPORTED_MODULE_6__["NavController"],
             src_app_api_services_query_resource_service__WEBPACK_IMPORTED_MODULE_2__["QueryResourceService"],
-            src_app_api_services__WEBPACK_IMPORTED_MODULE_7__["OrderCommandResourceService"],
             _ionic_storage__WEBPACK_IMPORTED_MODULE_1__["Storage"],
-            src_app_services_util__WEBPACK_IMPORTED_MODULE_8__["Util"]])
+            src_app_services_util__WEBPACK_IMPORTED_MODULE_7__["Util"]])
     ], CartComponent);
     return CartComponent;
 }());
@@ -5785,7 +5754,7 @@ var CartComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvY2hlY2tvdXQvY2hlY2tvdXQuY29tcG9uZW50LnNjc3MifQ== */"
+module.exports = "textarea {\n  width: 100%;\n  height: 200px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9jaGVja291dC9jaGVja291dC5jb21wb25lbnQuc2NzcyIsInNyYy9hcHAvY29tcG9uZW50cy9jaGVja291dC9jaGVja291dC5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLFdBQUE7RUFDQSxhQUFBO0FDQ0oiLCJmaWxlIjoic3JjL2FwcC9jb21wb25lbnRzL2NoZWNrb3V0L2NoZWNrb3V0LmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsidGV4dGFyZWF7XG4gICAgd2lkdGg6IDEwMCU7XG4gICAgaGVpZ2h0OiAyMDBweDtcbn0iLCJ0ZXh0YXJlYSB7XG4gIHdpZHRoOiAxMDAlO1xuICBoZWlnaHQ6IDIwMHB4O1xufSJdfQ== */"
 
 /***/ }),
 
@@ -5801,19 +5770,54 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CheckoutComponent", function() { return CheckoutComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_app_services_order_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/services/order.service */ "./src/app/services/order.service.ts");
+
 
 
 var CheckoutComponent = /** @class */ (function () {
-    function CheckoutComponent() {
+    function CheckoutComponent(orderService) {
+        this.orderService = orderService;
     }
-    CheckoutComponent.prototype.ngOnInit = function () { };
+    CheckoutComponent.prototype.ngOnInit = function () {
+        console.log(this.orderService.deliveryType);
+        console.log(this.orderService.order);
+        console.log(this.orderService.customer);
+        console.log(this.orderService.address);
+        this.getCustomer();
+        this.getOrder();
+    };
+    CheckoutComponent.prototype.getCustomer = function () {
+        console.log(this.orderService.customer);
+        this.customer = this.orderService.customer;
+    };
+    CheckoutComponent.prototype.getOrder = function () {
+        this.order = this.orderService.order;
+    };
+    CheckoutComponent.prototype.setNote = function () {
+        this.orderService.setNote(this.note);
+    };
+    CheckoutComponent.prototype.setAddress = function (event) {
+        this.selectedAddress = event;
+        this.orderService.setAddress(this.selectedAddress);
+    };
+    CheckoutComponent.prototype.addressSelectedEvent = function (event) {
+        this.setNote();
+        console.log(event);
+        this.setAddress(event);
+    };
+    CheckoutComponent.prototype.checkOut = function () {
+        // 
+    };
+    CheckoutComponent.ctorParameters = function () { return [
+        { type: src_app_services_order_service__WEBPACK_IMPORTED_MODULE_2__["OrderService"] }
+    ]; };
     CheckoutComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-checkout',
             template: __webpack_require__(/*! raw-loader!./checkout.component.html */ "./node_modules/raw-loader/index.js!./src/app/components/checkout/checkout.component.html"),
             styles: [__webpack_require__(/*! ./checkout.component.scss */ "./src/app/components/checkout/checkout.component.scss")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [src_app_services_order_service__WEBPACK_IMPORTED_MODULE_2__["OrderService"]])
     ], CheckoutComponent);
     return CheckoutComponent;
 }());
@@ -5991,7 +5995,7 @@ var ComponentsModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "textarea {\n  width: 95vw;\n  height: 100px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9kZWxpdmVyeS1pdGVtLWRldGFpbHMvZGVsaXZlcnktaXRlbS1kZXRhaWxzLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL2RlbGl2ZXJ5LWl0ZW0tZGV0YWlscy9kZWxpdmVyeS1pdGVtLWRldGFpbHMuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQ0E7RUFDSSxXQUFBO0VBQ0EsYUFBQTtBQ0FKIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9kZWxpdmVyeS1pdGVtLWRldGFpbHMvZGVsaXZlcnktaXRlbS1kZXRhaWxzLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiXG50ZXh0YXJlYSB7XG4gICAgd2lkdGg6IDk1dnc7XG4gICAgaGVpZ2h0OiAxMDBweDtcbn0iLCJ0ZXh0YXJlYSB7XG4gIHdpZHRoOiA5NXZ3O1xuICBoZWlnaHQ6IDEwMHB4O1xufSJdfQ== */"
+module.exports = "textarea {\n  width: 95vw;\n  height: 100px;\n}\n\n.discountBadge {\n  max-width: 50px;\n  height: 50px;\n  background: cadetblue;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n          align-items: center;\n  border-radius: 50%;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9kZWxpdmVyeS1pdGVtLWRldGFpbHMvZGVsaXZlcnktaXRlbS1kZXRhaWxzLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL2RlbGl2ZXJ5LWl0ZW0tZGV0YWlscy9kZWxpdmVyeS1pdGVtLWRldGFpbHMuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQ0E7RUFDSSxXQUFBO0VBQ0EsYUFBQTtBQ0FKOztBREdBO0VBQ0ksZUFBQTtFQUNBLFlBQUE7RUFDQSxxQkFBQTtFQUNBLG9CQUFBO0VBQUEsYUFBQTtFQUNBLHdCQUFBO1VBQUEsdUJBQUE7RUFDQSx5QkFBQTtVQUFBLG1CQUFBO0VBQ0Esa0JBQUE7QUNBSiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvZGVsaXZlcnktaXRlbS1kZXRhaWxzL2RlbGl2ZXJ5LWl0ZW0tZGV0YWlscy5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIlxudGV4dGFyZWEge1xuICAgIHdpZHRoOiA5NXZ3O1xuICAgIGhlaWdodDogMTAwcHg7XG59XG5cbi5kaXNjb3VudEJhZGdlIHtcbiAgICBtYXgtd2lkdGg6IDUwcHg7XG4gICAgaGVpZ2h0OiA1MHB4O1xuICAgIGJhY2tncm91bmQ6IGNhZGV0Ymx1ZTtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgYm9yZGVyLXJhZGl1czogNTAlO1xufSIsInRleHRhcmVhIHtcbiAgd2lkdGg6IDk1dnc7XG4gIGhlaWdodDogMTAwcHg7XG59XG5cbi5kaXNjb3VudEJhZGdlIHtcbiAgbWF4LXdpZHRoOiA1MHB4O1xuICBoZWlnaHQ6IDUwcHg7XG4gIGJhY2tncm91bmQ6IGNhZGV0Ymx1ZTtcbiAgZGlzcGxheTogZmxleDtcbiAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gIGJvcmRlci1yYWRpdXM6IDUwJTtcbn0iXX0= */"
 
 /***/ }),
 
@@ -6050,6 +6054,8 @@ var DeliveryItemDetailsComponent = /** @class */ (function () {
                 _this.products.push(p);
             });
         });
+    };
+    DeliveryItemDetailsComponent.prototype.getOffers = function () {
     };
     DeliveryItemDetailsComponent.ctorParameters = function () { return [
         { type: _services_cart_service__WEBPACK_IMPORTED_MODULE_1__["CartService"] },
@@ -6195,21 +6201,12 @@ var FilterComponent = /** @class */ (function () {
         this.categories = [];
     }
     FilterComponent.prototype.ngOnInit = function () {
-        this.getCategories();
     };
     FilterComponent.prototype.closeEvent = function () {
         this.closeFilter.emit();
     };
     FilterComponent.prototype.setFilterType = function (type) {
         this.filter.setFilter(type);
-    };
-    FilterComponent.prototype.getCategories = function () {
-        var _this = this;
-        this.queryResource.findStoreAndCountUsingGET({}).subscribe(function (data) {
-            if (data !== undefined) {
-                _this.categories = data;
-            }
-        });
     };
     FilterComponent.ctorParameters = function () { return [
         { type: _services_filter_service__WEBPACK_IMPORTED_MODULE_1__["FilterService"] },
@@ -6991,22 +6988,30 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var _services_favourite_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../../services/favourite.service */ "./src/app/services/favourite.service.ts");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
+/* harmony import */ var src_app_api_services__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/api/services */ "./src/app/api/services.ts");
+
+
 
 
 
 
 
 var ProductCardComponent = /** @class */ (function () {
-    function ProductCardComponent(favourite, router, cartService) {
+    function ProductCardComponent(favourite, queryResource, popoverController, router, cartService) {
         this.favourite = favourite;
+        this.queryResource = queryResource;
+        this.popoverController = popoverController;
         this.router = router;
         this.cartService = cartService;
+        this.showDescription = false;
         this.isFavourite = false;
         this.orderCount = 0;
     }
     ProductCardComponent.prototype.ngOnInit = function () {
         this.checkIfAlreadyFavourite();
         this.checkIfOrdered();
+        this.getAuxilaries();
     };
     ProductCardComponent.prototype.addToFavourite = function (product) {
         this.isFavourite = true;
@@ -7015,6 +7020,8 @@ var ProductCardComponent = /** @class */ (function () {
     ProductCardComponent.prototype.removeFromFavourite = function (product) {
         this.isFavourite = false;
         this.favourite.removeFromFavorite(product, 'product');
+    };
+    ProductCardComponent.prototype.getAuxilaries = function () {
     };
     ProductCardComponent.prototype.checkIfAlreadyFavourite = function () {
         var _this = this;
@@ -7049,8 +7056,13 @@ var ProductCardComponent = /** @class */ (function () {
             }
         });
     };
+    ProductCardComponent.prototype.toggleDescription = function () {
+        this.showDescription = !this.showDescription;
+    };
     ProductCardComponent.ctorParameters = function () { return [
         { type: _services_favourite_service__WEBPACK_IMPORTED_MODULE_3__["FavouriteService"] },
+        { type: src_app_api_services__WEBPACK_IMPORTED_MODULE_6__["QueryResourceService"] },
+        { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["PopoverController"] },
         { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"] },
         { type: _services_cart_service__WEBPACK_IMPORTED_MODULE_1__["CartService"] }
     ]; };
@@ -7062,6 +7074,10 @@ var ProductCardComponent = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_4__["Input"])(),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Object)
     ], ProductCardComponent.prototype, "store", void 0);
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_4__["Input"])(),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Object)
+    ], ProductCardComponent.prototype, "showDescription", void 0);
     ProductCardComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_4__["Component"])({
             selector: 'app-product-card',
@@ -7069,6 +7085,8 @@ var ProductCardComponent = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./product-card.component.scss */ "./src/app/components/product-card/product-card.component.scss")]
         }),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services_favourite_service__WEBPACK_IMPORTED_MODULE_3__["FavouriteService"],
+            src_app_api_services__WEBPACK_IMPORTED_MODULE_6__["QueryResourceService"],
+            _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["PopoverController"],
             _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"],
             _services_cart_service__WEBPACK_IMPORTED_MODULE_1__["CartService"]])
     ], ProductCardComponent);
@@ -7769,13 +7787,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var authConfig = {
-    issuer: 'http://34.74.192.113:8888/auth/realms/graeshoppe',
+    issuer: 'http://dev.servers.divisosofttech.com:8888/auth/realms/graeshoppe',
     redirectUri: window.location.origin,
     clientId: 'account',
     scope: 'openid profile email voucher offline_access',
     dummyClientSecret: '8a4c3fda-44ec-485a-9d59-d6d7fdcb1895',
-    tokenEndpoint: 'http://34.74.192.113:8888/auth/realms/graeshoppe/protocol/openid-connect/token',
-    userinfoEndpoint: 'http://34.74.192.113:8888/auth/realms/graeshoppe/protocol/openid-connect/userinfo',
+    tokenEndpoint: 'http://dev.servers.divisosofttech.com:8888/auth/realms/graeshoppe/protocol/openid-connect/token',
+    userinfoEndpoint: 'http://dev.servers.divisosofttech.com:8888/auth/realms/graeshoppe/protocol/openid-connect/userinfo',
     oidc: false,
     requireHttps: false,
 };
@@ -7888,7 +7906,7 @@ var KeycloakAdminConfig = /** @class */ (function () {
     function KeycloakAdminConfig() {
         this.kcAdminClient = new keycloak_admin_lib_client__WEBPACK_IMPORTED_MODULE_1__["KeycloakAdminClient"]();
         this.kcAdminClient.setConfig({
-            baseUrl: 'http://34.74.192.113:8888/auth'
+            baseUrl: 'http://dev.servers.divisosofttech.com:8888/auth'
         });
     }
     KeycloakAdminConfig.prototype.refreshClient = function () {
@@ -8118,6 +8136,7 @@ var CartService = /** @class */ (function () {
     CartService.prototype.addProduct = function (product, stockCurrent, shop) {
         var _this = this;
         if (this.currentShopId === 0) {
+            console.log('Shop From CartService ', shop);
             this.currentShop = shop;
             this.currentShopId = shop.id;
         }
@@ -8371,7 +8390,7 @@ var FILTER_TYPES;
 var FilterService = /** @class */ (function () {
     function FilterService(queryResource) {
         this.queryResource = queryResource;
-        this.currentFilter = FILTER_TYPES.TOP_RATED;
+        this.currentFilter = FILTER_TYPES.DISTANCE_WISE;
         this.filterBehaviour = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"](this.currentFilter);
         this.distance = 25;
     }
@@ -8399,7 +8418,10 @@ var FilterService = /** @class */ (function () {
     };
     FilterService.prototype.getStoreByDistance = function (pageNumber, success) {
         this.queryResource
-            .searchByNearestLocationUsingGET({})
+            .searchByNearestLocationUsingGET({
+            latLon: this.currentCordinates,
+            kiloMeter: this.distance
+        })
             .subscribe(function (data) {
             success(data.totalElements, data.totalPages, data.content);
         });
@@ -8553,6 +8575,52 @@ var LocationService = /** @class */ (function () {
             _ionic_native_geolocation_ngx__WEBPACK_IMPORTED_MODULE_2__["Geolocation"]])
     ], LocationService);
     return LocationService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/services/order.service.ts":
+/*!*******************************************!*\
+  !*** ./src/app/services/order.service.ts ***!
+  \*******************************************/
+/*! exports provided: OrderService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OrderService", function() { return OrderService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
+
+var OrderService = /** @class */ (function () {
+    function OrderService() {
+        this.address = '';
+    }
+    OrderService.prototype.setDeliveryType = function (deliveryType) {
+        this.deliveryType = deliveryType;
+    };
+    OrderService.prototype.setAddress = function (address) {
+        this.address = address;
+    };
+    OrderService.prototype.setOrder = function (order) {
+        this.order = order;
+    };
+    OrderService.prototype.setCustomer = function (customer) {
+        this.customer = customer;
+    };
+    OrderService.prototype.setNote = function (note) {
+        this.order.note = note;
+    };
+    OrderService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+            providedIn: 'root'
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+    ], OrderService);
+    return OrderService;
 }());
 
 

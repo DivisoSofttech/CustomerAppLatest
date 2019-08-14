@@ -119,12 +119,12 @@ let RestaurantPage = class RestaurantPage {
         this.stores = [];
     }
     ngOnInit() {
-        this.getStores();
     }
     updatedLocation(event) {
         console.log('Location Changed', event);
         this.filter.currentCordinates = event.latLon;
         this.filter.setFilter(_services_filter_service__WEBPACK_IMPORTED_MODULE_1__["FILTER_TYPES"].DISTANCE_WISE);
+        this.getStores();
     }
     getStores() {
         this.filter.getSubscription().subscribe(data => {

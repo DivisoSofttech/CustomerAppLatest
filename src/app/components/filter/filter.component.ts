@@ -23,7 +23,7 @@ export class FilterComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getCategories();
+
   }
 
   closeEvent() {
@@ -35,13 +35,14 @@ export class FilterComponent implements OnInit {
       this.filter.setFilter(type); 
   }
 
-  getCategories() {
-    this.queryResource.findStoreAndCountUsingGET({}).subscribe(data => {
-      if (data !== undefined) {
+  // Api Does not Work
+  // getCategories() {
+  //   this.queryResource.findStoreAndCountUsingGET({}).subscribe(data => {
+  //     if (data !== undefined) {
 
-        this.categories = data;
-      }
-    });
-  }
+  //       this.categories = data;
+  //     }
+  //   });
+  // }
 
 }
