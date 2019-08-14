@@ -72,12 +72,11 @@
     <ion-row>
       <ion-col size="12">
         <ion-button *ngIf="currentSegment==='delivery'"
-          [disabled]="selectedAddress === undefined"
-          color="primary" expand="full" (click)="checkout()"
-          >Checkout</ion-button
+          color="primary" expand="full" (click)="continue('delivery')"
+          >Continue</ion-button
         >
-        <ion-button *ngIf="currentSegment==='collection'" color="primary" expand="full" (click)="checkout()"
-        >Checkout</ion-button
+        <ion-button *ngIf="currentSegment==='collection'" color="primary" expand="full" (click)="continue('collection')"
+        >Continue</ion-button
       >
       </ion-col>
       <ion-col size="12">
@@ -110,8 +109,10 @@
 
   <div>
     <app-delivery-item-details
-      *ngIf="orderLines !== undefined"
+      *ngIf="orderLines !== undefined && storeSetting !== undefined"
       [orders]="orderLines"
+      [store]="store"
+      [storeSetting]="storeSetting"
     ></app-delivery-item-details>
   </div>
 </div>
@@ -120,28 +121,3 @@
 && orderLines.length > 0">
   
 </ion-footer>
-
-<!-- 
-<app-address-list 
-    *ngIf="customer !== undefined"
-    [customer]="customer" 
-    (addressSelected)="addressSelectedEven($event)">
-  </app-address-list>
-<ion-grid *ngIf="orderLines !== undefined && orderLines.length > 0">
-    <ion-row>
-      <ion-col text-center size="12">
-        <ion-text color="medium">
-          <p>
-            Leave a note for the restaurant with anything they need to know
-            (e.g. the doorbell doesn't work). Do not include any details about
-            allergy.
-          </p>
-        </ion-text>
-        <textarea
-          [(ngModel)]="note"
-          class="textArea"
-          placeholder="e.g. the doorbell doesn't work.Do not include any details about allergy"
-        ></textarea>
-      </ion-col>
-    </ion-row>
-  </ion-grid> -->

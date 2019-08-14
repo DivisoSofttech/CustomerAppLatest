@@ -4,7 +4,7 @@
     </ion-toolbar>
   </ion-header>
   
-  <ion-segment (ionChange)="slide($event)" [value]="value">
+  <ion-segment (ionChange)="slide($event)" [value]="value" class="mobile">
     <ion-segment-button value="login">
       <ion-label>Login</ion-label>
     </ion-segment-button>
@@ -13,7 +13,7 @@
     </ion-segment-button>
   </ion-segment>
   
-  <ion-content padding>
+  <ion-content padding class="mobile">
     <ion-slides #slides (ionSlideDidChange)="slideChange()">
       <ion-slide>
         <ion-grid margin-top>

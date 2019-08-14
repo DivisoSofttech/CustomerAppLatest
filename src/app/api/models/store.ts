@@ -4,6 +4,7 @@ import { DeliveryInfo } from './delivery-info';
 import { Propreitor } from './propreitor';
 import { Review } from './review';
 import { StoreAddress } from './store-address';
+import { StoreSettings } from './store-settings';
 import { StoreType } from './store-type';
 import { UserRating } from './user-rating';
 export interface Store {
@@ -26,6 +27,7 @@ export interface Store {
   regNo?: string;
   reviews?: Array<Review>;
   storeAddress?: StoreAddress;
+  storeSettings?: StoreSettings;
   storeTypes?: Array<StoreType>;
   totalRating?: number;
   userRatings?: Array<UserRating>;

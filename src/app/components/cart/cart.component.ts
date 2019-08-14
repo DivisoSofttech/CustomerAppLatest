@@ -4,10 +4,12 @@ import { QueryResourceService } from 'src/app/api/services/query-resource.servic
 import { AllergyComponent } from './../allergy/allergy.component';
 import { CartService } from './../../services/cart.service';
 import { Component, OnInit, Input } from '@angular/core';
-import { OrderLine } from 'src/app/api/models';
-import { ModalController } from '@ionic/angular';
+import { OrderLine, Store, StoreSettings } from 'src/app/api/models';
+import { ModalController, NavController } from '@ionic/angular';
 import { OrderCommandResourceService } from 'src/app/api/services';
 import { Util } from 'src/app/services/util';
+import { CheckoutComponent } from '../checkout/checkout.component';
+import { OrderService } from 'src/app/services/order.service';
 
 @Component({
   selector: 'app-cart',
@@ -33,9 +35,14 @@ export class CartComponent implements OnInit {
 
   customer;
 
+  storeSetting: StoreSettings;
+  shopRegNo: string;
+
   constructor(
     private cart: CartService,
+    private orderService: OrderService,
     private modalController: ModalController,
+    private navController: NavController,
     private queryResource: QueryResourceService,
     private orderCommandResource: OrderCommandResourceService,
     private storage: Storage,
@@ -49,23 +56,23 @@ export class CartComponent implements OnInit {
   }
 
   getCustomer() {
-    this.util.createLoader()
-    .then(loader => {
+    this.util.createLoader().then(loader => {
       loader.present();
       this.storage.get('user').then(user => {
         this.queryResource
           .findCustomerByReferenceUsingGET(user.preferred_username)
-          .subscribe(customer => {
-            console.log('Got Customer' , customer);
-            loader.dismiss();
-            this.customer = customer;
-          },
-          err => {
-            loader.dismiss();
-          });
+          .subscribe(
+            customer => {
+              console.log('Got Customer', customer);
+              loader.dismiss();
+              this.customer = customer;
+            },
+            err => {
+              loader.dismiss();
+            }
+          );
       });
     });
-
   }
 
   getCartDetails() {
@@ -74,7 +81,29 @@ export class CartComponent implements OnInit {
       this.cartSize = data.length;
       this.totalPrice = this.cart.totalPrice;
       this.orderLines = data;
+      if (data !== undefined) {
+        this.getStore();
+      }
     });
+  }
+
+  getStore() {
+    this.queryResource
+      .findStoreByRegisterNumberUsingGET(this.cart.currentShop.regNo)
+      .subscribe(
+        result => {
+          console.log('Got Store', result);
+          this.store = result;
+          this.queryResource
+            .getStoreSettingsUsingGET(result.regNo)
+            .subscribe(setting => {
+              this.storeSetting = setting;
+            });
+        },
+        err => {
+          console.log('Error fetching store data', err);
+        }
+      );
   }
 
   async presentAllergyModal() {
@@ -86,24 +115,23 @@ export class CartComponent implements OnInit {
     modal.present();
   }
 
-  checkout() {
+  continue(deliveryType) {
     let grandtotal = 0;
     this.orderLines.forEach(orderLine => {
       grandtotal += orderLine.pricePerUnit * orderLine.quantity;
     });
+    grandtotal = grandtotal + this.storeSetting.deliveryCharge;
     const order: Order = {
       customerId: this.customer.name,
       orderLines: this.orderLines,
       grandTotal: grandtotal,
-      storeId: this.cart.storeId,
-      notes: this.note
+      storeId: this.cart.storeId
     };
-    // this.presentModal(order);
-  }
 
-  addressSelectedEven(event) {
-    console.log('Address Selected', event);
-    this.selectedAddress = event;
+    this.orderService.setCustomer(this.customer);
+    this.orderService.setOrder(order);
+    this.orderService.setDeliveryType(deliveryType);
+    this.navController.navigateForward('/checkout');
   }
 
   segmenChanged(event) {

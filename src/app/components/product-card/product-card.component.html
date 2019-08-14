@@ -1,77 +1,72 @@
-<ion-card
-no-padding
-id="{{ stockCurrent.product.id }}"
->
-<div class="ribbon">
-  <span class="ribbon1">
-    <span>50% off</span>
-  </span>
-</div>
-<ion-item lines="none">
-  <ion-thumbnail>
+<ion-card no-padding id="{{ stockCurrent.product.id }}">
+  <div class="ribbon">
+    <span class="ribbon1">
+      <span>50% off</span>
+    </span>
+  </div>
+  <ion-item lines="none">
+    <ion-thumbnail>
       <ion-img
-    [src]="
-      'data:' +
-      stockCurrent.product.imageContentType +
-      ';base64,' +
-      stockCurrent.product.image
-    "
-    class="imageShow"
-  >
-  </ion-img>
-  </ion-thumbnail>
-  <ion-card-content>
-    <ion-grid>
-      <ion-row (click)="closeOpen(i)">
-        <ion-col class="title-card" margin-top padding-top>
-          <ion-card-title>{{ stockCurrent.product.name }}</ion-card-title>
-          <ion-text
-            ><strong>&#8364;{{ stockCurrent.sellPrice }}</strong></ion-text
-          >
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col size="10">
-          <ion-buttons>
-            <ion-button (click)="remove(i, stockCurrent)" color="medium">
-              <ion-icon name="remove"></ion-icon>
-            </ion-button>
-            <ion-button fill="none" disabled>{{
-              orderCount
-            }}</ion-button>
-            <ion-button (click)="add(i, stockCurrent)" color="medium">
-              <ion-icon name="add"></ion-icon>
-            </ion-button>
-          </ion-buttons>
-        </ion-col>
-        <ion-col size="2">
-          <ion-buttons>
-            <ion-button
-              fill="none"
-              (click)="addToFavourite(stockCurrent.product)"
-              *ngIf="!isFavourite"
+        [src]="
+          'data:' +
+          stockCurrent.product.imageContentType +
+          ';base64,' +
+          stockCurrent.product.image
+        "
+        class="imageShow"
+      >
+      </ion-img>
+    </ion-thumbnail>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row (click)="toggleDescription()">
+          <ion-col class="title-card" margin-top padding-top>
+            <ion-card-title>{{ stockCurrent.product.name }}</ion-card-title>
+            <ion-text
+              ><strong>&#8364;{{ stockCurrent.sellPrice }}</strong></ion-text
             >
-              <ion-icon
-                slot="icon-only"
-                name="heart-empty"
-              ></ion-icon>
-            </ion-button>
-            <ion-button
-              fill="none"
-              (click)="removeFromFavourite(stockCurrent.product)"
-              *ngIf="isFavourite"
-            >
-              <ion-icon
-                color="danger"
-                slot="icon-only"
-                name="heart"
-              ></ion-icon>
-            </ion-button>
-          </ion-buttons>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-card-content>
-</ion-item>
-
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="10">
+            <ion-buttons>
+              <ion-button (click)="remove(i, stockCurrent)" color="medium">
+                <ion-icon name="remove"></ion-icon>
+              </ion-button>
+              <ion-button fill="none" disabled>{{ orderCount }}</ion-button>
+              <ion-button (click)="add(i, stockCurrent)" color="medium">
+                <ion-icon name="add"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-col>
+          <ion-col size="2">
+            <ion-buttons>
+              <ion-button
+                fill="none"
+                (click)="addToFavourite(stockCurrent.product)"
+                *ngIf="!isFavourite"
+              >
+                <ion-icon slot="icon-only" name="heart-empty"></ion-icon>
+              </ion-button>
+              <ion-button
+                fill="none"
+                (click)="removeFromFavourite(stockCurrent.product)"
+                *ngIf="isFavourite"
+              >
+                <ion-icon
+                  color="danger"
+                  slot="icon-only"
+                  name="heart"
+                ></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-item>
+  <div *ngIf="showDescription === true && stockCurrent !== null">
+    <!--Change to stockCurrent.product.description-->
+    <p>{{ stockCurrent.product.name }}</p>
+  </div>
 </ion-card>

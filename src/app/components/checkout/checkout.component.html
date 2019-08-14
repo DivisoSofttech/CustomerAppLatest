@@ -1,3 +1,37 @@
-<p>
-  checkout works!
-</p>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons>
+        <ion-back-button></ion-back-button>
+        <ion-title>Add Address</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+<app-address-list 
+*ngIf="customer !== undefined"
+[customer]="customer" 
+(addressSelected)="addressSelectedEvent($event)">
+</app-address-list>
+<ion-grid>
+<ion-row>
+  <ion-col text-left size="12">
+    <ion-text color="medium">
+      <p>
+        Leave a note for the restaurant with anything they need to know
+        (e.g. the doorbell doesn't work). Do not include any details about
+        allergy.
+      </p>
+    </ion-text>
+    <textarea
+      [(ngModel)]="note"
+      class="textArea"
+      placeholder="E.g. The doorbell doesn't work.Do not include any details about allergy"
+    ></textarea>
+  </ion-col>
+</ion-row>
+</ion-grid>
+
+</ion-content>
+<ion-footer>
+  <ion-button expand="full" margin [disabled]="selectedAddress === undefined">Checkout</ion-button>
+</ion-footer>

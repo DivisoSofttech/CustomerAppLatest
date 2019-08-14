@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-title>basket</ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  <app-cart *ngIf=\"store !== undefined\" [store]=\"store\" [viewType]=\"'full'\"></app-cart>\n</ion-content>\n"
+module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-buttons>\n      <ion-menu-button slot=\"start\" auto-hide=\"true\"></ion-menu-button>\n      <ion-title>Basket</ion-title>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  <app-cart\n    *ngIf=\"store !== undefined\"\n    [store]=\"store\"\n    [viewType]=\"'full'\"\n  ></app-cart>\n</ion-content>\n"
 
 /***/ }),
 

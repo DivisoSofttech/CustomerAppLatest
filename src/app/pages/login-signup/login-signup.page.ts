@@ -1,6 +1,6 @@
 
 import { KeycloakService } from './../../services/security/keycloak.service';
-import { IonSlides } from '@ionic/angular';
+import { IonSlides, MenuController } from '@ionic/angular';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { CommandResourceService } from 'src/app/api/services';
@@ -26,11 +26,13 @@ export class LoginSignupPage implements OnInit {
     private queryResourceService: QueryResourceService,
     private commandResourceService: CommandResourceService,
     private util: Util,
-    private apiConfiguration: ApiConfiguration
+    private apiConfiguration: ApiConfiguration,
+    private menuController: MenuController
   ) {}
 
   ngOnInit() {
     this.isLoggedIn();
+    // this.menuController.enable(false);
   }
 
   // Login and Register Methods

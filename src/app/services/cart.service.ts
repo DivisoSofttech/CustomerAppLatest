@@ -7,6 +7,7 @@ import { AlertController, NavController } from '@ionic/angular';
   providedIn: 'root'
 })
 export class CartService {
+
   currentShopId = 0;
   orderLines: OrderLine[] = [];
   totalPrice = 0;
@@ -14,6 +15,8 @@ export class CartService {
   observableTickets: BehaviorSubject<OrderLine[]>;
   observablePrice: BehaviorSubject<number>;
   currentShop: Store;
+  
+  
   constructor(private alertController: AlertController,
               private navController: NavController) {
     this.observableTickets = new BehaviorSubject<OrderLine[]>(this.orderLines);

@@ -23,12 +23,14 @@ import { Util } from './services/util';
 import { Camera } from '@ionic-native/camera/ngx';
 import { ComponentsModule } from './components/components.module';
 import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
+import { OrderService } from './services/order.service';
+import { CheckoutComponent } from './components/checkout/checkout.component';
 
 @NgModule({
 
   declarations: [AppComponent],
 
-  entryComponents: [],
+  entryComponents: [CheckoutComponent],
 
   imports: [
     BrowserModule,
@@ -39,6 +41,7 @@ import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
     // Extra Modules
     ImageCropperModule,
     ConfigsModule,
+    ComponentsModule,
     IonicStorageModule.forRoot({
       name: '__mydb',
       driverOrder: ['indexeddb', 'sqlite', 'websql']
@@ -48,7 +51,7 @@ import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
       apiKey: 'AIzaSyDE6vwyjr_HUlyzP6EU4rsNxd_xchtBA1o',
       libraries: ['places', 'geometry']
     }),
-    OAuthModule.forRoot(),
+    OAuthModule.forRoot()
   ],
 
   providers: [
@@ -65,6 +68,7 @@ import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
     FilterService,
     FavouriteService,
     CartService,
+    OrderService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

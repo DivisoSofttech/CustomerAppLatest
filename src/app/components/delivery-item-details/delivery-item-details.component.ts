@@ -1,6 +1,6 @@
 import { CartService } from '../../services/cart.service';
 import { Component, OnInit, Input } from '@angular/core';
-import { OrderLine } from 'src/app/api/models';
+import { OrderLine, Store } from 'src/app/api/models';
 import { QueryResourceService } from 'src/app/api/services';
 
 @Component({
@@ -12,11 +12,15 @@ export class DeliveryItemDetailsComponent implements OnInit {
 
   @Input() orders: OrderLine[] = [];
 
+  totalPrice;
+
   deliveryCharge;
 
   products = [];
   
-  store;
+  @Input() store: Store;
+
+  @Input() storeSetting;
 
   constructor(
     private cart: CartService,
@@ -25,7 +29,14 @@ export class DeliveryItemDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.getAllProductsFromOrders();
-    this.getStore();
+    this.getcartDetails();
+  }
+
+  getcartDetails() {
+    this.cart.observableTickets
+    .subscribe(data => {
+      this.totalPrice = this.cart.totalPrice;
+    });
   }
 
   increaseProductCount(p) {
@@ -51,18 +62,5 @@ export class DeliveryItemDetailsComponent implements OnInit {
     });
   }
 
-  getStore() {
-    this.queryResource
-      .findStoreByRegisterNumberUsingGET(this.cart.storeId)
-      .subscribe(
-        result => {
-          console.log('Got Store', result);
-          this.store = result;
-        },
-        err => {
-          console.log('Error fetching store data', err);
-        }
-      );
-  }
 
 }

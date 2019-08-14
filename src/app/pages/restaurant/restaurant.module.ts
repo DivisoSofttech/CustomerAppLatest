@@ -13,6 +13,7 @@ import { RestaurantPage } from './restaurant.page';
 import { RestaurantCardComponent } from 'src/app/components/restaurant-card/restaurant-card.component';
 import { LoadingComponent } from 'src/app/components/loading/loading.component';
 import { FooterComponent } from 'src/app/components/footer/footer.component';
+import { MapComponent } from 'src/app/components/map/map.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,6 @@ const routes: Routes = [
   ],
   declarations: [RestaurantPage],
   entryComponents: [HeaderComponent ,     FooterComponent, BannerComponent , RestaurantCardComponent , 
-    FilterComponent, LoadingComponent]
+    FilterComponent, LoadingComponent,   MapComponent]
 })
 export class RestaurantPageModule {}

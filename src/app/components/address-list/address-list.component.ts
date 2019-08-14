@@ -23,6 +23,7 @@ export class AddressListComponent implements OnInit {
   currentId = 1;
 
   ngOnInit() {
+    console.log('Address List' , this.customer);
     if (this.showAddressPanel === false) {
       this.getAllAdress(0);
     }
@@ -35,7 +36,7 @@ export class AddressListComponent implements OnInit {
 
   getAllAdress(i) {
     this.orderCommandResource.getAllSavedAddressUsingGET({
-      customerId: this.customer.regNo,
+      customerId: this.customer.reference,
       page: i
     })
     .subscribe(paddress => {
@@ -52,6 +53,7 @@ export class AddressListComponent implements OnInit {
   }
 
   saveAddress() {
+    this.address.customerId = this.customer.reference;
     this.orderCommandResource
     .createAddressUsingPOST(this.address)
     .subscribe(address => {
@@ -64,7 +66,7 @@ export class AddressListComponent implements OnInit {
   async addNewAddress() {
     const modal = await this.modalController.create({
       component: AddressListComponent,
-      componentProps: { showAddressPanel: true }
+      componentProps: { showAddressPanel: true , customer: this.customer}
     });
     modal.onDidDismiss().then((data: any) => {
       if (data !== undefined) {

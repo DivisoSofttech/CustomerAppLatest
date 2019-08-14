@@ -11,7 +11,7 @@ export class KeycloakAdminConfig {
     constructor() {
       this.kcAdminClient = new KeycloakAdminClient();
       this.kcAdminClient.setConfig({
-        baseUrl: 'http://35.196.86.249:8080/auth'
+        baseUrl: 'http://dev.servers.divisosofttech.com:8888/auth'
       });
     }
 
@@ -22,7 +22,7 @@ export class KeycloakAdminConfig {
     configureKeycloakAdmin() {
      return  this.kcAdminClient.auth({
         username: 'admin',
-        password: 'karma123',
+        password: 'admin999',
         grantType: 'password',
         clientId: 'admin-cli',
       });

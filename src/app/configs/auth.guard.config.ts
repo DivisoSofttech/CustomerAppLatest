@@ -1,16 +1,15 @@
 import { OAuthService, JwksValidationHandler, AuthConfig } from 'angular-oauth2-oidc';
-import { filter } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 
 
 export const authConfig: AuthConfig = {
-  issuer: 'http://35.196.86.249:8080/auth/realms/graeshoppe',
+  issuer: 'http://dev.servers.divisosofttech.com:8888/auth/realms/graeshoppe',
   redirectUri: window.location.origin,
   clientId: 'account',
   scope: 'openid profile email voucher offline_access',
-  dummyClientSecret: '29a095bc-9ced-480b-a719-4e70ce7dcc49',
-  tokenEndpoint: 'http://35.196.86.249:8080/auth/realms/graeshoppe/protocol/openid-connect/token',
-  userinfoEndpoint: 'http://35.196.86.249:8080/auth/realms/graeshoppe/protocol/openid-connect/userinfo',
+  dummyClientSecret: '8a4c3fda-44ec-485a-9d59-d6d7fdcb1895',
+  tokenEndpoint: 'http://dev.servers.divisosofttech.com:8888/auth/realms/graeshoppe/protocol/openid-connect/token',
+  userinfoEndpoint: 'http://dev.servers.divisosofttech.com:8888/auth/realms/graeshoppe/protocol/openid-connect/userinfo',
   oidc: false,
   requireHttps: false,
 };

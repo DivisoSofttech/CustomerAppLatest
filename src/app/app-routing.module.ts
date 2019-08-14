@@ -1,6 +1,7 @@
 import { AuthGuardService } from './services/security/auth-guard.service';
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { CheckoutComponent } from './components/checkout/checkout.component';
 
 const routes: Routes = [
 
@@ -14,7 +15,9 @@ const routes: Routes = [
   { path: 'restaurant', loadChildren: './pages/restaurant/restaurant.module#RestaurantPageModule' , canActivate:[AuthGuardService]},
   { path: 'store/:id', loadChildren: './pages/store/store.module#StorePageModule' , canActivate:[AuthGuardService]},
   { path: 'basket', loadChildren: './pages/basket/basket.module#BasketPageModule' , canActivate:[AuthGuardService]},
-  { path: 'profile', loadChildren: './pages/profile/profile.module#ProfilePageModule' },
+  { path: 'profile', loadChildren: './pages/profile/profile.module#ProfilePageModule' , canActivate:[AuthGuardService]},
+  { path: 'checkout', component:CheckoutComponent , canActivate:[AuthGuardService]},
+
 ];
 
 @NgModule({

@@ -16,7 +16,7 @@ export enum FILTER_TYPES {
   providedIn: 'root'
 })
 export class FilterService {
-  private currentFilter = FILTER_TYPES.TOP_RATED;
+  private currentFilter = FILTER_TYPES.DISTANCE_WISE;
   private filterBehaviour = new BehaviorSubject<any>(this.currentFilter);
 
   // For Location Based Search
@@ -55,8 +55,7 @@ export class FilterService {
     this.queryResource
       .searchByNearestLocationUsingGET({
         latLon: this.currentCordinates,
-        kiloMeter: this.distance,
-        page: pageNumber
+        kiloMeter: this.distance
       })
       .subscribe(data => {
         success(data.totalElements, data.totalPages, data.content);

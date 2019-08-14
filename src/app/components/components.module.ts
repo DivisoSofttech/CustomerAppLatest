@@ -28,6 +28,8 @@ import { AddressListComponent } from './address-list/address-list.component';
 import { LoadingComponent } from './loading/loading.component';
 import { HotelMenuPopoverComponent } from './hotel-menu-popover/hotel-menu-popover.component';
 import { FooterComponent } from './footer/footer.component';
+import { CheckoutComponent } from './checkout/checkout.component';
+import { MapComponent } from './map/map.component';
 
 
 
@@ -45,6 +47,8 @@ import { FooterComponent } from './footer/footer.component';
     RestaurantCardComponent,
     ProductCardComponent,
     CartComponent,
+    CheckoutComponent,
+    MapComponent,
     DeliveryItemDetailsComponent,
     ReviewComponent,
     AllergyComponent,
@@ -84,6 +88,8 @@ import { FooterComponent } from './footer/footer.component';
     RestaurantCardComponent,
     ProductCardComponent,
     CartComponent,
+    CheckoutComponent,
+    MapComponent,
     DeliveryItemDetailsComponent,
     ReviewComponent,
     BannerComponent,
@@ -110,7 +116,8 @@ import { FooterComponent } from './footer/footer.component';
     AllergyComponent,
     ProfileEditComponent,
     AddressListComponent,
-    LoadingComponent
+    LoadingComponent,
+    CheckoutComponent
 
   ]
 })

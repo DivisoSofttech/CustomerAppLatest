@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { FavouriteService } from './../../services/favourite.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { StockCurrent } from 'src/app/api/models';
+import { ModalController, PopoverController } from '@ionic/angular';
+import { QueryResourceService } from 'src/app/api/services';
 
 @Component({
   selector: 'app-product-card',
@@ -15,12 +17,16 @@ export class ProductCardComponent implements OnInit {
 
   @Input() store;
 
+  @Input() showDescription = false;
+
   isFavourite = false;
 
   orderCount  = 0;
 
   constructor(
     private favourite: FavouriteService,
+    private queryResource: QueryResourceService,
+    private popoverController: PopoverController,
     private router: Router,
     private cartService: CartService
   ) { }
@@ -28,6 +34,7 @@ export class ProductCardComponent implements OnInit {
   ngOnInit() {
     this.checkIfAlreadyFavourite();
     this.checkIfOrdered();
+    this.getAuxilaries();
   }
   
   addToFavourite(product) {
@@ -38,6 +45,10 @@ export class ProductCardComponent implements OnInit {
   removeFromFavourite(product) {
     this.isFavourite = false;
     this.favourite.removeFromFavorite(product, 'product');
+  }
+
+  getAuxilaries() {
+    
   }
 
   checkIfAlreadyFavourite() {
@@ -52,6 +63,7 @@ export class ProductCardComponent implements OnInit {
   }
 
   add(i, stock: StockCurrent) {
+
     if (this.cartService.addProduct(stock.product, stock , this.store)) {
     }
   }
@@ -72,6 +84,10 @@ export class ProductCardComponent implements OnInit {
         this.orderCount = 0;
       }
     });
+  }
+
+  toggleDescription() {
+    this.showDescription = !this.showDescription;
   }
 
 }

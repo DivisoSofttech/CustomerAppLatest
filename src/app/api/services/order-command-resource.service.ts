@@ -109,50 +109,14 @@ class OrderCommandResourceService extends __BaseService {
   }
 
   /**
-   * @param params The `OrderCommandResourceService.CreateAddressUsingPOSTParams` containing the following parameters:
-   *
-   * - `state`:
-   *
-   * - `roadNameAreaOrStreet`:
-   *
-   * - `pincode`:
-   *
-   * - `phone`:
-   *
-   * - `name`:
-   *
-   * - `landmark`:
-   *
-   * - `id`:
-   *
-   * - `houseNoOrBuildingName`:
-   *
-   * - `customerId`:
-   *
-   * - `city`:
-   *
-   * - `alternatePhone`:
-   *
-   * - `addressType`:
-   *
+   * @param addressDTO addressDTO
    * @return OK
    */
-  createAddressUsingPOSTResponse(params: OrderCommandResourceService.CreateAddressUsingPOSTParams): __Observable<__StrictHttpResponse<AddressDTO>> {
+  createAddressUsingPOSTResponse(addressDTO: AddressDTO): __Observable<__StrictHttpResponse<AddressDTO>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    if (params.state != null) __params = __params.set('state', params.state.toString());
-    if (params.roadNameAreaOrStreet != null) __params = __params.set('roadNameAreaOrStreet', params.roadNameAreaOrStreet.toString());
-    if (params.pincode != null) __params = __params.set('pincode', params.pincode.toString());
-    if (params.phone != null) __params = __params.set('phone', params.phone.toString());
-    if (params.name != null) __params = __params.set('name', params.name.toString());
-    if (params.landmark != null) __params = __params.set('landmark', params.landmark.toString());
-    if (params.id != null) __params = __params.set('id', params.id.toString());
-    if (params.houseNoOrBuildingName != null) __params = __params.set('houseNoOrBuildingName', params.houseNoOrBuildingName.toString());
-    if (params.customerId != null) __params = __params.set('customerId', params.customerId.toString());
-    if (params.city != null) __params = __params.set('city', params.city.toString());
-    if (params.alternatePhone != null) __params = __params.set('alternatePhone', params.alternatePhone.toString());
-    if (params.addressType != null) __params = __params.set('addressType', params.addressType.toString());
+    __body = addressDTO;
     let req = new HttpRequest<any>(
       'POST',
       this.rootUrl + `/api/command/orders/addresses`,
@@ -171,36 +135,11 @@ class OrderCommandResourceService extends __BaseService {
     );
   }
   /**
-   * @param params The `OrderCommandResourceService.CreateAddressUsingPOSTParams` containing the following parameters:
-   *
-   * - `state`:
-   *
-   * - `roadNameAreaOrStreet`:
-   *
-   * - `pincode`:
-   *
-   * - `phone`:
-   *
-   * - `name`:
-   *
-   * - `landmark`:
-   *
-   * - `id`:
-   *
-   * - `houseNoOrBuildingName`:
-   *
-   * - `customerId`:
-   *
-   * - `city`:
-   *
-   * - `alternatePhone`:
-   *
-   * - `addressType`:
-   *
+   * @param addressDTO addressDTO
    * @return OK
    */
-  createAddressUsingPOST(params: OrderCommandResourceService.CreateAddressUsingPOSTParams): __Observable<AddressDTO> {
-    return this.createAddressUsingPOSTResponse(params).pipe(
+  createAddressUsingPOST(addressDTO: AddressDTO): __Observable<AddressDTO> {
+    return this.createAddressUsingPOSTResponse(addressDTO).pipe(
       __map(_r => _r.body as AddressDTO)
     );
   }
@@ -352,24 +291,6 @@ class OrderCommandResourceService extends __BaseService {
 }
 
 module OrderCommandResourceService {
-
-  /**
-   * Parameters for createAddressUsingPOST
-   */
-  export interface CreateAddressUsingPOSTParams {
-    state?: string;
-    roadNameAreaOrStreet?: string;
-    pincode?: number;
-    phone?: number;
-    name?: string;
-    landmark?: string;
-    id?: number;
-    houseNoOrBuildingName?: string;
-    customerId?: string;
-    city?: string;
-    alternatePhone?: number;
-    addressType?: string;
-  }
 
   /**
    * Parameters for getAllSavedAddressUsingGET

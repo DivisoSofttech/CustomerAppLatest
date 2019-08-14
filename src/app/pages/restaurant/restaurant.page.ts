@@ -28,13 +28,13 @@ export class RestaurantPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getStores();
   }
 
   updatedLocation(event) {
     console.log('Location Changed',event);
     this.filter.currentCordinates = event.latLon;
     this.filter.setFilter(FILTER_TYPES.DISTANCE_WISE); 
+    this.getStores();
   }
 
   getStores() {
