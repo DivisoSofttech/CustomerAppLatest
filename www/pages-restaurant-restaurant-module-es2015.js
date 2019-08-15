@@ -104,47 +104,56 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
 /* harmony import */ var src_app_services_util__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/services/util */ "./src/app/services/util.ts");
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
+/* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ngx-logger */ "./node_modules/ngx-logger/fesm2015/ngx-logger.js");
+/* harmony import */ var src_app_components_map_map_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/components/map/map.component */ "./src/app/components/map/map.component.ts");
+
+
 
 
 
 
 
 let RestaurantPage = class RestaurantPage {
-    constructor(filter, util) {
+    constructor(filter, util, logger) {
         this.filter = filter;
         this.util = util;
+        this.logger = logger;
         this.showLoading = true;
         this.showFilters = false;
         this.page = 0;
         this.stores = [];
     }
     ngOnInit() {
+        this.getStores();
     }
     updatedLocation(event) {
-        console.log('Location Changed', event);
+        this.logger.info('Changed Current Location - LatLon ', event);
         this.filter.currentCordinates = event.latLon;
+        this.logger.info('Setting Distance_wise Filter');
         this.filter.setFilter(_services_filter_service__WEBPACK_IMPORTED_MODULE_1__["FILTER_TYPES"].DISTANCE_WISE);
-        this.getStores();
+        this.logger.info('Getting Stores');
     }
     getStores() {
         this.filter.getSubscription().subscribe(data => {
-            console.log(data);
+            this.logger.info('Got Stores ', data);
             this.stores = [];
             this.filter.getStores(0, (totalElements, totalPages, stores) => {
                 if (totalPages === 1) {
-                    console.log('Disabling Infinite Scroll');
+                    this.logger.info('Disabling Infinite Scroll');
                     this.toggleInfiniteScroll();
                 }
                 console.log(stores);
                 stores.forEach(s => {
                     this.stores.push(s);
                 });
+                this.mapComponent.setStores(stores);
                 this.showLoading = false;
                 this.toggleIonRefresher();
             });
         });
     }
     loadMoreStores(event) {
+        this.logger.info('Load More Stores if exists');
         this.page++;
         this.filter.getStores(this.page, (totalElements, totalPages, stores) => {
             if (this.page === totalPages) {
@@ -162,6 +171,7 @@ let RestaurantPage = class RestaurantPage {
         });
     }
     doRefresh(event) {
+        this.logger.info('Refreshing Page');
         this.getStores();
     }
     toggleInfiniteScroll() {
@@ -176,7 +186,8 @@ let RestaurantPage = class RestaurantPage {
 };
 RestaurantPage.ctorParameters = () => [
     { type: _services_filter_service__WEBPACK_IMPORTED_MODULE_1__["FilterService"] },
-    { type: src_app_services_util__WEBPACK_IMPORTED_MODULE_3__["Util"] }
+    { type: src_app_services_util__WEBPACK_IMPORTED_MODULE_3__["Util"] },
+    { type: ngx_logger__WEBPACK_IMPORTED_MODULE_5__["NGXLogger"] }
 ];
 tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ViewChild"])(_ionic_angular__WEBPACK_IMPORTED_MODULE_4__["IonInfiniteScroll"], null),
@@ -186,6 +197,10 @@ tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ViewChild"])(_ionic_angular__WEBPACK_IMPORTED_MODULE_4__["IonRefresher"], null),
     tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["IonRefresher"])
 ], RestaurantPage.prototype, "IonRefresher", void 0);
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ViewChild"])(src_app_components_map_map_component__WEBPACK_IMPORTED_MODULE_6__["MapComponent"], null),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", src_app_components_map_map_component__WEBPACK_IMPORTED_MODULE_6__["MapComponent"])
+], RestaurantPage.prototype, "mapComponent", void 0);
 RestaurantPage = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Component"])({
         selector: 'app-restaurant',
@@ -193,7 +208,8 @@ RestaurantPage = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         styles: [__webpack_require__(/*! ./restaurant.page.scss */ "./src/app/pages/restaurant/restaurant.page.scss")]
     }),
     tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services_filter_service__WEBPACK_IMPORTED_MODULE_1__["FilterService"],
-        src_app_services_util__WEBPACK_IMPORTED_MODULE_3__["Util"]])
+        src_app_services_util__WEBPACK_IMPORTED_MODULE_3__["Util"],
+        ngx_logger__WEBPACK_IMPORTED_MODULE_5__["NGXLogger"]])
 ], RestaurantPage);
 
 

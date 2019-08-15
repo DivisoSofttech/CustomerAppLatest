@@ -41,19 +41,25 @@
     <ion-slide>
       <ion-grid>
         <ion-row>
-            <app-loading
-              *ngIf="showLoading === true"
-              [type]="'product'"
-            ></app-loading>
-        </ion-row>
-        <ion-row>
-          <ion-list *ngIf="store != undefined">
+          <ion-list *ngIf="store != undefined && showCategoryWiseProducts === false">
             <app-product-card
               *ngFor="let stockCurrent of stockCurrents"
               [store]="store"
               [stockCurrent]="stockCurrent"
             ></app-product-card>
           </ion-list>
+        </ion-row>
+        <ion-row *ngIf="showCategoryWiseProducts === true">
+          <ion-list *ngFor="let category of categories">
+              <ion-item>
+                <ion-label>{{category.name}}</ion-label>
+              </ion-item>
+              <app-category-wise-products-card *ngIf="store !== undefined"
+              [category]="category"
+              [store]="store">
+              </app-category-wise-products-card>
+          </ion-list>
+
         </ion-row>
       </ion-grid>
     </ion-slide>

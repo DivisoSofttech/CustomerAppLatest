@@ -38,21 +38,20 @@ export class RestaurantPage implements OnInit {
   updatedLocation(event) {
     this.logger.info('Changed Current Location - LatLon ' , event);
     this.filter.currentCordinates = event.latLon;
-    this.logger.info('Setting Distance_wise Filter');
-    this.filter.setFilter(FILTER_TYPES.DISTANCE_WISE);
-    this.logger.info('Getting Stores');
+    // this.logger.info('Setting Distance_wise Filter');
+    // this.filter.setFilter(FILTER_TYPES.DISTANCE_WISE);
+    // this.logger.info('Getting Stores');
   }
 
   getStores() {
     this.filter.getSubscription().subscribe(data => {
-      this.logger.info('Got Stores ' , data);
       this.stores = [];
       this.filter.getStores(0, (totalElements, totalPages, stores) => {
         if (totalPages === 1) {
           this.logger.info('Disabling Infinite Scroll');
           this.toggleInfiniteScroll();
         }
-        console.log(stores);
+        this.logger.info('Got Stores ' , data);
         stores.forEach(s => {
           this.stores.push(s);
         });

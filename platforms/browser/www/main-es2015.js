@@ -873,7 +873,7 @@ module.exports = "<ion-segment slot=\"end\" [value]=\"currentRoute\">\n    <ion-
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-scroll>\n\n    <div class=\"vertical-align-center h30\" *ngIf=\"frequentOrders != undefined && frequentOrders.length == 0\">\n        <ion-text text-center >\n          <p>No Orders</p>\n        </ion-text>\n      </div>\n\n    <ion-list>\n        <ion-grid>\n          <ion-row>\n            <ion-col size-lg=\"5\" size-sm=\"6\" size=\"6\" size-md=\"6\">\n                <ion-card *ngFor=\"let stock of frequentOrders, let i = index;\">\n                  <ion-img src=\"assets/images/burger.jpeg\" class=\"imageShow\"></ion-img>\n                    <ion-card-content no-padding class=\"description\">\n                      <ion-grid>\n                        <ion-row>\n                          <ion-col size=\"8\" text-start>\n                            <ion-text class=\"stock-name\">{{stock.product.name}}</ion-text>\n                            <ion-text text-start class=\"display-list\"><strong>&#8364;{{stock.sellPrice}}</strong></ion-text>\n                          </ion-col>\n                          <ion-col size=\"4\">\n                            <ion-button text-end fill=\"none\" (click)=\"addToFavourite(stock.product)\" *ngIf=\"!isFavourite(stock.product)\">\n                              <ion-icon slot=\"icon-only\" name=\"heart-empty\"></ion-icon>\n                            </ion-button>\n                            <ion-button text-end fill=\"none\" (click)=\"removeFromFavourite(stock.product)\" *ngIf=\"isFavourite(stock.product)\">\n                              <ion-icon color=\"danger\" slot=\"icon-only\" name=\"heart\"></ion-icon>\n                            </ion-button>\n                          </ion-col>\n                        </ion-row>\n                      </ion-grid>\n                    </ion-card-content>\n                  </ion-card>\n            </ion-col>\n          </ion-row>\n        </ion-grid>\n      </ion-list>\n      <ion-infinite-scroll *ngIf=\"currentSubPage == 'history'\" (ionInfinite)=\"loadMoreData($event)\"\n      loadingSpinner=\"bubbles\" loadingText=\"Loading Users...\">\n      <ion-infinite-scroll-content></ion-infinite-scroll-content>\n    </ion-infinite-scroll>\n    <ion-refresher slot=\"fixed\" (ionRefresh)=\"refresh($event)\">\n        <ion-refresher-content pullingIcon=\"arrow-dropdown\" pullingText=\"Pull to refresh\" refreshingSpinner=\"circles\">\n        </ion-refresher-content>\n      </ion-refresher>\n    </ion-scroll>"
+module.exports = "<p>Frequently Order Works</p>"
 
 /***/ }),
 
@@ -895,7 +895,7 @@ module.exports = "<ion-toolbar>\n  <ion-buttons\n    slot=\"start\"\n    *ngIf=\
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  history-list works!\n</p>\n"
+module.exports = "<ion-scroll>\n  <div class=\"vertical-align-center h30\" *ngIf=\"orders.length === 0\">\n    <ion-text text-center>\n      <p>No Orders</p>\n    </ion-text>\n  </div>\n\n  <ion-list *ngIf=\"orders.length > 0 && stores !== undefined\">\n    <ion-item lines=\"full\" class=\"order\" *ngFor=\"let order of orders\" margin>\n      <ion-thumbnail slot=\"start\" *ngIf=\"stores[order.storeId] != null\">\n        <ion-img\n          [src]=\"\n            'data:' +\n            stores[order.storeId].imageContentType +\n            ';base64,' +\n            stores[order.storeId].image\n          \"\n        ></ion-img>\n      </ion-thumbnail>\n      <ion-icon slot=\"start\" name=\"image\" class=\"icon-big\" *ngIf=\"stores[order.storeId] == null\"></ion-icon>\n      <ion-label>\n        <ion-text color=\"primary\">\n          <h2><b>Date :</b> {{ order.date | date: \"short\" }}</h2>\n          <h3 class=\"fnt-big\">Grand Total {{ order.grandTotal }}</h3>\n          <h3 class=\"fnt-medium\">Order status: {{ order.status.name }}</h3>\n        </ion-text>\n        <p *ngIf=\"stores[order.storeId] != null\">\n          <b>Store Name : </b>{{ stores[order.storeId].name }}\n        </p>\n        <h3><b>Order id :</b> {{ order.orderId }}</h3>\n      </ion-label>\n    </ion-item>\n  </ion-list>\n\n  <ion-infinite-scroll\n    *ngIf=\"currentSubPage == 'history'\"\n    (ionInfinite)=\"loadMoreData($event)\"\n    loadingSpinner=\"bubbles\"\n    loadingText=\"Loading Users...\"\n  >\n    <ion-infinite-scroll-content></ion-infinite-scroll-content>\n  </ion-infinite-scroll>\n  <ion-refresher slot=\"fixed\" (ionRefresh)=\"refresh($event)\">\n    <ion-refresher-content\n      pullingIcon=\"arrow-dropdown\"\n      pullingText=\"Pull to refresh\"\n      refreshingSpinner=\"circles\"\n    >\n    </ion-refresher-content>\n  </ion-refresher>\n</ion-scroll>\n"
 
 /***/ }),
 
@@ -6264,57 +6264,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FrequentlyOrderedListComponent", function() { return FrequentlyOrderedListComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-/* harmony import */ var src_app_api_services__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/api/services */ "./src/app/api/services.ts");
 
 
-
+;
 let FrequentlyOrderedListComponent = class FrequentlyOrderedListComponent {
-    constructor(queryResource) {
-        this.queryResource = queryResource;
-        this.frequentOrders = [];
-        this.pageNumber = 0;
-    }
-    ngOnInit() {
-        this.getOrders(0);
-    }
-    getOrders(i) {
-        this.queryResource.findOrdersByCustomerIdUsingGET({
-            customerId: this.keyCloakUser.preferred_username,
-            page: i,
-        })
-            .subscribe(porders => {
-            porders.content.forEach(o => {
-                this.frequentOrders.push(o);
-            });
-            ++i;
-            if (i === porders.totalPages) {
-                this.toggleInfiniteScroll();
-            }
-        });
-    }
-    toggleInfiniteScroll() {
-    }
-    loadMoreData(event) {
-        ++this.pageNumber;
-        this.getOrders(this.pageNumber);
-    }
-    refresh(event) {
-    }
+    constructor() { }
+    ngOnInit() { }
 };
-FrequentlyOrderedListComponent.ctorParameters = () => [
-    { type: src_app_api_services__WEBPACK_IMPORTED_MODULE_2__["QueryResourceService"] }
-];
-tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Object)
-], FrequentlyOrderedListComponent.prototype, "keyCloakUser", void 0);
 FrequentlyOrderedListComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
         selector: 'app-frequently-ordered-list',
         template: __webpack_require__(/*! raw-loader!./frequently-ordered-list.component.html */ "./node_modules/raw-loader/index.js!./src/app/components/frequently-ordered-list/frequently-ordered-list.component.html"),
         styles: [__webpack_require__(/*! ./frequently-ordered-list.component.scss */ "./src/app/components/frequently-ordered-list/frequently-ordered-list.component.scss")]
     }),
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [src_app_api_services__WEBPACK_IMPORTED_MODULE_2__["QueryResourceService"]])
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
 ], FrequentlyOrderedListComponent);
 
 
@@ -6408,10 +6371,8 @@ let HeaderComponent = HeaderComponent_1 = class HeaderComponent {
     getCurrentLocation() {
         this.logger.info('Getting Current Location');
         this.locationService.getCurrentLoactionAddress((data, coords) => {
-            console.log(data[0].address_components[0].short_name);
             this.currentPlaceName = data[0].address_components[0].short_name;
-            console.log(this.currentPlaceName);
-            // Emit Real Latlon HerelatLon Here
+            this.logger.info('Current Place Name ', this.currentPlaceName);
             this.logger.info('Getting LatLon for current Location', coords);
             this.placeChanged.emit({ latLon: coords.coords.latitude + ',' + coords.coords.longitude });
         });
@@ -6501,7 +6462,7 @@ HeaderComponent = HeaderComponent_1 = tslib__WEBPACK_IMPORTED_MODULE_0__["__deco
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvaGlzdG9yeS1saXN0L2hpc3RvcnktbGlzdC5jb21wb25lbnQuc2NzcyJ9 */"
+module.exports = "ion-list {\n  width: 100vw;\n}\n\n.fnt-big {\n  font-size: 20px;\n}\n\n.fnt-medium {\n  font-size: 17px;\n}\n\n.icon-big {\n  font-size: 60px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9oaXN0b3J5LWxpc3QvaGlzdG9yeS1saXN0LmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL2hpc3RvcnktbGlzdC9oaXN0b3J5LWxpc3QuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxZQUFBO0FDQ0o7O0FERUE7RUFDSSxlQUFBO0FDQ0o7O0FERUE7RUFDSSxlQUFBO0FDQ0o7O0FERUE7RUFDSSxlQUFBO0FDQ0oiLCJmaWxlIjoic3JjL2FwcC9jb21wb25lbnRzL2hpc3RvcnktbGlzdC9oaXN0b3J5LWxpc3QuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJpb24tbGlzdCB7XG4gICAgd2lkdGg6IDEwMHZ3O1xufVxuXG4uZm50LWJpZyB7XG4gICAgZm9udC1zaXplOiAyMHB4O1xufVxuXG4uZm50LW1lZGl1bSB7XG4gICAgZm9udC1zaXplOiAxN3B4O1xufVxuXG4uaWNvbi1iaWcge1xuICAgIGZvbnQtc2l6ZTogNjBweDtcbn0iLCJpb24tbGlzdCB7XG4gIHdpZHRoOiAxMDB2dztcbn1cblxuLmZudC1iaWcge1xuICBmb250LXNpemU6IDIwcHg7XG59XG5cbi5mbnQtbWVkaXVtIHtcbiAgZm9udC1zaXplOiAxN3B4O1xufVxuXG4uaWNvbi1iaWcge1xuICBmb250LXNpemU6IDYwcHg7XG59Il19 */"
 
 /***/ }),
 
@@ -6517,19 +6478,66 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HistoryListComponent", function() { return HistoryListComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var src_app_api_services__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/api/services */ "./src/app/api/services.ts");
+
 
 
 let HistoryListComponent = class HistoryListComponent {
-    constructor() { }
-    ngOnInit() { }
+    constructor(queryResource) {
+        this.queryResource = queryResource;
+        this.orders = [];
+        this.stores = {};
+        this.pageNumber = 0;
+    }
+    ngOnInit() {
+        this.getOrders(0);
+    }
+    getOrders(i) {
+        this.queryResource.findOrdersByCustomerIdUsingGET({
+            customerId: this.keyCloakUser.preferred_username,
+            page: i,
+        })
+            .subscribe(porders => {
+            porders.content.forEach(o => {
+                this.orders.push(o);
+                this.getStores(o.storeId);
+            });
+            ++i;
+            if (i === porders.totalPages) {
+                this.toggleInfiniteScroll();
+            }
+        });
+    }
+    getStores(id) {
+        this.queryResource.findStoreByRegisterNumberUsingGET(id)
+            .subscribe(store => {
+            console.log('store', store);
+            this.stores[id] = store;
+        });
+    }
+    toggleInfiniteScroll() {
+    }
+    loadMoreData(event) {
+        ++this.pageNumber;
+        this.getOrders(this.pageNumber);
+    }
+    refresh(event) {
+    }
 };
+HistoryListComponent.ctorParameters = () => [
+    { type: src_app_api_services__WEBPACK_IMPORTED_MODULE_2__["QueryResourceService"] }
+];
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Object)
+], HistoryListComponent.prototype, "keyCloakUser", void 0);
 HistoryListComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
         selector: 'app-history-list',
         template: __webpack_require__(/*! raw-loader!./history-list.component.html */ "./node_modules/raw-loader/index.js!./src/app/components/history-list/history-list.component.html"),
         styles: [__webpack_require__(/*! ./history-list.component.scss */ "./src/app/components/history-list/history-list.component.scss")]
     }),
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [src_app_api_services__WEBPACK_IMPORTED_MODULE_2__["QueryResourceService"]])
 ], HistoryListComponent);
 
 
@@ -6863,16 +6871,6 @@ let MapComponent = class MapComponent {
             }
         };
         this.mapCanvas = _ionic_native_google_maps__WEBPACK_IMPORTED_MODULE_2__["GoogleMaps"].create('map_canvas', mapOptions);
-        this.mapCanvas.animateCamera({
-            target: {
-                latLng: {
-                    lat: parseFloat(coords.substring(0, coords.indexOf(','))),
-                    lng: parseFloat(coords.substring(coords.indexOf(',') + 1, coords.length))
-                }
-            },
-            zoom: 14,
-            tilt: 30
-        });
         this.logger.info('Setting Marker', location);
         this.setCurrentLocationMarker(coords);
     }
@@ -6884,17 +6882,29 @@ let MapComponent = class MapComponent {
             lat: parseFloat(coords.substring(0, coords.indexOf(','))),
             lng: parseFloat(coords.substring(coords.indexOf(',') + 1, coords.length))
         };
-        this.setCurrentLocationMarker(coords);
+        this.setCurrentLocationMarker(GOOGLE);
     }
     setCurrentLocationMarker(coords) {
-        const marker = this.mapCanvas.addMarkerSync({
-            position: {
-                lat: parseFloat(coords.substring(0, coords.indexOf(','))),
-                lng: parseFloat(coords.substring(coords.indexOf(',') + 1, coords.length))
-            },
-            animation: _ionic_native_google_maps__WEBPACK_IMPORTED_MODULE_2__["GoogleMapsAnimation"].DROP
+        this.logger.info('Setting Marker', coords);
+        if (this.curentLocationMarker !== undefined) {
+            this.logger.info('Removing Old Marker', coords);
+            this.curentLocationMarker.remove();
+        }
+        this.mapCanvas.animateCamera({
+            target: {
+                latLng: coords,
+                zoom: 14,
+                tilt: 30
+            }
         });
-        marker.showInfoWindow();
+        // this.curentLocationMarker = this.mapCanvas.addMarkerSync({
+        //   position: {
+        //     lat: parseFloat(coords.substring(0, coords.indexOf(','))),
+        //     lng: parseFloat(coords.substring(coords.indexOf(',') + 1 , coords.length))
+        //   },
+        //   animation: GoogleMapsAnimation.DROP
+        // });
+        // this.curentLocationMarker.showInfoWindow();
     }
     // App Specific Methods
     getLatLon() {
@@ -7734,7 +7744,7 @@ const authConfig = {
     redirectUri: window.location.origin,
     clientId: 'account',
     scope: 'openid profile email voucher offline_access',
-    dummyClientSecret: '8a4c3fda-44ec-485a-9d59-d6d7fdcb1895',
+    dummyClientSecret: '61aed705-1f70-4955-ad23-94bc15c09c29',
     tokenEndpoint: 'http://dev.servers.divisosofttech.com:8888/auth/realms/graeshoppe/protocol/openid-connect/token',
     userinfoEndpoint: 'http://dev.servers.divisosofttech.com:8888/auth/realms/graeshoppe/protocol/openid-connect/userinfo',
     oidc: false,
@@ -7859,6 +7869,7 @@ let KeycloakAdminConfig = class KeycloakAdminConfig {
             password: 'admin999',
             grantType: 'password',
             clientId: 'admin-cli',
+            clientSecret: '7f8a027d-36dd-48fa-b09b-b26762029aa1'
         });
     }
 };
@@ -8284,6 +8295,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var src_app_api_services_query_resource_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/api/services/query-resource.service */ "./src/app/api/services/query-resource.service.ts");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm2015/index.js");
+/* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ngx-logger */ "./node_modules/ngx-logger/fesm2015/ngx-logger.js");
+
 
 
 
@@ -8298,8 +8311,9 @@ var FILTER_TYPES;
     FILTER_TYPES[FILTER_TYPES["DELIVERY_TIME"] = 4] = "DELIVERY_TIME";
 })(FILTER_TYPES || (FILTER_TYPES = {}));
 let FilterService = class FilterService {
-    constructor(queryResource) {
+    constructor(queryResource, logger) {
         this.queryResource = queryResource;
+        this.logger = logger;
         this.currentFilter = FILTER_TYPES.DISTANCE_WISE;
         this.filterBehaviour = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"](this.currentFilter);
         this.distance = 25;
@@ -8321,11 +8335,11 @@ let FilterService = class FilterService {
     getStores(pageNumber, success) {
         switch (this.currentFilter) {
             case FILTER_TYPES.DISTANCE_WISE:
-                console.log('Getting Store By Distance ', this.distance);
+                this.logger.info('Finding Store By Distance and Location', this.distance);
                 this.getStoreByDistance(pageNumber, success);
                 break;
             case FILTER_TYPES.TOP_RATED:
-                console.log('Getting Store By Rating ');
+                this.logger.info('Finding Store By Rating');
                 this.getStoreByRating(pageNumber, success);
                 break;
         }
@@ -8340,23 +8354,29 @@ let FilterService = class FilterService {
             })
                 .subscribe(data => {
                 success(data.totalElements, data.totalPages, data.content);
+            }, err => {
+                this.logger.error('Error Finding Store By Distance and Location', err);
             });
         }
     }
     getStoreByRating(pageNumber, success) {
         this.queryResource.findStoreByRatingUsingGET().subscribe(data => {
             success(data.totalElements, data.totalPages, data.content);
+        }, err => {
+            this.logger.error('Error Finding Store By Distance', err);
         });
     }
 };
 FilterService.ctorParameters = () => [
-    { type: src_app_api_services_query_resource_service__WEBPACK_IMPORTED_MODULE_1__["QueryResourceService"] }
+    { type: src_app_api_services_query_resource_service__WEBPACK_IMPORTED_MODULE_1__["QueryResourceService"] },
+    { type: ngx_logger__WEBPACK_IMPORTED_MODULE_4__["NGXLogger"] }
 ];
 FilterService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])({
         providedIn: 'root'
     }),
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [src_app_api_services_query_resource_service__WEBPACK_IMPORTED_MODULE_1__["QueryResourceService"]])
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [src_app_api_services_query_resource_service__WEBPACK_IMPORTED_MODULE_1__["QueryResourceService"],
+        ngx_logger__WEBPACK_IMPORTED_MODULE_4__["NGXLogger"]])
 ], FilterService);
 
 
@@ -8378,18 +8398,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ionic_native_geolocation_ngx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ionic-native/geolocation/ngx */ "./node_modules/@ionic-native/geolocation/ngx/index.js");
 /* harmony import */ var _agm_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @agm/core */ "./node_modules/@agm/core/index.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm2015/index.js");
+/* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ngx-logger */ "./node_modules/ngx-logger/fesm2015/ngx-logger.js");
+
 
 
 
 
 
 let LocationService = class LocationService {
-    constructor(mapsAPILoader, ngZone, mapsWrapper, geolocation) {
+    constructor(mapsAPILoader, geolocation, logger) {
         this.mapsAPILoader = mapsAPILoader;
-        this.ngZone = ngZone;
-        this.mapsWrapper = mapsWrapper;
         this.geolocation = geolocation;
-        console.log('Constror service location');
+        this.logger = logger;
+        this.logger.info('Location Service Created');
         this.mapsAPILoader.load().then(() => {
             this.autoCompleteService = new google.maps.places.AutocompleteService();
         });
@@ -8402,18 +8423,16 @@ let LocationService = class LocationService {
         return this.geolocation.getCurrentPosition();
     }
     getPredictions(searchTerm) {
-        console.log('In the service location ');
+        this.logger.info('Getting Predictions');
         return new rxjs__WEBPACK_IMPORTED_MODULE_4__["Observable"](observer => {
             this.autoCompleteService.getPlacePredictions({ input: searchTerm }, data => {
                 let previousData;
                 if (data) {
-                    console.log(data);
                     previousData = data;
                     observer.next(data);
                     observer.complete();
                 }
                 if (!data) {
-                    console.log('PreviousData: ');
                     observer.next(previousData);
                     observer.complete();
                 }
@@ -8430,16 +8449,13 @@ let LocationService = class LocationService {
                 this.geocoder = new google.maps.Geocoder();
                 this.geocoder.geocode({ placeId }, (results, status) => tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function* () {
                     if (status !== 'OK') {
-                        console.log('Geocoder failed due to: ' + status);
+                        this.logger.error('Geocoder failed due to: ' + status);
                         return;
                     }
                     latlon = [
                         results[0].geometry.location.lat(),
                         results[0].geometry.location.lng()
                     ];
-                    console.log(latlon);
-                    console.log('Lat is inside geo ' + results[0].geometry.location.lat());
-                    console.log('Lon is inside geo ' + results[0].geometry.location.lng());
                     resolve(latlon);
                 }));
             });
@@ -8447,17 +8463,14 @@ let LocationService = class LocationService {
     }
     getCurrentLoactionAddress(func) {
         return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function* () {
-            console.log('I am working');
             return this.getCurrentLocation()
                 .then(data => {
-                console.log(data);
                 const latLng = data.coords.latitude + ',' + data.coords.longitude;
                 this.mapsAPILoader.load()
                     .then(() => {
                     let google_map_pos = new google.maps.LatLng(data.coords.latitude, data.coords.longitude);
                     this.geocoder = new google.maps.Geocoder();
                     this.geocoder.geocode({ latLng: google_map_pos }, function (results, status) {
-                        console.log(results);
                         func(results, data);
                     });
                 });
@@ -8467,18 +8480,16 @@ let LocationService = class LocationService {
 };
 LocationService.ctorParameters = () => [
     { type: _agm_core__WEBPACK_IMPORTED_MODULE_3__["MapsAPILoader"] },
-    { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgZone"] },
-    { type: _agm_core__WEBPACK_IMPORTED_MODULE_3__["GoogleMapsAPIWrapper"] },
-    { type: _ionic_native_geolocation_ngx__WEBPACK_IMPORTED_MODULE_2__["Geolocation"] }
+    { type: _ionic_native_geolocation_ngx__WEBPACK_IMPORTED_MODULE_2__["Geolocation"] },
+    { type: ngx_logger__WEBPACK_IMPORTED_MODULE_5__["NGXLogger"] }
 ];
 LocationService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
         providedIn: 'root'
     }),
     tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_agm_core__WEBPACK_IMPORTED_MODULE_3__["MapsAPILoader"],
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgZone"],
-        _agm_core__WEBPACK_IMPORTED_MODULE_3__["GoogleMapsAPIWrapper"],
-        _ionic_native_geolocation_ngx__WEBPACK_IMPORTED_MODULE_2__["Geolocation"]])
+        _ionic_native_geolocation_ngx__WEBPACK_IMPORTED_MODULE_2__["Geolocation"],
+        ngx_logger__WEBPACK_IMPORTED_MODULE_5__["NGXLogger"]])
 ], LocationService);
 
 

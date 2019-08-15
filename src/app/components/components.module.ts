@@ -30,6 +30,7 @@ import { HotelMenuPopoverComponent } from './hotel-menu-popover/hotel-menu-popov
 import { FooterComponent } from './footer/footer.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { MapComponent } from './map/map.component';
+import { CategoryWiseProductsCardComponent } from './category-wise-products-card/category-wise-products-card.component';
 
 
 
@@ -61,6 +62,7 @@ import { MapComponent } from './map/map.component';
     HistoryListComponent,
     AddressListComponent,
     HotelMenuPopoverComponent,
+    CategoryWiseProductsCardComponent,
 
     ArrayFormaterPipe,
     ClosedPipe,
@@ -101,9 +103,8 @@ import { MapComponent } from './map/map.component';
     FavouriteListComponent,
     HistoryListComponent,
     AddressListComponent,
-    HotelMenuPopoverComponent
-
-
+    HotelMenuPopoverComponent,
+    CategoryWiseProductsCardComponent
   ],
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

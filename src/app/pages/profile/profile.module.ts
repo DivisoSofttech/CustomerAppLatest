@@ -11,6 +11,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { ProfilePage } from './profile.page';
 import { ProfileInfoComponent } from 'src/app/components/profile-info/profile-info.component';
+import { FooterComponent } from 'src/app/components/footer/footer.component';
 
 const routes: Routes = [
   {
@@ -29,6 +30,6 @@ const routes: Routes = [
   ],
   declarations: [ProfilePage],
   entryComponents: [ProfileInfoComponent,FrequentlyOrderedListComponent,FavouriteListComponent,
-  HistoryListComponent]
+  HistoryListComponent,FooterComponent]
 })
 export class ProfilePageModule {}

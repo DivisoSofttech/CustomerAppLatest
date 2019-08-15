@@ -49,7 +49,6 @@ export class CartComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log(this.viewType);
     this.getCartDetails();
     this.getCustomer();
   }

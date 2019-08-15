@@ -90,11 +90,11 @@ export class LocationService {
       const latLng = data.coords.latitude + ',' + data.coords.longitude;
       this.mapsAPILoader.load()
       .then(() => {
-        let google_map_pos = new google.maps.LatLng( data.coords.latitude, data.coords.longitude );
+        const googleMapPos = new google.maps.LatLng( data.coords.latitude, data.coords.longitude );
         this.geocoder = new google.maps.Geocoder();
         this.geocoder.geocode(
-        {latLng: google_map_pos},
-        function( results, status ) {
+        {latLng: googleMapPos},
+       ( results, status ) => {
           func(results , data);
         });
       });

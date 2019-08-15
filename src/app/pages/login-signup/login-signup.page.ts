@@ -44,9 +44,8 @@ export class LoginSignupPage implements OnInit {
         this.keycloakService.authenticate({ username: this.username, password: this.password },
           () => {
             loader.dismiss();
+            console.log('slsklkslkks');
             this.createUserIfNotExists(this.username);
-            this.util.navigateRoot();
-
           },
           () => {
             loader.dismiss();

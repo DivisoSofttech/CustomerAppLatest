@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services';
 import { Order } from 'src/app/api/models';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-history-list',
@@ -11,12 +12,15 @@ export class HistoryListComponent implements OnInit {
 
   orders: Order[] = [];
 
+  stores = {};
+
   @Input() keyCloakUser;
 
   pageNumber = 0;
 
   constructor(
-    private queryResource: QueryResourceService
+    private queryResource: QueryResourceService,
+    private logger: NGXLogger
   ) { }
 
   ngOnInit() {
@@ -31,6 +35,7 @@ export class HistoryListComponent implements OnInit {
     .subscribe(porders => {
       porders.content.forEach(o => {
         this.orders.push(o);
+        this.getStores(o.storeId);
       });
       ++i;
       if (i === porders.totalPages) {
@@ -38,6 +43,15 @@ export class HistoryListComponent implements OnInit {
       }
     });
   }
+
+  getStores(id) {
+    this.queryResource.findStoreByRegisterNumberUsingGET(id)
+    .subscribe(store => {
+      this.logger.info('Store ' , store);
+      this.stores[id] = store;
+    });
+  }
+
   toggleInfiniteScroll() {
 
   }

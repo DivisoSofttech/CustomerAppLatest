@@ -37,12 +37,10 @@ export class HotelMenuPopoverComponent implements OnInit {
   }
 
   getProducts(i , loader) {
-    this.queryResourceService.findProductByStoreIdAndCategoryNameUsingGET(
-      {
-        userId: this.storeId,
-        categoryName: this.selectedCategory,
-        page: i
-      })
+    
+    // Change this API Later to findStockCurrentByStoreIdAndCategoryName()
+
+    this.queryResourceService.findStockCurrentByCategoryNameUsingGET(this.selectedCategory)
       .subscribe(data => {
         loader.dismiss();
         console.log('Category ' , this.selectedCategory , ' Produts ' , data);

@@ -75,31 +75,31 @@ export class MapComponent implements OnInit {
       lat: parseFloat(coords.substring(0, coords.indexOf(','))),
       lng: parseFloat(coords.substring(coords.indexOf(',') + 1 , coords.length))
     };
-    this.setCurrentLocationMarker(coords);
+
+    this.setCurrentLocationMarker(GOOGLE);
   }
 
   setCurrentLocationMarker(coords) {
-    if(this.curentLocationMarker !== undefined) {
+    this.logger.info('Setting Marker' , coords);
+    if (this.curentLocationMarker !== undefined) {
+      this.logger.info('Removing Old Marker' , coords);
       this.curentLocationMarker.remove();
     }
     this.mapCanvas.animateCamera({
       target: {
-        latLng: {
-          lat: parseFloat(coords.substring(0, coords.indexOf(','))), 
-          lng: parseFloat(coords.substring(coords.indexOf(',') + 1 , coords.length))
-        }
-      },
-      zoom: 14,
-      tilt: 30
+        latLng: coords,
+        zoom: 14,
+        tilt: 30
+      }
     });
-    this.curentLocationMarker = this.mapCanvas.addMarkerSync({
-      position: {
-        lat: parseFloat(coords.substring(0, coords.indexOf(','))),
-        lng: parseFloat(coords.substring(coords.indexOf(',') + 1 , coords.length))
-      },
-      animation: GoogleMapsAnimation.DROP
-    });
-    this.curentLocationMarker.showInfoWindow();
+    // this.curentLocationMarker = this.mapCanvas.addMarkerSync({
+    //   position: {
+    //     lat: parseFloat(coords.substring(0, coords.indexOf(','))),
+    //     lng: parseFloat(coords.substring(coords.indexOf(',') + 1 , coords.length))
+    //   },
+    //   animation: GoogleMapsAnimation.DROP
+    // });
+    // this.curentLocationMarker.showInfoWindow();
   }
 
   // App Specific Methods

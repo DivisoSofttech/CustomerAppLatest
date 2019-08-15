@@ -8,12 +8,12 @@ import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
 import { CommandResource } from '../models/command-resource';
-import { AcceptOrderRequest } from '../models/accept-order-request';
+import { ApprovalDetailsDTO } from '../models/approval-details-dto';
 import { Order } from '../models/order';
 import { AddressDTO } from '../models/address-dto';
 import { PageOfAddress } from '../models/page-of-address';
 import { DeliveryInfo } from '../models/delivery-info';
-import { ProcessPaymentRequest } from '../models/process-payment-request';
+import { OrderDTO } from '../models/order-dto';
 
 /**
  * Order Command Resource
@@ -22,12 +22,12 @@ import { ProcessPaymentRequest } from '../models/process-payment-request';
   providedIn: 'root',
 })
 class OrderCommandResourceService extends __BaseService {
-  static readonly acceptOrderUsingPOSTPath = '/api/command/acceptOrder';
+  static readonly acceptOrderUsingPOSTPath = '/api/command/acceptOrder/{taskId}';
   static readonly initiateOrderUsingPOSTPath = '/api/command/order/initiateOrder';
   static readonly createAddressUsingPOSTPath = '/api/command/orders/addresses';
   static readonly getAllSavedAddressUsingGETPath = '/api/command/orders/addresses/{customerId}';
   static readonly collectDeliveryDetailsUsingPOSTPath = '/api/command/orders/collectDeliveryDetails/{taskId}/{orderId}';
-  static readonly getProcessPaymentUsingPOSTPath = '/api/command/process-payment';
+  static readonly updateOrderUsingPUTPath = '/api/command/updateOrder';
 
   constructor(
     config: __Configuration,
@@ -37,17 +37,23 @@ class OrderCommandResourceService extends __BaseService {
   }
 
   /**
-   * @param acceptOrderRequest acceptOrderRequest
+   * @param params The `OrderCommandResourceService.AcceptOrderUsingPOSTParams` containing the following parameters:
+   *
+   * - `taskId`: taskId
+   *
+   * - `approvalDetailsDTO`: approvalDetailsDTO
+   *
    * @return OK
    */
-  acceptOrderUsingPOSTResponse(acceptOrderRequest: AcceptOrderRequest): __Observable<__StrictHttpResponse<CommandResource>> {
+  acceptOrderUsingPOSTResponse(params: OrderCommandResourceService.AcceptOrderUsingPOSTParams): __Observable<__StrictHttpResponse<CommandResource>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = acceptOrderRequest;
+
+    __body = params.approvalDetailsDTO;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/api/command/acceptOrder`,
+      this.rootUrl + `/api/command/acceptOrder/${params.taskId}`,
       __body,
       {
         headers: __headers,
@@ -63,11 +69,16 @@ class OrderCommandResourceService extends __BaseService {
     );
   }
   /**
-   * @param acceptOrderRequest acceptOrderRequest
+   * @param params The `OrderCommandResourceService.AcceptOrderUsingPOSTParams` containing the following parameters:
+   *
+   * - `taskId`: taskId
+   *
+   * - `approvalDetailsDTO`: approvalDetailsDTO
+   *
    * @return OK
    */
-  acceptOrderUsingPOST(acceptOrderRequest: AcceptOrderRequest): __Observable<CommandResource> {
-    return this.acceptOrderUsingPOSTResponse(acceptOrderRequest).pipe(
+  acceptOrderUsingPOST(params: OrderCommandResourceService.AcceptOrderUsingPOSTParams): __Observable<CommandResource> {
+    return this.acceptOrderUsingPOSTResponse(params).pipe(
       __map(_r => _r.body as CommandResource)
     );
   }
@@ -254,17 +265,17 @@ class OrderCommandResourceService extends __BaseService {
   }
 
   /**
-   * @param processPaymentRequest processPaymentRequest
+   * @param orderDTO orderDTO
    * @return OK
    */
-  getProcessPaymentUsingPOSTResponse(processPaymentRequest: ProcessPaymentRequest): __Observable<__StrictHttpResponse<CommandResource>> {
+  updateOrderUsingPUTResponse(orderDTO: OrderDTO): __Observable<__StrictHttpResponse<OrderDTO>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = processPaymentRequest;
+    __body = orderDTO;
     let req = new HttpRequest<any>(
-      'POST',
-      this.rootUrl + `/api/command/process-payment`,
+      'PUT',
+      this.rootUrl + `/api/command/updateOrder`,
       __body,
       {
         headers: __headers,
@@ -275,22 +286,38 @@ class OrderCommandResourceService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<CommandResource>;
+        return _r as __StrictHttpResponse<OrderDTO>;
       })
     );
   }
   /**
-   * @param processPaymentRequest processPaymentRequest
+   * @param orderDTO orderDTO
    * @return OK
    */
-  getProcessPaymentUsingPOST(processPaymentRequest: ProcessPaymentRequest): __Observable<CommandResource> {
-    return this.getProcessPaymentUsingPOSTResponse(processPaymentRequest).pipe(
-      __map(_r => _r.body as CommandResource)
+  updateOrderUsingPUT(orderDTO: OrderDTO): __Observable<OrderDTO> {
+    return this.updateOrderUsingPUTResponse(orderDTO).pipe(
+      __map(_r => _r.body as OrderDTO)
     );
   }
 }
 
 module OrderCommandResourceService {
+
+  /**
+   * Parameters for acceptOrderUsingPOST
+   */
+  export interface AcceptOrderUsingPOSTParams {
+
+    /**
+     * taskId
+     */
+    taskId: string;
+
+    /**
+     * approvalDetailsDTO
+     */
+    approvalDetailsDTO: ApprovalDetailsDTO;
+  }
 
   /**
    * Parameters for getAllSavedAddressUsingGET

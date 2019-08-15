@@ -9,6 +9,8 @@ export class LoadingComponent implements OnInit {
 
   @Input() type = '';
 
+  @Input() productLoadingCount = [1, 2 , 3];
+
   constructor() { }
 
   ngOnInit() {}

@@ -1,0 +1,12 @@
+<app-loading
+*ngIf="showLoading === true"
+[type]="'product'"
+></app-loading>
+<ion-list>
+  <app-product-card
+  *ngFor="let stockCurrent of stockCurrents"
+  [store]="store"
+  [stockCurrent]="stockCurrent"
+></app-product-card>
+
+</ion-list>

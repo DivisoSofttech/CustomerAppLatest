@@ -42,7 +42,7 @@
 </div>
 
 <div *ngIf="type === 'product'">
-  <ion-card no-padding *ngFor="let store of [1, 2, 3, 4, 5]">
+  <ion-card no-padding *ngFor="let store of productLoadingCount">
     <ion-item lines="none">
       <ion-thumbnail>
         <ion-skeleton-text animated></ion-skeleton-text>

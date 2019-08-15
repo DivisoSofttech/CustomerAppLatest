@@ -18,7 +18,8 @@ export enum FILTER_TYPES {
 })
 export class FilterService {
 
-  private currentFilter = FILTER_TYPES.DISTANCE_WISE;
+  // Change to FILTER_TYPES.DISTANCE_WISE
+  private currentFilter = FILTER_TYPES.TOP_RATED;
   private filterBehaviour = new BehaviorSubject<any>(this.currentFilter);
 
 
@@ -66,17 +67,17 @@ export class FilterService {
   private getStoreByDistance(pageNumber, success) {
     if(this.currentCordinates !== undefined) {
       this.locationBehaviour.next(this.currentCordinates);
-      this.queryResource
-      .searchByNearestLocationUsingGET({
-        latLon: this.currentCordinates,
-        kiloMeter: this.distance
-      })
-      .subscribe(data => {
-        success(data.totalElements, data.totalPages, data.content);
-      },
-      err => {
-        this.logger.error('Error Finding Store By Distance and Location' , err);
-      });
+      // this.queryResource
+      // .searchByNearestLocationUsingGET({
+      //   latLon: this.currentCordinates,
+      //   kiloMeter: this.distance
+      // })
+      // .subscribe(data => {
+      //   success(data.totalElements, data.totalPages, data.content);
+      // },
+      // err => {
+      //   this.logger.error('Error Finding Store By Distance and Location' , err);
+      // });
     }
   }
 

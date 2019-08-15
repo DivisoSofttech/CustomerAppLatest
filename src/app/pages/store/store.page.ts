@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { StockCurrent, Entry } from 'src/app/api/models';
 import { HotelMenuPopoverComponent } from 'src/app/components/hotel-menu-popover/hotel-menu-popover.component';
 import { Util } from 'src/app/services/util';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-store',
@@ -20,33 +21,37 @@ export class StorePage implements OnInit {
 
   stockCurrents: StockCurrent[] = [];
 
-  categoryStockCurrents = {}
-
   tempStockCurrents = [];
 
   currentSegment = 'menu';
 
   selectedCategory = 'All';
 
-  showLoading = true;
   showRestaurantLoading = true;
+
+  showCategoryWiseProducts = true;
+
+  categories = [];
+
+  entry = [];
 
   @ViewChild(IonSlides, null) ionSlides: IonSlides;
   @ViewChild(IonRefresher, null) IonRefresher: IonRefresher;
-  categories: Entry[] = [];
+
 
   constructor(
     private queryResource: QueryResourceService,
     private route: ActivatedRoute,
     private popover: PopoverController,
+    private logger: NGXLogger,
     private util: Util
   ) {}
 
   ngOnInit() {
     this.getStoreId();
     this.getStore();
-    this.getProducts(0, false);
     this.getCategories(0);
+    this.getCategoriesEntry(0);
   }
 
   getStoreId() {
@@ -69,64 +74,29 @@ export class StorePage implements OnInit {
       );
   }
 
-  getProducts(i, limit) {
-    this.queryResource
-      .findStockCurrentByStoreIdUsingGET(this.storeId)
-      .subscribe(
-        result => {
-          if (result != null) {
-            result.content.forEach(s => {
-              this.stockCurrents.push(s);
-            });
-            this.showLoading = false;
-            i++;
-            if (limit === false) {
-              if (i < result.totalPages) {
-                this.getProducts(i, limit);
-              }
-            }
-          }
-        },
-        err => {
-          console.log('Error fetching product data', err);
-          this.showLoading = false;
-        }
-      );
-  }
-
-  getCategories(i) {
+  getCategoriesEntry(i) {
     this.queryResource
     .findCategoryAndCountUsingGET(this.storeId)
     .subscribe(result => {
       console.log('Got Categories' , result);
-      this.categories = result;
-      this.categories.forEach(c => {
-        this.categoryStockCurrents[c.key] = [];
-      });
-      this.categories.forEach(c => {
-        this.getProductsCategoryWise(0 , c.key);
-      });
+      this.entry = result;
     });
   }
 
-  getProductsCategoryWise(i , cname) {
-    this.categories.forEach(c => {
-      this.queryResource.findProductByStoreIdAndCategoryNameUsingGET({
-        userId: this.storeId,
-        categoryName: cname
-      })
-      .subscribe(p => {
-
-        p.content.forEach(s => {
-          this.categoryStockCurrents[cname].push(s);
-        });
-        ++i;
-        if (i < p.totalPages) {
-          this.getProductsCategoryWise(i , cname);
-        } else {
-          console.log(cname , this.categoryStockCurrents[cname]);
-        }
+  getCategories(i) {
+    this.queryResource
+    .findAllCategoriesUsingGET({
+      iDPcode: this.storeId
+    })
+    .subscribe(result => {
+      console.log('Got Categories' , result);
+      result.content.forEach(c => {
+        this.categories.push(c);
       });
+      ++i;
+      if (i < result.totalPages) {
+        this.getCategories(i);
+      } 
     });
   }
 
@@ -146,7 +116,7 @@ export class StorePage implements OnInit {
     const popover = await this.popover.create({
       component: HotelMenuPopoverComponent,
       componentProps: {
-        categories: this.categories,
+        categories: this.entry,
         storeId: this.storeId,
         selectedCategory: this.selectedCategory
       },
@@ -155,17 +125,16 @@ export class StorePage implements OnInit {
     });
 
     popover.onDidDismiss().then((data: any) => {
-      console.log(data.data.result);
       if (data.data !== undefined) {
         this.selectedCategory = data.data.selectedCategory;
         if (this.selectedCategory === 'All') {
           this.stockCurrents = this.tempStockCurrents;
+          this.showCategoryWiseProducts = true;
         } else {
-          console.log('Got products');
           this.stockCurrents = data.data.result.filter(s => s !== null);
+          this.logger.info('Got StockCurrent of ' , this.selectedCategory , this.stockCurrents);
+          this.showCategoryWiseProducts = false;
         }
-      } else {
-        this.util.createToast('Error while Getting data');
       }
     });
     return await popover.present();
@@ -186,7 +155,7 @@ export class StorePage implements OnInit {
   }
 
   refresh(event) {
-    this.getProducts(0, false);
+    this.getCategories(0);
   }
 
   toggleIonRefresher() {
