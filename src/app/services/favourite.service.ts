@@ -3,6 +3,7 @@ import { Store , Product } from 'src/app/api/models';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { BehaviorSubject } from 'rxjs';
+import { NGXLogger } from 'ngx-logger';
 
 export class Favourite {
 
@@ -27,17 +28,17 @@ export class FavouriteService {
 
   constructor(
     private storage: Storage,
-    private oauthService: OAuthService
+    private oauthService: OAuthService,
+    private logger: NGXLogger
   ) {
-    console.log('Favourite Service Created');
+    this.logger.info('Favourites Service Created');
     this.oauthService.loadUserProfile()
     .then((data: any) => {
       this.username = data.preferred_username;
       this.storage.get(this.username +  '_favourites')
       .then(p => {
-        console.log(p);
+        this.logger.info('Got Favourites From Storage ' , p);
         if (p != undefined) {
-          console.log(p);
           this.favourites = p;
         }
         if (p === null) {this.storage.set(this.username +  '_favourites' , this.favourites); }

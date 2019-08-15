@@ -25,6 +25,8 @@ import { ComponentsModule } from './components/components.module';
 import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 import { OrderService } from './services/order.service';
 import { CheckoutComponent } from './components/checkout/checkout.component';
+import { LoggerModule } from 'ngx-logger';
+import {environment} from '../environments/environment';
 
 @NgModule({
 
@@ -51,7 +53,8 @@ import { CheckoutComponent } from './components/checkout/checkout.component';
       apiKey: 'AIzaSyDE6vwyjr_HUlyzP6EU4rsNxd_xchtBA1o',
       libraries: ['places', 'geometry']
     }),
-    OAuthModule.forRoot()
+    OAuthModule.forRoot(),
+    LoggerModule.forRoot(environment.logging),
   ],
 
   providers: [

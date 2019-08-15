@@ -807,7 +807,7 @@ module.exports = "<ion-slides #slides [options]=\"slideOpts\" autoplayDisableOnI
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-grid no-padding margin *ngIf=\"viewType === 'minimal'\">\n  <ion-row>\n    <ion-col size=\"4\" text-center no-padding>\n      <ion-label class=\"highlight\">{{ cartSize + \" Items\" }}</ion-label>\n    </ion-col>\n    <ion-col size=\"4\" text-center no-padding>\n      <ion-label class=\"highlight\">{{\n        \"Total: \" + \"&#8364; \" + (totalPrice | number: \"1.1-2\")\n      }}</ion-label>\n    </ion-col>\n    <ion-col size=\"4\" text-center no-padding [routerLink]=\"['/basket']\">\n      <ion-label  class=\"cursor highlight\">View Cart</ion-label>\n      <ion-label class=\"button-cart highlight\" routerLinkActive=\"router-link-active\">\n        <ion-icon name=\"basket\" slot=\"icon-only\"></ion-icon>\n      </ion-label>\n    </ion-col>\n  </ion-row>\n</ion-grid>\n\n<div *ngIf=\"viewType === 'full'\">\n  <!--No Orders Start-->\n  <ion-grid *ngIf=\"orderLines.length === 0\" class=\"bg-grey\">\n    <ion-row justify-content-center class=\"ion-margin-top \">\n      <ion-col size=\"12\" text-center>\n        <ion-label class=\"fntbig-cursive\">\n          Order total\n        </ion-label>\n        <ion-text class=\"fntbig-cursive\" >(0 items)</ion-text>\n      </ion-col>\n    </ion-row>\n    <ion-row justify-content-center>\n      <ion-col size=\"12\" text-center>\n        <p class=\"fntbig grey\">&#8364;0</p>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n  <ion-grid *ngIf=\"orderLines.length === 0\">\n    <ion-row>\n      <ion-col justify-content-center>\n        <ion-card class=\"vertical-align-center h35\">\n          <ion-card-content text-center>\n            <ion-icon class=\"cart\" name=\"basket\"></ion-icon>\n          </ion-card-content>\n        </ion-card>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n  <!--No Orders End-->\n\n  <!--Orders List Start-->\n  <ion-grid class=\"bg-grey\" *ngIf=\"orderLines.length > 0\">\n    <ion-row justify-content-center class=\"ion-margin-top\">\n      <ion-col size=\"12\" text-center>\n        <ion-label class=\"fntbig-cursive\">\n          Order total\n        </ion-label>\n        <ion-text class=\"fntbig-cursive\">{{ \"(\" + orderLines.length + \" items)\" }}</ion-text>\n      </ion-col>\n    </ion-row>\n    <ion-row justify-content-center>\n      <ion-col size=\"12\" text-center>\n        <p class=\"fntbig\">&#8364;{{ totalPrice | number: \"1.1-2\" }}</p>\n      </ion-col>\n    </ion-row>\n    <ion-row *ngIf=\"totalPrice < store.minAmount\">\n      <ion-col size=\"12\" text-center>\n        <ion-text text-center\n          >Spend {{ store.minAmount - total }} More for delivery</ion-text\n        >\n      </ion-col>\n    </ion-row>\n    <ion-row>\n      <ion-col size=\"12\">\n        <ion-button *ngIf=\"currentSegment==='delivery'\"\n          color=\"primary\" expand=\"full\" (click)=\"continue('delivery')\"\n          >Continue</ion-button\n        >\n        <ion-button *ngIf=\"currentSegment==='collection'\" color=\"primary\" expand=\"full\" (click)=\"continue('collection')\"\n        >Continue</ion-button\n      >\n      </ion-col>\n      <ion-col size=\"12\">\n        <ion-item (click)=\"presentAllergyModal()\" lines=\"full\">\n          <ion-icon\n            color=\"primary\"\n            class=\"icon-big\"\n            name=\"alert\"\n            slot=\"start\"\n          ></ion-icon>\n          <ion-text color=\"primary\" class=\"underline\">\n            <p>\n              If you or someone you're ordering for has a food allergy or\n              intolerance , click here\n            </p>\n          </ion-text>\n        </ion-item>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n  <!--Orders List End-->\n\n  <ion-segment\n    (ionChange)=\"segmenChanged($event)\"\n    *ngIf=\"orderLines.length !== 0\"\n  >\n    <ion-segment-button value=\"collection\">Collection</ion-segment-button>\n    <ion-segment-button value=\"delivery\" checked>Delivery</ion-segment-button>\n  </ion-segment>\n\n  <div>\n    <app-delivery-item-details\n      [orders]=\"orderLines\"\n      [store]=\"store\"\n      [storeSetting]=\"storeSetting\"\n    ></app-delivery-item-details>\n  </div>\n</div>\n\n<ion-footer *ngIf=\"viewType === 'full' &&  currentSegment === 'delivery'\n&& orderLines.length > 0\">\n  \n</ion-footer>\n"
+module.exports = "<ion-grid no-padding margin *ngIf=\"viewType === 'minimal'\">\n  <ion-row>\n    <ion-col size=\"4\" text-center no-padding>\n      <ion-label class=\"highlight\">{{ cartSize + \" Items\" }}</ion-label>\n    </ion-col>\n    <ion-col size=\"4\" text-center no-padding>\n      <ion-label class=\"highlight\">{{\n        \"Total: \" + \"&#8364; \" + (totalPrice | number: \"1.1-2\")\n      }}</ion-label>\n    </ion-col>\n    <ion-col size=\"4\" text-center no-padding [routerLink]=\"['/basket']\">\n      <ion-label  class=\"cursor highlight\">View Cart</ion-label>\n      <ion-label class=\"button-cart highlight\" routerLinkActive=\"router-link-active\">\n        <ion-icon name=\"basket\" slot=\"icon-only\"></ion-icon>\n      </ion-label>\n    </ion-col>\n  </ion-row>\n</ion-grid>\n\n<div *ngIf=\"viewType === 'full'\">\n  <!--No Orders Start-->\n  <ion-grid *ngIf=\"orderLines.length === 0\" class=\"bg-grey\">\n    <ion-row justify-content-center class=\"ion-margin-top \">\n      <ion-col size=\"12\" text-center>\n        <ion-label class=\"fntbig-cursive\">\n          Order total\n        </ion-label>\n        <ion-text class=\"fntbig-cursive\" >(0 items)</ion-text>\n      </ion-col>\n    </ion-row>\n    <ion-row justify-content-center>\n      <ion-col size=\"12\" text-center>\n        <p class=\"fntbig grey\">&#8364;0</p>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n  <ion-grid *ngIf=\"orderLines.length === 0\">\n    <ion-row>\n      <ion-col justify-content-center>\n        <ion-card class=\"vertical-align-center h35\">\n          <ion-card-content text-center>\n            <ion-icon class=\"cart\" name=\"basket\"></ion-icon>\n          </ion-card-content>\n        </ion-card>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n  <!--No Orders End-->\n\n  <!--Orders List Start-->\n  <ion-grid class=\"bg-grey\" *ngIf=\"orderLines.length > 0\">\n    <ion-row justify-content-center class=\"ion-margin-top\">\n      <ion-col size=\"12\" text-center>\n        <ion-label class=\"fntbig-cursive\">\n          Order total\n        </ion-label>\n        <ion-text class=\"fntbig-cursive\">{{ \"(\" + orderLines.length + \" items)\" }}</ion-text>\n      </ion-col>\n    </ion-row>\n    <ion-row justify-content-center>\n      <ion-col size=\"12\" text-center>\n        <p class=\"fntbig\">&#8364;{{ totalPrice | number: \"1.1-2\" }}</p>\n      </ion-col>\n    </ion-row>\n    <ion-row *ngIf=\"totalPrice < store.minAmount\">\n      <ion-col size=\"12\" text-center>\n        <ion-text text-center\n          >Spend {{ store.minAmount - total }} More for delivery</ion-text\n        >\n      </ion-col>\n    </ion-row>\n    <ion-row>\n      <ion-col size=\"12\">\n        <ion-button *ngIf=\"currentSegment==='delivery'\"\n          color=\"primary\" expand=\"full\" (click)=\"continue('delivery')\"\n          >Continue</ion-button\n        >\n        <ion-button *ngIf=\"currentSegment==='collection'\" color=\"primary\" expand=\"full\" (click)=\"continue('collection')\"\n        >Continue</ion-button\n      >\n      </ion-col>\n      <ion-col size=\"12\">\n        <ion-item (click)=\"presentAllergyModal()\" lines=\"full\">\n          <ion-icon \n            color=\"primary\"\n            class=\"info-icon\"\n            name=\"alert\"\n            slot=\"start\"\n          ></ion-icon>\n          <ion-text color=\"primary\" class=\"underline\">\n            <p>\n              If you or someone you're ordering for has a food allergy or\n              intolerance , click here\n            </p>\n          </ion-text>\n        </ion-item>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n  <!--Orders List End-->\n\n  <ion-segment\n    (ionChange)=\"segmenChanged($event)\"\n    *ngIf=\"orderLines.length !== 0\"\n  >\n    <ion-segment-button value=\"collection\">Collection</ion-segment-button>\n    <ion-segment-button value=\"delivery\" checked>Delivery</ion-segment-button>\n  </ion-segment>\n\n  <div>\n    <app-delivery-item-details\n     *ngIf=\"orderLines !== undefined && storeSetting !== undefined\"\n      [orders]=\"orderLines\"\n      [store]=\"store\"\n      [storeSetting]=\"storeSetting\"\n    ></app-delivery-item-details>\n  </div>\n</div>\n\n<ion-footer *ngIf=\"viewType === 'full' &&  currentSegment === 'delivery'\n&& orderLines.length > 0\">\n  \n</ion-footer>\n"
 
 /***/ }),
 
@@ -829,7 +829,7 @@ module.exports = "<ion-header>\n  <ion-toolbar color=\"primary\">\n    <ion-butt
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-list can-swipe=\"true\" *ngIf=\"products.length === orders.length\">\n  <ion-item-sliding *ngFor=\"let ticket of orders; let i = index\">\n    <ion-item-options side=\"start\">\n      <ion-item-option\n        color=\"primary\"\n        (click)=\"increaseProductCount(products[i])\"\n      >\n        <ion-icon name=\"add\"></ion-icon>\n      </ion-item-option>\n      <ion-item-option\n        color=\"warning\"\n        (click)=\"decreaseProductCount(products[i])\"\n      >\n        <ion-icon name=\"remove\"></ion-icon>\n      </ion-item-option>\n    </ion-item-options>\n    <ion-item>\n      <ion-label text-start class=\"wrap\">{{ products[i].name }}</ion-label>\n      <ion-label text-center>{{ \"x\" + ticket.quantity }}</ion-label>\n      <ion-label text-end\n        >&#8364;{{ (ticket.total | number: \"1.1-2\") + \"   \" }}</ion-label\n      >\n    </ion-item>\n    <ion-item-options side=\"end\">\n      <ion-item-option color=\"danger\" (click)=\"removeTicket(i)\">\n        <ion-icon slot=\"icon-only\" name=\"trash\"></ion-icon>\n      </ion-item-option>\n    </ion-item-options>\n  </ion-item-sliding>\n  <ion-item *ngIf=\"storeSetting !== undefined\">\n    <ion-label text-start>Delivery charge</ion-label>\n    <ion-label text-center> </ion-label>\n    <ion-label text-end>{{ storeSetting.deliveryCharge }}</ion-label>\n  </ion-item>\n  <ion-item *ngIf=\"storeSetting !== undefined\">\n    <ion-label text-start>Subtotal</ion-label>\n    <ion-label text-center> </ion-label>\n    <ion-label text-end>{{\n      totalPrice + storeSetting.deliveryCharge\n    }}</ion-label>\n  </ion-item>\n</ion-list>\n\n<ion-list>\n  <ion-item>\n    <ion-label class=\"discountBadge\" slot=\"start\">\n      50%\n    </ion-label>\n    <div>\n      <ion-text slot=\"start\">\n        sjshjsjhsjhshjhsjhsjhjshjshshjhshjshsh sjsjhsjhsjhsjshjhsjhsjh\n      </ion-text>\n    </div>\n  </ion-item>\n</ion-list>\n"
+module.exports = "<ion-list can-swipe=\"true\" *ngIf=\"products.length === orders.length\">\n  <ion-item-sliding *ngFor=\"let ticket of orders; let i = index\">\n    <ion-item-options side=\"start\">\n      <ion-item-option\n        color=\"primary\"\n        (click)=\"increaseProductCount(products[i])\"\n      >\n        <ion-icon name=\"add\"></ion-icon>\n      </ion-item-option>\n      <ion-item-option\n        color=\"warning\"\n        (click)=\"decreaseProductCount(products[i])\"\n      >\n        <ion-icon name=\"remove\"></ion-icon>\n      </ion-item-option>\n    </ion-item-options>\n    <ion-item lines=\"full\">\n      <ion-label text-start class=\"wrap\">{{ products[i].name }}</ion-label>\n      <ion-label text-center>{{ \"x\" + ticket.quantity }}</ion-label>\n      <ion-label text-end\n        >&#8364;{{ (ticket.total | number: \"1.1-2\") + \"   \" }}</ion-label\n      >\n    </ion-item>\n    <ion-item-options side=\"end\">\n      <ion-item-option color=\"danger\" (click)=\"removeTicket(i)\">\n        <ion-icon slot=\"icon-only\" name=\"trash\"></ion-icon>\n      </ion-item-option>\n    </ion-item-options>\n  </ion-item-sliding>\n  <ion-item lines=\"full\" *ngIf=\"storeSetting !== undefined\">\n    <ion-label text-start>Delivery charge</ion-label>\n    <ion-label text-center> </ion-label>\n    <ion-label text-end>{{ storeSetting.deliveryCharge }}</ion-label>\n  </ion-item>\n  <ion-item lines=\"full\">\n    <ion-avatar slot=\"start\">\n      <ion-img src=\"/assets/svg/discount.svg\"></ion-img>\n    </ion-avatar>\n    <ion-text word-wrap text-left no-margin>\n      <p>\n        <strong> 50% </strong>discount on gfsggsfgafsgfasfgas\n        ssgshsghgshgshghsghgh\n      </p>\n    </ion-text>\n    <ion-text text-end>50 </ion-text>\n  </ion-item>\n  <ion-item *ngIf=\"storeSetting !== undefined\" lines=\"full\">\n    <ion-label text-start>\n      <h3>\n        <strong>Subtotal</strong>\n      </h3>\n    </ion-label>\n    <ion-label text-center> </ion-label>\n    <ion-label text-end>\n      <h3>\n        <strong>\n          {{ totalPrice + storeSetting.deliveryCharge }}\n        </strong>\n      </h3>\n    </ion-label>\n  </ion-item>\n</ion-list>\n"
 
 /***/ }),
 
@@ -840,7 +840,7 @@ module.exports = "<ion-list can-swipe=\"true\" *ngIf=\"products.length === order
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-scroll>\n    <div *ngIf=\"favourites !== null && favourites.length > 0\">\n\n        <ion-list>\n          <ion-item-sliding *ngFor=\"let favourite of favourites\">\n            <ion-item lines=\"full\" (click)=\"route(favourite)\">\n              <ion-avatar slot=\"start\">\n                  <ion-img [src]=\"'data:' + favourite.data.imageContentType + ';base64,' + favourite.data.image\"\n                  >\n                </ion-img>\n              </ion-avatar>\n              <ion-label>\n                <p> {{favourite.data.name}}</p>\n              </ion-label>\n            </ion-item>\n            <ion-item-options side=\"end\">\n              <ion-item-option (click)=\"removeFromFavourite(favourite , favourite.type)\">\n                <ion-icon name=\"trash\"></ion-icon>\n              </ion-item-option>\n            </ion-item-options>\n          </ion-item-sliding>\n        </ion-list>\n      </div>\n    \n      <div class=\"vertical-align-center h30\" *ngIf=\"favourites.length == 0\">\n        <ion-text text-center>\n          <p>Nothng added to favourites</p>\n        </ion-text>\n      </div>\n\n</ion-scroll>\n"
+module.exports = "<ion-scroll>\n    <div *ngIf=\"favourites !== null && favourites.length > 0\">\n\n        <ion-list>\n          <ion-item-sliding *ngFor=\"let favourite of favourites\">\n            <ion-item lines=\"full\" (click)=\"route(favourite)\">\n              <ion-avatar slot=\"start\">\n                  <ion-img [src]=\"'data:' + favourite.data.imageContentType + ';base64,' + favourite.data.image\"\n                  >\n                </ion-img>\n              </ion-avatar>\n              <ion-label>\n                <p> {{favourite.data.name}}</p>\n              </ion-label>\n            </ion-item>\n            <ion-item-options side=\"end\">\n              <ion-item-option (click)=\"removeFromFavourite(favourite , favourite.type)\">\n                <ion-icon name=\"trash\"></ion-icon>\n              </ion-item-option>\n            </ion-item-options>\n          </ion-item-sliding>\n        </ion-list>\n      </div>\n    \n      <div class=\"vertical-align-center h30\" *ngIf=\"favourites !== undefined || favourites.length == 0\">\n        <ion-text text-center>\n          <p>Nothng added to favourites</p>\n        </ion-text>\n      </div>\n\n</ion-scroll>\n"
 
 /***/ }),
 
@@ -994,7 +994,7 @@ module.exports = "<ion-buttons>\n  <ion-button [disabled]=\"readonly\" *ngFor=\"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!--Normal View-->\n\n<ion-card no-padding *ngIf=\"viewType === 'normal'\">\n  <ion-card-header (click)=\"showHotelMenu(store.regNo)\">\n    <ion-item lines=\"none\">\n      <ion-img no-margin slot=\"start\"\n        *ngIf=\"store.image\"\n        slot=\"start\"\n        [src]=\"'data:' + store.imageContentType + ';base64,' + store.image\"\n        class=\"imageShow\"\n      >\n      </ion-img>\n      <ion-label style=\"margin-left:15px\">\n        <ion-text word-wrap text-wrap class=\"category\">\n          <h2 class=\"store-name\">{{store.name | titlecase}}</h2>\n          <h3 class=\"medium\">{{categories | arrayFormater}} </h3>\n          <h4 class=\"medium\" style=\"color:#56a232\">{{deliveryTypes | arrayFormater:'only'}}</h4>\n          <p class=\"small\" *ngIf=\"deliveryInfos.length > 0\">Delivering From {{ deliveryInfos[0].startingTime | date:'shortTime' }}</p>\n          <h5 class=\"medium\" class=\"no-wrap\"\n          *ngIf=\"store.openingTime != undefined && store.closingTime != undefined\"\n          >{{store.openingTime | date: 'shortTime' }} to {{ store.closingTime |  date: 'shortTime'}}</h5>\n        </ion-text>\n      </ion-label>\n    </ion-item>\n  </ion-card-header>\n  <ion-card-content *ngIf=\"store.name\" no-padding>\n      <ion-grid no-padding>\n        <ion-row>\n          <ion-col size=\"10\" text-center no-padding *ngIf=\"store != undefined\">\n            <ion-buttons>\n              <rating [rate]=\"store.totalRating\" [readonly]=\"true\"></rating>\n              <ion-button *ngIf=\"store.userRatings\" disabled>{{'(' + store.userRatings.length + ')'}}</ion-button>\n              <ion-button *ngIf=\"!store.userRatings\" disabled>(0)</ion-button>\n            </ion-buttons>\n          </ion-col>\n          <ion-col size=\"2\" justify-content-center text-center no-padding>\n            <ion-buttons justify-content-center text-center>\n              <ion-button fill=\"none\" (click)=\"addToFavourite(store)\" *ngIf=\"!isFavourite\">\n                <ion-icon slot=\"icon-only\" name=\"heart-empty\"></ion-icon>\n              </ion-button>\n              <ion-button fill=\"none\" (click)=\"removeFromFavourite(store)\" *ngIf=\"isFavourite\">\n                <ion-icon color=\"danger\" slot=\"icon-only\" name=\"heart\"></ion-icon>\n              </ion-button>\n            </ion-buttons>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-card-content>\n</ion-card>\n\n<!--Detailed View-->\n\n<div class=\"container\" *ngIf=\"viewType === 'detailedCard'\">\n    <ion-card\n      color=\"danger\"\n      class=\"closeCard\"\n      *ngIf=\"!(timeNow | closed: store.openingTime:store.closingTime)\">\n      <ion-card-content>\n        <ion-card-title>Closed</ion-card-title>\n        <ion-card-subtitle>\n          Serving in\n          {{ timeNow | dateDifference: store.openingTime:store.closingTime }}\n        </ion-card-subtitle>\n      </ion-card-content>\n    </ion-card>\n    <ion-img\n      [src]=\"'data:' + store.imageContentType + ';base64,' + store.image\"\n      class=\"mainImg\"\n    ></ion-img>\n    <div class=\"overlay\">\n      <h2>\n        <strong>{{ store.name | uppercase }}</strong>\n      </h2>\n      <p>\n        {{ store.openingTime | date: \"shortTime\" }} to\n        {{ store.closingTime | date: \"shortTime\" }}\n      </p>\n      <ion-buttons>\n        <rating [rate]=\"store.totalRating\" [readonly]=\"true\"></rating>\n        <ion-button *ngIf=\"rateReview\" disabled>{{\n          \"(\" + rateReview.length + \")\"\n        }}</ion-button>\n        <ion-button *ngIf=\"!rateReview\" disabled>(0)</ion-button>\n      </ion-buttons>\n    </div>\n  </div>"
+module.exports = "<!--Normal View-->\n\n<ion-card no-padding *ngIf=\"viewType === 'normal'\">\n  <ion-card-header (click)=\"showHotelMenu(store.regNo)\">\n    <ion-item lines=\"none\">\n      <ion-img no-margin slot=\"start\"\n        *ngIf=\"store.image\"\n        slot=\"start\"\n        [src]=\"'data:' + store.imageContentType + ';base64,' + store.image\"\n        class=\"imageShow\"\n      >\n      </ion-img>\n      <ion-label style=\"margin-left:15px\">\n        <ion-text word-wrap text-wrap class=\"category\">\n          <h2 class=\"store-name\">{{store.name | titlecase}}</h2>\n          <h3 class=\"medium\">{{categories | arrayFormater}} </h3>\n          <h4 class=\"medium\" style=\"color:#56a232\">{{deliveryTypes | arrayFormater:'only'}}</h4>\n          <p class=\"small\" *ngIf=\"deliveryInfos.length > 0\">Delivering From {{ deliveryInfos[0].startingTime | date:'shortTime' }}</p>\n          <h5 class=\"medium\" class=\"no-wrap\"\n          *ngIf=\"store.openingTime != undefined && store.closingTime != undefined\"\n          >{{store.openingTime | date: 'shortTime' }} to {{ store.closingTime |  date: 'shortTime'}}</h5>\n        </ion-text>\n      </ion-label>\n    </ion-item>\n  </ion-card-header>\n  <ion-card-content *ngIf=\"store.name\" no-padding>\n      <ion-grid no-padding>\n        <ion-row>\n          <ion-col size=\"10\" text-center no-padding *ngIf=\"store != undefined\">\n            <ion-buttons>\n              <rating [rate]=\"store.totalRating\" [readonly]=\"true\"></rating>\n              <ion-button *ngIf=\"store.userRatings\" disabled>{{'(' + store.userRatings.length + ')'}}</ion-button>\n              <ion-button *ngIf=\"!store.userRatings\" disabled>(0)</ion-button>\n            </ion-buttons>\n          </ion-col>\n          <ion-col size=\"2\" justify-content-center text-center no-padding>\n            <ion-buttons justify-content-center text-center>\n              <ion-button fill=\"none\" (click)=\"addToFavourite(store)\" *ngIf=\"!isFavourite\">\n                <ion-icon slot=\"icon-only\" name=\"heart-empty\"></ion-icon>\n              </ion-button>\n              <ion-button fill=\"none\" (click)=\"removeFromFavourite(store)\" *ngIf=\"isFavourite\">\n                <ion-icon color=\"danger\" slot=\"icon-only\" name=\"heart\"></ion-icon>\n              </ion-button>\n            </ion-buttons>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-card-content>\n</ion-card>\n\n<!--Detailed View-->\n\n<div class=\"container\" *ngIf=\"viewType === 'detailedCard'\">\n    <ion-card\n      color=\"danger\"\n      class=\"closeCard\"\n      *ngIf=\"!(timeNow | closed: store.openingTime:store.closingTime)\">\n      <ion-card-content>\n        <ion-card-title>Closed</ion-card-title>\n        <ion-card-subtitle>\n          Serving in\n          {{ timeNow | dateDifference: store.openingTime:store.closingTime }}\n        </ion-card-subtitle>\n      </ion-card-content>\n    </ion-card>\n    <ion-img \n      [src]=\"'data:' + store.imageContentType + ';base64,' + store.image\"\n      class=\"mainImg\"\n    ></ion-img>\n    <div class=\"overlay\">\n      <h2>\n        <strong>{{ store.name | uppercase }}</strong>\n      </h2>\n      <p>\n        {{ store.openingTime | date: \"shortTime\" }} to\n        {{ store.closingTime | date: \"shortTime\" }}\n      </p>\n      <ion-buttons>\n        <rating [rate]=\"store.totalRating\" [readonly]=\"true\"></rating>\n        <ion-button *ngIf=\"rateReview\" disabled>{{\n          \"(\" + rateReview.length + \")\"\n        }}</ion-button>\n        <ion-button *ngIf=\"!rateReview\" disabled>(0)</ion-button>\n      </ion-buttons>\n    </div>\n  </div>"
 
 /***/ }),
 
@@ -5161,6 +5161,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _agm_core__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @agm/core */ "./node_modules/@agm/core/index.js");
 /* harmony import */ var _services_order_service__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./services/order.service */ "./src/app/services/order.service.ts");
 /* harmony import */ var _components_checkout_checkout_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./components/checkout/checkout.component */ "./src/app/components/checkout/checkout.component.ts");
+/* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ngx-logger */ "./node_modules/ngx-logger/fesm2015/ngx-logger.js");
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ../environments/environment */ "./src/environments/environment.ts");
+
+
 
 
 
@@ -5211,7 +5215,8 @@ AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
                 apiKey: 'AIzaSyDE6vwyjr_HUlyzP6EU4rsNxd_xchtBA1o',
                 libraries: ['places', 'geometry']
             }),
-            angular_oauth2_oidc__WEBPACK_IMPORTED_MODULE_7__["OAuthModule"].forRoot()
+            angular_oauth2_oidc__WEBPACK_IMPORTED_MODULE_7__["OAuthModule"].forRoot(),
+            ngx_logger__WEBPACK_IMPORTED_MODULE_26__["LoggerModule"].forRoot(_environments_environment__WEBPACK_IMPORTED_MODULE_27__["environment"].logging),
         ],
         providers: [
             _ionic_native_camera_ngx__WEBPACK_IMPORTED_MODULE_21__["Camera"],
@@ -5523,7 +5528,7 @@ BannerComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "ion-icon[name=basket] {\n  font-size: 13px;\n  margin-left: 2px;\n}\n\n.h35 {\n  height: 40vh;\n}\n\n.h35 ion-icon {\n  font-size: 70vw;\n}\n\n.bg-grey {\n  background: lightgray;\n}\n\n.fntbig-cursive {\n  font-size: 30px;\n  font-family: cursive;\n}\n\n.fntbig {\n  font-size: 37px;\n  margin: 10px;\n}\n\n.grey {\n  color: grey;\n}\n\ntextarea {\n  width: 95%;\n  height: 100px;\n}\n\n.highlight {\n  font-size: 16px;\n  font-weight: bold;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9jYXJ0L2NhcnQuY29tcG9uZW50LnNjc3MiLCJzcmMvYXBwL2NvbXBvbmVudHMvY2FydC9jYXJ0LmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksZUFBQTtFQUNBLGdCQUFBO0FDQ0o7O0FERUE7RUFDSSxZQUFBO0FDQ0o7O0FERUE7RUFDSSxlQUFBO0FDQ0o7O0FERUE7RUFDSSxxQkFBQTtBQ0NKOztBREVBO0VBQ0ksZUFBQTtFQUNBLG9CQUFBO0FDQ0o7O0FER0E7RUFDSSxlQUFBO0VBQ0EsWUFBQTtBQ0FKOztBREdBO0VBQ0ksV0FBQTtBQ0FKOztBREdBO0VBQ0ksVUFBQTtFQUNBLGFBQUE7QUNBSjs7QURHQTtFQUNJLGVBQUE7RUFDQSxpQkFBQTtBQ0FKIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9jYXJ0L2NhcnQuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJpb24taWNvbltuYW1lPSdiYXNrZXQnXSB7XG4gICAgZm9udC1zaXplOiAxM3B4O1xuICAgIG1hcmdpbi1sZWZ0OiAycHg7XG59XG5cbi5oMzUge1xuICAgIGhlaWdodDogNDB2aDtcbn1cblxuLmgzNSBpb24taWNvbiB7XG4gICAgZm9udC1zaXplOiA3MHZ3O1xufVxuXG4uYmctZ3JleSB7XG4gICAgYmFja2dyb3VuZDogbGlnaHRncmF5O1xufVxuXG4uZm50YmlnLWN1cnNpdmUge1xuICAgIGZvbnQtc2l6ZTogMzBweDtcbiAgICBmb250LWZhbWlseTogY3Vyc2l2ZTtcblxufVxuXG4uZm50YmlnIHtcbiAgICBmb250LXNpemU6IDM3cHg7XG4gICAgbWFyZ2luOiAxMHB4O1xufVxuXG4uZ3JleSB7XG4gICAgY29sb3I6IGdyZXk7XG59XG5cbnRleHRhcmVhIHtcbiAgICB3aWR0aDogOTUlO1xuICAgIGhlaWdodDogMTAwcHg7XG59XG5cbi5oaWdobGlnaHQge1xuICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICBmb250LXdlaWdodDogYm9sZDtcbn0iLCJpb24taWNvbltuYW1lPWJhc2tldF0ge1xuICBmb250LXNpemU6IDEzcHg7XG4gIG1hcmdpbi1sZWZ0OiAycHg7XG59XG5cbi5oMzUge1xuICBoZWlnaHQ6IDQwdmg7XG59XG5cbi5oMzUgaW9uLWljb24ge1xuICBmb250LXNpemU6IDcwdnc7XG59XG5cbi5iZy1ncmV5IHtcbiAgYmFja2dyb3VuZDogbGlnaHRncmF5O1xufVxuXG4uZm50YmlnLWN1cnNpdmUge1xuICBmb250LXNpemU6IDMwcHg7XG4gIGZvbnQtZmFtaWx5OiBjdXJzaXZlO1xufVxuXG4uZm50YmlnIHtcbiAgZm9udC1zaXplOiAzN3B4O1xuICBtYXJnaW46IDEwcHg7XG59XG5cbi5ncmV5IHtcbiAgY29sb3I6IGdyZXk7XG59XG5cbnRleHRhcmVhIHtcbiAgd2lkdGg6IDk1JTtcbiAgaGVpZ2h0OiAxMDBweDtcbn1cblxuLmhpZ2hsaWdodCB7XG4gIGZvbnQtc2l6ZTogMTZweDtcbiAgZm9udC13ZWlnaHQ6IGJvbGQ7XG59Il19 */"
+module.exports = "ion-icon[name=basket] {\n  font-size: 13px;\n  margin-left: 2px;\n}\n\n.h35 {\n  height: 40vh;\n}\n\n.h35 ion-icon {\n  font-size: 70vw;\n}\n\n.bg-grey {\n  background: lightgray;\n}\n\n.fntbig-cursive {\n  font-size: 30px;\n  font-family: cursive;\n}\n\n.info-icon {\n  font-size: 30px;\n  margin: 0px;\n  margin-right: 10px;\n}\n\n.fntbig {\n  font-size: 37px;\n  margin: 10px;\n}\n\n.grey {\n  color: grey;\n}\n\ntextarea {\n  width: 95%;\n  height: 100px;\n}\n\n.highlight {\n  font-size: 16px;\n  font-weight: bold;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9jYXJ0L2NhcnQuY29tcG9uZW50LnNjc3MiLCJzcmMvYXBwL2NvbXBvbmVudHMvY2FydC9jYXJ0LmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksZUFBQTtFQUNBLGdCQUFBO0FDQ0o7O0FERUE7RUFDSSxZQUFBO0FDQ0o7O0FERUE7RUFDSSxlQUFBO0FDQ0o7O0FERUE7RUFDSSxxQkFBQTtBQ0NKOztBREVBO0VBQ0ksZUFBQTtFQUNBLG9CQUFBO0FDQ0o7O0FER0E7RUFDSSxlQUFBO0VBQ0EsV0FBQTtFQUNBLGtCQUFBO0FDQUo7O0FER0E7RUFDSSxlQUFBO0VBQ0EsWUFBQTtBQ0FKOztBREdBO0VBQ0ksV0FBQTtBQ0FKOztBREdBO0VBQ0ksVUFBQTtFQUNBLGFBQUE7QUNBSjs7QURHQTtFQUNJLGVBQUE7RUFDQSxpQkFBQTtBQ0FKIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9jYXJ0L2NhcnQuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJpb24taWNvbltuYW1lPSdiYXNrZXQnXSB7XG4gICAgZm9udC1zaXplOiAxM3B4O1xuICAgIG1hcmdpbi1sZWZ0OiAycHg7XG59XG5cbi5oMzUge1xuICAgIGhlaWdodDogNDB2aDtcbn1cblxuLmgzNSBpb24taWNvbiB7XG4gICAgZm9udC1zaXplOiA3MHZ3O1xufVxuXG4uYmctZ3JleSB7XG4gICAgYmFja2dyb3VuZDogbGlnaHRncmF5O1xufVxuXG4uZm50YmlnLWN1cnNpdmUge1xuICAgIGZvbnQtc2l6ZTogMzBweDtcbiAgICBmb250LWZhbWlseTogY3Vyc2l2ZTtcblxufVxuXG4uaW5mby1pY29uIHtcbiAgICBmb250LXNpemU6IDMwcHg7XG4gICAgbWFyZ2luOiAwcHg7XG4gICAgbWFyZ2luLXJpZ2h0OiAxMHB4O1xufVxuXG4uZm50YmlnIHtcbiAgICBmb250LXNpemU6IDM3cHg7XG4gICAgbWFyZ2luOiAxMHB4O1xufVxuXG4uZ3JleSB7XG4gICAgY29sb3I6IGdyZXk7XG59XG5cbnRleHRhcmVhIHtcbiAgICB3aWR0aDogOTUlO1xuICAgIGhlaWdodDogMTAwcHg7XG59XG5cbi5oaWdobGlnaHQge1xuICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICBmb250LXdlaWdodDogYm9sZDtcbn0iLCJpb24taWNvbltuYW1lPWJhc2tldF0ge1xuICBmb250LXNpemU6IDEzcHg7XG4gIG1hcmdpbi1sZWZ0OiAycHg7XG59XG5cbi5oMzUge1xuICBoZWlnaHQ6IDQwdmg7XG59XG5cbi5oMzUgaW9uLWljb24ge1xuICBmb250LXNpemU6IDcwdnc7XG59XG5cbi5iZy1ncmV5IHtcbiAgYmFja2dyb3VuZDogbGlnaHRncmF5O1xufVxuXG4uZm50YmlnLWN1cnNpdmUge1xuICBmb250LXNpemU6IDMwcHg7XG4gIGZvbnQtZmFtaWx5OiBjdXJzaXZlO1xufVxuXG4uaW5mby1pY29uIHtcbiAgZm9udC1zaXplOiAzMHB4O1xuICBtYXJnaW46IDBweDtcbiAgbWFyZ2luLXJpZ2h0OiAxMHB4O1xufVxuXG4uZm50YmlnIHtcbiAgZm9udC1zaXplOiAzN3B4O1xuICBtYXJnaW46IDEwcHg7XG59XG5cbi5ncmV5IHtcbiAgY29sb3I6IGdyZXk7XG59XG5cbnRleHRhcmVhIHtcbiAgd2lkdGg6IDk1JTtcbiAgaGVpZ2h0OiAxMDBweDtcbn1cblxuLmhpZ2hsaWdodCB7XG4gIGZvbnQtc2l6ZTogMTZweDtcbiAgZm9udC13ZWlnaHQ6IGJvbGQ7XG59Il19 */"
 
 /***/ }),
 
@@ -5923,7 +5928,7 @@ ComponentsModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "textarea {\n  width: 95vw;\n  height: 100px;\n}\n\n.discountBadge {\n  max-width: 50px;\n  height: 50px;\n  background: cadetblue;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n          align-items: center;\n  border-radius: 50%;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9kZWxpdmVyeS1pdGVtLWRldGFpbHMvZGVsaXZlcnktaXRlbS1kZXRhaWxzLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL2RlbGl2ZXJ5LWl0ZW0tZGV0YWlscy9kZWxpdmVyeS1pdGVtLWRldGFpbHMuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQ0E7RUFDSSxXQUFBO0VBQ0EsYUFBQTtBQ0FKOztBREdBO0VBQ0ksZUFBQTtFQUNBLFlBQUE7RUFDQSxxQkFBQTtFQUNBLG9CQUFBO0VBQUEsYUFBQTtFQUNBLHdCQUFBO1VBQUEsdUJBQUE7RUFDQSx5QkFBQTtVQUFBLG1CQUFBO0VBQ0Esa0JBQUE7QUNBSiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvZGVsaXZlcnktaXRlbS1kZXRhaWxzL2RlbGl2ZXJ5LWl0ZW0tZGV0YWlscy5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIlxudGV4dGFyZWEge1xuICAgIHdpZHRoOiA5NXZ3O1xuICAgIGhlaWdodDogMTAwcHg7XG59XG5cbi5kaXNjb3VudEJhZGdlIHtcbiAgICBtYXgtd2lkdGg6IDUwcHg7XG4gICAgaGVpZ2h0OiA1MHB4O1xuICAgIGJhY2tncm91bmQ6IGNhZGV0Ymx1ZTtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgYm9yZGVyLXJhZGl1czogNTAlO1xufSIsInRleHRhcmVhIHtcbiAgd2lkdGg6IDk1dnc7XG4gIGhlaWdodDogMTAwcHg7XG59XG5cbi5kaXNjb3VudEJhZGdlIHtcbiAgbWF4LXdpZHRoOiA1MHB4O1xuICBoZWlnaHQ6IDUwcHg7XG4gIGJhY2tncm91bmQ6IGNhZGV0Ymx1ZTtcbiAgZGlzcGxheTogZmxleDtcbiAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gIGJvcmRlci1yYWRpdXM6IDUwJTtcbn0iXX0= */"
+module.exports = "textarea {\n  width: 95vw;\n  height: 100px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9kZWxpdmVyeS1pdGVtLWRldGFpbHMvZGVsaXZlcnktaXRlbS1kZXRhaWxzLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL2RlbGl2ZXJ5LWl0ZW0tZGV0YWlscy9kZWxpdmVyeS1pdGVtLWRldGFpbHMuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQ0E7RUFDSSxXQUFBO0VBQ0EsYUFBQTtBQ0FKIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9kZWxpdmVyeS1pdGVtLWRldGFpbHMvZGVsaXZlcnktaXRlbS1kZXRhaWxzLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiXG50ZXh0YXJlYSB7XG4gICAgd2lkdGg6IDk1dnc7XG4gICAgaGVpZ2h0OiAxMDBweDtcbn1cbiIsInRleHRhcmVhIHtcbiAgd2lkdGg6IDk1dnc7XG4gIGhlaWdodDogMTAwcHg7XG59Il19 */"
 
 /***/ }),
 
@@ -6343,17 +6348,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_location_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../../services/location-service */ "./src/app/services/location-service.ts");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
 /* harmony import */ var src_app_services_util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/services/util */ "./src/app/services/util.ts");
+/* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ngx-logger */ "./node_modules/ngx-logger/fesm2015/ngx-logger.js");
+
+var HeaderComponent_1;
 
 
 
 
 
 
-let HeaderComponent = class HeaderComponent {
-    constructor(locationService, queryResource, util) {
+let HeaderComponent = HeaderComponent_1 = class HeaderComponent {
+    constructor(locationService, queryResource, util, logger) {
         this.locationService = locationService;
         this.queryResource = queryResource;
         this.util = util;
+        this.logger = logger;
         // Emitted When Place is Changed
         this.placeChanged = new _angular_core__WEBPACK_IMPORTED_MODULE_4__["EventEmitter"]();
         this.places = [];
@@ -6365,41 +6374,50 @@ let HeaderComponent = class HeaderComponent {
         this.pageCount = 0;
     }
     ngOnInit() {
+        this.logger.info('Initializing', HeaderComponent_1.name);
         this.getCurrentLocation();
     }
     toggleSearchBar() {
+        this.logger.info('SearchBar Toggled - View', this.showSearchBar);
         this.showPlaceSearch = false;
         this.showSearchBar = !this.showSearchBar;
     }
     togglePlaceSearch() {
+        this.logger.info('PlaceSearch Toggled - View', this.showPlaceSearch);
         this.showSearchBar = false;
         this.showPlaceSearch = !this.showPlaceSearch;
     }
     toggleInfiniteScroll() {
+        this.logger.info('InfiniteScroll Toggled ', this.infiniteScroll.disabled);
         this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
     }
     selectPlace(place) {
+        this.logger.info('Place Selected', place);
         this.togglePlaceSearch();
         this.places = [];
         this.currentPlaceName = place.description;
+        this.logger.info('Getting LatLon for selected Location');
         this.locationService.geocodeAddress(place.place_id).then(data => {
-            // Emit latLon Here
-            console.log(data);
-            this.placeChanged.emit({ latLon: data[0] + '' + data[1] });
+            this.logger.info('Found LatLon for selected Location', data);
+            this.placeChanged.emit({ latLon: data[0] + ',' + data[1] });
+        }).catch(err => {
+            this.logger.warn('Error Getting LatLon for selected Location', place);
         });
     }
     // Get Current Location
     getCurrentLocation() {
+        this.logger.info('Getting Current Location');
         this.locationService.getCurrentLoactionAddress((data, coords) => {
             console.log(data[0].address_components[0].short_name);
             this.currentPlaceName = data[0].address_components[0].short_name;
             console.log(this.currentPlaceName);
             // Emit Real Latlon HerelatLon Here
-            console.log('Current Coordinates', coords);
+            this.logger.info('Getting LatLon for current Location', coords);
             this.placeChanged.emit({ latLon: coords.coords.latitude + ',' + coords.coords.longitude });
         });
     }
     getPlacePredictions(event) {
+        this.logger.info('Getting Place Suggestions');
         this.places = [];
         console.log(event.detail.value);
         const searchterm = event.detail.value;
@@ -6407,7 +6425,7 @@ let HeaderComponent = class HeaderComponent {
             return;
         }
         this.locationService.getPredictions(searchterm).subscribe(res => {
-            console.log(res);
+            this.logger.info('Got Place Suggestions', res);
             this.places = res;
         });
     }
@@ -6435,11 +6453,13 @@ let HeaderComponent = class HeaderComponent {
         });
     }
     searchRestaurants(event) {
+        this.logger.info('Getting Restaurants By Name');
         this.searchTerm = event.detail.value;
         this.storeSearchResults = [];
         this.getRestaurantsByName(0);
     }
     loadMoreData() {
+        this.logger.info('Loading More Data');
         this.pageCount++;
         this.getRestaurantsByName(this.pageCount);
     }
@@ -6447,7 +6467,8 @@ let HeaderComponent = class HeaderComponent {
 HeaderComponent.ctorParameters = () => [
     { type: _services_location_service__WEBPACK_IMPORTED_MODULE_3__["LocationService"] },
     { type: src_app_api_services_query_resource_service__WEBPACK_IMPORTED_MODULE_2__["QueryResourceService"] },
-    { type: src_app_services_util__WEBPACK_IMPORTED_MODULE_5__["Util"] }
+    { type: src_app_services_util__WEBPACK_IMPORTED_MODULE_5__["Util"] },
+    { type: ngx_logger__WEBPACK_IMPORTED_MODULE_6__["NGXLogger"] }
 ];
 tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_4__["Output"])(),
@@ -6457,7 +6478,7 @@ tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_4__["ViewChild"])(_ionic_angular__WEBPACK_IMPORTED_MODULE_1__["IonInfiniteScroll"], null),
     tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", _ionic_angular__WEBPACK_IMPORTED_MODULE_1__["IonInfiniteScroll"])
 ], HeaderComponent.prototype, "infiniteScroll", void 0);
-HeaderComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+HeaderComponent = HeaderComponent_1 = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_4__["Component"])({
         selector: 'app-header',
         template: __webpack_require__(/*! raw-loader!./header.component.html */ "./node_modules/raw-loader/index.js!./src/app/components/header/header.component.html"),
@@ -6465,7 +6486,8 @@ HeaderComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     }),
     tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services_location_service__WEBPACK_IMPORTED_MODULE_3__["LocationService"],
         src_app_api_services_query_resource_service__WEBPACK_IMPORTED_MODULE_2__["QueryResourceService"],
-        src_app_services_util__WEBPACK_IMPORTED_MODULE_5__["Util"]])
+        src_app_services_util__WEBPACK_IMPORTED_MODULE_5__["Util"],
+        ngx_logger__WEBPACK_IMPORTED_MODULE_6__["NGXLogger"]])
 ], HeaderComponent);
 
 
@@ -6796,59 +6818,110 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
 /* harmony import */ var _ionic_native_google_maps__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ionic-native/google-maps */ "./node_modules/@ionic-native/google-maps/index.js");
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
+/* harmony import */ var src_app_services_util__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/services/util */ "./src/app/services/util.ts");
+/* harmony import */ var src_app_services_filter_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/services/filter.service */ "./src/app/services/filter.service.ts");
+/* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ngx-logger */ "./node_modules/ngx-logger/fesm2015/ngx-logger.js");
+
+
+
 
 
 
 
 let MapComponent = class MapComponent {
-    constructor(platform) {
+    constructor(logger, platform, filter, // Filter Service Contains the current latlon of the current
+    util // or selected location
+    ) {
+        this.logger = logger;
         this.platform = platform;
+        this.filter = filter;
+        this.util = util;
+        this.mapAlreadyLoaded = false;
     }
     ngOnInit() {
-        this.platform.ready().then(() => {
-            this.loadMap();
+        this.platform.ready().then(data => {
+            if (data === 'cordova') {
+                this.getLatLon();
+            }
         });
     }
-    loadMap() {
+    loadMap(coords) {
         // This code is necessary for browser
         _ionic_native_google_maps__WEBPACK_IMPORTED_MODULE_2__["Environment"].setEnv({
             API_KEY_FOR_BROWSER_RELEASE: 'AIzaSyAwC9dPmp280b4C18RBcGWjInRi9NGxo5c',
             API_KEY_FOR_BROWSER_DEBUG: 'AIzaSyAwC9dPmp280b4C18RBcGWjInRi9NGxo5c'
         });
+        console.log('Map lat', coords.substring(0, coords.indexOf(',')));
         const mapOptions = {
             camera: {
                 target: {
-                    lat: 43.0741904,
-                    lng: -89.3809802
+                    lat: parseFloat(coords.substring(0, coords.indexOf(','))),
+                    lng: parseFloat(coords.substring(coords.indexOf(',') + 1, coords.length))
                 },
                 zoom: 14,
                 tilt: 30
             }
         };
         this.mapCanvas = _ionic_native_google_maps__WEBPACK_IMPORTED_MODULE_2__["GoogleMaps"].create('map_canvas', mapOptions);
-        this.mapCanvas
-            .getMyLocation()
-            .then((location) => {
-            console.log(JSON.stringify(location, null, 2));
-            // Move the map camera to the location with animation
-            this.mapCanvas.animateCamera({
-                target: location.latLng,
-                zoom: 14,
-                tilt: 30
-            });
-            const marker = this.mapCanvas.addMarkerSync({
-                position: location.latLng,
-                animation: _ionic_native_google_maps__WEBPACK_IMPORTED_MODULE_2__["GoogleMapsAnimation"].DROP
-            });
-            marker.showInfoWindow();
-        })
-            .catch(err => {
-            // this.util.createToast(err);
+        this.mapCanvas.animateCamera({
+            target: {
+                latLng: {
+                    lat: parseFloat(coords.substring(0, coords.indexOf(','))),
+                    lng: parseFloat(coords.substring(coords.indexOf(',') + 1, coords.length))
+                }
+            },
+            zoom: 14,
+            tilt: 30
         });
+        this.logger.info('Setting Marker', location);
+        this.setCurrentLocationMarker(coords);
+    }
+    updateMap(coords) {
+        this.logger.info('Updating Location', coords);
+        this.logger.info('Updating Location Latitude ', parseFloat(coords.substring(0, coords.indexOf(','))));
+        this.logger.info('Updating Location Longitude', parseFloat(coords.substring(coords.indexOf(',') + 1, coords.length)));
+        const GOOGLE = {
+            lat: parseFloat(coords.substring(0, coords.indexOf(','))),
+            lng: parseFloat(coords.substring(coords.indexOf(',') + 1, coords.length))
+        };
+        this.setCurrentLocationMarker(coords);
+    }
+    setCurrentLocationMarker(coords) {
+        const marker = this.mapCanvas.addMarkerSync({
+            position: {
+                lat: parseFloat(coords.substring(0, coords.indexOf(','))),
+                lng: parseFloat(coords.substring(coords.indexOf(',') + 1, coords.length))
+            },
+            animation: _ionic_native_google_maps__WEBPACK_IMPORTED_MODULE_2__["GoogleMapsAnimation"].DROP
+        });
+        marker.showInfoWindow();
+    }
+    // App Specific Methods
+    getLatLon() {
+        this.filter.getLocationSubscription().subscribe(coords => {
+            if (coords !== undefined) {
+                if (this.mapAlreadyLoaded === false) {
+                    this.loadMap(coords);
+                    this.mapAlreadyLoaded = true;
+                }
+                else {
+                    this.updateMap(coords);
+                }
+            }
+        });
+    }
+    setStores(stores) {
+        console.log(stores);
+    }
+    clearStores() {
     }
 };
 MapComponent.ctorParameters = () => [
-    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_3__["Platform"] }
+    { type: ngx_logger__WEBPACK_IMPORTED_MODULE_6__["NGXLogger"] },
+    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_3__["Platform"] },
+    { type: src_app_services_filter_service__WEBPACK_IMPORTED_MODULE_5__["FilterService"] },
+    { type: src_app_services_util__WEBPACK_IMPORTED_MODULE_4__["Util"] // or selected location
+     }
 ];
 MapComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -6856,7 +6929,11 @@ MapComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         template: __webpack_require__(/*! raw-loader!./map.component.html */ "./node_modules/raw-loader/index.js!./src/app/components/map/map.component.html"),
         styles: [__webpack_require__(/*! ./map.component.scss */ "./src/app/components/map/map.component.scss")]
     }),
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_ionic_angular__WEBPACK_IMPORTED_MODULE_3__["Platform"]])
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [ngx_logger__WEBPACK_IMPORTED_MODULE_6__["NGXLogger"],
+        _ionic_angular__WEBPACK_IMPORTED_MODULE_3__["Platform"],
+        src_app_services_filter_service__WEBPACK_IMPORTED_MODULE_5__["FilterService"],
+        src_app_services_util__WEBPACK_IMPORTED_MODULE_4__["Util"] // or selected location
+    ])
 ], MapComponent);
 
 
@@ -7273,7 +7350,7 @@ RatingComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".imageShow {\n  position: relative;\n  top: 0%;\n  height: 14vh;\n  width: 14vh;\n}\n\nion-card-header {\n  padding: 2vw 0vw;\n}\n\n.overlay {\n  position: relative;\n  bottom: 180px;\n  background: rgba(0, 0, 0, 0.5);\n  color: white;\n  padding: 2vh;\n  height: 180px;\n}\n\n.container {\n  height: 50vh;\n}\n\nh2 {\n  font-size: 18px;\n}\n\n.medium {\n  font-size: 14px;\n}\n\n.small {\n  font-size: 11px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9yZXN0YXVyYW50LWNhcmQvcmVzdGF1cmFudC1jYXJkLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL3Jlc3RhdXJhbnQtY2FyZC9yZXN0YXVyYW50LWNhcmQuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxrQkFBQTtFQUNBLE9BQUE7RUFDQSxZQUFBO0VBQ0EsV0FBQTtBQ0NGOztBREVBO0VBQ0UsZ0JBQUE7QUNDRjs7QURFQTtFQUNFLGtCQUFBO0VBQ0EsYUFBQTtFQUNBLDhCQUFBO0VBQ0EsWUFBQTtFQUNBLFlBQUE7RUFDQSxhQUFBO0FDQ0Y7O0FERUE7RUFDRSxZQUFBO0FDQ0Y7O0FERUE7RUFDRSxlQUFBO0FDQ0Y7O0FERUE7RUFDRSxlQUFBO0FDQ0Y7O0FERUE7RUFDRSxlQUFBO0FDQ0YiLCJmaWxlIjoic3JjL2FwcC9jb21wb25lbnRzL3Jlc3RhdXJhbnQtY2FyZC9yZXN0YXVyYW50LWNhcmQuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuaW1hZ2VTaG93IHtcbiAgcG9zaXRpb246IHJlbGF0aXZlO1xuICB0b3A6IDAlO1xuICBoZWlnaHQ6IDE0dmg7XG4gIHdpZHRoOiAxNHZoO1xufVxuXG5pb24tY2FyZC1oZWFkZXIge1xuICBwYWRkaW5nOiAydncgMHZ3O1xufVxuXG4ub3ZlcmxheSB7XG4gIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgYm90dG9tOiAxODBweDtcbiAgYmFja2dyb3VuZDogcmdiYSgwLCAwLCAwLCAwLjUpO1xuICBjb2xvcjogd2hpdGU7XG4gIHBhZGRpbmc6IDJ2aDtcbiAgaGVpZ2h0OiAxODBweDtcbn1cblxuLmNvbnRhaW5lciB7XG4gIGhlaWdodDogNTB2aDtcbn1cblxuaDIge1xuICBmb250LXNpemU6IDE4cHg7XG59XG5cbi5tZWRpdW0ge1xuICBmb250LXNpemU6IDE0cHg7XG59XG5cbi5zbWFsbCB7XG4gIGZvbnQtc2l6ZTogMTFweDtcbn1cbiIsIi5pbWFnZVNob3cge1xuICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gIHRvcDogMCU7XG4gIGhlaWdodDogMTR2aDtcbiAgd2lkdGg6IDE0dmg7XG59XG5cbmlvbi1jYXJkLWhlYWRlciB7XG4gIHBhZGRpbmc6IDJ2dyAwdnc7XG59XG5cbi5vdmVybGF5IHtcbiAgcG9zaXRpb246IHJlbGF0aXZlO1xuICBib3R0b206IDE4MHB4O1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG4gIGNvbG9yOiB3aGl0ZTtcbiAgcGFkZGluZzogMnZoO1xuICBoZWlnaHQ6IDE4MHB4O1xufVxuXG4uY29udGFpbmVyIHtcbiAgaGVpZ2h0OiA1MHZoO1xufVxuXG5oMiB7XG4gIGZvbnQtc2l6ZTogMThweDtcbn1cblxuLm1lZGl1bSB7XG4gIGZvbnQtc2l6ZTogMTRweDtcbn1cblxuLnNtYWxsIHtcbiAgZm9udC1zaXplOiAxMXB4O1xufSJdfQ== */"
+module.exports = ".imageShow {\n  position: relative;\n  top: 0%;\n  height: 14vh;\n  width: 14vh;\n}\n\nion-card-header {\n  padding: 2vw 0vw;\n}\n\n.overlay {\n  background: rgba(0, 0, 0, 0.5);\n  color: white;\n  padding: 2vh;\n  position: relative;\n  bottom: 36vw;\n}\n\n.container {\n  height: 85vw;\n}\n\n.mainImg {\n  width: 60vw;\n  height: 60vw;\n  margin: auto;\n}\n\nh2 {\n  font-size: 18px;\n}\n\n.medium {\n  font-size: 14px;\n}\n\n.small {\n  font-size: 11px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9yZXN0YXVyYW50LWNhcmQvcmVzdGF1cmFudC1jYXJkLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL3Jlc3RhdXJhbnQtY2FyZC9yZXN0YXVyYW50LWNhcmQuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxrQkFBQTtFQUNBLE9BQUE7RUFDQSxZQUFBO0VBQ0EsV0FBQTtBQ0NGOztBREVBO0VBQ0UsZ0JBQUE7QUNDRjs7QURFQTtFQUNFLDhCQUFBO0VBQ0EsWUFBQTtFQUNBLFlBQUE7RUFDQSxrQkFBQTtFQUNBLFlBQUE7QUNDRjs7QURHQTtFQUNFLFlBQUE7QUNBRjs7QURHQTtFQUNFLFdBQUE7RUFDQSxZQUFBO0VBQ0EsWUFBQTtBQ0FGOztBREdBO0VBQ0UsZUFBQTtBQ0FGOztBREdBO0VBQ0UsZUFBQTtBQ0FGOztBREdBO0VBQ0UsZUFBQTtBQ0FGIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9yZXN0YXVyYW50LWNhcmQvcmVzdGF1cmFudC1jYXJkLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmltYWdlU2hvdyB7XG4gIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgdG9wOiAwJTtcbiAgaGVpZ2h0OiAxNHZoO1xuICB3aWR0aDogMTR2aDtcbn1cblxuaW9uLWNhcmQtaGVhZGVyIHtcbiAgcGFkZGluZzogMnZ3IDB2dztcbn1cblxuLm92ZXJsYXkge1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG4gIGNvbG9yOiB3aGl0ZTtcbiAgcGFkZGluZzogMnZoO1xuICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gIGJvdHRvbTogMzZ2dztcbn1cblxuXG4uY29udGFpbmVyIHtcbiAgaGVpZ2h0OiA4NXZ3O1xufVxuXG4ubWFpbkltZyB7XG4gIHdpZHRoOiA2MHZ3O1xuICBoZWlnaHQ6IDYwdnc7XG4gIG1hcmdpbjogYXV0bztcbn1cblxuaDIge1xuICBmb250LXNpemU6IDE4cHg7XG59XG5cbi5tZWRpdW0ge1xuICBmb250LXNpemU6IDE0cHg7XG59XG5cbi5zbWFsbCB7XG4gIGZvbnQtc2l6ZTogMTFweDtcbn1cbiIsIi5pbWFnZVNob3cge1xuICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gIHRvcDogMCU7XG4gIGhlaWdodDogMTR2aDtcbiAgd2lkdGg6IDE0dmg7XG59XG5cbmlvbi1jYXJkLWhlYWRlciB7XG4gIHBhZGRpbmc6IDJ2dyAwdnc7XG59XG5cbi5vdmVybGF5IHtcbiAgYmFja2dyb3VuZDogcmdiYSgwLCAwLCAwLCAwLjUpO1xuICBjb2xvcjogd2hpdGU7XG4gIHBhZGRpbmc6IDJ2aDtcbiAgcG9zaXRpb246IHJlbGF0aXZlO1xuICBib3R0b206IDM2dnc7XG59XG5cbi5jb250YWluZXIge1xuICBoZWlnaHQ6IDg1dnc7XG59XG5cbi5tYWluSW1nIHtcbiAgd2lkdGg6IDYwdnc7XG4gIGhlaWdodDogNjB2dztcbiAgbWFyZ2luOiBhdXRvO1xufVxuXG5oMiB7XG4gIGZvbnQtc2l6ZTogMThweDtcbn1cblxuLm1lZGl1bSB7XG4gIGZvbnQtc2l6ZTogMTRweDtcbn1cblxuLnNtYWxsIHtcbiAgZm9udC1zaXplOiAxMXB4O1xufSJdfQ== */"
 
 /***/ }),
 
@@ -8094,6 +8171,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
 /* harmony import */ var _ionic_storage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ionic/storage */ "./node_modules/@ionic/storage/fesm2015/ionic-storage.js");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm2015/index.js");
+/* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ngx-logger */ "./node_modules/ngx-logger/fesm2015/ngx-logger.js");
+
 
 
 
@@ -8102,22 +8181,22 @@ __webpack_require__.r(__webpack_exports__);
 class Favourite {
 }
 let FavouriteService = class FavouriteService {
-    constructor(storage, oauthService) {
+    constructor(storage, oauthService, logger) {
         this.storage = storage;
         this.oauthService = oauthService;
+        this.logger = logger;
         this.productsId = [];
         this.storesId = [];
         this.favourites = [];
         this.favouriteSubject = new rxjs__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"](this.favourites);
-        console.log('Favourite Service Created');
+        this.logger.info('Favourites Service Created');
         this.oauthService.loadUserProfile()
             .then((data) => {
             this.username = data.preferred_username;
             this.storage.get(this.username + '_favourites')
                 .then(p => {
-                console.log(p);
+                this.logger.info('Got Favourites From Storage ', p);
                 if (p != undefined) {
-                    console.log(p);
                     this.favourites = p;
                 }
                 if (p === null) {
@@ -8174,14 +8253,16 @@ let FavouriteService = class FavouriteService {
 };
 FavouriteService.ctorParameters = () => [
     { type: _ionic_storage__WEBPACK_IMPORTED_MODULE_3__["Storage"] },
-    { type: angular_oauth2_oidc__WEBPACK_IMPORTED_MODULE_1__["OAuthService"] }
+    { type: angular_oauth2_oidc__WEBPACK_IMPORTED_MODULE_1__["OAuthService"] },
+    { type: ngx_logger__WEBPACK_IMPORTED_MODULE_5__["NGXLogger"] }
 ];
 FavouriteService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])({
         providedIn: 'root'
     }),
     tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_ionic_storage__WEBPACK_IMPORTED_MODULE_3__["Storage"],
-        angular_oauth2_oidc__WEBPACK_IMPORTED_MODULE_1__["OAuthService"]])
+        angular_oauth2_oidc__WEBPACK_IMPORTED_MODULE_1__["OAuthService"],
+        ngx_logger__WEBPACK_IMPORTED_MODULE_5__["NGXLogger"]])
 ], FavouriteService);
 
 
@@ -8222,9 +8303,13 @@ let FilterService = class FilterService {
         this.currentFilter = FILTER_TYPES.DISTANCE_WISE;
         this.filterBehaviour = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"](this.currentFilter);
         this.distance = 25;
+        this.locationBehaviour = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"](this.currentCordinates);
     }
     getSubscription() {
         return this.filterBehaviour;
+    }
+    getLocationSubscription() {
+        return this.locationBehaviour;
     }
     setFilter(filter) {
         this.currentFilter = filter;
@@ -8246,14 +8331,17 @@ let FilterService = class FilterService {
         }
     }
     getStoreByDistance(pageNumber, success) {
-        this.queryResource
-            .searchByNearestLocationUsingGET({
-            latLon: this.currentCordinates,
-            kiloMeter: this.distance
-        })
-            .subscribe(data => {
-            success(data.totalElements, data.totalPages, data.content);
-        });
+        if (this.currentCordinates !== undefined) {
+            this.locationBehaviour.next(this.currentCordinates);
+            this.queryResource
+                .searchByNearestLocationUsingGET({
+                latLon: this.currentCordinates,
+                kiloMeter: this.distance
+            })
+                .subscribe(data => {
+                success(data.totalElements, data.totalPages, data.content);
+            });
+        }
     }
     getStoreByRating(pageNumber, success) {
         this.queryResource.findStoreByRatingUsingGET().subscribe(data => {
@@ -8772,12 +8860,13 @@ Util = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "environment", function() { return environment; });
+/* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ngx-logger */ "./node_modules/ngx-logger/fesm2015/ngx-logger.js");
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-const environment = {
-    production: false
-};
+// export const environment = {
+//   production: false
+// };
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
@@ -8786,6 +8875,14 @@ const environment = {
  * on performance if an error is thrown.
  */
 // import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+
+const environment = {
+    production: false,
+    logging: {
+        level: ngx_logger__WEBPACK_IMPORTED_MODULE_0__["NgxLoggerLevel"].TRACE,
+        enableSourceMaps: true
+    }
+};
 
 
 /***/ }),

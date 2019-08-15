@@ -3,6 +3,8 @@ import { FilterService, FILTER_TYPES } from './../../services/filter.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Util } from 'src/app/services/util';
 import { IonInfiniteScroll, IonRefresher, IonSlides } from '@ionic/angular';
+import { NGXLogger } from 'ngx-logger';
+import { MapComponent } from 'src/app/components/map/map.component';
 
 @Component({
   selector: 'app-restaurant',
@@ -21,35 +23,40 @@ export class RestaurantPage implements OnInit {
 
   @ViewChild(IonInfiniteScroll , null) ionInfiniteScroll: IonInfiniteScroll;
   @ViewChild(IonRefresher , null) IonRefresher: IonRefresher;
+  @ViewChild(MapComponent , null) mapComponent: MapComponent;
 
   constructor(
     private filter: FilterService,
-    private util: Util
+    private util: Util,
+    private logger: NGXLogger
   ) {}
 
   ngOnInit() {
+    this.getStores();
   }
 
   updatedLocation(event) {
-    console.log('Location Changed',event);
+    this.logger.info('Changed Current Location - LatLon ' , event);
     this.filter.currentCordinates = event.latLon;
-    this.filter.setFilter(FILTER_TYPES.DISTANCE_WISE); 
-    this.getStores();
+    this.logger.info('Setting Distance_wise Filter');
+    this.filter.setFilter(FILTER_TYPES.DISTANCE_WISE);
+    this.logger.info('Getting Stores');
   }
 
   getStores() {
     this.filter.getSubscription().subscribe(data => {
-      console.log(data);
+      this.logger.info('Got Stores ' , data);
       this.stores = [];
       this.filter.getStores(0, (totalElements, totalPages, stores) => {
         if (totalPages === 1) {
-          console.log('Disabling Infinite Scroll');
+          this.logger.info('Disabling Infinite Scroll');
           this.toggleInfiniteScroll();
         }
         console.log(stores);
         stores.forEach(s => {
           this.stores.push(s);
         });
+        this.mapComponent.setStores(stores);
         this.showLoading = false;
         this.toggleIonRefresher();
       });
@@ -57,6 +64,7 @@ export class RestaurantPage implements OnInit {
   }
 
   loadMoreStores(event) {
+    this.logger.info('Load More Stores if exists');
     this.page++;
     this.filter.getStores(this.page, (totalElements, totalPages, stores) => {
       if (this.page === totalPages) {
@@ -74,6 +82,7 @@ export class RestaurantPage implements OnInit {
   }
 
   doRefresh(event) {
+    this.logger.info('Refreshing Page');
     this.getStores();
   }
 

@@ -10,6 +10,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { Util } from 'src/app/services/util';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-header',
@@ -39,52 +40,59 @@ export class HeaderComponent implements OnInit {
   constructor(
     private locationService: LocationService,
     private queryResource: QueryResourceService,
-    private util: Util
+    private util: Util,
+    private logger: NGXLogger
   ) {}
 
   ngOnInit() {
+    this.logger.info('Initializing' , HeaderComponent.name);
     this.getCurrentLocation();
   }
 
   toggleSearchBar() {
+    this.logger.info('SearchBar Toggled - View' , this.showSearchBar);
     this.showPlaceSearch = false;
     this.showSearchBar = !this.showSearchBar;
   }
 
   togglePlaceSearch() {
+    this.logger.info('PlaceSearch Toggled - View' , this.showPlaceSearch);
     this.showSearchBar = false;
     this.showPlaceSearch = !this.showPlaceSearch;
   }
 
   toggleInfiniteScroll() {
+    this.logger.info('InfiniteScroll Toggled ' , this.infiniteScroll.disabled);
     this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
   }
 
   selectPlace(place) {
+    this.logger.info('Place Selected' , place);
     this.togglePlaceSearch();
     this.places = [];
     this.currentPlaceName = place.description;
-
+    this.logger.info('Getting LatLon for selected Location');
     this.locationService.geocodeAddress(place.place_id).then(data => {
-      // Emit latLon Here
-      console.log(data);
-      this.placeChanged.emit({ latLon: data[0] + '' + data[1] });
+      this.logger.info('Found LatLon for selected Location' , data);
+      this.placeChanged.emit({ latLon: data[0] + ',' + data[1] });
+    }).catch(err => {
+      this.logger.warn('Error Getting LatLon for selected Location' , place);
     });
   }
 
   // Get Current Location
   getCurrentLocation() {
+    this.logger.info('Getting Current Location');
     this.locationService.getCurrentLoactionAddress((data,coords) => {
-      console.log(data[0].address_components[0].short_name);
       this.currentPlaceName = data[0].address_components[0].short_name;
-      console.log(this.currentPlaceName);
-      // Emit Real Latlon HerelatLon Here
-      console.log('Current Coordinates' , coords);
+      this.logger.info('Current Place Name ' , this.currentPlaceName);
+      this.logger.info('Getting LatLon for current Location' , coords);
       this.placeChanged.emit({ latLon: coords.coords.latitude + ',' + coords.coords.longitude });
     });
   }
 
   getPlacePredictions(event) {
+    this.logger.info('Getting Place Suggestions');
     this.places = [];
     console.log(event.detail.value);
     const searchterm = event.detail.value;
@@ -92,7 +100,7 @@ export class HeaderComponent implements OnInit {
       return;
     }
     this.locationService.getPredictions(searchterm).subscribe(res => {
-      console.log(res);
+      this.logger.info('Got Place Suggestions', res);
       this.places = res;
     });
   }
@@ -121,12 +129,14 @@ export class HeaderComponent implements OnInit {
   }
 
   searchRestaurants(event) {
+    this.logger.info('Getting Restaurants By Name');
     this.searchTerm = event.detail.value;
     this.storeSearchResults = [];
     this.getRestaurantsByName(0);
   }
 
   loadMoreData() {
+    this.logger.info('Loading More Data');
     this.pageCount++;
     this.getRestaurantsByName(this.pageCount);
   }
