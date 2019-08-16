@@ -3,6 +3,7 @@ import { Store } from './../../api/models/store';
 import { FavouriteService } from './../../services/favourite.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-restaurant-card',
@@ -28,13 +29,13 @@ export class RestaurantCardComponent implements OnInit {
   constructor(
     private favourite: FavouriteService,
     private queryResource: QueryResourceService,
-    private nav: NavController
+    private nav: NavController,
+    private logger: NGXLogger
   ) { }
 
   ngOnInit() {
     this.timeNow = new Date();
     this.getStoreCategory();
-    console.log(this.viewType)
     if(this.viewType === 'normal') {
       this.checkIfAlreadyFavourite();
       this.getStoreDeliveryInfo();
@@ -43,16 +44,16 @@ export class RestaurantCardComponent implements OnInit {
   }
 
   getStoreCategory() {
-    console.log('Getting Category', this.store.regNo);
+    this.logger.info('Getting Category', this.store.regNo);
     this.queryResource
       .findStoreTypeByStoreIdUsingGET({ storeId: this.store.regNo })
       .subscribe(
         success => {
-          console.log('Got Categpries' , success.content);
+          this.logger.info('Got Categpries ' , this.store.regNo , success.content);
           this.categories = success.content;
         },
         err => {
-          console.log('Error getting Store category' , this.store.regNo);
+          this.logger.fatal('Error getting Store category' , this.store.regNo , err);
         }
       );
   }
@@ -93,7 +94,6 @@ export class RestaurantCardComponent implements OnInit {
   checkIfAlreadyFavourite() {
     this.favourite.getFavourites()
     .subscribe(data => {
-      console.log(this.favourite.getFavouriteStoresID());
       if(this.favourite.getFavouriteStoresID()
       .includes(this.store.id)) {
         this.isFavourite = true;

@@ -65,23 +65,28 @@ export class StorePage implements OnInit {
       .findStoreByRegisterNumberUsingGET(this.storeId)
       .subscribe(
         result => {
-          console.log('Got Store', result);
+          this.logger.info('Got Store ' , result.name , result);
           this.store = result;
           this.showRestaurantLoading = false;
         },
         err => {
           this.showRestaurantLoading = false;
-          console.log('Error fetching store data', err);
+          this.logger.fatal('Error Fetching Stores' , err);
         }
       );
   }
 
   getCategoriesEntry(i) {
     this.queryResource
-    .findCategoryAndCountUsingGET(this.storeId)
+    .findCategoryAndCountBystoreIdUsingGET({
+      storeId: this.storeId
+    })
     .subscribe(result => {
-      console.log('Got Categories' , result);
+      this.logger.info('Got Categories Entry' , result);
       this.entry = result;
+    },
+    err => {
+      this.logger.fatal('Error Fetching Categories Entry' , err);
     });
   }
 
@@ -91,7 +96,7 @@ export class StorePage implements OnInit {
       iDPcode: this.storeId
     })
     .subscribe(result => {
-      console.log('Got Categories' , result);
+      this.logger.info('Got Categories' , result);
       result.content.forEach(c => {
         this.categories.push(c);
       });

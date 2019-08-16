@@ -873,7 +873,7 @@ module.exports = "<ion-scroll *ngIf=\"showFilters === false\">\n  <ion-grid no-p
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-segment slot=\"end\" [value]=\"currentRoute\">\n    <ion-segment-button value=\"restaurant\" (click)=\"goTo('/restaurant')\">\n        <ion-icon name=\"list\"></ion-icon>\n    </ion-segment-button>  \n  <ion-segment-button value=\"basket\" (click)=\"goTo('/basket')\">\n    <ion-icon name=\"basket\"></ion-icon>\n    <ion-badge color=\"primary\"><strong>{{orderCount}}</strong></ion-badge>\n  </ion-segment-button>    \n  <ion-segment-button value=\"profile\" (click)=\"goTo('/profile')\">\n    <ion-icon name=\"person\"></ion-icon>\n  </ion-segment-button>  \n  <ion-segment-button (click)=\"emitFilterClick()\">\n    <ion-icon name=\"funnel\"></ion-icon>\n  </ion-segment-button>\n</ion-segment>"
+module.exports = "<ion-segment slot=\"end\" [value]=\"currentRoute\">\n    <ion-segment-button value=\"restaurant\" (click)=\"goTo('/restaurant')\">\n        <ion-icon name=\"list\"></ion-icon>\n    </ion-segment-button>  \n  <ion-segment-button value=\"basket\" (click)=\"goTo('/basket')\">\n    <ion-icon name=\"basket\"></ion-icon>\n    <ion-badge color=\"primary\"><strong>{{orderCount}}</strong></ion-badge>\n  </ion-segment-button>    \n  <ion-segment-button value=\"profile\" (click)=\"goTo('/profile')\">\n    <ion-icon name=\"person\"></ion-icon>\n  </ion-segment-button>  \n  <!-- <ion-segment-button (click)=\"emitFilterClick()\">\n    <ion-icon name=\"funnel\"></ion-icon>\n  </ion-segment-button> -->\n</ion-segment>"
 
 /***/ }),
 
@@ -884,7 +884,7 @@ module.exports = "<ion-segment slot=\"end\" [value]=\"currentRoute\">\n    <ion-
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>Frequently Order Works</p>"
+module.exports = "<div class=\"vertical-align-center\">\n\n    <p>\n        History(0)\n    </p>\n\n</div>"
 
 /***/ }),
 
@@ -1027,7 +1027,7 @@ module.exports = "<ion-card no-padding>\n  <ion-card-content>\n    <ion-textarea
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-content>\n  <ion-list *ngIf=\"auxilaryItems.length > 0\">\n      <ion-item lines=\"none\" *ngFor=\"let auxilary of auxilaryItems\">\n          <ion-thumbnail>\n            <ion-img\n              [src]=\"\n                'data:' +\n                auxilary.product.imageContentType +\n                ';base64,' +\n                auxilary.product.image\n              \"\n              class=\"imageShow\"\n            >\n            </ion-img>\n          </ion-thumbnail>\n          <ion-card-content>\n            <ion-grid>\n              <ion-row (click)=\"toggleDescription()\">\n                <ion-col class=\"title-card\" margin-top padding-top>\n                  <ion-card-title>{{ auxilary.product.name }}</ion-card-title>\n                  <ion-text\n                    ><strong>&#8364;{{ auxilary.sellPrice }}</strong></ion-text\n                  >\n                </ion-col>\n              </ion-row>\n              <ion-row>\n                <ion-col size=\"10\">\n                  <ion-buttons>\n                    <ion-button (click)=\"remove(i, stockCurrent)\" color=\"medium\">\n                      <ion-icon name=\"remove\"></ion-icon>\n                    </ion-button>\n                    <ion-button fill=\"none\" disabled>{{ orderCount }}</ion-button>\n                    <ion-button (click)=\"add(i, stockCurrent)\" color=\"medium\">\n                      <ion-icon name=\"add\"></ion-icon>\n                    </ion-button>\n                  </ion-buttons>\n                </ion-col>\n              </ion-row>\n            </ion-grid>\n          </ion-card-content>\n        </ion-item>\n  </ion-list>\n</ion-content>\n"
+module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-buttons slot=\"start\">\n      <ion-button>\n        <ion-icon name=\"arrow-back\"></ion-icon>\n        <ion-title>Add Auxilary Items For {{ productName }}</ion-title>\n      </ion-button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n<ion-content>\n  <ion-list *ngIf=\"auxilaryItems.length > 0\">\n      <ion-item lines=\"none\" *ngFor=\"let auxilary of auxilaryItems\">\n          <ion-thumbnail>\n            <ion-img\n              [src]=\"\n                'data:' +\n                auxilary.product.imageContentType +\n                ';base64,' +\n                auxilary.product.image\n              \"\n              class=\"imageShow\"\n            >\n            </ion-img>\n          </ion-thumbnail>\n          <ion-card-content>\n            <ion-grid>\n              <ion-row (click)=\"toggleDescription()\">\n                <ion-col class=\"title-card\" margin-top padding-top>\n                  <ion-card-title>{{ auxilary.product.name }}</ion-card-title>\n                  <ion-text\n                    ><strong>&#8364;{{ auxilary.sellPrice }}</strong></ion-text\n                  >\n                </ion-col>\n              </ion-row>\n              <ion-row>\n                <ion-col size=\"10\">\n                  <ion-buttons>\n                    <ion-button (click)=\"remove(i, stockCurrent)\" color=\"medium\">\n                      <ion-icon name=\"remove\"></ion-icon>\n                    </ion-button>\n                    <ion-button fill=\"none\" disabled>{{ orderCount }}</ion-button>\n                    <ion-button (click)=\"add(i, stockCurrent)\" color=\"medium\">\n                      <ion-icon name=\"add\"></ion-icon>\n                    </ion-button>\n                  </ion-buttons>\n                </ion-col>\n              </ion-row>\n            </ion-grid>\n          </ion-card-content>\n        </ion-item>\n  </ion-list>\n</ion-content>\n"
 
 /***/ }),
 
@@ -5681,7 +5681,6 @@ let CartComponent = class CartComponent {
     }
     getCartDetails() {
         this.cart.observableTickets.subscribe(data => {
-            console.log(data);
             this.cartSize = data.length;
             this.totalPrice = this.cart.totalPrice;
             this.orderLines = data;
@@ -6342,7 +6341,7 @@ FilterComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "ion-badge {\n  position: absolute;\n  left: 65px;\n  border-radius: 50%;\n  width: 25px;\n  height: 25px;\n  text-align: center;\n  -webkit-box-pack: center;\n          justify-content: center;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvY29tcG9uZW50cy9mb290ZXIvZm9vdGVyLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL2Zvb3Rlci9mb290ZXIuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxrQkFBQTtFQUNBLFVBQUE7RUFDQSxrQkFBQTtFQUNBLFdBQUE7RUFDQSxZQUFBO0VBQ0Esa0JBQUE7RUFDQSx3QkFBQTtVQUFBLHVCQUFBO0VBQ0Esb0JBQUE7RUFBQSxhQUFBO0VBQ0EseUJBQUE7VUFBQSxtQkFBQTtBQ0NKIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9mb290ZXIvZm9vdGVyLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiaW9uLWJhZGdlIHtcbiAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgbGVmdDogNjVweDtcbiAgICBib3JkZXItcmFkaXVzOiA1MCU7XG4gICAgd2lkdGg6IDI1cHg7XG4gICAgaGVpZ2h0OiAyNXB4O1xuICAgIHRleHQtYWxpZ246IGNlbnRlcjtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG59IiwiaW9uLWJhZGdlIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBsZWZ0OiA2NXB4O1xuICBib3JkZXItcmFkaXVzOiA1MCU7XG4gIHdpZHRoOiAyNXB4O1xuICBoZWlnaHQ6IDI1cHg7XG4gIHRleHQtYWxpZ246IGNlbnRlcjtcbiAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gIGRpc3BsYXk6IGZsZXg7XG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG59Il19 */"
+module.exports = "ion-badge {\n  position: absolute;\n  left: 83px;\n  border-radius: 50%;\n  width: 25px;\n  height: 25px;\n  text-align: center;\n  -webkit-box-pack: center;\n          justify-content: center;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvY29tcG9uZW50cy9mb290ZXIvZm9vdGVyLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL2Zvb3Rlci9mb290ZXIuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxrQkFBQTtFQUNBLFVBQUE7RUFDQSxrQkFBQTtFQUNBLFdBQUE7RUFDQSxZQUFBO0VBQ0Esa0JBQUE7RUFDQSx3QkFBQTtVQUFBLHVCQUFBO0VBQ0Esb0JBQUE7RUFBQSxhQUFBO0VBQ0EseUJBQUE7VUFBQSxtQkFBQTtBQ0NKIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9mb290ZXIvZm9vdGVyLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiaW9uLWJhZGdlIHtcbiAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgbGVmdDogODNweDtcbiAgICBib3JkZXItcmFkaXVzOiA1MCU7XG4gICAgd2lkdGg6IDI1cHg7XG4gICAgaGVpZ2h0OiAyNXB4O1xuICAgIHRleHQtYWxpZ246IGNlbnRlcjtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG59IiwiaW9uLWJhZGdlIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBsZWZ0OiA4M3B4O1xuICBib3JkZXItcmFkaXVzOiA1MCU7XG4gIHdpZHRoOiAyNXB4O1xuICBoZWlnaHQ6IDI1cHg7XG4gIHRleHQtYWxpZ246IGNlbnRlcjtcbiAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gIGRpc3BsYXk6IGZsZXg7XG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG59Il19 */"
 
 /***/ }),
 
@@ -7101,6 +7100,7 @@ let MapComponent = class MapComponent {
     // App Specific Methods
     getLatLon() {
         this.filter.getLocationSubscription().subscribe(coords => {
+            this.logger.info('Got Coordinates ', coords);
             if (coords !== undefined) {
                 if (this.mapAlreadyLoaded === false) {
                     this.loadMap(coords);
@@ -7210,7 +7210,6 @@ let ProductCardComponent = class ProductCardComponent {
         this.favourite.removeFromFavorite(product, 'product');
     }
     getAuxilaries(i) {
-        this.logger.info('Got Auxilary For Product ', this.stockCurrent.product.name);
         this.queryResource.findAuxilariesByProductIdUsingGET(this.stockCurrent.product.id)
             .subscribe(data => {
             data.content.forEach(a => {
@@ -7226,7 +7225,6 @@ let ProductCardComponent = class ProductCardComponent {
     checkIfAlreadyFavourite() {
         this.favourite.getFavourites()
             .subscribe(data => {
-            console.log(this.favourite.getFavouriteProductsID());
             if (this.favourite.getFavouriteProductsID()
                 .includes(this.stockCurrent.product.id)) {
                 this.isFavourite = true;
@@ -7251,7 +7249,10 @@ let ProductCardComponent = class ProductCardComponent {
         return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function* () {
             const modal = yield this.modalController.create({
                 component: _show_auxilary_modal_show_auxilary_modal_component__WEBPACK_IMPORTED_MODULE_8__["ShowAuxilaryModalComponent"],
-                componentProps: { auxilaryItems: this.auxilaries }
+                componentProps: {
+                    auxilaryItems: this.auxilaries,
+                    productName: this.stockCurrent.product.name
+                }
             });
             modal.present();
         });
@@ -7259,7 +7260,6 @@ let ProductCardComponent = class ProductCardComponent {
     checkIfOrdered() {
         this.cartService.observableTickets
             .subscribe(data => {
-            console.log('Orders ', data);
             const p = data.filter(o => o.productId === this.stockCurrent.product.id);
             console.log(p);
             if (p.length > 0) {
@@ -7381,8 +7381,8 @@ let ProfileEditComponent = class ProfileEditComponent {
                 cssClass: 'half-height'
             });
             modal.onDidDismiss().then(data => {
-                this.customer.photo = data.data.imageBase64;
-                this.customer.photoContentType = data.data.imageType;
+                this.customer.photo = data.data.image.substring(data.data.image.indexOf(',') + 1);
+                this.customer.photoContentType = data.data.image.slice(data.data.image.indexOf(':') + 1, data.data.image.indexOf(';'));
             });
             return yield modal.present();
         });
@@ -7391,11 +7391,13 @@ let ProfileEditComponent = class ProfileEditComponent {
         this.profileKeycloak.name = this.customer.name;
         this.logger.info('Saving User Details', this.profileKeycloak, this.customer, this.contact);
         this.keycloak.updateCurrentUserDetails(this.profileKeycloak, () => {
-            this.commandResourceService.updateCustomerUsingPUT(this.customer)
+            this.commandResourceService
+                .updateCustomerUsingPUT(this.customer)
                 .subscribe(c => {
                 this.customer = c;
                 if (this.contact !== undefined) {
-                    this.commandResourceService.updateContactUsingPUT(this.contact)
+                    this.commandResourceService
+                        .updateContactUsingPUT(this.contact)
                         .subscribe(contact => {
                         this.contact = contact;
                         this.dismiss();
@@ -7597,7 +7599,7 @@ RatingComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".imageShow {\n  position: relative;\n  top: 0%;\n  height: 14vh;\n  width: 14vh;\n}\n\nion-card-header {\n  padding: 2vw 0vw;\n}\n\n.overlay {\n  background: rgba(0, 0, 0, 0.5);\n  color: white;\n  padding: 2vh;\n  position: relative;\n  bottom: 36vw;\n}\n\n.container {\n  height: 85vw;\n}\n\n.mainImg {\n  width: 60vw;\n  height: 60vw;\n  margin: auto;\n}\n\nh2 {\n  font-size: 18px;\n}\n\n.medium {\n  font-size: 14px;\n}\n\n.small {\n  font-size: 11px;\n}\n\n.overflow-text-wrap {\n  font-size: 11px;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvY29tcG9uZW50cy9yZXN0YXVyYW50LWNhcmQvcmVzdGF1cmFudC1jYXJkLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL3Jlc3RhdXJhbnQtY2FyZC9yZXN0YXVyYW50LWNhcmQuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxrQkFBQTtFQUNBLE9BQUE7RUFDQSxZQUFBO0VBQ0EsV0FBQTtBQ0NGOztBREVBO0VBQ0UsZ0JBQUE7QUNDRjs7QURFQTtFQUNFLDhCQUFBO0VBQ0EsWUFBQTtFQUNBLFlBQUE7RUFDQSxrQkFBQTtFQUNBLFlBQUE7QUNDRjs7QURHQTtFQUNFLFlBQUE7QUNBRjs7QURHQTtFQUNFLFdBQUE7RUFDQSxZQUFBO0VBQ0EsWUFBQTtBQ0FGOztBREdBO0VBQ0UsZUFBQTtBQ0FGOztBREdBO0VBQ0UsZUFBQTtBQ0FGOztBREdBO0VBQ0UsZUFBQTtBQ0FGOztBREdBO0VBQ0UsZUFBQTtFQUNBLG1CQUFBO0VBQ0EsdUJBQUE7RUFDQSxnQkFBQTtBQ0FGIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9yZXN0YXVyYW50LWNhcmQvcmVzdGF1cmFudC1jYXJkLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmltYWdlU2hvdyB7XG4gIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgdG9wOiAwJTtcbiAgaGVpZ2h0OiAxNHZoO1xuICB3aWR0aDogMTR2aDtcbn1cblxuaW9uLWNhcmQtaGVhZGVyIHtcbiAgcGFkZGluZzogMnZ3IDB2dztcbn1cblxuLm92ZXJsYXkge1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG4gIGNvbG9yOiB3aGl0ZTtcbiAgcGFkZGluZzogMnZoO1xuICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gIGJvdHRvbTogMzZ2dztcbn1cblxuXG4uY29udGFpbmVyIHtcbiAgaGVpZ2h0OiA4NXZ3O1xufVxuXG4ubWFpbkltZyB7XG4gIHdpZHRoOiA2MHZ3O1xuICBoZWlnaHQ6IDYwdnc7XG4gIG1hcmdpbjogYXV0bztcbn1cblxuaDIge1xuICBmb250LXNpemU6IDE4cHg7XG59XG5cbi5tZWRpdW0ge1xuICBmb250LXNpemU6IDE0cHg7XG59XG5cbi5zbWFsbCB7XG4gIGZvbnQtc2l6ZTogMTFweDtcbn1cblxuLm92ZXJmbG93LXRleHQtd3JhcCB7XG4gIGZvbnQtc2l6ZTogMTFweDtcbiAgd2hpdGUtc3BhY2U6IG5vd3JhcDtcbiAgdGV4dC1vdmVyZmxvdzogZWxsaXBzaXM7XG4gIG92ZXJmbG93OiBoaWRkZW47XG59IiwiLmltYWdlU2hvdyB7XG4gIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgdG9wOiAwJTtcbiAgaGVpZ2h0OiAxNHZoO1xuICB3aWR0aDogMTR2aDtcbn1cblxuaW9uLWNhcmQtaGVhZGVyIHtcbiAgcGFkZGluZzogMnZ3IDB2dztcbn1cblxuLm92ZXJsYXkge1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG4gIGNvbG9yOiB3aGl0ZTtcbiAgcGFkZGluZzogMnZoO1xuICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gIGJvdHRvbTogMzZ2dztcbn1cblxuLmNvbnRhaW5lciB7XG4gIGhlaWdodDogODV2dztcbn1cblxuLm1haW5JbWcge1xuICB3aWR0aDogNjB2dztcbiAgaGVpZ2h0OiA2MHZ3O1xuICBtYXJnaW46IGF1dG87XG59XG5cbmgyIHtcbiAgZm9udC1zaXplOiAxOHB4O1xufVxuXG4ubWVkaXVtIHtcbiAgZm9udC1zaXplOiAxNHB4O1xufVxuXG4uc21hbGwge1xuICBmb250LXNpemU6IDExcHg7XG59XG5cbi5vdmVyZmxvdy10ZXh0LXdyYXAge1xuICBmb250LXNpemU6IDExcHg7XG4gIHdoaXRlLXNwYWNlOiBub3dyYXA7XG4gIHRleHQtb3ZlcmZsb3c6IGVsbGlwc2lzO1xuICBvdmVyZmxvdzogaGlkZGVuO1xufSJdfQ== */"
+module.exports = ".imageShow {\n  position: relative;\n  top: 0%;\n  height: 14vh;\n  width: 14vh;\n}\n\nion-card-header {\n  padding: 2vw 0vw;\n}\n\n.overlay {\n  background: rgba(0, 0, 0, 0.7);\n  color: white;\n  padding: 2vh;\n  position: relative;\n}\n\n.mainImg {\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n  height: -webkit-fit-content;\n  height: -moz-fit-content;\n  height: fit-content;\n  margin: auto;\n}\n\nh2 {\n  font-size: 18px;\n}\n\n.medium {\n  font-size: 14px;\n}\n\n.small {\n  font-size: 11px;\n}\n\n.overflow-text-wrap {\n  font-size: 11px;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvY29tcG9uZW50cy9yZXN0YXVyYW50LWNhcmQvcmVzdGF1cmFudC1jYXJkLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL3Jlc3RhdXJhbnQtY2FyZC9yZXN0YXVyYW50LWNhcmQuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxrQkFBQTtFQUNBLE9BQUE7RUFDQSxZQUFBO0VBQ0EsV0FBQTtBQ0NGOztBREVBO0VBQ0UsZ0JBQUE7QUNDRjs7QURFQTtFQUNFLDhCQUFBO0VBQ0EsWUFBQTtFQUNBLFlBQUE7RUFDQSxrQkFBQTtBQ0NGOztBRE1BO0VBQ0UsMEJBQUE7RUFBQSx1QkFBQTtFQUFBLGtCQUFBO0VBQ0EsMkJBQUE7RUFBQSx3QkFBQTtFQUFBLG1CQUFBO0VBQ0EsWUFBQTtBQ0hGOztBRE1BO0VBQ0UsZUFBQTtBQ0hGOztBRE1BO0VBQ0UsZUFBQTtBQ0hGOztBRE1BO0VBQ0UsZUFBQTtBQ0hGOztBRE1BO0VBQ0UsZUFBQTtFQUNBLG1CQUFBO0VBQ0EsdUJBQUE7RUFDQSxnQkFBQTtBQ0hGIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9yZXN0YXVyYW50LWNhcmQvcmVzdGF1cmFudC1jYXJkLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmltYWdlU2hvdyB7XG4gIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgdG9wOiAwJTtcbiAgaGVpZ2h0OiAxNHZoO1xuICB3aWR0aDogMTR2aDtcbn1cblxuaW9uLWNhcmQtaGVhZGVyIHtcbiAgcGFkZGluZzogMnZ3IDB2dztcbn1cblxuLm92ZXJsYXkge1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNyk7XG4gIGNvbG9yOiB3aGl0ZTtcbiAgcGFkZGluZzogMnZoO1xuICBwb3NpdGlvbjogcmVsYXRpdmU7XG59XG5cblxuLmNvbnRhaW5lciB7XG59XG5cbi5tYWluSW1nIHtcbiAgd2lkdGg6IGZpdC1jb250ZW50O1xuICBoZWlnaHQ6IGZpdC1jb250ZW50O1xuICBtYXJnaW46IGF1dG87XG59XG5cbmgyIHtcbiAgZm9udC1zaXplOiAxOHB4O1xufVxuXG4ubWVkaXVtIHtcbiAgZm9udC1zaXplOiAxNHB4O1xufVxuXG4uc21hbGwge1xuICBmb250LXNpemU6IDExcHg7XG59XG5cbi5vdmVyZmxvdy10ZXh0LXdyYXAge1xuICBmb250LXNpemU6IDExcHg7XG4gIHdoaXRlLXNwYWNlOiBub3dyYXA7XG4gIHRleHQtb3ZlcmZsb3c6IGVsbGlwc2lzO1xuICBvdmVyZmxvdzogaGlkZGVuO1xufSIsIi5pbWFnZVNob3cge1xuICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gIHRvcDogMCU7XG4gIGhlaWdodDogMTR2aDtcbiAgd2lkdGg6IDE0dmg7XG59XG5cbmlvbi1jYXJkLWhlYWRlciB7XG4gIHBhZGRpbmc6IDJ2dyAwdnc7XG59XG5cbi5vdmVybGF5IHtcbiAgYmFja2dyb3VuZDogcmdiYSgwLCAwLCAwLCAwLjcpO1xuICBjb2xvcjogd2hpdGU7XG4gIHBhZGRpbmc6IDJ2aDtcbiAgcG9zaXRpb246IHJlbGF0aXZlO1xufVxuXG4ubWFpbkltZyB7XG4gIHdpZHRoOiBmaXQtY29udGVudDtcbiAgaGVpZ2h0OiBmaXQtY29udGVudDtcbiAgbWFyZ2luOiBhdXRvO1xufVxuXG5oMiB7XG4gIGZvbnQtc2l6ZTogMThweDtcbn1cblxuLm1lZGl1bSB7XG4gIGZvbnQtc2l6ZTogMTRweDtcbn1cblxuLnNtYWxsIHtcbiAgZm9udC1zaXplOiAxMXB4O1xufVxuXG4ub3ZlcmZsb3ctdGV4dC13cmFwIHtcbiAgZm9udC1zaXplOiAxMXB4O1xuICB3aGl0ZS1zcGFjZTogbm93cmFwO1xuICB0ZXh0LW92ZXJmbG93OiBlbGxpcHNpcztcbiAgb3ZlcmZsb3c6IGhpZGRlbjtcbn0iXX0= */"
 
 /***/ }),
 
@@ -7616,16 +7618,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_favourite_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../services/favourite.service */ "./src/app/services/favourite.service.ts");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
+/* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ngx-logger */ "./node_modules/ngx-logger/fesm2015/ngx-logger.js");
+
 
 
 
 
 
 let RestaurantCardComponent = class RestaurantCardComponent {
-    constructor(favourite, queryResource, nav) {
+    constructor(favourite, queryResource, nav, logger) {
         this.favourite = favourite;
         this.queryResource = queryResource;
         this.nav = nav;
+        this.logger = logger;
         this.store = {};
         this.viewType = 'normal';
         this.deliveryTypes = [];
@@ -7635,7 +7640,6 @@ let RestaurantCardComponent = class RestaurantCardComponent {
     ngOnInit() {
         this.timeNow = new Date();
         this.getStoreCategory();
-        console.log(this.viewType);
         if (this.viewType === 'normal') {
             this.checkIfAlreadyFavourite();
             this.getStoreDeliveryInfo();
@@ -7643,14 +7647,14 @@ let RestaurantCardComponent = class RestaurantCardComponent {
         }
     }
     getStoreCategory() {
-        console.log('Getting Category', this.store.regNo);
+        this.logger.info('Getting Category', this.store.regNo);
         this.queryResource
             .findStoreTypeByStoreIdUsingGET({ storeId: this.store.regNo })
             .subscribe(success => {
-            console.log('Got Categpries', success.content);
+            this.logger.info('Got Categpries ', this.store.regNo, success.content);
             this.categories = success.content;
         }, err => {
-            console.log('Error getting Store category', this.store.regNo);
+            this.logger.fatal('Error getting Store category', this.store.regNo, err);
         });
     }
     getStoreDeliveryType() {
@@ -7679,7 +7683,6 @@ let RestaurantCardComponent = class RestaurantCardComponent {
     checkIfAlreadyFavourite() {
         this.favourite.getFavourites()
             .subscribe(data => {
-            console.log(this.favourite.getFavouriteStoresID());
             if (this.favourite.getFavouriteStoresID()
                 .includes(this.store.id)) {
                 this.isFavourite = true;
@@ -7693,7 +7696,8 @@ let RestaurantCardComponent = class RestaurantCardComponent {
 RestaurantCardComponent.ctorParameters = () => [
     { type: _services_favourite_service__WEBPACK_IMPORTED_MODULE_2__["FavouriteService"] },
     { type: src_app_api_services_query_resource_service__WEBPACK_IMPORTED_MODULE_1__["QueryResourceService"] },
-    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["NavController"] }
+    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["NavController"] },
+    { type: ngx_logger__WEBPACK_IMPORTED_MODULE_5__["NGXLogger"] }
 ];
 tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Input"])(),
@@ -7711,7 +7715,8 @@ RestaurantCardComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     }),
     tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services_favourite_service__WEBPACK_IMPORTED_MODULE_2__["FavouriteService"],
         src_app_api_services_query_resource_service__WEBPACK_IMPORTED_MODULE_1__["QueryResourceService"],
-        _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["NavController"]])
+        _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["NavController"],
+        ngx_logger__WEBPACK_IMPORTED_MODULE_5__["NGXLogger"]])
 ], RestaurantCardComponent);
 
 
@@ -7880,6 +7885,7 @@ __webpack_require__.r(__webpack_exports__);
 let ShowAuxilaryModalComponent = class ShowAuxilaryModalComponent {
     constructor() {
         this.auxilaryItems = [];
+        this.productName = '';
     }
     ngOnInit() {
         console.log(this.auxilaryItems);
@@ -7889,6 +7895,10 @@ tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
     tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Object)
 ], ShowAuxilaryModalComponent.prototype, "auxilaryItems", void 0);
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Object)
+], ShowAuxilaryModalComponent.prototype, "productName", void 0);
 ShowAuxilaryModalComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
         selector: 'app-show-auxilary-modal',
@@ -8534,7 +8544,6 @@ let FavouriteService = class FavouriteService {
     removeFromFavorite(data, type) {
         const tmpArray = this.favourites.filter(favourite => !(favourite.data.id === data.id
             && favourite.type === type));
-        console.log('Temp Array is', tmpArray);
         this.favourites = tmpArray;
         this.refresh();
     }
@@ -8552,7 +8561,6 @@ let FavouriteService = class FavouriteService {
     }
     getFavouriteStoresID() {
         const idArray = [];
-        console.log(this.favourites);
         for (const fav of this.favourites) {
             if (fav.type === 'store') {
                 idArray.push(fav.data.id);

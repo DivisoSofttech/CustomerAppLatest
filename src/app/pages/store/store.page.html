@@ -40,7 +40,7 @@
 
   <ion-slides (ionSlideDidChange)="slideChanged($event)">
     <ion-slide>
-      <ion-grid>
+      <ion-grid no-padding>
         <ion-row>
           <ion-list *ngIf="store != undefined && showCategoryWiseProducts === false">
             <app-product-card

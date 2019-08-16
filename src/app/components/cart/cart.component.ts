@@ -77,7 +77,6 @@ export class CartComponent implements OnInit {
 
   getCartDetails() {
     this.cart.observableTickets.subscribe(data => {
-      console.log(data);
       this.cartSize = data.length;
       this.totalPrice = this.cart.totalPrice;
       this.orderLines = data;

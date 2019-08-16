@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-header>\n  <app-store-header\n    *ngIf=\"store != undefined\"\n    [name]=\"store.name\"\n    (searchEnabled)=\"toggleFabButton($event)\"\n  ></app-store-header>\n</ion-header>\n\n<ion-content>\n  <ion-fab *ngIf=\"showCatgeoryFilterFab === true\" vertical=\"top\" horizontal=\"end\" slot=\"fixed\">\n    <ion-fab-button (click)=\"categoryListPopOver($event)\">\n      <ion-icon name=\"pizza\"></ion-icon>\n    </ion-fab-button>\n  </ion-fab>\n\n  <app-loading\n              *ngIf=\"showRestaurantLoading === true\"\n              [type]=\"'restaurant-detail'\"\n  ></app-loading>\n  <app-restaurant-card\n    *ngIf=\"store != undefined\"\n    [store]=\"store\"\n    [viewType]=\"'detailedCard'\"\n  ></app-restaurant-card>\n\n  <ion-segment\n    (ionChange)=\"segmentChanged($event)\"\n    [(ngModel)]=\"currentSegment\"\n  >\n    <ion-segment-button value=\"menu\" checked>\n      <ion-label>Menu</ion-label>\n    </ion-segment-button>\n    <ion-segment-button value=\"reviews\">\n      <ion-label>Reviews</ion-label>\n    </ion-segment-button>\n    <ion-segment-button value=\"info\">\n      <ion-label>Info</ion-label>\n    </ion-segment-button>\n  </ion-segment>\n\n  <ion-slides (ionSlideDidChange)=\"slideChanged($event)\">\n    <ion-slide>\n      <ion-grid>\n        <ion-row>\n          <ion-list *ngIf=\"store != undefined && showCategoryWiseProducts === false\">\n            <app-product-card\n              *ngFor=\"let stockCurrent of stockCurrents\"\n              [store]=\"store\"\n              [stockCurrent]=\"stockCurrent\"\n            ></app-product-card>\n          </ion-list>\n        </ion-row>\n        <ion-row *ngIf=\"showCategoryWiseProducts === true\">\n          <ion-list *ngFor=\"let category of categories\">\n              <ion-item color=\"light\">\n                  <ion-avatar>\n                      <ion-img\n                      [src]=\"\n                        'data:' +\n                        category.imageContentType +\n                        ';base64,' +\n                        category.image\n                      \"\n                      class=\"imageShow\"\n                    >\n                    </ion-img>\n                  </ion-avatar>\n                <ion-label margin>{{category.name}}</ion-label>\n              </ion-item>\n              <app-category-wise-products-card *ngIf=\"store !== undefined\"\n              [category]=\"category\"\n              [store]=\"store\">\n              </app-category-wise-products-card>\n          </ion-list>\n        </ion-row>\n      </ion-grid>\n    </ion-slide>\n    <ion-slide>\n      <app-review *ngIf=\"store != undefined\" [store]=\"store\"></app-review>\n    </ion-slide>\n    <ion-slide>\n      <ion-grid>\n        <ion-row>\n          <ion-col size=\"12\">\n          <app-map></app-map>\n          </ion-col>\n        </ion-row>\n        <ion-row>\n          <ion-col size=\"12\">\n            <ion-text *ngIf=\"store != undefined\">\n              <p>\n                {{ store.info }}\n              </p>\n            </ion-text>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-slide>\n  </ion-slides>\n\n  <ion-refresher slot=\"fixed\" (ionRefresh)=\"refresh($event)\">\n    <ion-refresher-content\n      pullingIcon=\"arrow-dropdown\"\n      pullingText=\"Pull to refresh\"\n      refreshingSpinner=\"circles\"\n    >\n    </ion-refresher-content>\n  </ion-refresher>\n</ion-content>\n\n<ion-footer>\n  <app-cart *ngIf=\"currentSegment === 'menu'\"></app-cart>\n</ion-footer>\n"
+module.exports = "<ion-header>\n  <app-store-header\n    *ngIf=\"store != undefined\"\n    [name]=\"store.name\"\n    (searchEnabled)=\"toggleFabButton($event)\"\n  ></app-store-header>\n</ion-header>\n\n<ion-content>\n  <ion-fab *ngIf=\"showCatgeoryFilterFab === true\" vertical=\"top\" horizontal=\"end\" slot=\"fixed\">\n    <ion-fab-button (click)=\"categoryListPopOver($event)\">\n      <ion-icon name=\"pizza\"></ion-icon>\n    </ion-fab-button>\n  </ion-fab>\n\n  <app-loading\n              *ngIf=\"showRestaurantLoading === true\"\n              [type]=\"'restaurant-detail'\"\n  ></app-loading>\n  <app-restaurant-card\n    *ngIf=\"store != undefined\"\n    [store]=\"store\"\n    [viewType]=\"'detailedCard'\"\n  ></app-restaurant-card>\n\n  <ion-segment\n    (ionChange)=\"segmentChanged($event)\"\n    [(ngModel)]=\"currentSegment\"\n  >\n    <ion-segment-button value=\"menu\" checked>\n      <ion-label>Menu</ion-label>\n    </ion-segment-button>\n    <ion-segment-button value=\"reviews\">\n      <ion-label>Reviews</ion-label>\n    </ion-segment-button>\n    <ion-segment-button value=\"info\">\n      <ion-label>Info</ion-label>\n    </ion-segment-button>\n  </ion-segment>\n\n  <ion-slides (ionSlideDidChange)=\"slideChanged($event)\">\n    <ion-slide>\n      <ion-grid no-padding>\n        <ion-row>\n          <ion-list *ngIf=\"store != undefined && showCategoryWiseProducts === false\">\n            <app-product-card\n              *ngFor=\"let stockCurrent of stockCurrents\"\n              [store]=\"store\"\n              [stockCurrent]=\"stockCurrent\"\n            ></app-product-card>\n          </ion-list>\n        </ion-row>\n        <ion-row *ngIf=\"showCategoryWiseProducts === true\">\n          <ion-list *ngFor=\"let category of categories\">\n              <ion-item color=\"light\">\n                  <ion-avatar>\n                      <ion-img\n                      [src]=\"\n                        'data:' +\n                        category.imageContentType +\n                        ';base64,' +\n                        category.image\n                      \"\n                      class=\"imageShow\"\n                    >\n                    </ion-img>\n                  </ion-avatar>\n                <ion-label margin>{{category.name}}</ion-label>\n              </ion-item>\n              <app-category-wise-products-card *ngIf=\"store !== undefined\"\n              [category]=\"category\"\n              [store]=\"store\">\n              </app-category-wise-products-card>\n          </ion-list>\n        </ion-row>\n      </ion-grid>\n    </ion-slide>\n    <ion-slide>\n      <app-review *ngIf=\"store != undefined\" [store]=\"store\"></app-review>\n    </ion-slide>\n    <ion-slide>\n      <ion-grid>\n        <ion-row>\n          <ion-col size=\"12\">\n          <app-map></app-map>\n          </ion-col>\n        </ion-row>\n        <ion-row>\n          <ion-col size=\"12\">\n            <ion-text *ngIf=\"store != undefined\">\n              <p>\n                {{ store.info }}\n              </p>\n            </ion-text>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-slide>\n  </ion-slides>\n\n  <ion-refresher slot=\"fixed\" (ionRefresh)=\"refresh($event)\">\n    <ion-refresher-content\n      pullingIcon=\"arrow-dropdown\"\n      pullingText=\"Pull to refresh\"\n      refreshingSpinner=\"circles\"\n    >\n    </ion-refresher-content>\n  </ion-refresher>\n</ion-content>\n\n<ion-footer>\n  <app-cart *ngIf=\"currentSegment === 'menu'\"></app-cart>\n</ion-footer>\n"
 
 /***/ }),
 
@@ -151,20 +151,22 @@ let StorePage = class StorePage {
         this.queryResource
             .findStoreByRegisterNumberUsingGET(this.storeId)
             .subscribe(result => {
-            console.log('Got Store', result);
+            this.logger.info('Got Store ', result.name, result);
             this.store = result;
             this.showRestaurantLoading = false;
         }, err => {
             this.showRestaurantLoading = false;
-            console.log('Error fetching store data', err);
+            this.logger.fatal('Error Fetching Stores', err);
         });
     }
     getCategoriesEntry(i) {
         this.queryResource
             .findCategoryAndCountUsingGET(this.storeId)
             .subscribe(result => {
-            console.log('Got Categories', result);
+            this.logger.info('Got Categories Entry', result);
             this.entry = result;
+        }, err => {
+            this.logger.fatal('Error Fetching Categories Entry', err);
         });
     }
     getCategories(i) {
@@ -173,7 +175,7 @@ let StorePage = class StorePage {
             iDPcode: this.storeId
         })
             .subscribe(result => {
-            console.log('Got Categories', result);
+            this.logger.info('Got Categories', result);
             result.content.forEach(c => {
                 this.categories.push(c);
             });

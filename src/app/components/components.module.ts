@@ -32,6 +32,7 @@ import { CheckoutComponent } from './checkout/checkout.component';
 import { MapComponent } from './map/map.component';
 import { CategoryWiseProductsCardComponent } from './category-wise-products-card/category-wise-products-card.component';
 import { ShowAuxilaryModalComponent } from './show-auxilary-modal/show-auxilary-modal.component';
+import { AuxilaryProductCardComponent } from './auxilary-product-card/auxilary-product-card.component';
 
 
 
@@ -64,6 +65,7 @@ import { ShowAuxilaryModalComponent } from './show-auxilary-modal/show-auxilary-
     AddressListComponent,
     HotelMenuPopoverComponent,
     CategoryWiseProductsCardComponent,
+    AuxilaryProductCardComponent,
     ShowAuxilaryModalComponent,
 
     ArrayFormaterPipe,
@@ -107,7 +109,9 @@ import { ShowAuxilaryModalComponent } from './show-auxilary-modal/show-auxilary-
     AddressListComponent,
     HotelMenuPopoverComponent,
     CategoryWiseProductsCardComponent,
-    ShowAuxilaryModalComponent
+    ShowAuxilaryModalComponent,
+    AuxilaryProductCardComponent,
+
   ],
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -122,7 +126,8 @@ import { ShowAuxilaryModalComponent } from './show-auxilary-modal/show-auxilary-
     AddressListComponent,
     LoadingComponent,
     CheckoutComponent,
-    ShowAuxilaryModalComponent
+    ShowAuxilaryModalComponent,
+    AuxilaryProductCardComponent
 
   ]
 })

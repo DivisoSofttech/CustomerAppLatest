@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services';
-import { PopoverController, LoadingController } from '@ionic/angular';
+import { PopoverController} from '@ionic/angular';
 import { Util } from 'src/app/services/util';
 
 @Component({

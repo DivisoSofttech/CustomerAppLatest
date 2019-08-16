@@ -7,6 +7,7 @@ import { ModalController, PopoverController } from '@ionic/angular';
 import { QueryResourceService } from 'src/app/api/services';
 import { NGXLogger } from 'ngx-logger';
 import { ShowAuxilaryModalComponent } from '../show-auxilary-modal/show-auxilary-modal.component';
+import { Util } from 'src/app/services/util';
 
 @Component({
   selector: 'app-product-card',
@@ -33,7 +34,8 @@ export class ProductCardComponent implements OnInit {
     private queryResource: QueryResourceService,
     private router: Router,
     private cartService: CartService,
-    private logger: NGXLogger
+    private logger: NGXLogger,
+    private util: Util
   ) { }
 
   ngOnInit() {
@@ -55,7 +57,6 @@ export class ProductCardComponent implements OnInit {
   }
 
   getAuxilaries(i) {
-    this.logger.info('Got Auxilary For Product ' , this.stockCurrent.product.name);
     this.queryResource.findAuxilariesByProductIdUsingGET(this.stockCurrent.product.id)
     .subscribe(data => {
       data.content.forEach(a => {
@@ -72,7 +73,6 @@ export class ProductCardComponent implements OnInit {
   checkIfAlreadyFavourite() {
     this.favourite.getFavourites()
     .subscribe(data => {
-      console.log(this.favourite.getFavouriteProductsID());
       if (this.favourite.getFavouriteProductsID()
       .includes(this.stockCurrent.product.id)) {
         this.isFavourite = true;
@@ -81,10 +81,11 @@ export class ProductCardComponent implements OnInit {
   }
 
   add(i, stock: StockCurrent) {
+  
     if(this.auxilaries.length > 0 && this.stockCurrent.product.isAuxilaryItem === false) {
       this.logger.info('Add Auxilary Items ' , this.auxilaries);
       this.showAddAuxilaryModal();
-      this.cartService.addProduct(stock.product, stock , this.store);
+      // this.cartService.addProduct(stock.product, stock , this.store);
     } else {
       this.logger.info('No Auxilary Items ' , this.auxilaries);
       this.cartService.addProduct(stock.product, stock , this.store);
@@ -100,7 +101,10 @@ export class ProductCardComponent implements OnInit {
     const modal = await this.modalController.create(
       {
         component: ShowAuxilaryModalComponent,
-        componentProps: {auxilaryItems: this.auxilaries}
+        componentProps: {
+          auxilaryItems: this.auxilaries,
+          product: this.stockCurrent.product
+        }
       }
     );
     modal.present();
@@ -109,7 +113,6 @@ export class ProductCardComponent implements OnInit {
   checkIfOrdered() {
     this.cartService.observableTickets
     .subscribe(data => {
-      console.log('Orders ' , data);
       const p = data.filter(o => o.productId === this.stockCurrent.product.id);
       console.log(p);
       if (p.length > 0) {
