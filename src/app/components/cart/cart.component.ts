@@ -80,12 +80,13 @@ export class CartComponent implements OnInit {
       this.cartSize = data.length;
       this.totalPrice = this.cart.totalPrice;
       this.orderLines = data;
-      if (this.cart.currentShop !== undefined &&
-        data !== undefined && this.store !== this.cart.currentShop) {
-        this.store = this.cart.currentShop;
-        if(this.store.minAmount > this.totalPrice) {
-          this.neededCheckOutAmount = this.store.minAmount - this.totalPrice;
-        }
+      this.store = this.cart.currentShop;
+      if(this.store !== undefined && this.store.minAmount > this.totalPrice) {
+        this.neededCheckOutAmount = this.store.minAmount - this.totalPrice;
+      } else {
+        this.neededCheckOutAmount = 0;
+      }
+      if(this.store !== undefined) {
         this.getStoreSettings();
       }
     });

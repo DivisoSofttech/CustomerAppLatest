@@ -40,5 +40,8 @@
     *ngIf="showFilters"
     (closeFilter)="toggleFilteromponent()"
   ></app-filter>
-  <app-footer (filter)="toggleFilteromponent()"></app-footer>
+  <app-footer 
+  (filter)="toggleFilteromponent()"
+  [currentRoute]='restaurant'
+  ></app-footer>
 </ion-footer>

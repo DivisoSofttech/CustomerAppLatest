@@ -85,7 +85,7 @@ export class ProductCardComponent implements OnInit {
     if(this.auxilaries.length > 0 && this.stockCurrent.product.isAuxilaryItem === false) {
       this.logger.info('Add Auxilary Items ' , this.auxilaries);
       this.showAddAuxilaryModal();
-      // this.cartService.addProduct(stock.product, stock , this.store);
+      this.cartService.addProduct(stock.product, stock , this.store);
     } else {
       this.logger.info('No Auxilary Items ' , this.auxilaries);
       this.cartService.addProduct(stock.product, stock , this.store);
@@ -114,7 +114,6 @@ export class ProductCardComponent implements OnInit {
     this.cartService.observableTickets
     .subscribe(data => {
       const p = data.filter(o => o.productId === this.stockCurrent.product.id);
-      console.log(p);
       if (p.length > 0) {
         this.orderCount = p[0].quantity;
       } else {

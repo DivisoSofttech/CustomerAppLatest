@@ -33,5 +33,6 @@
 
 </ion-content>
 <ion-footer>
-  <ion-button expand="full" margin [disabled]="selectedAddress === undefined">Checkout</ion-button>
+  <ion-button *ngIf="deliveryType==='delivery'" expand="full" margin [disabled]="selectedAddress === undefined">Checkout</ion-button>
+  <ion-button *ngIf="deliveryType==='collection'" expand="full" margin >Checkout</ion-button>
 </ion-footer>

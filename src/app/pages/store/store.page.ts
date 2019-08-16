@@ -3,7 +3,7 @@ import { ViewChild } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { StockCurrent, Entry, Category } from 'src/app/api/models';
+import { StockCurrent, Entry, Category, Store } from 'src/app/api/models';
 import { HotelMenuPopoverComponent } from 'src/app/components/hotel-menu-popover/hotel-menu-popover.component';
 import { Util } from 'src/app/services/util';
 import { NGXLogger } from 'ngx-logger';
@@ -17,7 +17,7 @@ export class StorePage implements OnInit {
 
   storeId;
 
-  store;
+  store: Store;
 
   stockCurrents: StockCurrent[] = [];
 

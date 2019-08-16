@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, OnDestroy, Input } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { CartService } from 'src/app/services/cart.service';
 import { NGXLogger } from 'ngx-logger';
@@ -14,16 +14,13 @@ export class FooterComponent implements OnInit , OnDestroy {
 
   @Output() filter = new EventEmitter();
 
-  currentRoute;
+  @Input() currentRoute;
 
   orderCount  = 0;
-
-  routeSubscription;
 
   constructor(
     private navController: NavController,
     private logger: NGXLogger,
-    private route: RouteService,
     private cart: CartService
   ) { }
 
@@ -32,19 +29,10 @@ export class FooterComponent implements OnInit , OnDestroy {
     .subscribe(data => {
       this.orderCount = data.length;
     });
-    this.getCurrentRoute();
   }
 
   goTo(url) {
     this.navController.navigateForward(url);
-  }
-
-  getCurrentRoute() {
-    this.routeSubscription = this.route.getRouteSubscription()
-    .subscribe(data => {
-      this.currentRoute = data;
-      console.warn(this.currentRoute);
-    })
   }
 
   emitFilterClick() {
@@ -53,7 +41,6 @@ export class FooterComponent implements OnInit , OnDestroy {
 
   ngOnDestroy() {
     console.log('destroy');
-    this.routeSubscription.unsubscribe();
   }
 
 }

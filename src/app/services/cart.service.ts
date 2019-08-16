@@ -120,6 +120,12 @@ export class CartService {
     this.updateCart();
   }
 
+
+
+
+
+  // New Methods
+
   updateCart() {
     this.totalPrice = 0;
     this.orderLines.forEach(order => {
@@ -136,5 +142,9 @@ export class CartService {
     this.updateCart();
   }
 
-  // New Methods Which May
+  removeOrder(order: OrderLine) {
+    this.orderLines = this.orderLines.filter(ol => ol !== order);
+    this.updateCart();
+  }
+
 }

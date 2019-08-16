@@ -1,4 +1,4 @@
-<ion-segment slot="end" [value]="currentRoute">
+<ion-segment slot="end" [(ngModel)]="currentRoute">
     <ion-segment-button value="restaurant" (click)="goTo('/restaurant')">
         <ion-icon name="list"></ion-icon>
     </ion-segment-button>  

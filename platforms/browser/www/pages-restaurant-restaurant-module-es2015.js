@@ -128,7 +128,7 @@ let RestaurantPage = class RestaurantPage {
     }
     updatedLocation(event) {
         this.logger.info('Changed Current Location - LatLon ', event);
-        this.filter.currentCordinates = event.latLon;
+        this.filter.setCoordinates(event.latLon);
         // this.logger.info('Setting Distance_wise Filter');
         // this.filter.setFilter(FILTER_TYPES.DISTANCE_WISE);
         // this.logger.info('Getting Stores');

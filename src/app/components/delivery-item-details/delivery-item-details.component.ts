@@ -35,6 +35,7 @@ export class DeliveryItemDetailsComponent implements OnInit {
   getcartDetails() {
     this.cart.observableTickets
     .subscribe(data => {
+      this.orders = data;
       this.totalPrice = this.cart.totalPrice;
     });
   }
@@ -47,10 +48,8 @@ export class DeliveryItemDetailsComponent implements OnInit {
     this.cart.decrease(p);
   }
 
-  removeTicket(index) {
-    this.cart.removeTicket(index);
-    console.log(this.orders.length);
-    this.products.splice(index, 1);
+  removeOrder(o) {
+    this.cart.removeOrder(o);
   }
 
   getAllProductsFromOrders() {
@@ -66,5 +65,6 @@ export class DeliveryItemDetailsComponent implements OnInit {
   
   }
 
+  // Methods
 
 }
