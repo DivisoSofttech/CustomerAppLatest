@@ -2,11 +2,14 @@
 *ngIf="showLoading === true"
 [type]="'product'"
 ></app-loading>
-<ion-list>
+<ion-list *ngIf="stockCurrents.length > 0">
   <app-product-card
   *ngFor="let stockCurrent of stockCurrents"
   [store]="store"
   [stockCurrent]="stockCurrent"
 ></app-product-card>
-
 </ion-list>
+<div *ngIf="stockCurrents.length === 0 && showLoading === false">
+    <h3 style="font-family:monospace">Founds 0 Products</h3>
+  </div>
+  

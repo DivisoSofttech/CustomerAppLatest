@@ -84,7 +84,7 @@
   "cordova-plugin-googlemaps": {
     "source": {
       "type": "registry",
-      "id": "cordova-plugin-googlemaps@^2.6.2"
+      "id": "git+https://github.com/mapsplugin/cordova-plugin-googlemaps.git#multiple_maps"
     },
     "is_top_level": true,
     "variables": {}

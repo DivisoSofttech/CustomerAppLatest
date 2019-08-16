@@ -12,11 +12,13 @@ export class CheckoutComponent implements OnInit {
 
   customer;
 
-  selectedAddress;  // this.menuController.enable(false);
+  selectedAddress;  
 
   note;
 
   order: Order;
+  
+  deliveryType: any;
 
   constructor(
     private orderService: OrderService
@@ -28,7 +30,7 @@ export class CheckoutComponent implements OnInit {
     console.log(this.orderService.customer);
     console.log(this.orderService.address);
     this.getCustomer();
-    this.getOrder();
+    this.getOrderDetails();
   }
 
   getCustomer() {
@@ -36,8 +38,9 @@ export class CheckoutComponent implements OnInit {
     this.customer = this.orderService.customer;
   }
 
-  getOrder() {
+  getOrderDetails() {
     this.order = this.orderService.order;
+    this.deliveryType = this.orderService.deliveryType;
   }
 
   setNote() {

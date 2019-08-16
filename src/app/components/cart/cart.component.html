@@ -65,13 +65,14 @@
     <ion-row *ngIf="totalPrice < store.minAmount">
       <ion-col size="12" text-center>
         <ion-text text-center
-          >Spend {{ store.minAmount - total }} More for delivery</ion-text
+          >Spend {{ neededCheckOutAmount }} More for delivery</ion-text
         >
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col size="12">
         <ion-button *ngIf="currentSegment==='delivery'"
+          [disabled]="neededCheckOutAmount !== 0"
           color="primary" expand="full" (click)="continue('delivery')"
           >Continue</ion-button
         >

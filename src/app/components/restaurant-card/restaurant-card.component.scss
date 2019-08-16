@@ -39,3 +39,10 @@ h2 {
 .small {
   font-size: 11px;
 }
+
+.overflow-text-wrap {
+  font-size: 11px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

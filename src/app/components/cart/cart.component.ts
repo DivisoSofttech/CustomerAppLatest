@@ -6,9 +6,7 @@ import { CartService } from './../../services/cart.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { OrderLine, Store, StoreSettings } from 'src/app/api/models';
 import { ModalController, NavController } from '@ionic/angular';
-import { OrderCommandResourceService } from 'src/app/api/services';
 import { Util } from 'src/app/services/util';
-import { CheckoutComponent } from '../checkout/checkout.component';
 import { OrderService } from 'src/app/services/order.service';
 
 @Component({
@@ -19,7 +17,9 @@ import { OrderService } from 'src/app/services/order.service';
 export class CartComponent implements OnInit {
   @Input() viewType = 'minimal';
 
-  @Input() store;
+  @Input() store: Store;
+
+  shopRegNo: string;
 
   currentSegment = 'delivery';
 
@@ -35,8 +35,10 @@ export class CartComponent implements OnInit {
 
   customer;
 
+  neededCheckOutAmount = 0;
+
   storeSetting: StoreSettings;
-  shopRegNo: string;
+
 
   constructor(
     private cart: CartService,
@@ -82,6 +84,9 @@ export class CartComponent implements OnInit {
       if (this.cart.currentShop !== undefined &&
         data !== undefined && this.store !== this.cart.currentShop) {
         this.store = this.cart.currentShop;
+        if(this.store.minAmount > this.totalPrice) {
+          this.neededCheckOutAmount = this.store.minAmount - this.totalPrice;
+        }
         this.getStoreSettings();
       }
     });

@@ -31,6 +31,7 @@ import { FooterComponent } from './footer/footer.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { MapComponent } from './map/map.component';
 import { CategoryWiseProductsCardComponent } from './category-wise-products-card/category-wise-products-card.component';
+import { ShowAuxilaryModalComponent } from './show-auxilary-modal/show-auxilary-modal.component';
 
 
 
@@ -63,6 +64,7 @@ import { CategoryWiseProductsCardComponent } from './category-wise-products-card
     AddressListComponent,
     HotelMenuPopoverComponent,
     CategoryWiseProductsCardComponent,
+    ShowAuxilaryModalComponent,
 
     ArrayFormaterPipe,
     ClosedPipe,
@@ -104,7 +106,8 @@ import { CategoryWiseProductsCardComponent } from './category-wise-products-card
     HistoryListComponent,
     AddressListComponent,
     HotelMenuPopoverComponent,
-    CategoryWiseProductsCardComponent
+    CategoryWiseProductsCardComponent,
+    ShowAuxilaryModalComponent
   ],
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -118,7 +121,8 @@ import { CategoryWiseProductsCardComponent } from './category-wise-products-card
     ProfileEditComponent,
     AddressListComponent,
     LoadingComponent,
-    CheckoutComponent
+    CheckoutComponent,
+    ShowAuxilaryModalComponent
 
   ]
 })

@@ -6,6 +6,7 @@ import { StockCurrent, AuxilaryLineItem } from 'src/app/api/models';
 import { ModalController, PopoverController } from '@ionic/angular';
 import { QueryResourceService } from 'src/app/api/services';
 import { NGXLogger } from 'ngx-logger';
+import { ShowAuxilaryModalComponent } from '../show-auxilary-modal/show-auxilary-modal.component';
 
 @Component({
   selector: 'app-product-card',
@@ -28,6 +29,7 @@ export class ProductCardComponent implements OnInit {
 
   constructor(
     private favourite: FavouriteService,
+    private modalController: ModalController,
     private queryResource: QueryResourceService,
     private router: Router,
     private cartService: CartService,
@@ -37,7 +39,9 @@ export class ProductCardComponent implements OnInit {
   ngOnInit() {
     this.checkIfAlreadyFavourite();
     this.checkIfOrdered();
-    this.getAuxilaries(0);
+    if(this.stockCurrent.product.isAuxilaryItem === false) {
+      this.getAuxilaries(0);
+    }
   }
 
   addToFavourite(product) {
@@ -51,6 +55,7 @@ export class ProductCardComponent implements OnInit {
   }
 
   getAuxilaries(i) {
+    this.logger.info('Got Auxilary For Product ' , this.stockCurrent.product.name);
     this.queryResource.findAuxilariesByProductIdUsingGET(this.stockCurrent.product.id)
     .subscribe(data => {
       data.content.forEach(a => {
@@ -76,12 +81,29 @@ export class ProductCardComponent implements OnInit {
   }
 
   add(i, stock: StockCurrent) {
-    if (this.cartService.addProduct(stock.product, stock , this.store)) {
+    if(this.auxilaries.length > 0 && this.stockCurrent.product.isAuxilaryItem === false) {
+      this.logger.info('Add Auxilary Items ' , this.auxilaries);
+      this.showAddAuxilaryModal();
+      this.cartService.addProduct(stock.product, stock , this.store);
+    } else {
+      this.logger.info('No Auxilary Items ' , this.auxilaries);
+      this.cartService.addProduct(stock.product, stock , this.store);
     }
   }
 
   remove(i, stock: StockCurrent) {
       this.cartService.removeProduct(stock);
+  }
+
+  async showAddAuxilaryModal() {
+
+    const modal = await this.modalController.create(
+      {
+        component: ShowAuxilaryModalComponent,
+        componentProps: {auxilaryItems: this.auxilaries}
+      }
+    );
+    modal.present();
   }
 
   checkIfOrdered() {

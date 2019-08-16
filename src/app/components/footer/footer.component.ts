@@ -1,7 +1,8 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { Router } from '@angular/router';
 import { CartService } from 'src/app/services/cart.service';
+import { NGXLogger } from 'ngx-logger';
+import { RouteService } from 'src/app/services/route.service';
 
 
 @Component({
@@ -9,7 +10,7 @@ import { CartService } from 'src/app/services/cart.service';
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss'],
 })
-export class FooterComponent implements OnInit {
+export class FooterComponent implements OnInit , OnDestroy {
 
   @Output() filter = new EventEmitter();
 
@@ -17,27 +18,42 @@ export class FooterComponent implements OnInit {
 
   orderCount  = 0;
 
+  routeSubscription;
+
   constructor(
     private navController: NavController,
-    private route: Router,
+    private logger: NGXLogger,
+    private route: RouteService,
     private cart: CartService
   ) { }
 
   ngOnInit() {
     this.cart.observableTickets
     .subscribe(data => {
-      this.orderCount=data.length;
+      this.orderCount = data.length;
     });
+    this.getCurrentRoute();
   }
 
   goTo(url) {
     this.navController.navigateForward(url);
-    this.currentRoute = this.route.url.split('/',this.route.url.length)[1];
-    console.log(this.currentRoute);
+  }
+
+  getCurrentRoute() {
+    this.routeSubscription = this.route.getRouteSubscription()
+    .subscribe(data => {
+      this.currentRoute = data;
+      console.warn(this.currentRoute);
+    })
   }
 
   emitFilterClick() {
     this.filter.emit('');
+  }
+
+  ngOnDestroy() {
+    console.log('destroy');
+    this.routeSubscription.unsubscribe();
   }
 
 }

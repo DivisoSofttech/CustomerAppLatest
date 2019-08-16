@@ -807,7 +807,18 @@ module.exports = "<ion-slides #slides [options]=\"slideOpts\" autoplayDisableOnI
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-grid no-padding margin *ngIf=\"viewType === 'minimal'\">\n  <ion-row>\n    <ion-col size=\"4\" text-center no-padding>\n      <ion-label class=\"highlight\">{{ cartSize + \" Items\" }}</ion-label>\n    </ion-col>\n    <ion-col size=\"4\" text-center no-padding>\n      <ion-label class=\"highlight\">{{\n        \"Total: \" + \"&#8364; \" + (totalPrice | number: \"1.1-2\")\n      }}</ion-label>\n    </ion-col>\n    <ion-col size=\"4\" text-center no-padding [routerLink]=\"['/basket']\">\n      <ion-label  class=\"cursor highlight\">View Cart</ion-label>\n      <ion-label class=\"button-cart highlight\" routerLinkActive=\"router-link-active\">\n        <ion-icon name=\"basket\" slot=\"icon-only\"></ion-icon>\n      </ion-label>\n    </ion-col>\n  </ion-row>\n</ion-grid>\n\n<div *ngIf=\"viewType === 'full'\">\n  <!--No Orders Start-->\n  <ion-grid *ngIf=\"orderLines.length === 0\" class=\"bg-grey\">\n    <ion-row justify-content-center class=\"ion-margin-top \">\n      <ion-col size=\"12\" text-center>\n        <ion-label class=\"fntbig-cursive\">\n          Order total\n        </ion-label>\n        <ion-text class=\"fntbig-cursive\" >(0 items)</ion-text>\n      </ion-col>\n    </ion-row>\n    <ion-row justify-content-center>\n      <ion-col size=\"12\" text-center>\n        <p class=\"fntbig grey\">&#8364;0</p>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n  <ion-grid *ngIf=\"orderLines.length === 0\">\n    <ion-row>\n      <ion-col justify-content-center>\n        <ion-card class=\"vertical-align-center h35\">\n          <ion-card-content text-center>\n            <ion-icon class=\"cart\" name=\"basket\"></ion-icon>\n          </ion-card-content>\n        </ion-card>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n  <!--No Orders End-->\n\n  <!--Orders List Start-->\n  <ion-grid class=\"bg-grey\" *ngIf=\"orderLines.length > 0\">\n    <ion-row justify-content-center class=\"ion-margin-top\">\n      <ion-col size=\"12\" text-center>\n        <ion-label class=\"fntbig-cursive\">\n          Order total\n        </ion-label>\n        <ion-text class=\"fntbig-cursive\">{{ \"(\" + orderLines.length + \" items)\" }}</ion-text>\n      </ion-col>\n    </ion-row>\n    <ion-row justify-content-center>\n      <ion-col size=\"12\" text-center>\n        <p class=\"fntbig\">&#8364;{{ totalPrice | number: \"1.1-2\" }}</p>\n      </ion-col>\n    </ion-row>\n    <ion-row *ngIf=\"totalPrice < store.minAmount\">\n      <ion-col size=\"12\" text-center>\n        <ion-text text-center\n          >Spend {{ store.minAmount - total }} More for delivery</ion-text\n        >\n      </ion-col>\n    </ion-row>\n    <ion-row>\n      <ion-col size=\"12\">\n        <ion-button *ngIf=\"currentSegment==='delivery'\"\n          color=\"primary\" expand=\"full\" (click)=\"continue('delivery')\"\n          >Continue</ion-button\n        >\n        <ion-button *ngIf=\"currentSegment==='collection'\" color=\"primary\" expand=\"full\" (click)=\"continue('collection')\"\n        >Continue</ion-button\n      >\n      </ion-col>\n      <ion-col size=\"12\">\n        <ion-item (click)=\"presentAllergyModal()\" lines=\"full\">\n          <ion-icon \n            color=\"primary\"\n            class=\"info-icon\"\n            name=\"alert\"\n            slot=\"start\"\n          ></ion-icon>\n          <ion-text color=\"primary\" class=\"underline\">\n            <p>\n              If you or someone you're ordering for has a food allergy or\n              intolerance , click here\n            </p>\n          </ion-text>\n        </ion-item>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n  <!--Orders List End-->\n\n  <ion-segment\n    (ionChange)=\"segmenChanged($event)\"\n    *ngIf=\"orderLines.length !== 0\"\n  >\n    <ion-segment-button value=\"collection\">Collection</ion-segment-button>\n    <ion-segment-button value=\"delivery\" checked>Delivery</ion-segment-button>\n  </ion-segment>\n\n  <div>\n    <app-delivery-item-details\n     *ngIf=\"orderLines !== undefined && storeSetting !== undefined\"\n      [orders]=\"orderLines\"\n      [store]=\"store\"\n      [storeSetting]=\"storeSetting\"\n    ></app-delivery-item-details>\n  </div>\n</div>\n\n<ion-footer *ngIf=\"viewType === 'full' &&  currentSegment === 'delivery'\n&& orderLines.length > 0\">\n  \n</ion-footer>\n"
+module.exports = "<ion-grid no-padding margin *ngIf=\"viewType === 'minimal'\">\n  <ion-row>\n    <ion-col size=\"4\" text-center no-padding>\n      <ion-label class=\"highlight\">{{ cartSize + \" Items\" }}</ion-label>\n    </ion-col>\n    <ion-col size=\"4\" text-center no-padding>\n      <ion-label class=\"highlight\">{{\n        \"Total: \" + \"&#8364; \" + (totalPrice | number: \"1.1-2\")\n      }}</ion-label>\n    </ion-col>\n    <ion-col size=\"4\" text-center no-padding [routerLink]=\"['/basket']\">\n      <ion-label  class=\"cursor highlight\">View Cart</ion-label>\n      <ion-label class=\"button-cart highlight\" routerLinkActive=\"router-link-active\">\n        <ion-icon name=\"basket\" slot=\"icon-only\"></ion-icon>\n      </ion-label>\n    </ion-col>\n  </ion-row>\n</ion-grid>\n\n<div *ngIf=\"viewType === 'full'\">\n  <!--No Orders Start-->\n  <ion-grid *ngIf=\"orderLines.length === 0\" class=\"bg-grey\">\n    <ion-row justify-content-center class=\"ion-margin-top \">\n      <ion-col size=\"12\" text-center>\n        <ion-label class=\"fntbig-cursive\">\n          Order total\n        </ion-label>\n        <ion-text class=\"fntbig-cursive\" >(0 items)</ion-text>\n      </ion-col>\n    </ion-row>\n    <ion-row justify-content-center>\n      <ion-col size=\"12\" text-center>\n        <p class=\"fntbig grey\">&#8364;0</p>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n  <ion-grid *ngIf=\"orderLines.length === 0\">\n    <ion-row>\n      <ion-col justify-content-center>\n        <ion-card class=\"vertical-align-center h35\">\n          <ion-card-content text-center>\n            <ion-icon class=\"cart\" name=\"basket\"></ion-icon>\n          </ion-card-content>\n        </ion-card>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n  <!--No Orders End-->\n\n  <!--Orders List Start-->\n  <ion-grid class=\"bg-grey\" *ngIf=\"orderLines.length > 0\">\n    <ion-row justify-content-center class=\"ion-margin-top\">\n      <ion-col size=\"12\" text-center>\n        <ion-label class=\"fntbig-cursive\">\n          Order total\n        </ion-label>\n        <ion-text class=\"fntbig-cursive\">{{ \"(\" + orderLines.length + \" items)\" }}</ion-text>\n      </ion-col>\n    </ion-row>\n    <ion-row justify-content-center>\n      <ion-col size=\"12\" text-center>\n        <p class=\"fntbig\">&#8364;{{ totalPrice | number: \"1.1-2\" }}</p>\n      </ion-col>\n    </ion-row>\n    <ion-row *ngIf=\"totalPrice < store.minAmount\">\n      <ion-col size=\"12\" text-center>\n        <ion-text text-center\n          >Spend {{ neededCheckOutAmount }} More for delivery</ion-text\n        >\n      </ion-col>\n    </ion-row>\n    <ion-row>\n      <ion-col size=\"12\">\n        <ion-button *ngIf=\"currentSegment==='delivery'\"\n          [disabled]=\"neededCheckOutAmount !== 0\"\n          color=\"primary\" expand=\"full\" (click)=\"continue('delivery')\"\n          >Continue</ion-button\n        >\n        <ion-button *ngIf=\"currentSegment==='collection'\" color=\"primary\" expand=\"full\" (click)=\"continue('collection')\"\n        >Continue</ion-button\n      >\n      </ion-col>\n      <ion-col size=\"12\">\n        <ion-item (click)=\"presentAllergyModal()\" lines=\"full\">\n          <ion-icon \n            color=\"primary\"\n            class=\"info-icon\"\n            name=\"alert\"\n            slot=\"start\"\n          ></ion-icon>\n          <ion-text color=\"primary\" class=\"underline\">\n            <p>\n              If you or someone you're ordering for has a food allergy or\n              intolerance , click here\n            </p>\n          </ion-text>\n        </ion-item>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n  <!--Orders List End-->\n\n  <ion-segment\n    (ionChange)=\"segmenChanged($event)\"\n    *ngIf=\"orderLines.length !== 0\"\n  >\n    <ion-segment-button value=\"collection\">Collection</ion-segment-button>\n    <ion-segment-button value=\"delivery\" checked>Delivery</ion-segment-button>\n  </ion-segment>\n\n  <div>\n    <app-delivery-item-details\n     *ngIf=\"orderLines !== undefined && storeSetting !== undefined\"\n      [orders]=\"orderLines\"\n      [store]=\"store\"\n      [storeSetting]=\"storeSetting\"\n    ></app-delivery-item-details>\n  </div>\n</div>\n\n<ion-footer *ngIf=\"viewType === 'full' &&  currentSegment === 'delivery'\n&& orderLines.length > 0\">\n  \n</ion-footer>\n"
+
+/***/ }),
+
+/***/ "./node_modules/raw-loader/index.js!./src/app/components/category-wise-products-card/category-wise-products-card.component.html":
+/*!*****************************************************************************************************************************!*\
+  !*** ./node_modules/raw-loader!./src/app/components/category-wise-products-card/category-wise-products-card.component.html ***!
+  \*****************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<app-loading\n*ngIf=\"showLoading === true\"\n[type]=\"'product'\"\n></app-loading>\n<ion-list *ngIf=\"stockCurrents.length > 0\">\n  <app-product-card\n  *ngFor=\"let stockCurrent of stockCurrents\"\n  [store]=\"store\"\n  [stockCurrent]=\"stockCurrent\"\n></app-product-card>\n</ion-list>\n<div *ngIf=\"stockCurrents.length === 0 && showLoading === false\">\n    <h3 style=\"font-family:monospace\">Founds 0 Products</h3>\n  </div>\n  "
 
 /***/ }),
 
@@ -818,7 +829,7 @@ module.exports = "<ion-grid no-padding margin *ngIf=\"viewType === 'minimal'\">\
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-header>\n  <ion-toolbar color=\"primary\">\n    <ion-buttons>\n        <ion-back-button></ion-back-button>\n        <ion-title>Add Address</ion-title>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n<ion-content>\n<app-address-list \n*ngIf=\"customer !== undefined\"\n[customer]=\"customer\" \n(addressSelected)=\"addressSelectedEvent($event)\">\n</app-address-list>\n<ion-grid>\n<ion-row>\n  <ion-col text-left size=\"12\">\n    <ion-text color=\"medium\">\n      <p>\n        Leave a note for the restaurant with anything they need to know\n        (e.g. the doorbell doesn't work). Do not include any details about\n        allergy.\n      </p>\n    </ion-text>\n    <textarea\n      [(ngModel)]=\"note\"\n      class=\"textArea\"\n      placeholder=\"E.g. The doorbell doesn't work.Do not include any details about allergy\"\n    ></textarea>\n  </ion-col>\n</ion-row>\n</ion-grid>\n\n</ion-content>\n<ion-footer>\n  <ion-button expand=\"full\" margin [disabled]=\"selectedAddress === undefined\">Checkout</ion-button>\n</ion-footer>"
+module.exports = "<ion-header>\n  <ion-toolbar color=\"primary\">\n    <ion-buttons>\n        <ion-back-button></ion-back-button>\n        <ion-title>Add Address</ion-title>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n<ion-content>\n<app-address-list \n*ngIf=\"customer !== undefined && deliveryType==='delivery'\"\n[customer]=\"customer\" \n(addressSelected)=\"addressSelectedEvent($event)\">\n</app-address-list>\n<ion-grid>\n<ion-row>\n  <ion-col text-left size=\"12\">\n    <ion-text color=\"medium\">\n      <p>\n        Leave a note for the restaurant with anything they need to know\n        (e.g. the doorbell doesn't work). Do not include any details about\n        allergy.\n      </p>\n    </ion-text>\n    <textarea\n      [(ngModel)]=\"note\"\n      class=\"textArea\"\n      placeholder=\"E.g. The doorbell doesn't work.Do not include any details about allergy\"\n    ></textarea>\n  </ion-col>\n</ion-row>\n</ion-grid>\n\n</ion-content>\n<ion-footer>\n  <ion-button expand=\"full\" margin [disabled]=\"selectedAddress === undefined\">Checkout</ion-button>\n</ion-footer>"
 
 /***/ }),
 
@@ -840,7 +851,7 @@ module.exports = "<ion-list can-swipe=\"true\" *ngIf=\"products.length === order
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-scroll>\n    <div *ngIf=\"favourites !== null && favourites.length > 0\">\n\n        <ion-list>\n          <ion-item-sliding *ngFor=\"let favourite of favourites\">\n            <ion-item lines=\"full\" (click)=\"route(favourite)\">\n              <ion-avatar slot=\"start\">\n                  <ion-img [src]=\"'data:' + favourite.data.imageContentType + ';base64,' + favourite.data.image\"\n                  >\n                </ion-img>\n              </ion-avatar>\n              <ion-label>\n                <p> {{favourite.data.name}}</p>\n              </ion-label>\n            </ion-item>\n            <ion-item-options side=\"end\">\n              <ion-item-option (click)=\"removeFromFavourite(favourite , favourite.type)\">\n                <ion-icon name=\"trash\"></ion-icon>\n              </ion-item-option>\n            </ion-item-options>\n          </ion-item-sliding>\n        </ion-list>\n      </div>\n    \n      <div class=\"vertical-align-center h30\" *ngIf=\"favourites !== undefined || favourites.length == 0\">\n        <ion-text text-center>\n          <p>Nothng added to favourites</p>\n        </ion-text>\n      </div>\n\n</ion-scroll>\n"
+module.exports = "<ion-scroll>\n    <div *ngIf=\"favourites !== null && favourites.length > 0\">\n\n        <ion-list>\n          <ion-item-sliding *ngFor=\"let favourite of favourites\">\n            <ion-item lines=\"full\" (click)=\"route(favourite)\">\n              <ion-avatar slot=\"start\">\n                  <ion-img [src]=\"'data:' + favourite.data.imageContentType + ';base64,' + favourite.data.image\"\n                  >\n                </ion-img>\n              </ion-avatar>\n              <ion-label>\n                <p> {{favourite.data.name}}</p>\n              </ion-label>\n            </ion-item>\n            <ion-item-options side=\"end\">\n              <ion-item-option (click)=\"removeFromFavourite(favourite , favourite.type)\">\n                <ion-icon name=\"trash\"></ion-icon>\n              </ion-item-option>\n            </ion-item-options>\n          </ion-item-sliding>\n        </ion-list>\n      </div>\n    \n      <div class=\"vertical-align-center h30\" *ngIf=\"favourites === undefined || favourites.length == 0\">\n        <ion-text text-center>\n          <p>Nothng added to favourites</p>\n        </ion-text>\n      </div>\n\n</ion-scroll>\n"
 
 /***/ }),
 
@@ -851,7 +862,7 @@ module.exports = "<ion-scroll>\n    <div *ngIf=\"favourites !== null && favourit
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-scroll *ngIf=\"showFilters === false\">\n  <ion-grid no-padding>\n    <ion-row inline class=\"sortFilters\">\n      <ion-col text-center size=\"3\">\n        <ion-button fill=\"none\" (click)=\"setFilterType(filterTypes.TOP_RATED)\">\n          <ion-icon name=\"star-half\" slot=\"icon-only\"></ion-icon>\n        </ion-button>\n        <ion-text color=\"medium\" class=\"el-bl\">Top Rated</ion-text>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n\n  <ion-grid>\n    <ion-row>\n      <ion-col>\n        <ion-list>\n          <ion-radio-group [(ngModel)]=\"deliveryType\">\n            <ion-list-header>\n              <ion-label>Delivery Type</ion-label>\n            </ion-list-header>\n              <ion-select [(ngModel)]=\"deliveryType\">\n                <ion-select-option\n                  *ngFor=\"let deliver of ['Both', 'Delivery', 'Collection']\"\n                  value=\"{{ deliver }}\"\n                >\n                  {{ deliver }}\n                </ion-select-option>\n              </ion-select>\n          </ion-radio-group>\n        </ion-list>\n      </ion-col>\n      <ion-col>\n        <ion-list>\n          <ion-list-header>Cuisines</ion-list-header>\n          <ion-item>\n            <ion-label>All</ion-label>\n            <ion-checkbox slot=\"end\" value=\"all\"></ion-checkbox>\n          </ion-item>\n          <ion-item *ngFor=\"let category of categories\">\n            <ion-label>{{ category.key }} ({{ category.count }})_</ion-label>\n            <ion-checkbox slot=\"end\" value=\"{{ category.name }}\"></ion-checkbox>\n          </ion-item>\n        </ion-list>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n\n  <ion-grid>\n    <ion-row>\n      <ion-col>\n        <ion-button\n          expand=\"block\"\n          size=\"small\"\n          fill=\"outline\"\n          (click)=\"closeEvent()\"\n        >\n          Close\n        </ion-button>\n      </ion-col>\n      <ion-col>\n        <ion-button expand=\"block\" size=\"small\" fill=\"outline\">\n          Apply\n        </ion-button>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n</ion-scroll>\n"
+module.exports = "<ion-scroll *ngIf=\"showFilters === false\">\n  <ion-grid no-padding>\n    <ion-row inline class=\"sortFilters\">\n      <ion-col text-center size=\"3\">\n        <ion-button fill=\"none\" (click)=\"setFilterType(filterTypes.TOP_RATED)\">\n          <ion-icon name=\"star-half\" slot=\"icon-only\"></ion-icon>\n        </ion-button>\n        <ion-text color=\"medium\" class=\"el-bl\">Top Rated</ion-text>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n\n  <ion-grid>\n    <ion-row>\n      <ion-col>\n        <ion-list>\n          <ion-radio-group >\n            <ion-list-header>\n              <ion-label>Delivery Type</ion-label>\n            </ion-list-header>\n              <ion-select [(ngModel)]=\"deliveryType\">\n                <ion-select-option\n                  *ngFor=\"let deliver of ['Both', 'Delivery', 'Collection']\"\n                  value=\"{{ deliver }}\"\n                >\n                  {{ deliver }}\n                </ion-select-option>\n              </ion-select>\n          </ion-radio-group>\n        </ion-list>\n      </ion-col>\n      <ion-col>\n        <ion-list>\n          <ion-list-header>Cuisines</ion-list-header>\n          <ion-item>\n            <ion-label>All</ion-label>\n            <ion-checkbox slot=\"end\" value=\"all\"></ion-checkbox>\n          </ion-item>\n          <ion-item *ngFor=\"let category of categories\">\n            <ion-label>{{ category.key }} ({{ category.count }})_</ion-label>\n            <ion-checkbox slot=\"end\" value=\"{{ category.name }}\"></ion-checkbox>\n          </ion-item>\n        </ion-list>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n\n  <ion-grid>\n    <ion-row>\n      <ion-col>\n        <ion-button\n          expand=\"block\"\n          size=\"small\"\n          fill=\"outline\"\n          (click)=\"closeEvent()\"\n        >\n          Close\n        </ion-button>\n      </ion-col>\n      <ion-col>\n        <ion-button expand=\"block\" size=\"small\" fill=\"outline\">\n          Apply\n        </ion-button>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n</ion-scroll>\n"
 
 /***/ }),
 
@@ -928,7 +939,7 @@ module.exports = "<ion-header>\n    <ion-toolbar>\n        <ion-buttons>\n      
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"type === 'restaurant'\">\n  <ion-card no-padding *ngFor=\"let store of [1, 2, 3, 4, 5]\">\n    <ion-card-header>\n      <ion-item lines=\"full\">\n        <ion-thumbnail slot=\"start\">\n          <ion-skeleton-text animated></ion-skeleton-text>\n        </ion-thumbnail>\n        <ion-label>\n          <ion-text word-wrap text-wrap class=\"category\">\n            <ion-skeleton-text animated></ion-skeleton-text>\n            <ion-skeleton-text animated></ion-skeleton-text>\n            <ion-skeleton-text animated></ion-skeleton-text>\n            <ion-skeleton-text animated></ion-skeleton-text>\n          </ion-text>\n        </ion-label>\n      </ion-item>\n    </ion-card-header>\n    <ion-card-content>\n      <ion-grid no-padding>\n        <ion-row>\n          <ion-col size=\"7\" text-center no-padding>\n            <rating [rate]=\"'5'\" [readonly]=\"true\"></rating>\n          </ion-col>\n          <ion-col size=\"3\" text-center no-padding>\n            <ion-buttons>\n              <ion-button fill=\"none\" disabled>\n                <ion-skeleton-text animated></ion-skeleton-text>\n              </ion-button>\n            </ion-buttons>\n          </ion-col>\n          <ion-col size=\"2\" text-center no-padding>\n            <ion-buttons justify-content-center>\n              <ion-button fill=\"none\">\n                <ion-skeleton-text animated></ion-skeleton-text>\n              </ion-button>\n            </ion-buttons>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-card-content>\n  </ion-card>\n</div>\n\n<div *ngIf=\"type === 'product'\">\n  <ion-card no-padding *ngFor=\"let store of [1, 2, 3, 4, 5]\">\n    <ion-item lines=\"none\">\n      <ion-thumbnail>\n        <ion-skeleton-text animated></ion-skeleton-text>\n      </ion-thumbnail>\n      <ion-card-content>\n        <ion-grid>\n          <ion-row>\n            <ion-col class=\"title-card\" margin-top padding-top>\n              <ion-card-title>\n                <ion-skeleton-text animated></ion-skeleton-text>\n              </ion-card-title>\n              <ion-text\n                ><strong>\n                  <ion-skeleton-text animated></ion-skeleton-text> </strong\n              ></ion-text>\n            </ion-col>\n          </ion-row>\n          <ion-row>\n            <ion-col size=\"7\">\n              <ion-buttons>\n                <ion-button color=\"medium\">\n                  <ion-icon name=\"remove\"></ion-icon>\n                </ion-button>\n                <ion-button fill=\"none\" disabled>\n                  <ion-skeleton-text animated></ion-skeleton-text\n                ></ion-button>\n                <ion-button color=\"medium\">\n                  <ion-icon name=\"add\"></ion-icon>\n                </ion-button>\n              </ion-buttons>\n            </ion-col>\n          </ion-row>\n        </ion-grid>\n      </ion-card-content>\n    </ion-item>\n  </ion-card>\n</div>\n\n\n<div *ngIf=\"type === 'restaurant-detail'\" class=\"restaurantCard\">\n  <ion-card>\n    <ion-card-subtitle>\n      <ion-thumbnail>\n          <ion-skeleton-text animated></ion-skeleton-text>\n      </ion-thumbnail>\n    </ion-card-subtitle>\n    <ion-card-content>\n        <ion-skeleton-text animated></ion-skeleton-text>\n    </ion-card-content>\n    <ion-card-footer>\n      <rating></rating>\n        <ion-skeleton-text animated></ion-skeleton-text>\n    </ion-card-footer>\n  </ion-card>\n</div>\n\n<div *ngIf=\"type === 'review'\">\n    <ion-card no-padding *ngFor=\"let store of [1, 2, 3, 4, 5]\">\n        <ion-card-content no-padding>\n           <ion-item>\n               <ion-grid>\n                 <ion-row>\n                   <ion-col size=\"12\">\n                     <ion-text>\n                        <ion-skeleton-text animated></ion-skeleton-text>\n                     </ion-text>\n                   </ion-col>\n                 </ion-row>\n                 <ion-row>\n                   <ion-col>\n                       <rating\n                       [readonly]=\"true\"\n                     ></rating>\n                   </ion-col>\n                   <ion-col class=\"reviews\">\n                     <ion-text>\n                        <ion-skeleton-text animated></ion-skeleton-text>                     </ion-text>\n                   </ion-col>\n                 </ion-row>\n               </ion-grid>\n             </ion-item>\n        </ion-card-content>\n      </ion-card>\n</div>\n\n"
+module.exports = "<div *ngIf=\"type === 'restaurant'\">\n  <ion-card no-padding *ngFor=\"let store of [1, 2, 3, 4, 5]\">\n    <ion-card-header>\n      <ion-item lines=\"full\">\n        <ion-thumbnail slot=\"start\">\n          <ion-skeleton-text animated></ion-skeleton-text>\n        </ion-thumbnail>\n        <ion-label>\n          <ion-text word-wrap text-wrap class=\"category\">\n            <ion-skeleton-text animated></ion-skeleton-text>\n            <ion-skeleton-text animated></ion-skeleton-text>\n            <ion-skeleton-text animated></ion-skeleton-text>\n            <ion-skeleton-text animated></ion-skeleton-text>\n          </ion-text>\n        </ion-label>\n      </ion-item>\n    </ion-card-header>\n    <ion-card-content>\n      <ion-grid no-padding>\n        <ion-row>\n          <ion-col size=\"7\" text-center no-padding>\n            <rating [rate]=\"'5'\" [readonly]=\"true\"></rating>\n          </ion-col>\n          <ion-col size=\"3\" text-center no-padding>\n            <ion-buttons>\n              <ion-button fill=\"none\" disabled>\n                <ion-skeleton-text animated></ion-skeleton-text>\n              </ion-button>\n            </ion-buttons>\n          </ion-col>\n          <ion-col size=\"2\" text-center no-padding>\n            <ion-buttons justify-content-center>\n              <ion-button fill=\"none\">\n                <ion-skeleton-text animated></ion-skeleton-text>\n              </ion-button>\n            </ion-buttons>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-card-content>\n  </ion-card>\n</div>\n\n<div *ngIf=\"type === 'product'\">\n  <ion-card no-padding *ngFor=\"let store of productLoadingCount\">\n    <ion-item lines=\"none\">\n      <ion-thumbnail>\n        <ion-skeleton-text animated></ion-skeleton-text>\n      </ion-thumbnail>\n      <ion-card-content>\n        <ion-grid>\n          <ion-row>\n            <ion-col class=\"title-card\" margin-top padding-top>\n              <ion-card-title>\n                <ion-skeleton-text animated></ion-skeleton-text>\n              </ion-card-title>\n              <ion-text\n                ><strong>\n                  <ion-skeleton-text animated></ion-skeleton-text> </strong\n              ></ion-text>\n            </ion-col>\n          </ion-row>\n          <ion-row>\n            <ion-col size=\"7\">\n              <ion-buttons>\n                <ion-button color=\"medium\">\n                  <ion-icon name=\"remove\"></ion-icon>\n                </ion-button>\n                <ion-button fill=\"none\" disabled>\n                  <ion-skeleton-text animated></ion-skeleton-text\n                ></ion-button>\n                <ion-button color=\"medium\">\n                  <ion-icon name=\"add\"></ion-icon>\n                </ion-button>\n              </ion-buttons>\n            </ion-col>\n          </ion-row>\n        </ion-grid>\n      </ion-card-content>\n    </ion-item>\n  </ion-card>\n</div>\n\n\n<div *ngIf=\"type === 'restaurant-detail'\" class=\"restaurantCard\">\n  <ion-card>\n    <ion-card-subtitle>\n      <ion-thumbnail>\n          <ion-skeleton-text animated></ion-skeleton-text>\n      </ion-thumbnail>\n    </ion-card-subtitle>\n    <ion-card-content>\n        <ion-skeleton-text animated></ion-skeleton-text>\n    </ion-card-content>\n    <ion-card-footer>\n      <rating></rating>\n        <ion-skeleton-text animated></ion-skeleton-text>\n    </ion-card-footer>\n  </ion-card>\n</div>\n\n<div *ngIf=\"type === 'review'\">\n    <ion-card no-padding *ngFor=\"let store of [1, 2, 3, 4, 5]\">\n        <ion-card-content no-padding>\n           <ion-item>\n               <ion-grid>\n                 <ion-row>\n                   <ion-col size=\"12\">\n                     <ion-text>\n                        <ion-skeleton-text animated></ion-skeleton-text>\n                     </ion-text>\n                   </ion-col>\n                 </ion-row>\n                 <ion-row>\n                   <ion-col>\n                       <rating\n                       [readonly]=\"true\"\n                     ></rating>\n                   </ion-col>\n                   <ion-col class=\"reviews\">\n                     <ion-text>\n                        <ion-skeleton-text animated></ion-skeleton-text>                     </ion-text>\n                   </ion-col>\n                 </ion-row>\n               </ion-grid>\n             </ion-item>\n        </ion-card-content>\n      </ion-card>\n</div>\n\n"
 
 /***/ }),
 
@@ -972,7 +983,7 @@ module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-buttons>\n      <ion-b
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-card>\n  <ion-card-content>\n    <ion-item lines=\"none\">\n      <ion-avatar>\n        <ion-img\n          *ngIf=\"customer.photo === null\"\n          src=\"assets/images/user.png\"\n          class=\"profileImage\"\n        ></ion-img>\n        <ion-img\n          class=\"profileImage\"\n          *ngIf=\"customer.photo !== null\"\n          [src]=\"\n            'data:' + customer.photoContentType + ';base64,' + customer.photo\n          \"\n        ></ion-img>\n      </ion-avatar>\n      <ion-text class=\"mg-left\" *ngIf=\"customer !== null && keyCloakUser !== null\">\n        <h2>{{ customer.name }}</h2>\n        <p>{{ keyCloakUser.email }}</p>\n        <p *ngIf=\"contact !== undefined\">{{contact.mobileNumber}}</p>\n      </ion-text>\n    </ion-item>\n  </ion-card-content>\n  <ion-card-footer>\n    <ion-item>\n      <ion-buttons slot=\"end\">\n        <ion-button (click)=\"presentEditProfileComponent()\">\n          <ion-icon name=\"create\"></ion-icon>\n        </ion-button>\n      </ion-buttons>\n    </ion-item>\n  </ion-card-footer>\n</ion-card>\n"
+module.exports = "<ion-card>\n  <ion-card-content>\n    <ion-item lines=\"none\">\n      <ion-avatar>\n        <ion-img\n          *ngIf=\"customer.photo === null\"\n          src=\"assets/images/user.png\"\n          class=\"profileImage\"\n        ></ion-img>\n        <ion-img\n          class=\"profileImage\"\n          *ngIf=\"customer.photo !== null\"\n          [src]=\"\n            'data:' + customer.photoContentType + ';base64,' + customer.photo\n          \"\n        ></ion-img>\n      </ion-avatar>\n      <ion-text class=\"mg-left\" *ngIf=\"customer !== null && keyCloakUser !== null\">\n        <h2>{{ customer.name }}</h2>\n        <p>{{ keyCloakUser.email }}</p>\n        <p *ngIf=\"contact !== undefined\">{{contact.mobileNumber}}</p>\n      </ion-text>\n    </ion-item>\n  </ion-card-content>\n  <ion-card-footer>\n    <ion-item color=\"primary\">\n      <ion-buttons slot=\"end\">\n        <ion-button (click)=\"presentEditProfileComponent()\">\n          <ion-icon name=\"create\"></ion-icon>\n        </ion-button>\n      </ion-buttons>\n    </ion-item>\n  </ion-card-footer>\n</ion-card>\n"
 
 /***/ }),
 
@@ -994,7 +1005,7 @@ module.exports = "<ion-buttons>\n  <ion-button [disabled]=\"readonly\" *ngFor=\"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!--Normal View-->\n\n<ion-card no-padding *ngIf=\"viewType === 'normal'\">\n  <ion-card-header (click)=\"showHotelMenu(store.regNo)\">\n    <ion-item lines=\"none\">\n      <ion-img no-margin slot=\"start\"\n        *ngIf=\"store.image\"\n        slot=\"start\"\n        [src]=\"'data:' + store.imageContentType + ';base64,' + store.image\"\n        class=\"imageShow\"\n      >\n      </ion-img>\n      <ion-label style=\"margin-left:15px\">\n        <ion-text word-wrap text-wrap class=\"category\">\n          <h2 class=\"store-name\">{{store.name | titlecase}}</h2>\n          <h3 class=\"medium\">{{categories | arrayFormater}} </h3>\n          <h4 class=\"medium\" style=\"color:#56a232\">{{deliveryTypes | arrayFormater:'only'}}</h4>\n          <p class=\"small\" *ngIf=\"deliveryInfos.length > 0\">Delivering From {{ deliveryInfos[0].startingTime | date:'shortTime' }}</p>\n          <h5 class=\"medium\" class=\"no-wrap\"\n          *ngIf=\"store.openingTime != undefined && store.closingTime != undefined\"\n          >{{store.openingTime | date: 'shortTime' }} to {{ store.closingTime |  date: 'shortTime'}}</h5>\n        </ion-text>\n      </ion-label>\n    </ion-item>\n  </ion-card-header>\n  <ion-card-content *ngIf=\"store.name\" no-padding>\n      <ion-grid no-padding>\n        <ion-row>\n          <ion-col size=\"10\" text-center no-padding *ngIf=\"store != undefined\">\n            <ion-buttons>\n              <rating [rate]=\"store.totalRating\" [readonly]=\"true\"></rating>\n              <ion-button *ngIf=\"store.userRatings\" disabled>{{'(' + store.userRatings.length + ')'}}</ion-button>\n              <ion-button *ngIf=\"!store.userRatings\" disabled>(0)</ion-button>\n            </ion-buttons>\n          </ion-col>\n          <ion-col size=\"2\" justify-content-center text-center no-padding>\n            <ion-buttons justify-content-center text-center>\n              <ion-button fill=\"none\" (click)=\"addToFavourite(store)\" *ngIf=\"!isFavourite\">\n                <ion-icon slot=\"icon-only\" name=\"heart-empty\"></ion-icon>\n              </ion-button>\n              <ion-button fill=\"none\" (click)=\"removeFromFavourite(store)\" *ngIf=\"isFavourite\">\n                <ion-icon color=\"danger\" slot=\"icon-only\" name=\"heart\"></ion-icon>\n              </ion-button>\n            </ion-buttons>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-card-content>\n</ion-card>\n\n<!--Detailed View-->\n\n<div class=\"container\" *ngIf=\"viewType === 'detailedCard'\">\n    <ion-card\n      color=\"danger\"\n      class=\"closeCard\"\n      *ngIf=\"!(timeNow | closed: store.openingTime:store.closingTime)\">\n      <ion-card-content>\n        <ion-card-title>Closed</ion-card-title>\n        <ion-card-subtitle>\n          Serving in\n          {{ timeNow | dateDifference: store.openingTime:store.closingTime }}\n        </ion-card-subtitle>\n      </ion-card-content>\n    </ion-card>\n    <ion-img \n      [src]=\"'data:' + store.imageContentType + ';base64,' + store.image\"\n      class=\"mainImg\"\n    ></ion-img>\n    <div class=\"overlay\">\n      <h2>\n        <strong>{{ store.name | uppercase }}</strong>\n      </h2>\n      <p>\n        {{ store.openingTime | date: \"shortTime\" }} to\n        {{ store.closingTime | date: \"shortTime\" }}\n      </p>\n      <ion-buttons>\n        <rating [rate]=\"store.totalRating\" [readonly]=\"true\"></rating>\n        <ion-button *ngIf=\"rateReview\" disabled>{{\n          \"(\" + rateReview.length + \")\"\n        }}</ion-button>\n        <ion-button *ngIf=\"!rateReview\" disabled>(0)</ion-button>\n      </ion-buttons>\n    </div>\n  </div>"
+module.exports = "<!--Normal View-->\n\n<ion-card no-padding *ngIf=\"viewType === 'normal'\">\n  <ion-card-header (click)=\"showHotelMenu(store.regNo)\">\n    <ion-item lines=\"none\">\n      <ion-img no-margin slot=\"start\"\n        *ngIf=\"store.image\"\n        slot=\"start\"\n        [src]=\"'data:' + store.imageContentType + ';base64,' + store.image\"\n        class=\"imageShow\"\n      >\n      </ion-img>\n      <ion-label style=\"margin-left:15px\">\n        <ion-text word-wrap text-wrap class=\"category\">\n          <h2 class=\"store-name\">{{store.name | titlecase}}</h2>\n          <h3 class=\"medium overflow-text-wrap\">{{categories | arrayFormater}} </h3>\n          <h4 class=\"medium overflow-text-wrap\" style=\"color:#56a232\">{{deliveryTypes | arrayFormater:'only'}}</h4>\n          <p class=\"small\" *ngIf=\"deliveryInfos.length > 0\">Delivering From {{ deliveryInfos[0].startingTime | date:'shortTime' }}</p>\n          <h5 class=\"medium\" class=\"no-wrap\"\n          *ngIf=\"store.openingTime != undefined && store.closingTime != undefined\"\n          >{{store.openingTime | date: 'shortTime' }} to {{ store.closingTime |  date: 'shortTime'}}</h5>\n        </ion-text>\n      </ion-label>\n    </ion-item>\n  </ion-card-header>\n  <ion-card-content *ngIf=\"store.name\" no-padding>\n      <ion-grid no-padding>\n        <ion-row>\n          <ion-col size=\"10\" text-center no-padding *ngIf=\"store != undefined\">\n            <ion-buttons>\n              <rating [rate]=\"store.totalRating\" [readonly]=\"true\"></rating>\n              <ion-button *ngIf=\"store.userRatings\" disabled>{{'(' + store.userRatings.length + ')'}}</ion-button>\n              <ion-button *ngIf=\"!store.userRatings\" disabled>(0)</ion-button>\n            </ion-buttons>\n          </ion-col>\n          <ion-col size=\"2\" justify-content-center text-center no-padding>\n            <ion-buttons justify-content-center text-center>\n              <ion-button fill=\"none\" (click)=\"addToFavourite(store)\" *ngIf=\"!isFavourite\">\n                <ion-icon slot=\"icon-only\" name=\"heart-empty\"></ion-icon>\n              </ion-button>\n              <ion-button fill=\"none\" (click)=\"removeFromFavourite(store)\" *ngIf=\"isFavourite\">\n                <ion-icon color=\"danger\" slot=\"icon-only\" name=\"heart\"></ion-icon>\n              </ion-button>\n            </ion-buttons>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-card-content>\n</ion-card>\n\n<!--Detailed View-->\n\n<div class=\"container\" *ngIf=\"viewType === 'detailedCard'\">\n    <ion-card\n      color=\"danger\"\n      class=\"closeCard\"\n      *ngIf=\"!(timeNow | closed: store.openingTime:store.closingTime)\">\n      <ion-card-content>\n        <ion-card-title>Closed</ion-card-title>\n        <ion-card-subtitle>\n          Serving in\n          {{ timeNow | dateDifference: store.openingTime:store.closingTime }}\n        </ion-card-subtitle>\n      </ion-card-content>\n    </ion-card>\n    <ion-img \n      [src]=\"'data:' + store.imageContentType + ';base64,' + store.image\"\n      class=\"mainImg\"\n    ></ion-img>\n    <div class=\"overlay\">\n      <h2>\n        <strong>{{ store.name | uppercase }}</strong>\n      </h2>\n      <p>\n        {{ store.openingTime | date: \"shortTime\" }} to\n        {{ store.closingTime | date: \"shortTime\" }}\n      </p>\n      <ion-buttons>\n        <rating [rate]=\"store.totalRating\" [readonly]=\"true\"></rating>\n        <ion-button *ngIf=\"rateReview\" disabled>{{\n          \"(\" + rateReview.length + \")\"\n        }}</ion-button>\n        <ion-button *ngIf=\"!rateReview\" disabled>(0)</ion-button>\n      </ion-buttons>\n    </div>\n  </div>"
 
 /***/ }),
 
@@ -1006,6 +1017,17 @@ module.exports = "<!--Normal View-->\n\n<ion-card no-padding *ngIf=\"viewType ==
 /***/ (function(module, exports) {
 
 module.exports = "<ion-card no-padding>\n  <ion-card-content>\n    <ion-textarea text-left\n    no-padding\n    [(ngModel)]=\"review.review\"\n    rows=\"1\"\n    type=\"text\"\n    placeholder=\"Type in your thoughts...\"\n  ></ion-textarea>\n  </ion-card-content>\n  <ion-card-footer>\n    <ion-grid>\n      <ion-row>\n        <ion-col>\n          <rating\n            [rate]=\"rate.rating\"\n            (rateChange)=\"updateRating($event)\"\n          ></rating>\n        </ion-col>\n        <ion-col text-right>\n          <ion-button (click)=\"postReview()\" fill=\"medium\">\n            <ion-icon slot=\"icon-only\" name=\"send\"></ion-icon>\n          </ion-button>\n        </ion-col>\n      </ion-row>\n    </ion-grid>\n  </ion-card-footer>\n</ion-card>\n\n<app-loading\n*ngIf=\"showReviewLoading === true\"\n[type]=\"'review'\"\n></app-loading>\n\n<ion-list>\n <ion-card no-padding  *ngFor=\"let rr of rateReviews\">\n   <ion-card-content no-padding>\n      <ion-item>\n          <ion-grid>\n            <ion-row>\n              <ion-col size=\"12\">\n                <ion-text>\n                  <p>{{\n                      rr.review.review\n                    }}</p>\n                </ion-text>\n              </ion-col>\n            </ion-row>\n            <ion-row>\n              <ion-col>\n                  <rating\n                  [rate]=\"rr.rating.rating\"\n                  [readonly]=\"true\"\n                ></rating>\n              </ion-col>\n              <ion-col class=\"reviews\">\n                <ion-text>\n                    <strong>{{ rr.review.userName | uppercase }}</strong>\n                </ion-text>\n              </ion-col>\n            </ion-row>\n          </ion-grid>\n        </ion-item>\n   </ion-card-content>\n </ion-card>\n</ion-list>\n"
+
+/***/ }),
+
+/***/ "./node_modules/raw-loader/index.js!./src/app/components/show-auxilary-modal/show-auxilary-modal.component.html":
+/*!*************************************************************************************************************!*\
+  !*** ./node_modules/raw-loader!./src/app/components/show-auxilary-modal/show-auxilary-modal.component.html ***!
+  \*************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<ion-content>\n  <ion-list *ngIf=\"auxilaryItems.length > 0\">\n      <ion-item lines=\"none\" *ngFor=\"let auxilary of auxilaryItems\">\n          <ion-thumbnail>\n            <ion-img\n              [src]=\"\n                'data:' +\n                auxilary.product.imageContentType +\n                ';base64,' +\n                auxilary.product.image\n              \"\n              class=\"imageShow\"\n            >\n            </ion-img>\n          </ion-thumbnail>\n          <ion-card-content>\n            <ion-grid>\n              <ion-row (click)=\"toggleDescription()\">\n                <ion-col class=\"title-card\" margin-top padding-top>\n                  <ion-card-title>{{ auxilary.product.name }}</ion-card-title>\n                  <ion-text\n                    ><strong>&#8364;{{ auxilary.sellPrice }}</strong></ion-text\n                  >\n                </ion-col>\n              </ion-row>\n              <ion-row>\n                <ion-col size=\"10\">\n                  <ion-buttons>\n                    <ion-button (click)=\"remove(i, stockCurrent)\" color=\"medium\">\n                      <ion-icon name=\"remove\"></ion-icon>\n                    </ion-button>\n                    <ion-button fill=\"none\" disabled>{{ orderCount }}</ion-button>\n                    <ion-button (click)=\"add(i, stockCurrent)\" color=\"medium\">\n                      <ion-icon name=\"add\"></ion-icon>\n                    </ion-button>\n                  </ion-buttons>\n                </ion-col>\n              </ion-row>\n            </ion-grid>\n          </ion-card-content>\n        </ion-item>\n  </ion-list>\n</ion-content>\n"
 
 /***/ }),
 
@@ -2498,15 +2520,20 @@ let OrderCommandResourceService = class OrderCommandResourceService extends _bas
         super(config, http);
     }
     /**
-     * @param acceptOrderRequest acceptOrderRequest
+     * @param params The `OrderCommandResourceService.AcceptOrderUsingPOSTParams` containing the following parameters:
+     *
+     * - `taskId`: taskId
+     *
+     * - `approvalDetailsDTO`: approvalDetailsDTO
+     *
      * @return OK
      */
-    acceptOrderUsingPOSTResponse(acceptOrderRequest) {
+    acceptOrderUsingPOSTResponse(params) {
         let __params = this.newParams();
         let __headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
         let __body = null;
-        __body = acceptOrderRequest;
-        let req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('POST', this.rootUrl + `/api/command/acceptOrder`, __body, {
+        __body = params.approvalDetailsDTO;
+        let req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('POST', this.rootUrl + `/api/command/acceptOrder/${params.taskId}`, __body, {
             headers: __headers,
             params: __params,
             responseType: 'json'
@@ -2516,11 +2543,16 @@ let OrderCommandResourceService = class OrderCommandResourceService extends _bas
         }));
     }
     /**
-     * @param acceptOrderRequest acceptOrderRequest
+     * @param params The `OrderCommandResourceService.AcceptOrderUsingPOSTParams` containing the following parameters:
+     *
+     * - `taskId`: taskId
+     *
+     * - `approvalDetailsDTO`: approvalDetailsDTO
+     *
      * @return OK
      */
-    acceptOrderUsingPOST(acceptOrderRequest) {
-        return this.acceptOrderUsingPOSTResponse(acceptOrderRequest).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(_r => _r.body));
+    acceptOrderUsingPOST(params) {
+        return this.acceptOrderUsingPOSTResponse(params).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(_r => _r.body));
     }
     /**
      * @param order order
@@ -2660,15 +2692,15 @@ let OrderCommandResourceService = class OrderCommandResourceService extends _bas
         return this.collectDeliveryDetailsUsingPOSTResponse(params).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(_r => _r.body));
     }
     /**
-     * @param processPaymentRequest processPaymentRequest
+     * @param orderDTO orderDTO
      * @return OK
      */
-    getProcessPaymentUsingPOSTResponse(processPaymentRequest) {
+    updateOrderUsingPUTResponse(orderDTO) {
         let __params = this.newParams();
         let __headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
         let __body = null;
-        __body = processPaymentRequest;
-        let req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('POST', this.rootUrl + `/api/command/process-payment`, __body, {
+        __body = orderDTO;
+        let req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('PUT', this.rootUrl + `/api/command/updateOrder`, __body, {
             headers: __headers,
             params: __params,
             responseType: 'json'
@@ -2678,19 +2710,19 @@ let OrderCommandResourceService = class OrderCommandResourceService extends _bas
         }));
     }
     /**
-     * @param processPaymentRequest processPaymentRequest
+     * @param orderDTO orderDTO
      * @return OK
      */
-    getProcessPaymentUsingPOST(processPaymentRequest) {
-        return this.getProcessPaymentUsingPOSTResponse(processPaymentRequest).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(_r => _r.body));
+    updateOrderUsingPUT(orderDTO) {
+        return this.updateOrderUsingPUTResponse(orderDTO).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(_r => _r.body));
     }
 };
-OrderCommandResourceService.acceptOrderUsingPOSTPath = '/api/command/acceptOrder';
+OrderCommandResourceService.acceptOrderUsingPOSTPath = '/api/command/acceptOrder/{taskId}';
 OrderCommandResourceService.initiateOrderUsingPOSTPath = '/api/command/order/initiateOrder';
 OrderCommandResourceService.createAddressUsingPOSTPath = '/api/command/orders/addresses';
 OrderCommandResourceService.getAllSavedAddressUsingGETPath = '/api/command/orders/addresses/{customerId}';
 OrderCommandResourceService.collectDeliveryDetailsUsingPOSTPath = '/api/command/orders/collectDeliveryDetails/{taskId}/{orderId}';
-OrderCommandResourceService.getProcessPaymentUsingPOSTPath = '/api/command/process-payment';
+OrderCommandResourceService.updateOrderUsingPUTPath = '/api/command/updateOrder';
 OrderCommandResourceService.ctorParameters = () => [
     { type: _api_configuration__WEBPACK_IMPORTED_MODULE_4__["ApiConfiguration"] },
     { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"] }
@@ -2979,6 +3011,30 @@ let QueryResourceService = class QueryResourceService extends _base_service__WEB
         return this.findDeliveryInfoByStoreIdUsingGETResponse(storeId).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(_r => _r.body));
     }
     /**
+     * @param orderMasterId orderMasterId
+     * @return OK
+     */
+    exportOrderDocketUsingGETResponse(orderMasterId) {
+        let __params = this.newParams();
+        let __headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
+        let __body = null;
+        let req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('GET', this.rootUrl + `/api/query/exportDocket/${orderMasterId}`, __body, {
+            headers: __headers,
+            params: __params,
+            responseType: 'text'
+        });
+        return this.http.request(req).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["filter"])(_r => _r instanceof _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpResponse"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])((_r) => {
+            return _r;
+        }));
+    }
+    /**
+     * @param orderMasterId orderMasterId
+     * @return OK
+     */
+    exportOrderDocketUsingGET(orderMasterId) {
+        return this.exportOrderDocketUsingGETResponse(orderMasterId).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(_r => _r.body));
+    }
+    /**
      * @param params The `QueryResourceService.FindAllCategoriesUsingGETParams` containing the following parameters:
      *
      * - `iDPcode`: iDPcode
@@ -3069,58 +3125,6 @@ let QueryResourceService = class QueryResourceService extends _base_service__WEB
      */
     findAllCustomersWithoutSearchUsingGET(params) {
         return this.findAllCustomersWithoutSearchUsingGETResponse(params).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(_r => _r.body));
-    }
-    /**
-     * @param params The `QueryResourceService.SearchByNearestLocationUsingGETParams` containing the following parameters:
-     *
-     * - `latLon`: latLon
-     *
-     * - `kiloMeter`: kiloMeter
-     *
-     * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-     *
-     * - `size`: Size of a page
-     *
-     * - `page`: Page number of the requested page
-     *
-     * @return OK
-     */
-    searchByNearestLocationUsingGETResponse(params) {
-        let __params = this.newParams();
-        let __headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
-        let __body = null;
-        (params.sort || []).forEach(val => { if (val != null)
-            __params = __params.append('sort', val.toString()); });
-        if (params.size != null)
-            __params = __params.set('size', params.size.toString());
-        if (params.page != null)
-            __params = __params.set('page', params.page.toString());
-        let req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('GET', this.rootUrl + `/api/query/findByNearestLocation/${params.latLon}/${params.kiloMeter}`, __body, {
-            headers: __headers,
-            params: __params,
-            responseType: 'json'
-        });
-        return this.http.request(req).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["filter"])(_r => _r instanceof _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpResponse"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])((_r) => {
-            return _r;
-        }));
-    }
-    /**
-     * @param params The `QueryResourceService.SearchByNearestLocationUsingGETParams` containing the following parameters:
-     *
-     * - `latLon`: latLon
-     *
-     * - `kiloMeter`: kiloMeter
-     *
-     * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-     *
-     * - `size`: Size of a page
-     *
-     * - `page`: Page number of the requested page
-     *
-     * @return OK
-     */
-    searchByNearestLocationUsingGET(params) {
-        return this.searchByNearestLocationUsingGETResponse(params).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(_r => _r.body));
     }
     /**
      * @param params The `QueryResourceService.FindCategoryAndCountUsingGETParams` containing the following parameters:
@@ -3463,7 +3467,7 @@ let QueryResourceService = class QueryResourceService extends _base_service__WEB
         return this.findStockCurrentByProductNameUsingGETResponse(params).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(_r => _r.body));
     }
     /**
-     * @param params The `QueryResourceService.FindProductByStoreIdAndCategoryIdUsingGETParams` containing the following parameters:
+     * @param params The `QueryResourceService.FindStockCurrentByStoreIdAndCategoryIdUsingGETParams` containing the following parameters:
      *
      * - `userId`: userId
      *
@@ -3477,7 +3481,7 @@ let QueryResourceService = class QueryResourceService extends _base_service__WEB
      *
      * @return OK
      */
-    findProductByStoreIdAndCategoryIdUsingGETResponse(params) {
+    findStockCurrentByStoreIdAndCategoryIdUsingGETResponse(params) {
         let __params = this.newParams();
         let __headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
         let __body = null;
@@ -3497,7 +3501,7 @@ let QueryResourceService = class QueryResourceService extends _base_service__WEB
         }));
     }
     /**
-     * @param params The `QueryResourceService.FindProductByStoreIdAndCategoryIdUsingGETParams` containing the following parameters:
+     * @param params The `QueryResourceService.FindStockCurrentByStoreIdAndCategoryIdUsingGETParams` containing the following parameters:
      *
      * - `userId`: userId
      *
@@ -3511,8 +3515,8 @@ let QueryResourceService = class QueryResourceService extends _base_service__WEB
      *
      * @return OK
      */
-    findProductByStoreIdAndCategoryIdUsingGET(params) {
-        return this.findProductByStoreIdAndCategoryIdUsingGETResponse(params).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(_r => _r.body));
+    findStockCurrentByStoreIdAndCategoryIdUsingGET(params) {
+        return this.findStockCurrentByStoreIdAndCategoryIdUsingGETResponse(params).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(_r => _r.body));
     }
     /**
      * @param params The `QueryResourceService.FindStoreBySearchTermUsingGETParams` containing the following parameters:
@@ -3679,6 +3683,30 @@ let QueryResourceService = class QueryResourceService extends _base_service__WEB
         return this.findAllProductByStoreIdUsingGETResponse(storeId).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(_r => _r.body));
     }
     /**
+     * @param orderMasterId orderMasterId
+     * @return OK
+     */
+    getOrderDocketUsingGETResponse(orderMasterId) {
+        let __params = this.newParams();
+        let __headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
+        let __body = null;
+        let req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('GET', this.rootUrl + `/api/query/getOrderDocket/${orderMasterId}`, __body, {
+            headers: __headers,
+            params: __params,
+            responseType: 'json'
+        });
+        return this.http.request(req).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["filter"])(_r => _r instanceof _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpResponse"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])((_r) => {
+            return _r;
+        }));
+    }
+    /**
+     * @param orderMasterId orderMasterId
+     * @return OK
+     */
+    getOrderDocketUsingGET(orderMasterId) {
+        return this.getOrderDocketUsingGETResponse(orderMasterId).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(_r => _r.body));
+    }
+    /**
      * @param params The `QueryResourceService.HeaderUsingGETParams` containing the following parameters:
      *
      * - `searchTerm`: searchTerm
@@ -3725,6 +3753,54 @@ let QueryResourceService = class QueryResourceService extends _base_service__WEB
      */
     headerUsingGET(params) {
         return this.headerUsingGETResponse(params).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(_r => _r.body));
+    }
+    /**
+     * @param params The `QueryResourceService.FindNotAuxilaryProductsUsingGETParams` containing the following parameters:
+     *
+     * - `iDPcode`: iDPcode
+     *
+     * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     *
+     * - `size`: Size of a page
+     *
+     * - `page`: Page number of the requested page
+     *
+     * @return OK
+     */
+    findNotAuxilaryProductsUsingGETResponse(params) {
+        let __params = this.newParams();
+        let __headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
+        let __body = null;
+        (params.sort || []).forEach(val => { if (val != null)
+            __params = __params.append('sort', val.toString()); });
+        if (params.size != null)
+            __params = __params.set('size', params.size.toString());
+        if (params.page != null)
+            __params = __params.set('page', params.page.toString());
+        let req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('GET', this.rootUrl + `/api/query/not-aux-product/${params.iDPcode}`, __body, {
+            headers: __headers,
+            params: __params,
+            responseType: 'json'
+        });
+        return this.http.request(req).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["filter"])(_r => _r instanceof _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpResponse"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])((_r) => {
+            return _r;
+        }));
+    }
+    /**
+     * @param params The `QueryResourceService.FindNotAuxilaryProductsUsingGETParams` containing the following parameters:
+     *
+     * - `iDPcode`: iDPcode
+     *
+     * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     *
+     * - `size`: Size of a page
+     *
+     * - `page`: Page number of the requested page
+     *
+     * @return OK
+     */
+    findNotAuxilaryProductsUsingGET(params) {
+        return this.findNotAuxilaryProductsUsingGETResponse(params).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(_r => _r.body));
     }
     /**
      * @param params The `QueryResourceService.FindOrdersByCustomerIdUsingGETParams` containing the following parameters:
@@ -4755,9 +4831,9 @@ QueryResourceService.findCustomerByReferenceUsingGETPath = '/api/query/customers
 QueryResourceService.findCustomerByIdUsingGETPath = '/api/query/customers/{id}';
 QueryResourceService.findAllDeliveryTypesByStoreIdUsingGETPath = '/api/query/deliveryTypes/{storeId}';
 QueryResourceService.findDeliveryInfoByStoreIdUsingGETPath = '/api/query/deliveryinfoByStoreId/{storeId}';
+QueryResourceService.exportOrderDocketUsingGETPath = '/api/query/exportDocket/{orderMasterId}';
 QueryResourceService.findAllCategoriesUsingGETPath = '/api/query/findAllCategories/{iDPcode}';
 QueryResourceService.findAllCustomersWithoutSearchUsingGETPath = '/api/query/findAllCustomers';
-QueryResourceService.searchByNearestLocationUsingGETPath = '/api/query/findByNearestLocation/{latLon}/{kiloMeter}';
 QueryResourceService.findCategoryAndCountUsingGETPath = '/api/query/findCategoryAndCount';
 QueryResourceService.findProductByCategoryIdAndUserIdUsingGETPath = '/api/query/findProductByCategoryIdAndUserId/{categoryId}/{userId}';
 QueryResourceService.findAllProductBySearchTermUsingGETPath = '/api/query/findProductBySearchTerm/{searchTerm}';
@@ -4765,12 +4841,14 @@ QueryResourceService.findProductByStoreIdAndCategoryNameUsingGETPath = '/api/que
 QueryResourceService.findRatingReviewByStoreidAndCustomerNameUsingGETPath = '/api/query/findRatingReview/{storeId}';
 QueryResourceService.findStockCurrentByProductIdUsingGETPath = '/api/query/findStockCurrentByProductId/{productId}';
 QueryResourceService.findStockCurrentByProductNameUsingGETPath = '/api/query/findStockCurrentByProductName/{name}';
-QueryResourceService.findProductByStoreIdAndCategoryIdUsingGETPath = '/api/query/findStockCurrentByStoreIdAndCategoryId/{userId}/{categoryId}';
+QueryResourceService.findStockCurrentByStoreIdAndCategoryIdUsingGETPath = '/api/query/findStockCurrentByStoreIdAndCategoryId/{userId}/{categoryId}';
 QueryResourceService.findStoreBySearchTermUsingGETPath = '/api/query/findStore/{searchTerm}';
 QueryResourceService.findStoreByTypeNameUsingGETPath = '/api/query/findStoreByTypeName/{name}';
 QueryResourceService.findStoreAndCountUsingGETPath = '/api/query/findStoreTypeAndCount';
 QueryResourceService.findAllProductByStoreIdUsingGETPath = '/api/query/findproducts/{storeId}';
+QueryResourceService.getOrderDocketUsingGETPath = '/api/query/getOrderDocket/{orderMasterId}';
 QueryResourceService.headerUsingGETPath = '/api/query/header/{searchTerm}';
+QueryResourceService.findNotAuxilaryProductsUsingGETPath = '/api/query/not-aux-product/{iDPcode}';
 QueryResourceService.findOrdersByCustomerIdUsingGETPath = '/api/query/ordersByCustomerId/{customerId}';
 QueryResourceService.findAndSortProductByPriceUsingGETPath = '/api/query/productByPrice/{from}/{to}';
 QueryResourceService.findProductUsingGETPath = '/api/query/products/{id}';
@@ -5065,12 +5143,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let AppComponent = class AppComponent {
-    constructor(platform, splashScreen, statusBar, util, keycloakService) {
+    constructor(platform, splashScreen, statusBar, util, keycloakService, menuController) {
         this.platform = platform;
         this.splashScreen = splashScreen;
         this.statusBar = statusBar;
         this.util = util;
         this.keycloakService = keycloakService;
+        this.menuController = menuController;
         this.appPages = [
             {
                 title: 'Home',
@@ -5089,6 +5168,7 @@ let AppComponent = class AppComponent {
             }
         ];
         this.initializeApp();
+        this.menuController.enable(false);
     }
     initializeApp() {
         this.platform.ready().then(() => {
@@ -5106,7 +5186,8 @@ AppComponent.ctorParameters = () => [
     { type: _ionic_native_splash_screen_ngx__WEBPACK_IMPORTED_MODULE_5__["SplashScreen"] },
     { type: _ionic_native_status_bar_ngx__WEBPACK_IMPORTED_MODULE_6__["StatusBar"] },
     { type: _services_util__WEBPACK_IMPORTED_MODULE_1__["Util"] },
-    { type: _services_security_keycloak_service__WEBPACK_IMPORTED_MODULE_2__["KeycloakService"] }
+    { type: _services_security_keycloak_service__WEBPACK_IMPORTED_MODULE_2__["KeycloakService"] },
+    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["MenuController"] }
 ];
 AppComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Component"])({
@@ -5118,7 +5199,8 @@ AppComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         _ionic_native_splash_screen_ngx__WEBPACK_IMPORTED_MODULE_5__["SplashScreen"],
         _ionic_native_status_bar_ngx__WEBPACK_IMPORTED_MODULE_6__["StatusBar"],
         _services_util__WEBPACK_IMPORTED_MODULE_1__["Util"],
-        _services_security_keycloak_service__WEBPACK_IMPORTED_MODULE_2__["KeycloakService"]])
+        _services_security_keycloak_service__WEBPACK_IMPORTED_MODULE_2__["KeycloakService"],
+        _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["MenuController"]])
 ], AppComponent);
 
 
@@ -5160,9 +5242,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_components_module__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./components/components.module */ "./src/app/components/components.module.ts");
 /* harmony import */ var _agm_core__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @agm/core */ "./node_modules/@agm/core/index.js");
 /* harmony import */ var _services_order_service__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./services/order.service */ "./src/app/services/order.service.ts");
-/* harmony import */ var _components_checkout_checkout_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./components/checkout/checkout.component */ "./src/app/components/checkout/checkout.component.ts");
-/* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ngx-logger */ "./node_modules/ngx-logger/fesm2015/ngx-logger.js");
-/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ../environments/environment */ "./src/environments/environment.ts");
+/* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ngx-logger */ "./node_modules/ngx-logger/fesm2015/ngx-logger.js");
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ../environments/environment */ "./src/environments/environment.ts");
+/* harmony import */ var _services_route_service__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./services/route.service */ "./src/app/services/route.service.ts");
 
 
 
@@ -5196,7 +5278,7 @@ let AppModule = class AppModule {
 AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_10__["NgModule"])({
         declarations: [_app_component__WEBPACK_IMPORTED_MODULE_16__["AppComponent"]],
-        entryComponents: [_components_checkout_checkout_component__WEBPACK_IMPORTED_MODULE_25__["CheckoutComponent"]],
+        entryComponents: [],
         imports: [
             _angular_platform_browser__WEBPACK_IMPORTED_MODULE_11__["BrowserModule"],
             _angular_common_http__WEBPACK_IMPORTED_MODULE_18__["HttpClientModule"],
@@ -5205,18 +5287,17 @@ AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
             // Extra Modules
             ngx_img_cropper__WEBPACK_IMPORTED_MODULE_6__["ImageCropperModule"],
             _configs_configs_module__WEBPACK_IMPORTED_MODULE_9__["ConfigsModule"],
-            _components_components_module__WEBPACK_IMPORTED_MODULE_22__["ComponentsModule"],
             _ionic_storage__WEBPACK_IMPORTED_MODULE_19__["IonicStorageModule"].forRoot({
                 name: '__mydb',
                 driverOrder: ['indexeddb', 'sqlite', 'websql']
             }),
             _components_components_module__WEBPACK_IMPORTED_MODULE_22__["ComponentsModule"],
             _agm_core__WEBPACK_IMPORTED_MODULE_23__["AgmCoreModule"].forRoot({
-                apiKey: 'AIzaSyDE6vwyjr_HUlyzP6EU4rsNxd_xchtBA1o',
+                apiKey: 'AIzaSyBdjkfcPlWTwnUq1W1YLIXMNJtMjdOXVXk',
                 libraries: ['places', 'geometry']
             }),
             angular_oauth2_oidc__WEBPACK_IMPORTED_MODULE_7__["OAuthModule"].forRoot(),
-            ngx_logger__WEBPACK_IMPORTED_MODULE_26__["LoggerModule"].forRoot(_environments_environment__WEBPACK_IMPORTED_MODULE_27__["environment"].logging),
+            ngx_logger__WEBPACK_IMPORTED_MODULE_25__["LoggerModule"].forRoot(_environments_environment__WEBPACK_IMPORTED_MODULE_26__["environment"].logging),
         ],
         providers: [
             _ionic_native_camera_ngx__WEBPACK_IMPORTED_MODULE_21__["Camera"],
@@ -5231,6 +5312,7 @@ AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
             _services_filter_service__WEBPACK_IMPORTED_MODULE_3__["FilterService"],
             _services_favourite_service__WEBPACK_IMPORTED_MODULE_2__["FavouriteService"],
             _services_cart_service__WEBPACK_IMPORTED_MODULE_1__["CartService"],
+            _services_route_service__WEBPACK_IMPORTED_MODULE_27__["RouteService"],
             _services_order_service__WEBPACK_IMPORTED_MODULE_24__["OrderService"],
             {
                 provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_18__["HTTP_INTERCEPTORS"],
@@ -5253,7 +5335,7 @@ AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "ion-scroll {\n  height: 100vh;\n}\n\nion-footer {\n  position: fixed;\n  bottom: 0px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9hZGRyZXNzLWxpc3QvYWRkcmVzcy1saXN0LmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL2FkZHJlc3MtbGlzdC9hZGRyZXNzLWxpc3QuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxhQUFBO0FDQ0o7O0FERUE7RUFDSSxlQUFBO0VBQ0EsV0FBQTtBQ0NKIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9hZGRyZXNzLWxpc3QvYWRkcmVzcy1saXN0LmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiaW9uLXNjcm9sbCB7XG4gICAgaGVpZ2h0OiAxMDB2aDtcbn1cblxuaW9uLWZvb3RlciB7XG4gICAgcG9zaXRpb246Zml4ZWQ7XG4gICAgYm90dG9tOiAwcHg7XG59IiwiaW9uLXNjcm9sbCB7XG4gIGhlaWdodDogMTAwdmg7XG59XG5cbmlvbi1mb290ZXIge1xuICBwb3NpdGlvbjogZml4ZWQ7XG4gIGJvdHRvbTogMHB4O1xufSJdfQ== */"
+module.exports = "ion-scroll {\n  height: 100vh;\n}\n\nion-footer {\n  position: fixed;\n  bottom: 0px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvY29tcG9uZW50cy9hZGRyZXNzLWxpc3QvYWRkcmVzcy1saXN0LmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL2FkZHJlc3MtbGlzdC9hZGRyZXNzLWxpc3QuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxhQUFBO0FDQ0o7O0FERUE7RUFDSSxlQUFBO0VBQ0EsV0FBQTtBQ0NKIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9hZGRyZXNzLWxpc3QvYWRkcmVzcy1saXN0LmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiaW9uLXNjcm9sbCB7XG4gICAgaGVpZ2h0OiAxMDB2aDtcbn1cblxuaW9uLWZvb3RlciB7XG4gICAgcG9zaXRpb246Zml4ZWQ7XG4gICAgYm90dG9tOiAwcHg7XG59IiwiaW9uLXNjcm9sbCB7XG4gIGhlaWdodDogMTAwdmg7XG59XG5cbmlvbi1mb290ZXIge1xuICBwb3NpdGlvbjogZml4ZWQ7XG4gIGJvdHRvbTogMHB4O1xufSJdfQ== */"
 
 /***/ }),
 
@@ -5391,7 +5473,7 @@ AddressListComponent = AddressListComponent_1 = tslib__WEBPACK_IMPORTED_MODULE_0
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".container {\n  padding: 10px;\n}\n\nh4 {\n  text-align: center;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9hbGxlcmd5L2FsbGVyZ3kuY29tcG9uZW50LnNjc3MiLCJzcmMvYXBwL2NvbXBvbmVudHMvYWxsZXJneS9hbGxlcmd5LmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksYUFBQTtBQ0NKOztBREVBO0VBQ0ksa0JBQUE7QUNDSiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvYWxsZXJneS9hbGxlcmd5LmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmNvbnRhaW5lciB7XG4gICAgcGFkZGluZzogMTBweDtcbn1cblxuaDQge1xuICAgIHRleHQtYWxpZ246IGNlbnRlcjtcbn0iLCIuY29udGFpbmVyIHtcbiAgcGFkZGluZzogMTBweDtcbn1cblxuaDQge1xuICB0ZXh0LWFsaWduOiBjZW50ZXI7XG59Il19 */"
+module.exports = ".container {\n  padding: 10px;\n}\n\nh4 {\n  text-align: center;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvY29tcG9uZW50cy9hbGxlcmd5L2FsbGVyZ3kuY29tcG9uZW50LnNjc3MiLCJzcmMvYXBwL2NvbXBvbmVudHMvYWxsZXJneS9hbGxlcmd5LmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksYUFBQTtBQ0NKOztBREVBO0VBQ0ksa0JBQUE7QUNDSiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvYWxsZXJneS9hbGxlcmd5LmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmNvbnRhaW5lciB7XG4gICAgcGFkZGluZzogMTBweDtcbn1cblxuaDQge1xuICAgIHRleHQtYWxpZ246IGNlbnRlcjtcbn0iLCIuY29udGFpbmVyIHtcbiAgcGFkZGluZzogMTBweDtcbn1cblxuaDQge1xuICB0ZXh0LWFsaWduOiBjZW50ZXI7XG59Il19 */"
 
 /***/ }),
 
@@ -5443,7 +5525,7 @@ AllergyComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "ion-card {\n  border-radius: 0px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9iYW5uZXIvYmFubmVyLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL2Jhbm5lci9iYW5uZXIuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxrQkFBQTtBQ0NKIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9iYW5uZXIvYmFubmVyLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiaW9uLWNhcmQge1xuICAgIGJvcmRlci1yYWRpdXM6MHB4O1xufSIsImlvbi1jYXJkIHtcbiAgYm9yZGVyLXJhZGl1czogMHB4O1xufSJdfQ== */"
+module.exports = "ion-card {\n  border-radius: 0px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvY29tcG9uZW50cy9iYW5uZXIvYmFubmVyLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL2Jhbm5lci9iYW5uZXIuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxrQkFBQTtBQ0NKIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9iYW5uZXIvYmFubmVyLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiaW9uLWNhcmQge1xuICAgIGJvcmRlci1yYWRpdXM6MHB4O1xufSIsImlvbi1jYXJkIHtcbiAgYm9yZGVyLXJhZGl1czogMHB4O1xufSJdfQ== */"
 
 /***/ }),
 
@@ -5528,7 +5610,7 @@ BannerComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "ion-icon[name=basket] {\n  font-size: 13px;\n  margin-left: 2px;\n}\n\n.h35 {\n  height: 40vh;\n}\n\n.h35 ion-icon {\n  font-size: 70vw;\n}\n\n.bg-grey {\n  background: lightgray;\n}\n\n.fntbig-cursive {\n  font-size: 30px;\n  font-family: cursive;\n}\n\n.info-icon {\n  font-size: 30px;\n  margin: 0px;\n  margin-right: 10px;\n}\n\n.fntbig {\n  font-size: 37px;\n  margin: 10px;\n}\n\n.grey {\n  color: grey;\n}\n\ntextarea {\n  width: 95%;\n  height: 100px;\n}\n\n.highlight {\n  font-size: 16px;\n  font-weight: bold;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9jYXJ0L2NhcnQuY29tcG9uZW50LnNjc3MiLCJzcmMvYXBwL2NvbXBvbmVudHMvY2FydC9jYXJ0LmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksZUFBQTtFQUNBLGdCQUFBO0FDQ0o7O0FERUE7RUFDSSxZQUFBO0FDQ0o7O0FERUE7RUFDSSxlQUFBO0FDQ0o7O0FERUE7RUFDSSxxQkFBQTtBQ0NKOztBREVBO0VBQ0ksZUFBQTtFQUNBLG9CQUFBO0FDQ0o7O0FER0E7RUFDSSxlQUFBO0VBQ0EsV0FBQTtFQUNBLGtCQUFBO0FDQUo7O0FER0E7RUFDSSxlQUFBO0VBQ0EsWUFBQTtBQ0FKOztBREdBO0VBQ0ksV0FBQTtBQ0FKOztBREdBO0VBQ0ksVUFBQTtFQUNBLGFBQUE7QUNBSjs7QURHQTtFQUNJLGVBQUE7RUFDQSxpQkFBQTtBQ0FKIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9jYXJ0L2NhcnQuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJpb24taWNvbltuYW1lPSdiYXNrZXQnXSB7XG4gICAgZm9udC1zaXplOiAxM3B4O1xuICAgIG1hcmdpbi1sZWZ0OiAycHg7XG59XG5cbi5oMzUge1xuICAgIGhlaWdodDogNDB2aDtcbn1cblxuLmgzNSBpb24taWNvbiB7XG4gICAgZm9udC1zaXplOiA3MHZ3O1xufVxuXG4uYmctZ3JleSB7XG4gICAgYmFja2dyb3VuZDogbGlnaHRncmF5O1xufVxuXG4uZm50YmlnLWN1cnNpdmUge1xuICAgIGZvbnQtc2l6ZTogMzBweDtcbiAgICBmb250LWZhbWlseTogY3Vyc2l2ZTtcblxufVxuXG4uaW5mby1pY29uIHtcbiAgICBmb250LXNpemU6IDMwcHg7XG4gICAgbWFyZ2luOiAwcHg7XG4gICAgbWFyZ2luLXJpZ2h0OiAxMHB4O1xufVxuXG4uZm50YmlnIHtcbiAgICBmb250LXNpemU6IDM3cHg7XG4gICAgbWFyZ2luOiAxMHB4O1xufVxuXG4uZ3JleSB7XG4gICAgY29sb3I6IGdyZXk7XG59XG5cbnRleHRhcmVhIHtcbiAgICB3aWR0aDogOTUlO1xuICAgIGhlaWdodDogMTAwcHg7XG59XG5cbi5oaWdobGlnaHQge1xuICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICBmb250LXdlaWdodDogYm9sZDtcbn0iLCJpb24taWNvbltuYW1lPWJhc2tldF0ge1xuICBmb250LXNpemU6IDEzcHg7XG4gIG1hcmdpbi1sZWZ0OiAycHg7XG59XG5cbi5oMzUge1xuICBoZWlnaHQ6IDQwdmg7XG59XG5cbi5oMzUgaW9uLWljb24ge1xuICBmb250LXNpemU6IDcwdnc7XG59XG5cbi5iZy1ncmV5IHtcbiAgYmFja2dyb3VuZDogbGlnaHRncmF5O1xufVxuXG4uZm50YmlnLWN1cnNpdmUge1xuICBmb250LXNpemU6IDMwcHg7XG4gIGZvbnQtZmFtaWx5OiBjdXJzaXZlO1xufVxuXG4uaW5mby1pY29uIHtcbiAgZm9udC1zaXplOiAzMHB4O1xuICBtYXJnaW46IDBweDtcbiAgbWFyZ2luLXJpZ2h0OiAxMHB4O1xufVxuXG4uZm50YmlnIHtcbiAgZm9udC1zaXplOiAzN3B4O1xuICBtYXJnaW46IDEwcHg7XG59XG5cbi5ncmV5IHtcbiAgY29sb3I6IGdyZXk7XG59XG5cbnRleHRhcmVhIHtcbiAgd2lkdGg6IDk1JTtcbiAgaGVpZ2h0OiAxMDBweDtcbn1cblxuLmhpZ2hsaWdodCB7XG4gIGZvbnQtc2l6ZTogMTZweDtcbiAgZm9udC13ZWlnaHQ6IGJvbGQ7XG59Il19 */"
+module.exports = "ion-icon[name=basket] {\n  font-size: 13px;\n  margin-left: 2px;\n}\n\n.h35 {\n  height: 40vh;\n}\n\n.h35 ion-icon {\n  font-size: 70vw;\n}\n\n.bg-grey {\n  background: lightgray;\n}\n\n.fntbig-cursive {\n  font-size: 30px;\n  font-family: cursive;\n}\n\n.info-icon {\n  font-size: 30px;\n  margin: 0px;\n  margin-right: 10px;\n}\n\n.fntbig {\n  font-size: 37px;\n  margin: 10px;\n}\n\n.grey {\n  color: grey;\n}\n\ntextarea {\n  width: 95%;\n  height: 100px;\n}\n\n.highlight {\n  font-size: 16px;\n  font-weight: bold;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvY29tcG9uZW50cy9jYXJ0L2NhcnQuY29tcG9uZW50LnNjc3MiLCJzcmMvYXBwL2NvbXBvbmVudHMvY2FydC9jYXJ0LmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksZUFBQTtFQUNBLGdCQUFBO0FDQ0o7O0FERUE7RUFDSSxZQUFBO0FDQ0o7O0FERUE7RUFDSSxlQUFBO0FDQ0o7O0FERUE7RUFDSSxxQkFBQTtBQ0NKOztBREVBO0VBQ0ksZUFBQTtFQUNBLG9CQUFBO0FDQ0o7O0FER0E7RUFDSSxlQUFBO0VBQ0EsV0FBQTtFQUNBLGtCQUFBO0FDQUo7O0FER0E7RUFDSSxlQUFBO0VBQ0EsWUFBQTtBQ0FKOztBREdBO0VBQ0ksV0FBQTtBQ0FKOztBREdBO0VBQ0ksVUFBQTtFQUNBLGFBQUE7QUNBSjs7QURHQTtFQUNJLGVBQUE7RUFDQSxpQkFBQTtBQ0FKIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9jYXJ0L2NhcnQuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJpb24taWNvbltuYW1lPSdiYXNrZXQnXSB7XG4gICAgZm9udC1zaXplOiAxM3B4O1xuICAgIG1hcmdpbi1sZWZ0OiAycHg7XG59XG5cbi5oMzUge1xuICAgIGhlaWdodDogNDB2aDtcbn1cblxuLmgzNSBpb24taWNvbiB7XG4gICAgZm9udC1zaXplOiA3MHZ3O1xufVxuXG4uYmctZ3JleSB7XG4gICAgYmFja2dyb3VuZDogbGlnaHRncmF5O1xufVxuXG4uZm50YmlnLWN1cnNpdmUge1xuICAgIGZvbnQtc2l6ZTogMzBweDtcbiAgICBmb250LWZhbWlseTogY3Vyc2l2ZTtcblxufVxuXG4uaW5mby1pY29uIHtcbiAgICBmb250LXNpemU6IDMwcHg7XG4gICAgbWFyZ2luOiAwcHg7XG4gICAgbWFyZ2luLXJpZ2h0OiAxMHB4O1xufVxuXG4uZm50YmlnIHtcbiAgICBmb250LXNpemU6IDM3cHg7XG4gICAgbWFyZ2luOiAxMHB4O1xufVxuXG4uZ3JleSB7XG4gICAgY29sb3I6IGdyZXk7XG59XG5cbnRleHRhcmVhIHtcbiAgICB3aWR0aDogOTUlO1xuICAgIGhlaWdodDogMTAwcHg7XG59XG5cbi5oaWdobGlnaHQge1xuICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICBmb250LXdlaWdodDogYm9sZDtcbn0iLCJpb24taWNvbltuYW1lPWJhc2tldF0ge1xuICBmb250LXNpemU6IDEzcHg7XG4gIG1hcmdpbi1sZWZ0OiAycHg7XG59XG5cbi5oMzUge1xuICBoZWlnaHQ6IDQwdmg7XG59XG5cbi5oMzUgaW9uLWljb24ge1xuICBmb250LXNpemU6IDcwdnc7XG59XG5cbi5iZy1ncmV5IHtcbiAgYmFja2dyb3VuZDogbGlnaHRncmF5O1xufVxuXG4uZm50YmlnLWN1cnNpdmUge1xuICBmb250LXNpemU6IDMwcHg7XG4gIGZvbnQtZmFtaWx5OiBjdXJzaXZlO1xufVxuXG4uaW5mby1pY29uIHtcbiAgZm9udC1zaXplOiAzMHB4O1xuICBtYXJnaW46IDBweDtcbiAgbWFyZ2luLXJpZ2h0OiAxMHB4O1xufVxuXG4uZm50YmlnIHtcbiAgZm9udC1zaXplOiAzN3B4O1xuICBtYXJnaW46IDEwcHg7XG59XG5cbi5ncmV5IHtcbiAgY29sb3I6IGdyZXk7XG59XG5cbnRleHRhcmVhIHtcbiAgd2lkdGg6IDk1JTtcbiAgaGVpZ2h0OiAxMDBweDtcbn1cblxuLmhpZ2hsaWdodCB7XG4gIGZvbnQtc2l6ZTogMTZweDtcbiAgZm9udC13ZWlnaHQ6IGJvbGQ7XG59Il19 */"
 
 /***/ }),
 
@@ -5575,9 +5657,9 @@ let CartComponent = class CartComponent {
         this.totalPrice = 0;
         this.orderLines = [];
         this.note = '';
+        this.neededCheckOutAmount = 0;
     }
     ngOnInit() {
-        console.log(this.viewType);
         this.getCartDetails();
         this.getCustomer();
     }
@@ -5606,6 +5688,9 @@ let CartComponent = class CartComponent {
             if (this.cart.currentShop !== undefined &&
                 data !== undefined && this.store !== this.cart.currentShop) {
                 this.store = this.cart.currentShop;
+                if (this.store.minAmount > this.totalPrice) {
+                    this.neededCheckOutAmount = this.store.minAmount - this.totalPrice;
+                }
                 this.getStoreSettings();
             }
         });
@@ -5684,6 +5769,82 @@ CartComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 
 /***/ }),
 
+/***/ "./src/app/components/category-wise-products-card/category-wise-products-card.component.scss":
+/*!***************************************************************************************************!*\
+  !*** ./src/app/components/category-wise-products-card/category-wise-products-card.component.scss ***!
+  \***************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvY2F0ZWdvcnktd2lzZS1wcm9kdWN0cy1jYXJkL2NhdGVnb3J5LXdpc2UtcHJvZHVjdHMtY2FyZC5jb21wb25lbnQuc2NzcyJ9 */"
+
+/***/ }),
+
+/***/ "./src/app/components/category-wise-products-card/category-wise-products-card.component.ts":
+/*!*************************************************************************************************!*\
+  !*** ./src/app/components/category-wise-products-card/category-wise-products-card.component.ts ***!
+  \*************************************************************************************************/
+/*! exports provided: CategoryWiseProductsCardComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CategoryWiseProductsCardComponent", function() { return CategoryWiseProductsCardComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ngx-logger */ "./node_modules/ngx-logger/fesm2015/ngx-logger.js");
+/* harmony import */ var src_app_api_services__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/api/services */ "./src/app/api/services.ts");
+
+
+
+
+let CategoryWiseProductsCardComponent = class CategoryWiseProductsCardComponent {
+    constructor(logger, queryResource) {
+        this.logger = logger;
+        this.queryResource = queryResource;
+        this.stockCurrents = [];
+        this.showLoading = true;
+    }
+    ngOnInit() {
+        this.getProductsCategoryWise();
+    }
+    getProductsCategoryWise() {
+        this.queryResource.findStockCurrentByStoreIdAndCategoryIdUsingGET({
+            userId: this.store.regNo,
+            categoryId: this.category.id
+        })
+            .subscribe(s => {
+            this.stockCurrents = s;
+            this.showLoading = false;
+        });
+    }
+};
+CategoryWiseProductsCardComponent.ctorParameters = () => [
+    { type: ngx_logger__WEBPACK_IMPORTED_MODULE_2__["NGXLogger"] },
+    { type: src_app_api_services__WEBPACK_IMPORTED_MODULE_3__["QueryResourceService"] }
+];
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Object)
+], CategoryWiseProductsCardComponent.prototype, "category", void 0);
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Object)
+], CategoryWiseProductsCardComponent.prototype, "store", void 0);
+CategoryWiseProductsCardComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+        selector: 'app-category-wise-products-card',
+        template: __webpack_require__(/*! raw-loader!./category-wise-products-card.component.html */ "./node_modules/raw-loader/index.js!./src/app/components/category-wise-products-card/category-wise-products-card.component.html"),
+        styles: [__webpack_require__(/*! ./category-wise-products-card.component.scss */ "./src/app/components/category-wise-products-card/category-wise-products-card.component.scss")]
+    }),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [ngx_logger__WEBPACK_IMPORTED_MODULE_2__["NGXLogger"],
+        src_app_api_services__WEBPACK_IMPORTED_MODULE_3__["QueryResourceService"]])
+], CategoryWiseProductsCardComponent);
+
+
+
+/***/ }),
+
 /***/ "./src/app/components/checkout/checkout.component.scss":
 /*!*************************************************************!*\
   !*** ./src/app/components/checkout/checkout.component.scss ***!
@@ -5691,7 +5852,7 @@ CartComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "textarea {\n  width: 100%;\n  height: 200px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9jaGVja291dC9jaGVja291dC5jb21wb25lbnQuc2NzcyIsInNyYy9hcHAvY29tcG9uZW50cy9jaGVja291dC9jaGVja291dC5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLFdBQUE7RUFDQSxhQUFBO0FDQ0oiLCJmaWxlIjoic3JjL2FwcC9jb21wb25lbnRzL2NoZWNrb3V0L2NoZWNrb3V0LmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsidGV4dGFyZWF7XG4gICAgd2lkdGg6IDEwMCU7XG4gICAgaGVpZ2h0OiAyMDBweDtcbn0iLCJ0ZXh0YXJlYSB7XG4gIHdpZHRoOiAxMDAlO1xuICBoZWlnaHQ6IDIwMHB4O1xufSJdfQ== */"
+module.exports = "textarea {\n  width: 100%;\n  height: 200px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvY29tcG9uZW50cy9jaGVja291dC9jaGVja291dC5jb21wb25lbnQuc2NzcyIsInNyYy9hcHAvY29tcG9uZW50cy9jaGVja291dC9jaGVja291dC5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLFdBQUE7RUFDQSxhQUFBO0FDQ0oiLCJmaWxlIjoic3JjL2FwcC9jb21wb25lbnRzL2NoZWNrb3V0L2NoZWNrb3V0LmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsidGV4dGFyZWF7XG4gICAgd2lkdGg6IDEwMCU7XG4gICAgaGVpZ2h0OiAyMDBweDtcbn0iLCJ0ZXh0YXJlYSB7XG4gIHdpZHRoOiAxMDAlO1xuICBoZWlnaHQ6IDIwMHB4O1xufSJdfQ== */"
 
 /***/ }),
 
@@ -5721,14 +5882,15 @@ let CheckoutComponent = class CheckoutComponent {
         console.log(this.orderService.customer);
         console.log(this.orderService.address);
         this.getCustomer();
-        this.getOrder();
+        this.getOrderDetails();
     }
     getCustomer() {
         console.log(this.orderService.customer);
         this.customer = this.orderService.customer;
     }
-    getOrder() {
+    getOrderDetails() {
         this.order = this.orderService.order;
+        this.deliveryType = this.orderService.deliveryType;
     }
     setNote() {
         this.orderService.setNote(this.note);
@@ -5805,6 +5967,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _footer_footer_component__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./footer/footer.component */ "./src/app/components/footer/footer.component.ts");
 /* harmony import */ var _checkout_checkout_component__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./checkout/checkout.component */ "./src/app/components/checkout/checkout.component.ts");
 /* harmony import */ var _map_map_component__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./map/map.component */ "./src/app/components/map/map.component.ts");
+/* harmony import */ var _category_wise_products_card_category_wise_products_card_component__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./category-wise-products-card/category-wise-products-card.component */ "./src/app/components/category-wise-products-card/category-wise-products-card.component.ts");
+/* harmony import */ var _show_auxilary_modal_show_auxilary_modal_component__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./show-auxilary-modal/show-auxilary-modal.component */ "./src/app/components/show-auxilary-modal/show-auxilary-modal.component.ts");
+
+
 
 
 
@@ -5866,6 +6032,8 @@ ComponentsModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
             _history_list_history_list_component__WEBPACK_IMPORTED_MODULE_1__["HistoryListComponent"],
             _address_list_address_list_component__WEBPACK_IMPORTED_MODULE_27__["AddressListComponent"],
             _hotel_menu_popover_hotel_menu_popover_component__WEBPACK_IMPORTED_MODULE_29__["HotelMenuPopoverComponent"],
+            _category_wise_products_card_category_wise_products_card_component__WEBPACK_IMPORTED_MODULE_33__["CategoryWiseProductsCardComponent"],
+            _show_auxilary_modal_show_auxilary_modal_component__WEBPACK_IMPORTED_MODULE_34__["ShowAuxilaryModalComponent"],
             _pipes_array_formater_pipe__WEBPACK_IMPORTED_MODULE_10__["ArrayFormaterPipe"],
             _pipes_closed_pipe__WEBPACK_IMPORTED_MODULE_8__["ClosedPipe"],
             _pipes_date_difference_pipe__WEBPACK_IMPORTED_MODULE_9__["DateDifferencePipe"],
@@ -5900,7 +6068,9 @@ ComponentsModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
             _favourite_list_favourite_list_component__WEBPACK_IMPORTED_MODULE_2__["FavouriteListComponent"],
             _history_list_history_list_component__WEBPACK_IMPORTED_MODULE_1__["HistoryListComponent"],
             _address_list_address_list_component__WEBPACK_IMPORTED_MODULE_27__["AddressListComponent"],
-            _hotel_menu_popover_hotel_menu_popover_component__WEBPACK_IMPORTED_MODULE_29__["HotelMenuPopoverComponent"]
+            _hotel_menu_popover_hotel_menu_popover_component__WEBPACK_IMPORTED_MODULE_29__["HotelMenuPopoverComponent"],
+            _category_wise_products_card_category_wise_products_card_component__WEBPACK_IMPORTED_MODULE_33__["CategoryWiseProductsCardComponent"],
+            _show_auxilary_modal_show_auxilary_modal_component__WEBPACK_IMPORTED_MODULE_34__["ShowAuxilaryModalComponent"]
         ],
         schemas: [_angular_core__WEBPACK_IMPORTED_MODULE_18__["CUSTOM_ELEMENTS_SCHEMA"]],
         entryComponents: [
@@ -5912,7 +6082,8 @@ ComponentsModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
             _profile_edit_profile_edit_component__WEBPACK_IMPORTED_MODULE_26__["ProfileEditComponent"],
             _address_list_address_list_component__WEBPACK_IMPORTED_MODULE_27__["AddressListComponent"],
             _loading_loading_component__WEBPACK_IMPORTED_MODULE_28__["LoadingComponent"],
-            _checkout_checkout_component__WEBPACK_IMPORTED_MODULE_31__["CheckoutComponent"]
+            _checkout_checkout_component__WEBPACK_IMPORTED_MODULE_31__["CheckoutComponent"],
+            _show_auxilary_modal_show_auxilary_modal_component__WEBPACK_IMPORTED_MODULE_34__["ShowAuxilaryModalComponent"]
         ]
     })
 ], ComponentsModule);
@@ -5928,7 +6099,7 @@ ComponentsModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "textarea {\n  width: 95vw;\n  height: 100px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9kZWxpdmVyeS1pdGVtLWRldGFpbHMvZGVsaXZlcnktaXRlbS1kZXRhaWxzLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL2RlbGl2ZXJ5LWl0ZW0tZGV0YWlscy9kZWxpdmVyeS1pdGVtLWRldGFpbHMuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQ0E7RUFDSSxXQUFBO0VBQ0EsYUFBQTtBQ0FKIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9kZWxpdmVyeS1pdGVtLWRldGFpbHMvZGVsaXZlcnktaXRlbS1kZXRhaWxzLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiXG50ZXh0YXJlYSB7XG4gICAgd2lkdGg6IDk1dnc7XG4gICAgaGVpZ2h0OiAxMDBweDtcbn1cbiIsInRleHRhcmVhIHtcbiAgd2lkdGg6IDk1dnc7XG4gIGhlaWdodDogMTAwcHg7XG59Il19 */"
+module.exports = "textarea {\n  width: 95vw;\n  height: 100px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvY29tcG9uZW50cy9kZWxpdmVyeS1pdGVtLWRldGFpbHMvZGVsaXZlcnktaXRlbS1kZXRhaWxzLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL2RlbGl2ZXJ5LWl0ZW0tZGV0YWlscy9kZWxpdmVyeS1pdGVtLWRldGFpbHMuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQ0E7RUFDSSxXQUFBO0VBQ0EsYUFBQTtBQ0FKIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9kZWxpdmVyeS1pdGVtLWRldGFpbHMvZGVsaXZlcnktaXRlbS1kZXRhaWxzLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiXG50ZXh0YXJlYSB7XG4gICAgd2lkdGg6IDk1dnc7XG4gICAgaGVpZ2h0OiAxMDBweDtcbn1cbiIsInRleHRhcmVhIHtcbiAgd2lkdGg6IDk1dnc7XG4gIGhlaWdodDogMTAwcHg7XG59Il19 */"
 
 /***/ }),
 
@@ -6097,7 +6268,7 @@ FavouriteListComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "ion-list-header {\n  font-size: 20px;\n  color: #595d6b;\n  font-weight: bold;\n  font-family: monospace;\n}\n\nion-content {\n  height: 66vh;\n}\n\n.icon-grid {\n  border-bottom: 1px solid #f3e4e4;\n  border-top: 1px solid #f3e4e4;\n}\n\nion-col ion-text {\n  font-size: 75%;\n}\n\n.el-bl {\n  display: block;\n}\n\n.sortFilters {\n  width: 95vw;\n  border: 1px solid #e6dcdc;\n  margin: auto;\n  margin-top: 10px;\n}\n\nion-list {\n  width: 100%;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9maWx0ZXIvZmlsdGVyLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL2ZpbHRlci9maWx0ZXIuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxlQUFBO0VBQ0EsY0FBQTtFQUNBLGlCQUFBO0VBQ0Esc0JBQUE7QUNDSjs7QURFQTtFQUNJLFlBQUE7QUNDSjs7QURFQTtFQUNJLGdDQUFBO0VBQ0EsNkJBQUE7QUNDSjs7QURFQTtFQUNJLGNBQUE7QUNDSjs7QURDQTtFQUNJLGNBQUE7QUNFSjs7QURDQTtFQUNJLFdBQUE7RUFDQSx5QkFBQTtFQUNBLFlBQUE7RUFDQSxnQkFBQTtBQ0VKOztBRENBO0VBQ0ksV0FBQTtBQ0VKIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9maWx0ZXIvZmlsdGVyLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiaW9uLWxpc3QtaGVhZGVyIHtcbiAgICBmb250LXNpemU6IDIwcHg7XG4gICAgY29sb3I6ICM1OTVkNmI7XG4gICAgZm9udC13ZWlnaHQ6IGJvbGQ7XG4gICAgZm9udC1mYW1pbHk6IG1vbm9zcGFjZTtcbn1cblxuaW9uLWNvbnRlbnQge1xuICAgIGhlaWdodDogNjZ2aDtcbn1cblxuLmljb24tZ3JpZCB7XG4gICAgYm9yZGVyLWJvdHRvbTogMXB4IHNvbGlkICNmM2U0ZTQ7XG4gICAgYm9yZGVyLXRvcDogMXB4IHNvbGlkICNmM2U0ZTQ7XG59XG5cbmlvbi1jb2wgaW9uLXRleHQge1xuICAgIGZvbnQtc2l6ZTogNzUlO1xufVxuLmVsLWJsIHtcbiAgICBkaXNwbGF5OiBibG9jaztcbn1cblxuLnNvcnRGaWx0ZXJzIHtcbiAgICB3aWR0aDogOTV2dztcbiAgICBib3JkZXI6IDFweCBzb2xpZCAjZTZkY2RjO1xuICAgIG1hcmdpbjogYXV0bztcbiAgICBtYXJnaW4tdG9wOiAxMHB4O1xufVxuXG5pb24tbGlzdCB7XG4gICAgd2lkdGg6IDEwMCU7XG59IiwiaW9uLWxpc3QtaGVhZGVyIHtcbiAgZm9udC1zaXplOiAyMHB4O1xuICBjb2xvcjogIzU5NWQ2YjtcbiAgZm9udC13ZWlnaHQ6IGJvbGQ7XG4gIGZvbnQtZmFtaWx5OiBtb25vc3BhY2U7XG59XG5cbmlvbi1jb250ZW50IHtcbiAgaGVpZ2h0OiA2NnZoO1xufVxuXG4uaWNvbi1ncmlkIHtcbiAgYm9yZGVyLWJvdHRvbTogMXB4IHNvbGlkICNmM2U0ZTQ7XG4gIGJvcmRlci10b3A6IDFweCBzb2xpZCAjZjNlNGU0O1xufVxuXG5pb24tY29sIGlvbi10ZXh0IHtcbiAgZm9udC1zaXplOiA3NSU7XG59XG5cbi5lbC1ibCB7XG4gIGRpc3BsYXk6IGJsb2NrO1xufVxuXG4uc29ydEZpbHRlcnMge1xuICB3aWR0aDogOTV2dztcbiAgYm9yZGVyOiAxcHggc29saWQgI2U2ZGNkYztcbiAgbWFyZ2luOiBhdXRvO1xuICBtYXJnaW4tdG9wOiAxMHB4O1xufVxuXG5pb24tbGlzdCB7XG4gIHdpZHRoOiAxMDAlO1xufSJdfQ== */"
+module.exports = "ion-list-header {\n  font-size: 20px;\n  color: #595d6b;\n  font-weight: bold;\n  font-family: monospace;\n}\n\nion-content {\n  height: 66vh;\n}\n\n.icon-grid {\n  border-bottom: 1px solid #f3e4e4;\n  border-top: 1px solid #f3e4e4;\n}\n\nion-col ion-text {\n  font-size: 75%;\n}\n\n.el-bl {\n  display: block;\n}\n\n.sortFilters {\n  width: 95vw;\n  border: 1px solid #e6dcdc;\n  margin: auto;\n  margin-top: 10px;\n}\n\nion-list {\n  width: 100%;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvY29tcG9uZW50cy9maWx0ZXIvZmlsdGVyLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL2ZpbHRlci9maWx0ZXIuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxlQUFBO0VBQ0EsY0FBQTtFQUNBLGlCQUFBO0VBQ0Esc0JBQUE7QUNDSjs7QURFQTtFQUNJLFlBQUE7QUNDSjs7QURFQTtFQUNJLGdDQUFBO0VBQ0EsNkJBQUE7QUNDSjs7QURFQTtFQUNJLGNBQUE7QUNDSjs7QURDQTtFQUNJLGNBQUE7QUNFSjs7QURDQTtFQUNJLFdBQUE7RUFDQSx5QkFBQTtFQUNBLFlBQUE7RUFDQSxnQkFBQTtBQ0VKOztBRENBO0VBQ0ksV0FBQTtBQ0VKIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9maWx0ZXIvZmlsdGVyLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiaW9uLWxpc3QtaGVhZGVyIHtcbiAgICBmb250LXNpemU6IDIwcHg7XG4gICAgY29sb3I6ICM1OTVkNmI7XG4gICAgZm9udC13ZWlnaHQ6IGJvbGQ7XG4gICAgZm9udC1mYW1pbHk6IG1vbm9zcGFjZTtcbn1cblxuaW9uLWNvbnRlbnQge1xuICAgIGhlaWdodDogNjZ2aDtcbn1cblxuLmljb24tZ3JpZCB7XG4gICAgYm9yZGVyLWJvdHRvbTogMXB4IHNvbGlkICNmM2U0ZTQ7XG4gICAgYm9yZGVyLXRvcDogMXB4IHNvbGlkICNmM2U0ZTQ7XG59XG5cbmlvbi1jb2wgaW9uLXRleHQge1xuICAgIGZvbnQtc2l6ZTogNzUlO1xufVxuLmVsLWJsIHtcbiAgICBkaXNwbGF5OiBibG9jaztcbn1cblxuLnNvcnRGaWx0ZXJzIHtcbiAgICB3aWR0aDogOTV2dztcbiAgICBib3JkZXI6IDFweCBzb2xpZCAjZTZkY2RjO1xuICAgIG1hcmdpbjogYXV0bztcbiAgICBtYXJnaW4tdG9wOiAxMHB4O1xufVxuXG5pb24tbGlzdCB7XG4gICAgd2lkdGg6IDEwMCU7XG59IiwiaW9uLWxpc3QtaGVhZGVyIHtcbiAgZm9udC1zaXplOiAyMHB4O1xuICBjb2xvcjogIzU5NWQ2YjtcbiAgZm9udC13ZWlnaHQ6IGJvbGQ7XG4gIGZvbnQtZmFtaWx5OiBtb25vc3BhY2U7XG59XG5cbmlvbi1jb250ZW50IHtcbiAgaGVpZ2h0OiA2NnZoO1xufVxuXG4uaWNvbi1ncmlkIHtcbiAgYm9yZGVyLWJvdHRvbTogMXB4IHNvbGlkICNmM2U0ZTQ7XG4gIGJvcmRlci10b3A6IDFweCBzb2xpZCAjZjNlNGU0O1xufVxuXG5pb24tY29sIGlvbi10ZXh0IHtcbiAgZm9udC1zaXplOiA3NSU7XG59XG5cbi5lbC1ibCB7XG4gIGRpc3BsYXk6IGJsb2NrO1xufVxuXG4uc29ydEZpbHRlcnMge1xuICB3aWR0aDogOTV2dztcbiAgYm9yZGVyOiAxcHggc29saWQgI2U2ZGNkYztcbiAgbWFyZ2luOiBhdXRvO1xuICBtYXJnaW4tdG9wOiAxMHB4O1xufVxuXG5pb24tbGlzdCB7XG4gIHdpZHRoOiAxMDAlO1xufSJdfQ== */"
 
 /***/ }),
 
@@ -6127,6 +6298,7 @@ let FilterComponent = class FilterComponent {
         this.closeFilter = new _angular_core__WEBPACK_IMPORTED_MODULE_2__["EventEmitter"]();
         this.filterTypes = _services_filter_service__WEBPACK_IMPORTED_MODULE_1__["FILTER_TYPES"];
         this.categories = [];
+        this.deliveryType = 'Both';
     }
     ngOnInit() {
     }
@@ -6170,7 +6342,7 @@ FilterComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "ion-badge {\n  position: absolute;\n  left: 65px;\n  border-radius: 50%;\n  width: 25px;\n  height: 25px;\n  text-align: center;\n  -webkit-box-pack: center;\n          justify-content: center;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9mb290ZXIvZm9vdGVyLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL2Zvb3Rlci9mb290ZXIuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxrQkFBQTtFQUNBLFVBQUE7RUFDQSxrQkFBQTtFQUNBLFdBQUE7RUFDQSxZQUFBO0VBQ0Esa0JBQUE7RUFDQSx3QkFBQTtVQUFBLHVCQUFBO0VBQ0Esb0JBQUE7RUFBQSxhQUFBO0VBQ0EseUJBQUE7VUFBQSxtQkFBQTtBQ0NKIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9mb290ZXIvZm9vdGVyLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiaW9uLWJhZGdlIHtcbiAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgbGVmdDogNjVweDtcbiAgICBib3JkZXItcmFkaXVzOiA1MCU7XG4gICAgd2lkdGg6IDI1cHg7XG4gICAgaGVpZ2h0OiAyNXB4O1xuICAgIHRleHQtYWxpZ246IGNlbnRlcjtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG59IiwiaW9uLWJhZGdlIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBsZWZ0OiA2NXB4O1xuICBib3JkZXItcmFkaXVzOiA1MCU7XG4gIHdpZHRoOiAyNXB4O1xuICBoZWlnaHQ6IDI1cHg7XG4gIHRleHQtYWxpZ246IGNlbnRlcjtcbiAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gIGRpc3BsYXk6IGZsZXg7XG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG59Il19 */"
+module.exports = "ion-badge {\n  position: absolute;\n  left: 65px;\n  border-radius: 50%;\n  width: 25px;\n  height: 25px;\n  text-align: center;\n  -webkit-box-pack: center;\n          justify-content: center;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvY29tcG9uZW50cy9mb290ZXIvZm9vdGVyLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL2Zvb3Rlci9mb290ZXIuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxrQkFBQTtFQUNBLFVBQUE7RUFDQSxrQkFBQTtFQUNBLFdBQUE7RUFDQSxZQUFBO0VBQ0Esa0JBQUE7RUFDQSx3QkFBQTtVQUFBLHVCQUFBO0VBQ0Esb0JBQUE7RUFBQSxhQUFBO0VBQ0EseUJBQUE7VUFBQSxtQkFBQTtBQ0NKIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9mb290ZXIvZm9vdGVyLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiaW9uLWJhZGdlIHtcbiAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgbGVmdDogNjVweDtcbiAgICBib3JkZXItcmFkaXVzOiA1MCU7XG4gICAgd2lkdGg6IDI1cHg7XG4gICAgaGVpZ2h0OiAyNXB4O1xuICAgIHRleHQtYWxpZ246IGNlbnRlcjtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG59IiwiaW9uLWJhZGdlIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBsZWZ0OiA2NXB4O1xuICBib3JkZXItcmFkaXVzOiA1MCU7XG4gIHdpZHRoOiAyNXB4O1xuICBoZWlnaHQ6IDI1cHg7XG4gIHRleHQtYWxpZ246IGNlbnRlcjtcbiAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gIGRpc3BsYXk6IGZsZXg7XG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG59Il19 */"
 
 /***/ }),
 
@@ -6187,16 +6359,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
-/* harmony import */ var src_app_services_cart_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/services/cart.service */ "./src/app/services/cart.service.ts");
+/* harmony import */ var src_app_services_cart_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/services/cart.service */ "./src/app/services/cart.service.ts");
+/* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ngx-logger */ "./node_modules/ngx-logger/fesm2015/ngx-logger.js");
+/* harmony import */ var src_app_services_route_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/services/route.service */ "./src/app/services/route.service.ts");
+
 
 
 
 
 
 let FooterComponent = class FooterComponent {
-    constructor(navController, route, cart) {
+    constructor(navController, logger, route, cart) {
         this.navController = navController;
+        this.logger = logger;
         this.route = route;
         this.cart = cart;
         this.filter = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
@@ -6207,20 +6382,31 @@ let FooterComponent = class FooterComponent {
             .subscribe(data => {
             this.orderCount = data.length;
         });
+        this.getCurrentRoute();
     }
     goTo(url) {
         this.navController.navigateForward(url);
-        this.currentRoute = this.route.url.split('/', this.route.url.length)[1];
-        console.log(this.currentRoute);
+    }
+    getCurrentRoute() {
+        this.routeSubscription = this.route.getRouteSubscription()
+            .subscribe(data => {
+            this.currentRoute = data;
+            console.warn(this.currentRoute);
+        });
     }
     emitFilterClick() {
         this.filter.emit('');
     }
+    ngOnDestroy() {
+        console.log('destroy');
+        this.routeSubscription.unsubscribe();
+    }
 };
 FooterComponent.ctorParameters = () => [
     { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["NavController"] },
-    { type: _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"] },
-    { type: src_app_services_cart_service__WEBPACK_IMPORTED_MODULE_4__["CartService"] }
+    { type: ngx_logger__WEBPACK_IMPORTED_MODULE_4__["NGXLogger"] },
+    { type: src_app_services_route_service__WEBPACK_IMPORTED_MODULE_5__["RouteService"] },
+    { type: src_app_services_cart_service__WEBPACK_IMPORTED_MODULE_3__["CartService"] }
 ];
 tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])(),
@@ -6233,8 +6419,9 @@ FooterComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         styles: [__webpack_require__(/*! ./footer.component.scss */ "./src/app/components/footer/footer.component.scss")]
     }),
     tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_ionic_angular__WEBPACK_IMPORTED_MODULE_2__["NavController"],
-        _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"],
-        src_app_services_cart_service__WEBPACK_IMPORTED_MODULE_4__["CartService"]])
+        ngx_logger__WEBPACK_IMPORTED_MODULE_4__["NGXLogger"],
+        src_app_services_route_service__WEBPACK_IMPORTED_MODULE_5__["RouteService"],
+        src_app_services_cart_service__WEBPACK_IMPORTED_MODULE_3__["CartService"]])
 ], FooterComponent);
 
 
@@ -6291,7 +6478,7 @@ FrequentlyOrderedListComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "ion-label {\n  margin: 0px 5px;\n}\n\n.container {\n  width: 100vw;\n  height: 100vh;\n  position: fixed;\n  background: white;\n  opacity: 1;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9oZWFkZXIvaGVhZGVyLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL2hlYWRlci9oZWFkZXIuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxlQUFBO0FDQ0o7O0FERUE7RUFDSSxZQUFBO0VBQWEsYUFBQTtFQUFhLGVBQUE7RUFDMUIsaUJBQUE7RUFDQSxVQUFBO0FDR0oiLCJmaWxlIjoic3JjL2FwcC9jb21wb25lbnRzL2hlYWRlci9oZWFkZXIuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJpb24tbGFiZWwge1xuICAgIG1hcmdpbjogMHB4IDVweDtcbn1cblxuLmNvbnRhaW5lciB7XG4gICAgd2lkdGg6IDEwMHZ3O2hlaWdodDoxMDB2aDtwb3NpdGlvbjpmaXhlZDtcbiAgICBiYWNrZ3JvdW5kOndoaXRlO1xuICAgIG9wYWNpdHk6IDE7XG59IiwiaW9uLWxhYmVsIHtcbiAgbWFyZ2luOiAwcHggNXB4O1xufVxuXG4uY29udGFpbmVyIHtcbiAgd2lkdGg6IDEwMHZ3O1xuICBoZWlnaHQ6IDEwMHZoO1xuICBwb3NpdGlvbjogZml4ZWQ7XG4gIGJhY2tncm91bmQ6IHdoaXRlO1xuICBvcGFjaXR5OiAxO1xufSJdfQ== */"
+module.exports = "ion-label {\n  margin: 0px 5px;\n}\n\n.container {\n  width: 100vw;\n  height: 100vh;\n  position: fixed;\n  background: white;\n  opacity: 1;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvY29tcG9uZW50cy9oZWFkZXIvaGVhZGVyLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL2hlYWRlci9oZWFkZXIuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxlQUFBO0FDQ0o7O0FERUE7RUFDSSxZQUFBO0VBQWEsYUFBQTtFQUFhLGVBQUE7RUFDMUIsaUJBQUE7RUFDQSxVQUFBO0FDR0oiLCJmaWxlIjoic3JjL2FwcC9jb21wb25lbnRzL2hlYWRlci9oZWFkZXIuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJpb24tbGFiZWwge1xuICAgIG1hcmdpbjogMHB4IDVweDtcbn1cblxuLmNvbnRhaW5lciB7XG4gICAgd2lkdGg6IDEwMHZ3O2hlaWdodDoxMDB2aDtwb3NpdGlvbjpmaXhlZDtcbiAgICBiYWNrZ3JvdW5kOndoaXRlO1xuICAgIG9wYWNpdHk6IDE7XG59IiwiaW9uLWxhYmVsIHtcbiAgbWFyZ2luOiAwcHggNXB4O1xufVxuXG4uY29udGFpbmVyIHtcbiAgd2lkdGg6IDEwMHZ3O1xuICBoZWlnaHQ6IDEwMHZoO1xuICBwb3NpdGlvbjogZml4ZWQ7XG4gIGJhY2tncm91bmQ6IHdoaXRlO1xuICBvcGFjaXR5OiAxO1xufSJdfQ== */"
 
 /***/ }),
 
@@ -6462,7 +6649,7 @@ HeaderComponent = HeaderComponent_1 = tslib__WEBPACK_IMPORTED_MODULE_0__["__deco
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "ion-list {\n  width: 100vw;\n}\n\n.fnt-big {\n  font-size: 20px;\n}\n\n.fnt-medium {\n  font-size: 17px;\n}\n\n.icon-big {\n  font-size: 60px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9oaXN0b3J5LWxpc3QvaGlzdG9yeS1saXN0LmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL2hpc3RvcnktbGlzdC9oaXN0b3J5LWxpc3QuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxZQUFBO0FDQ0o7O0FERUE7RUFDSSxlQUFBO0FDQ0o7O0FERUE7RUFDSSxlQUFBO0FDQ0o7O0FERUE7RUFDSSxlQUFBO0FDQ0oiLCJmaWxlIjoic3JjL2FwcC9jb21wb25lbnRzL2hpc3RvcnktbGlzdC9oaXN0b3J5LWxpc3QuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJpb24tbGlzdCB7XG4gICAgd2lkdGg6IDEwMHZ3O1xufVxuXG4uZm50LWJpZyB7XG4gICAgZm9udC1zaXplOiAyMHB4O1xufVxuXG4uZm50LW1lZGl1bSB7XG4gICAgZm9udC1zaXplOiAxN3B4O1xufVxuXG4uaWNvbi1iaWcge1xuICAgIGZvbnQtc2l6ZTogNjBweDtcbn0iLCJpb24tbGlzdCB7XG4gIHdpZHRoOiAxMDB2dztcbn1cblxuLmZudC1iaWcge1xuICBmb250LXNpemU6IDIwcHg7XG59XG5cbi5mbnQtbWVkaXVtIHtcbiAgZm9udC1zaXplOiAxN3B4O1xufVxuXG4uaWNvbi1iaWcge1xuICBmb250LXNpemU6IDYwcHg7XG59Il19 */"
+module.exports = "ion-list {\n  width: 100vw;\n}\n\n.fnt-big {\n  font-size: 20px;\n}\n\n.fnt-medium {\n  font-size: 17px;\n}\n\n.icon-big {\n  font-size: 60px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvY29tcG9uZW50cy9oaXN0b3J5LWxpc3QvaGlzdG9yeS1saXN0LmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL2hpc3RvcnktbGlzdC9oaXN0b3J5LWxpc3QuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxZQUFBO0FDQ0o7O0FERUE7RUFDSSxlQUFBO0FDQ0o7O0FERUE7RUFDSSxlQUFBO0FDQ0o7O0FERUE7RUFDSSxlQUFBO0FDQ0oiLCJmaWxlIjoic3JjL2FwcC9jb21wb25lbnRzL2hpc3RvcnktbGlzdC9oaXN0b3J5LWxpc3QuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJpb24tbGlzdCB7XG4gICAgd2lkdGg6IDEwMHZ3O1xufVxuXG4uZm50LWJpZyB7XG4gICAgZm9udC1zaXplOiAyMHB4O1xufVxuXG4uZm50LW1lZGl1bSB7XG4gICAgZm9udC1zaXplOiAxN3B4O1xufVxuXG4uaWNvbi1iaWcge1xuICAgIGZvbnQtc2l6ZTogNjBweDtcbn0iLCJpb24tbGlzdCB7XG4gIHdpZHRoOiAxMDB2dztcbn1cblxuLmZudC1iaWcge1xuICBmb250LXNpemU6IDIwcHg7XG59XG5cbi5mbnQtbWVkaXVtIHtcbiAgZm9udC1zaXplOiAxN3B4O1xufVxuXG4uaWNvbi1iaWcge1xuICBmb250LXNpemU6IDYwcHg7XG59Il19 */"
 
 /***/ }),
 
@@ -6479,12 +6666,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
 /* harmony import */ var src_app_api_services__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/api/services */ "./src/app/api/services.ts");
+/* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ngx-logger */ "./node_modules/ngx-logger/fesm2015/ngx-logger.js");
+
 
 
 
 let HistoryListComponent = class HistoryListComponent {
-    constructor(queryResource) {
+    constructor(queryResource, logger) {
         this.queryResource = queryResource;
+        this.logger = logger;
         this.orders = [];
         this.stores = {};
         this.pageNumber = 0;
@@ -6511,7 +6701,7 @@ let HistoryListComponent = class HistoryListComponent {
     getStores(id) {
         this.queryResource.findStoreByRegisterNumberUsingGET(id)
             .subscribe(store => {
-            console.log('store', store);
+            this.logger.info('Store ', store);
             this.stores[id] = store;
         });
     }
@@ -6525,7 +6715,8 @@ let HistoryListComponent = class HistoryListComponent {
     }
 };
 HistoryListComponent.ctorParameters = () => [
-    { type: src_app_api_services__WEBPACK_IMPORTED_MODULE_2__["QueryResourceService"] }
+    { type: src_app_api_services__WEBPACK_IMPORTED_MODULE_2__["QueryResourceService"] },
+    { type: ngx_logger__WEBPACK_IMPORTED_MODULE_3__["NGXLogger"] }
 ];
 tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
@@ -6537,7 +6728,8 @@ HistoryListComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         template: __webpack_require__(/*! raw-loader!./history-list.component.html */ "./node_modules/raw-loader/index.js!./src/app/components/history-list/history-list.component.html"),
         styles: [__webpack_require__(/*! ./history-list.component.scss */ "./src/app/components/history-list/history-list.component.scss")]
     }),
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [src_app_api_services__WEBPACK_IMPORTED_MODULE_2__["QueryResourceService"]])
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [src_app_api_services__WEBPACK_IMPORTED_MODULE_2__["QueryResourceService"],
+        ngx_logger__WEBPACK_IMPORTED_MODULE_3__["NGXLogger"]])
 ], HistoryListComponent);
 
 
@@ -6551,7 +6743,7 @@ HistoryListComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".selected {\n  color: blue;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9ob3RlbC1tZW51LXBvcG92ZXIvaG90ZWwtbWVudS1wb3BvdmVyLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL2hvdGVsLW1lbnUtcG9wb3Zlci9ob3RlbC1tZW51LXBvcG92ZXIuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxXQUFBO0FDQ0oiLCJmaWxlIjoic3JjL2FwcC9jb21wb25lbnRzL2hvdGVsLW1lbnUtcG9wb3Zlci9ob3RlbC1tZW51LXBvcG92ZXIuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuc2VsZWN0ZWQge1xuICAgIGNvbG9yOiBibHVlO1xufSIsIi5zZWxlY3RlZCB7XG4gIGNvbG9yOiBibHVlO1xufSJdfQ== */"
+module.exports = ".selected {\n  color: blue;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvY29tcG9uZW50cy9ob3RlbC1tZW51LXBvcG92ZXIvaG90ZWwtbWVudS1wb3BvdmVyLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL2hvdGVsLW1lbnUtcG9wb3Zlci9ob3RlbC1tZW51LXBvcG92ZXIuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxXQUFBO0FDQ0oiLCJmaWxlIjoic3JjL2FwcC9jb21wb25lbnRzL2hvdGVsLW1lbnUtcG9wb3Zlci9ob3RlbC1tZW51LXBvcG92ZXIuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuc2VsZWN0ZWQge1xuICAgIGNvbG9yOiBibHVlO1xufSIsIi5zZWxlY3RlZCB7XG4gIGNvbG9yOiBibHVlO1xufSJdfQ== */"
 
 /***/ }),
 
@@ -6594,11 +6786,8 @@ let HotelMenuPopoverComponent = class HotelMenuPopoverComponent {
         });
     }
     getProducts(i, loader) {
-        this.queryResourceService.findProductByStoreIdAndCategoryNameUsingGET({
-            userId: this.storeId,
-            categoryName: this.selectedCategory,
-            page: i
-        })
+        // Change this API Later to findStockCurrentByStoreIdAndCategoryName()
+        this.queryResourceService.findStockCurrentByCategoryNameUsingGET(this.selectedCategory)
             .subscribe(data => {
             loader.dismiss();
             console.log('Category ', this.selectedCategory, ' Produts ', data);
@@ -6664,7 +6853,7 @@ HotelMenuPopoverComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "ion-col {\n  width: 50vw;\n  height: 50vw;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n          align-items: center;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9pbWFnZS1zZWxlY3Rvci9pbWFnZS1zZWxlY3Rvci5jb21wb25lbnQuc2NzcyIsInNyYy9hcHAvY29tcG9uZW50cy9pbWFnZS1zZWxlY3Rvci9pbWFnZS1zZWxlY3Rvci5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUVJLFdBQUE7RUFDQSxZQUFBO0VBQ0Esb0JBQUE7RUFBQSxhQUFBO0VBQ0Esd0JBQUE7VUFBQSx1QkFBQTtFQUNBLHlCQUFBO1VBQUEsbUJBQUE7QUNBSiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvaW1hZ2Utc2VsZWN0b3IvaW1hZ2Utc2VsZWN0b3IuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJpb24tY29sIHtcblxuICAgIHdpZHRoOiA1MHZ3O1xuICAgIGhlaWdodDogNTB2dztcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG59XG4iLCJpb24tY29sIHtcbiAgd2lkdGg6IDUwdnc7XG4gIGhlaWdodDogNTB2dztcbiAgZGlzcGxheTogZmxleDtcbiAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG59Il19 */"
+module.exports = "ion-col {\n  width: 50vw;\n  height: 50vw;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n          align-items: center;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvY29tcG9uZW50cy9pbWFnZS1zZWxlY3Rvci9pbWFnZS1zZWxlY3Rvci5jb21wb25lbnQuc2NzcyIsInNyYy9hcHAvY29tcG9uZW50cy9pbWFnZS1zZWxlY3Rvci9pbWFnZS1zZWxlY3Rvci5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUVJLFdBQUE7RUFDQSxZQUFBO0VBQ0Esb0JBQUE7RUFBQSxhQUFBO0VBQ0Esd0JBQUE7VUFBQSx1QkFBQTtFQUNBLHlCQUFBO1VBQUEsbUJBQUE7QUNBSiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvaW1hZ2Utc2VsZWN0b3IvaW1hZ2Utc2VsZWN0b3IuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJpb24tY29sIHtcblxuICAgIHdpZHRoOiA1MHZ3O1xuICAgIGhlaWdodDogNTB2dztcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG59XG4iLCJpb24tY29sIHtcbiAgd2lkdGg6IDUwdnc7XG4gIGhlaWdodDogNTB2dztcbiAgZGlzcGxheTogZmxleDtcbiAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG59Il19 */"
 
 /***/ }),
 
@@ -6760,7 +6949,7 @@ ImageSelectorComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".restaurantCard ion-card {\n  height: 40vh;\n}\n\n.restaurantCard ion-thumbnail {\n  width: 200px;\n  height: 175px;\n  margin: auto;\n  margin-top: 2vw;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9sb2FkaW5nL2xvYWRpbmcuY29tcG9uZW50LnNjc3MiLCJzcmMvYXBwL2NvbXBvbmVudHMvbG9hZGluZy9sb2FkaW5nLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksWUFBQTtBQ0NKOztBRENBO0VBQ0ksWUFBQTtFQUNBLGFBQUE7RUFDQSxZQUFBO0VBQ0EsZUFBQTtBQ0VKIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9sb2FkaW5nL2xvYWRpbmcuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIucmVzdGF1cmFudENhcmQgaW9uLWNhcmQge1xuICAgIGhlaWdodDogNDB2aDtcbn1cbi5yZXN0YXVyYW50Q2FyZCBpb24tdGh1bWJuYWlsIHtcbiAgICB3aWR0aDogMjAwcHg7XG4gICAgaGVpZ2h0OiAxNzVweDtcbiAgICBtYXJnaW46IGF1dG87XG4gICAgbWFyZ2luLXRvcDogMnZ3O1xufSIsIi5yZXN0YXVyYW50Q2FyZCBpb24tY2FyZCB7XG4gIGhlaWdodDogNDB2aDtcbn1cblxuLnJlc3RhdXJhbnRDYXJkIGlvbi10aHVtYm5haWwge1xuICB3aWR0aDogMjAwcHg7XG4gIGhlaWdodDogMTc1cHg7XG4gIG1hcmdpbjogYXV0bztcbiAgbWFyZ2luLXRvcDogMnZ3O1xufSJdfQ== */"
+module.exports = ".restaurantCard ion-card {\n  height: 40vh;\n}\n\n.restaurantCard ion-thumbnail {\n  width: 200px;\n  height: 175px;\n  margin: auto;\n  margin-top: 2vw;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvY29tcG9uZW50cy9sb2FkaW5nL2xvYWRpbmcuY29tcG9uZW50LnNjc3MiLCJzcmMvYXBwL2NvbXBvbmVudHMvbG9hZGluZy9sb2FkaW5nLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksWUFBQTtBQ0NKOztBRENBO0VBQ0ksWUFBQTtFQUNBLGFBQUE7RUFDQSxZQUFBO0VBQ0EsZUFBQTtBQ0VKIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9sb2FkaW5nL2xvYWRpbmcuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIucmVzdGF1cmFudENhcmQgaW9uLWNhcmQge1xuICAgIGhlaWdodDogNDB2aDtcbn1cbi5yZXN0YXVyYW50Q2FyZCBpb24tdGh1bWJuYWlsIHtcbiAgICB3aWR0aDogMjAwcHg7XG4gICAgaGVpZ2h0OiAxNzVweDtcbiAgICBtYXJnaW46IGF1dG87XG4gICAgbWFyZ2luLXRvcDogMnZ3O1xufSIsIi5yZXN0YXVyYW50Q2FyZCBpb24tY2FyZCB7XG4gIGhlaWdodDogNDB2aDtcbn1cblxuLnJlc3RhdXJhbnRDYXJkIGlvbi10aHVtYm5haWwge1xuICB3aWR0aDogMjAwcHg7XG4gIGhlaWdodDogMTc1cHg7XG4gIG1hcmdpbjogYXV0bztcbiAgbWFyZ2luLXRvcDogMnZ3O1xufSJdfQ== */"
 
 /***/ }),
 
@@ -6781,6 +6970,7 @@ __webpack_require__.r(__webpack_exports__);
 let LoadingComponent = class LoadingComponent {
     constructor() {
         this.type = '';
+        this.productLoadingCount = [1, 2, 3];
     }
     ngOnInit() { }
 };
@@ -6788,6 +6978,10 @@ tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
     tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Object)
 ], LoadingComponent.prototype, "type", void 0);
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Object)
+], LoadingComponent.prototype, "productLoadingCount", void 0);
 LoadingComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
         selector: 'app-loading',
@@ -6808,7 +7002,7 @@ LoadingComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "#map_canvas {\n  height: 200px;\n  width: 100%;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9tYXAvbWFwLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL21hcC9tYXAuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxhQUFBO0VBQ0EsV0FBQTtBQ0NKIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9tYXAvbWFwLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiI21hcF9jYW52YXMge1xuICAgIGhlaWdodDogMjAwcHg7XG4gICAgd2lkdGg6IDEwMCU7XG59IiwiI21hcF9jYW52YXMge1xuICBoZWlnaHQ6IDIwMHB4O1xuICB3aWR0aDogMTAwJTtcbn0iXX0= */"
+module.exports = "#map_canvas {\n  height: 200px;\n  width: 100%;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvY29tcG9uZW50cy9tYXAvbWFwLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL21hcC9tYXAuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxhQUFBO0VBQ0EsV0FBQTtBQ0NKIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9tYXAvbWFwLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiI21hcF9jYW52YXMge1xuICAgIGhlaWdodDogMjAwcHg7XG4gICAgd2lkdGg6IDEwMCU7XG59IiwiI21hcF9jYW52YXMge1xuICBoZWlnaHQ6IDIwMHB4O1xuICB3aWR0aDogMTAwJTtcbn0iXX0= */"
 
 /***/ }),
 
@@ -6849,16 +7043,13 @@ let MapComponent = class MapComponent {
     ngOnInit() {
         this.platform.ready().then(data => {
             if (data === 'cordova') {
+                this.logger.info('Map component getting LatLon');
                 this.getLatLon();
             }
         });
     }
     loadMap(coords) {
-        // This code is necessary for browser
-        _ionic_native_google_maps__WEBPACK_IMPORTED_MODULE_2__["Environment"].setEnv({
-            API_KEY_FOR_BROWSER_RELEASE: 'AIzaSyAwC9dPmp280b4C18RBcGWjInRi9NGxo5c',
-            API_KEY_FOR_BROWSER_DEBUG: 'AIzaSyAwC9dPmp280b4C18RBcGWjInRi9NGxo5c'
-        });
+        this.logger.info('Loading Maps');
         console.log('Map lat', coords.substring(0, coords.indexOf(',')));
         const mapOptions = {
             camera: {
@@ -6875,6 +7066,7 @@ let MapComponent = class MapComponent {
         this.setCurrentLocationMarker(coords);
     }
     updateMap(coords) {
+        this.logger.info('Updating Maps');
         this.logger.info('Updating Location', coords);
         this.logger.info('Updating Location Latitude ', parseFloat(coords.substring(0, coords.indexOf(','))));
         this.logger.info('Updating Location Longitude', parseFloat(coords.substring(coords.indexOf(',') + 1, coords.length)));
@@ -6897,14 +7089,14 @@ let MapComponent = class MapComponent {
                 tilt: 30
             }
         });
-        // this.curentLocationMarker = this.mapCanvas.addMarkerSync({
-        //   position: {
-        //     lat: parseFloat(coords.substring(0, coords.indexOf(','))),
-        //     lng: parseFloat(coords.substring(coords.indexOf(',') + 1 , coords.length))
-        //   },
-        //   animation: GoogleMapsAnimation.DROP
-        // });
-        // this.curentLocationMarker.showInfoWindow();
+        this.curentLocationMarker = this.mapCanvas.addMarkerSync({
+            position: {
+                lat: parseFloat(coords.substring(0, coords.indexOf(','))),
+                lng: parseFloat(coords.substring(coords.indexOf(',') + 1, coords.length))
+            },
+            animation: _ionic_native_google_maps__WEBPACK_IMPORTED_MODULE_2__["GoogleMapsAnimation"].DROP
+        });
+        this.curentLocationMarker.showInfoWindow();
     }
     // App Specific Methods
     getLatLon() {
@@ -6957,7 +7149,7 @@ MapComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".my-overlay {\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  background: rgba(0, 0, 0, 0.5);\n  z-index: 20;\n  top: 8vh;\n  left: 0;\n}\n\n.reviewProfile {\n  display: block;\n  border-radius: 51%;\n  width: 35px;\n  margin: 2vw;\n  height: 35px;\n}\n\n.commentText {\n  margin-left: 18%;\n}\n\n.cardHeaderCustom {\n  background-color: #efeeee;\n}\n\n.ion-color-vibrant {\n  --ion-color-base: #efeeee;\n  --ion-color-base-rgb: 255, 255, 0;\n  --ion-color-contrast: #000000;\n  --ion-color-contrast-rgb: 0, 0, 0;\n  --ion-color-shade: #e0e000;\n  --ion-color-tint: #ffff1a;\n}\n\n.ion-color-cyan {\n  --ion-color-base: #e2fafa;\n  --ion-color-base-rgb: 77, 254, 209;\n  --ion-color-contrast: #000000;\n  --ion-color-contrast-rgb: 0, 0, 0;\n  --ion-color-shade: #44e0b8;\n  --ion-color-tint: #5ffed6;\n}\n\n.blackShade {\n  background-color: #7979a7;\n  color: #821616;\n  height: 28%;\n  position: relative;\n  top: 83%;\n}\n\n.cursor {\n  cursor: pointer;\n}\n\n.overlay {\n  position: absolute;\n  bottom: 0;\n  background: black;\n  background: rgba(0, 0, 0, 0.5);\n  /* Black see-through */\n  color: #f1f1f1;\n  opacity: 1;\n  color: white;\n  width: 100%;\n  padding-left: 10px;\n}\n\n.container {\n  position: relative;\n  width: 100%;\n}\n\n.full-width {\n  width: 100%;\n}\n\n.mainImg {\n  width: 100%;\n  height: 250px;\n}\n\n#map_canvas {\n  width: 100%;\n  height: 175px;\n}\n\n.cart-view {\n  width: 100%;\n  -webkit-animation-duration: 0.3s;\n          animation-duration: 0.3s;\n  -webkit-animation-delay: 0s;\n          animation-delay: 0s;\n  background-color: #5978ee;\n  bottom: 0;\n  opacity: 1;\n  position: absolute;\n  z-index: 1000;\n}\n\n.cart-view ion-label {\n  color: white;\n  font-weight: 700;\n  text-align: center;\n  vertical-align: middle;\n  line-height: 55px;\n  padding-left: 10px;\n}\n\n.button-cart {\n  cursor: pointer;\n  text-align: end;\n  font-weight: normal;\n  font-size: 25px;\n}\n\n.product-slide {\n  padding-bottom: 100px;\n}\n\n.title-card ion-card-title {\n  font-size: 16px;\n}\n\n.normal-text {\n  font-weight: normal;\n  text-align: start;\n  font-size: 14px;\n}\n\n.ribbon1 {\n  position: absolute;\n  top: -0.1px;\n  right: -5%;\n}\n\n.ribbon1 span {\n  position: relative;\n  display: block;\n  text-align: center;\n  background: #f8463f;\n  font-size: 92%;\n  font-family: Verdana, Geneva, Tahoma, sans-serif;\n  line-height: 1;\n  font-weight: bold;\n  color: #edf0f2;\n  padding: 12px 8px 10px;\n  width: 75%;\n  z-index: 200;\n}\n\n.closeCard {\n  z-index: 200;\n}\n\nion-content {\n  width: 100%;\n  height: 100%;\n}\n\nion-thumbnail {\n  height: 100px;\n  width: 100px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9wcm9kdWN0LWNhcmQvcHJvZHVjdC1jYXJkLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL3Byb2R1Y3QtY2FyZC9wcm9kdWN0LWNhcmQuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxlQUFBO0VBQ0EsV0FBQTtFQUNBLFlBQUE7RUFDQSw4QkFBQTtFQUNBLFdBQUE7RUFDQSxRQUFBO0VBQ0EsT0FBQTtBQ0NGOztBRFFBO0VBQ0UsY0FBQTtFQUNBLGtCQUFBO0VBQ0EsV0FBQTtFQUNBLFdBQUE7RUFDQSxZQUFBO0FDTEY7O0FET0E7RUFDRSxnQkFBQTtBQ0pGOztBRE1BO0VBQ0UseUJBQUE7QUNIRjs7QURNQTtFQUNFLHlCQUFBO0VBQ0EsaUNBQUE7RUFDQSw2QkFBQTtFQUNBLGlDQUFBO0VBQ0EsMEJBQUE7RUFDQSx5QkFBQTtBQ0hGOztBRE1BO0VBQ0UseUJBQUE7RUFDQSxrQ0FBQTtFQUNBLDZCQUFBO0VBQ0EsaUNBQUE7RUFDQSwwQkFBQTtFQUNBLHlCQUFBO0FDSEY7O0FETUE7RUFDRSx5QkFBQTtFQUNBLGNBQUE7RUFDQSxXQUFBO0VBQ0Esa0JBQUE7RUFDQSxRQUFBO0FDSEY7O0FETUE7RUFDRSxlQUFBO0FDSEY7O0FETUE7RUFDRSxrQkFBQTtFQUNBLFNBQUE7RUFDQSxpQkFBQTtFQUNBLDhCQUFBO0VBQWdDLHNCQUFBO0VBQ2hDLGNBQUE7RUFDQSxVQUFBO0VBQ0EsWUFBQTtFQUNBLFdBQUE7RUFDQSxrQkFBQTtBQ0ZGOztBREtBO0VBQ0Usa0JBQUE7RUFDQSxXQUFBO0FDRkY7O0FES0E7RUFDRSxXQUFBO0FDRkY7O0FES0E7RUFDRSxXQUFBO0VBQ0EsYUFBQTtBQ0ZGOztBREtBO0VBRUUsV0FBQTtFQUNBLGFBQUE7QUNIRjs7QURNQTtFQUNFLFdBQUE7RUFDQSxnQ0FBQTtVQUFBLHdCQUFBO0VBQ0EsMkJBQUE7VUFBQSxtQkFBQTtFQUNBLHlCQUFBO0VBQ0EsU0FBQTtFQUNBLFVBQUE7RUFDQSxrQkFBQTtFQUNBLGFBQUE7QUNIRjs7QURNQTtFQUNFLFlBQUE7RUFDQSxnQkFBQTtFQUNBLGtCQUFBO0VBQ0Esc0JBQUE7RUFDQSxpQkFBQTtFQUNBLGtCQUFBO0FDSEY7O0FETUE7RUFDRSxlQUFBO0VBQ0EsZUFBQTtFQUNBLG1CQUFBO0VBQ0EsZUFBQTtBQ0hGOztBRE1BO0VBQ0UscUJBQUE7QUNIRjs7QURNQTtFQUNFLGVBQUE7QUNIRjs7QURNQTtFQUNFLG1CQUFBO0VBQ0EsaUJBQUE7RUFDQSxlQUFBO0FDSEY7O0FETUE7RUFDRSxrQkFBQTtFQUNBLFdBQUE7RUFDQSxVQUFBO0FDSEY7O0FETUE7RUFDRSxrQkFBQTtFQUNBLGNBQUE7RUFDQSxrQkFBQTtFQUNBLG1CQUFBO0VBQ0EsY0FBQTtFQUNBLGdEQUFBO0VBQ0EsY0FBQTtFQUNBLGlCQUFBO0VBQ0EsY0FBQTtFQUNBLHNCQUFBO0VBQ0EsVUFBQTtFQUNBLFlBQUE7QUNIRjs7QURNQTtFQUNFLFlBQUE7QUNIRjs7QURNQTtFQUNFLFdBQUE7RUFDQSxZQUFBO0FDSEY7O0FETUE7RUFDRSxhQUFBO0VBQ0EsWUFBQTtBQ0hGIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9wcm9kdWN0LWNhcmQvcHJvZHVjdC1jYXJkLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLm15LW92ZXJsYXkge1xuICBwb3NpdGlvbjogZml4ZWQ7XG4gIHdpZHRoOiAxMDAlO1xuICBoZWlnaHQ6IDEwMCU7XG4gIGJhY2tncm91bmQ6IHJnYmEoMCwgMCwgMCwgMC41KTtcbiAgei1pbmRleDogMjA7XG4gIHRvcDogOHZoO1xuICBsZWZ0OiAwO1xufVxuLy8gLmltYWdlU2hvd3tcbi8vICAgZGlzcGxheTogYmxvY2s7XG4vLyAgIGxlZnQ6IDAlO1xuLy8gICB0b3A6IDAlO1xuLy8gICBtYXgtaGVpZ2h0OiAxMjVweDtcbi8vICAgbWF4LXdpZHRoOiAxMjVweDtcbi8vICAgfVxuLnJldmlld1Byb2ZpbGUge1xuICBkaXNwbGF5OiBibG9jaztcbiAgYm9yZGVyLXJhZGl1czogNTElO1xuICB3aWR0aDogMzVweDtcbiAgbWFyZ2luOiAydnc7XG4gIGhlaWdodDogMzVweDtcbn1cbi5jb21tZW50VGV4dCB7XG4gIG1hcmdpbi1sZWZ0OiAxOCU7XG59XG4uY2FyZEhlYWRlckN1c3RvbSB7XG4gIGJhY2tncm91bmQtY29sb3I6ICNlZmVlZWU7XG59XG5cbi5pb24tY29sb3ItdmlicmFudCB7XG4gIC0taW9uLWNvbG9yLWJhc2U6ICNlZmVlZWU7XG4gIC0taW9uLWNvbG9yLWJhc2UtcmdiOiAyNTUsIDI1NSwgMDtcbiAgLS1pb24tY29sb3ItY29udHJhc3Q6ICMwMDAwMDA7XG4gIC0taW9uLWNvbG9yLWNvbnRyYXN0LXJnYjogMCwgMCwgMDtcbiAgLS1pb24tY29sb3Itc2hhZGU6ICNlMGUwMDA7XG4gIC0taW9uLWNvbG9yLXRpbnQ6ICNmZmZmMWE7XG59XG5cbi5pb24tY29sb3ItY3lhbiB7XG4gIC0taW9uLWNvbG9yLWJhc2U6ICNlMmZhZmE7XG4gIC0taW9uLWNvbG9yLWJhc2UtcmdiOiA3NywgMjU0LCAyMDk7XG4gIC0taW9uLWNvbG9yLWNvbnRyYXN0OiAjMDAwMDAwO1xuICAtLWlvbi1jb2xvci1jb250cmFzdC1yZ2I6IDAsIDAsIDA7XG4gIC0taW9uLWNvbG9yLXNoYWRlOiAjNDRlMGI4O1xuICAtLWlvbi1jb2xvci10aW50OiAjNWZmZWQ2O1xufVxuXG4uYmxhY2tTaGFkZSB7XG4gIGJhY2tncm91bmQtY29sb3I6ICM3OTc5YTc7XG4gIGNvbG9yOiAjODIxNjE2O1xuICBoZWlnaHQ6IDI4JTtcbiAgcG9zaXRpb246IHJlbGF0aXZlO1xuICB0b3A6IDgzJTtcbn1cblxuLmN1cnNvciB7XG4gIGN1cnNvcjogcG9pbnRlcjtcbn1cblxuLm92ZXJsYXkge1xuICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gIGJvdHRvbTogMDtcbiAgYmFja2dyb3VuZDogcmdiKDAsIDAsIDApO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7IC8qIEJsYWNrIHNlZS10aHJvdWdoICovXG4gIGNvbG9yOiAjZjFmMWYxO1xuICBvcGFjaXR5OiAxO1xuICBjb2xvcjogd2hpdGU7XG4gIHdpZHRoOiAxMDAlO1xuICBwYWRkaW5nLWxlZnQ6IDEwcHg7XG59XG5cbi5jb250YWluZXIge1xuICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gIHdpZHRoOiAxMDAlO1xufVxuXG4uZnVsbC13aWR0aCB7XG4gIHdpZHRoOiAxMDAlO1xufVxuXG4ubWFpbkltZyB7XG4gIHdpZHRoOiAxMDAlO1xuICBoZWlnaHQ6IDI1MHB4O1xufVxuXG4jbWFwX2NhbnZhcyB7XG4gIC8vIG1pbi13aWR0aDogMTAwcHg7XG4gIHdpZHRoOiAxMDAlO1xuICBoZWlnaHQ6IDE3NXB4O1xufVxuXG4uY2FydC12aWV3IHtcbiAgd2lkdGg6IDEwMCU7XG4gIGFuaW1hdGlvbi1kdXJhdGlvbjogMC4zcztcbiAgYW5pbWF0aW9uLWRlbGF5OiAwcztcbiAgYmFja2dyb3VuZC1jb2xvcjogIzU5NzhlZTtcbiAgYm90dG9tOiAwO1xuICBvcGFjaXR5OiAxO1xuICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gIHotaW5kZXg6IDEwMDA7XG59XG5cbi5jYXJ0LXZpZXcgaW9uLWxhYmVsIHtcbiAgY29sb3I6IHdoaXRlO1xuICBmb250LXdlaWdodDogNzAwO1xuICB0ZXh0LWFsaWduOiBjZW50ZXI7XG4gIHZlcnRpY2FsLWFsaWduOiBtaWRkbGU7XG4gIGxpbmUtaGVpZ2h0OiA1NXB4O1xuICBwYWRkaW5nLWxlZnQ6IDEwcHg7XG59XG5cbi5idXR0b24tY2FydCB7XG4gIGN1cnNvcjogcG9pbnRlcjtcbiAgdGV4dC1hbGlnbjogZW5kO1xuICBmb250LXdlaWdodDogbm9ybWFsO1xuICBmb250LXNpemU6IDI1cHg7XG59XG5cbi5wcm9kdWN0LXNsaWRlIHtcbiAgcGFkZGluZy1ib3R0b206IDEwMHB4O1xufVxuXG4udGl0bGUtY2FyZCBpb24tY2FyZC10aXRsZSB7XG4gIGZvbnQtc2l6ZTogMTZweDtcbn1cblxuLm5vcm1hbC10ZXh0IHtcbiAgZm9udC13ZWlnaHQ6IG5vcm1hbDtcbiAgdGV4dC1hbGlnbjogc3RhcnQ7XG4gIGZvbnQtc2l6ZTogMTRweDtcbn1cblxuLnJpYmJvbjEge1xuICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gIHRvcDogLTAuMXB4O1xuICByaWdodDogLTUlO1xufVxuXG4ucmliYm9uMSBzcGFuIHtcbiAgcG9zaXRpb246IHJlbGF0aXZlO1xuICBkaXNwbGF5OiBibG9jaztcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xuICBiYWNrZ3JvdW5kOiAjZjg0NjNmO1xuICBmb250LXNpemU6IDkyJTtcbiAgZm9udC1mYW1pbHk6IFZlcmRhbmEsIEdlbmV2YSwgVGFob21hLCBzYW5zLXNlcmlmO1xuICBsaW5lLWhlaWdodDogMTtcbiAgZm9udC13ZWlnaHQ6IGJvbGQ7XG4gIGNvbG9yOiAjZWRmMGYyO1xuICBwYWRkaW5nOiAxMnB4IDhweCAxMHB4O1xuICB3aWR0aDogNzUlO1xuICB6LWluZGV4OiAyMDA7XG59XG5cbi5jbG9zZUNhcmQge1xuICB6LWluZGV4OiAyMDA7XG59XG5cbmlvbi1jb250ZW50IHtcbiAgd2lkdGg6IDEwMCU7XG4gIGhlaWdodDogMTAwJTtcbn1cblxuaW9uLXRodW1ibmFpbCB7XG4gIGhlaWdodDogMTAwcHg7XG4gIHdpZHRoOiAxMDBweDtcbn1cblxuXG4iLCIubXktb3ZlcmxheSB7XG4gIHBvc2l0aW9uOiBmaXhlZDtcbiAgd2lkdGg6IDEwMCU7XG4gIGhlaWdodDogMTAwJTtcbiAgYmFja2dyb3VuZDogcmdiYSgwLCAwLCAwLCAwLjUpO1xuICB6LWluZGV4OiAyMDtcbiAgdG9wOiA4dmg7XG4gIGxlZnQ6IDA7XG59XG5cbi5yZXZpZXdQcm9maWxlIHtcbiAgZGlzcGxheTogYmxvY2s7XG4gIGJvcmRlci1yYWRpdXM6IDUxJTtcbiAgd2lkdGg6IDM1cHg7XG4gIG1hcmdpbjogMnZ3O1xuICBoZWlnaHQ6IDM1cHg7XG59XG5cbi5jb21tZW50VGV4dCB7XG4gIG1hcmdpbi1sZWZ0OiAxOCU7XG59XG5cbi5jYXJkSGVhZGVyQ3VzdG9tIHtcbiAgYmFja2dyb3VuZC1jb2xvcjogI2VmZWVlZTtcbn1cblxuLmlvbi1jb2xvci12aWJyYW50IHtcbiAgLS1pb24tY29sb3ItYmFzZTogI2VmZWVlZTtcbiAgLS1pb24tY29sb3ItYmFzZS1yZ2I6IDI1NSwgMjU1LCAwO1xuICAtLWlvbi1jb2xvci1jb250cmFzdDogIzAwMDAwMDtcbiAgLS1pb24tY29sb3ItY29udHJhc3QtcmdiOiAwLCAwLCAwO1xuICAtLWlvbi1jb2xvci1zaGFkZTogI2UwZTAwMDtcbiAgLS1pb24tY29sb3ItdGludDogI2ZmZmYxYTtcbn1cblxuLmlvbi1jb2xvci1jeWFuIHtcbiAgLS1pb24tY29sb3ItYmFzZTogI2UyZmFmYTtcbiAgLS1pb24tY29sb3ItYmFzZS1yZ2I6IDc3LCAyNTQsIDIwOTtcbiAgLS1pb24tY29sb3ItY29udHJhc3Q6ICMwMDAwMDA7XG4gIC0taW9uLWNvbG9yLWNvbnRyYXN0LXJnYjogMCwgMCwgMDtcbiAgLS1pb24tY29sb3Itc2hhZGU6ICM0NGUwYjg7XG4gIC0taW9uLWNvbG9yLXRpbnQ6ICM1ZmZlZDY7XG59XG5cbi5ibGFja1NoYWRlIHtcbiAgYmFja2dyb3VuZC1jb2xvcjogIzc5NzlhNztcbiAgY29sb3I6ICM4MjE2MTY7XG4gIGhlaWdodDogMjglO1xuICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gIHRvcDogODMlO1xufVxuXG4uY3Vyc29yIHtcbiAgY3Vyc29yOiBwb2ludGVyO1xufVxuXG4ub3ZlcmxheSB7XG4gIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgYm90dG9tOiAwO1xuICBiYWNrZ3JvdW5kOiBibGFjaztcbiAgYmFja2dyb3VuZDogcmdiYSgwLCAwLCAwLCAwLjUpO1xuICAvKiBCbGFjayBzZWUtdGhyb3VnaCAqL1xuICBjb2xvcjogI2YxZjFmMTtcbiAgb3BhY2l0eTogMTtcbiAgY29sb3I6IHdoaXRlO1xuICB3aWR0aDogMTAwJTtcbiAgcGFkZGluZy1sZWZ0OiAxMHB4O1xufVxuXG4uY29udGFpbmVyIHtcbiAgcG9zaXRpb246IHJlbGF0aXZlO1xuICB3aWR0aDogMTAwJTtcbn1cblxuLmZ1bGwtd2lkdGgge1xuICB3aWR0aDogMTAwJTtcbn1cblxuLm1haW5JbWcge1xuICB3aWR0aDogMTAwJTtcbiAgaGVpZ2h0OiAyNTBweDtcbn1cblxuI21hcF9jYW52YXMge1xuICB3aWR0aDogMTAwJTtcbiAgaGVpZ2h0OiAxNzVweDtcbn1cblxuLmNhcnQtdmlldyB7XG4gIHdpZHRoOiAxMDAlO1xuICBhbmltYXRpb24tZHVyYXRpb246IDAuM3M7XG4gIGFuaW1hdGlvbi1kZWxheTogMHM7XG4gIGJhY2tncm91bmQtY29sb3I6ICM1OTc4ZWU7XG4gIGJvdHRvbTogMDtcbiAgb3BhY2l0eTogMTtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICB6LWluZGV4OiAxMDAwO1xufVxuXG4uY2FydC12aWV3IGlvbi1sYWJlbCB7XG4gIGNvbG9yOiB3aGl0ZTtcbiAgZm9udC13ZWlnaHQ6IDcwMDtcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xuICB2ZXJ0aWNhbC1hbGlnbjogbWlkZGxlO1xuICBsaW5lLWhlaWdodDogNTVweDtcbiAgcGFkZGluZy1sZWZ0OiAxMHB4O1xufVxuXG4uYnV0dG9uLWNhcnQge1xuICBjdXJzb3I6IHBvaW50ZXI7XG4gIHRleHQtYWxpZ246IGVuZDtcbiAgZm9udC13ZWlnaHQ6IG5vcm1hbDtcbiAgZm9udC1zaXplOiAyNXB4O1xufVxuXG4ucHJvZHVjdC1zbGlkZSB7XG4gIHBhZGRpbmctYm90dG9tOiAxMDBweDtcbn1cblxuLnRpdGxlLWNhcmQgaW9uLWNhcmQtdGl0bGUge1xuICBmb250LXNpemU6IDE2cHg7XG59XG5cbi5ub3JtYWwtdGV4dCB7XG4gIGZvbnQtd2VpZ2h0OiBub3JtYWw7XG4gIHRleHQtYWxpZ246IHN0YXJ0O1xuICBmb250LXNpemU6IDE0cHg7XG59XG5cbi5yaWJib24xIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICB0b3A6IC0wLjFweDtcbiAgcmlnaHQ6IC01JTtcbn1cblxuLnJpYmJvbjEgc3BhbiB7XG4gIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgZGlzcGxheTogYmxvY2s7XG4gIHRleHQtYWxpZ246IGNlbnRlcjtcbiAgYmFja2dyb3VuZDogI2Y4NDYzZjtcbiAgZm9udC1zaXplOiA5MiU7XG4gIGZvbnQtZmFtaWx5OiBWZXJkYW5hLCBHZW5ldmEsIFRhaG9tYSwgc2Fucy1zZXJpZjtcbiAgbGluZS1oZWlnaHQ6IDE7XG4gIGZvbnQtd2VpZ2h0OiBib2xkO1xuICBjb2xvcjogI2VkZjBmMjtcbiAgcGFkZGluZzogMTJweCA4cHggMTBweDtcbiAgd2lkdGg6IDc1JTtcbiAgei1pbmRleDogMjAwO1xufVxuXG4uY2xvc2VDYXJkIHtcbiAgei1pbmRleDogMjAwO1xufVxuXG5pb24tY29udGVudCB7XG4gIHdpZHRoOiAxMDAlO1xuICBoZWlnaHQ6IDEwMCU7XG59XG5cbmlvbi10aHVtYm5haWwge1xuICBoZWlnaHQ6IDEwMHB4O1xuICB3aWR0aDogMTAwcHg7XG59Il19 */"
+module.exports = ".my-overlay {\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  background: rgba(0, 0, 0, 0.5);\n  z-index: 20;\n  top: 8vh;\n  left: 0;\n}\n\n.reviewProfile {\n  display: block;\n  border-radius: 51%;\n  width: 35px;\n  margin: 2vw;\n  height: 35px;\n}\n\n.commentText {\n  margin-left: 18%;\n}\n\n.cardHeaderCustom {\n  background-color: #efeeee;\n}\n\n.ion-color-vibrant {\n  --ion-color-base: #efeeee;\n  --ion-color-base-rgb: 255, 255, 0;\n  --ion-color-contrast: #000000;\n  --ion-color-contrast-rgb: 0, 0, 0;\n  --ion-color-shade: #e0e000;\n  --ion-color-tint: #ffff1a;\n}\n\n.ion-color-cyan {\n  --ion-color-base: #e2fafa;\n  --ion-color-base-rgb: 77, 254, 209;\n  --ion-color-contrast: #000000;\n  --ion-color-contrast-rgb: 0, 0, 0;\n  --ion-color-shade: #44e0b8;\n  --ion-color-tint: #5ffed6;\n}\n\n.blackShade {\n  background-color: #7979a7;\n  color: #821616;\n  height: 28%;\n  position: relative;\n  top: 83%;\n}\n\n.cursor {\n  cursor: pointer;\n}\n\n.overlay {\n  position: absolute;\n  bottom: 0;\n  background: black;\n  background: rgba(0, 0, 0, 0.5);\n  /* Black see-through */\n  color: #f1f1f1;\n  opacity: 1;\n  color: white;\n  width: 100%;\n  padding-left: 10px;\n}\n\n.container {\n  position: relative;\n  width: 100%;\n}\n\n.full-width {\n  width: 100%;\n}\n\n.mainImg {\n  width: 100%;\n  height: 250px;\n}\n\n#map_canvas {\n  width: 100%;\n  height: 175px;\n}\n\n.cart-view {\n  width: 100%;\n  -webkit-animation-duration: 0.3s;\n          animation-duration: 0.3s;\n  -webkit-animation-delay: 0s;\n          animation-delay: 0s;\n  background-color: #5978ee;\n  bottom: 0;\n  opacity: 1;\n  position: absolute;\n  z-index: 1000;\n}\n\n.cart-view ion-label {\n  color: white;\n  font-weight: 700;\n  text-align: center;\n  vertical-align: middle;\n  line-height: 55px;\n  padding-left: 10px;\n}\n\n.button-cart {\n  cursor: pointer;\n  text-align: end;\n  font-weight: normal;\n  font-size: 25px;\n}\n\n.product-slide {\n  padding-bottom: 100px;\n}\n\n.title-card ion-card-title {\n  font-size: 16px;\n}\n\n.normal-text {\n  font-weight: normal;\n  text-align: start;\n  font-size: 14px;\n}\n\n.ribbon1 {\n  position: absolute;\n  top: -0.1px;\n  right: -5%;\n}\n\n.ribbon1 span {\n  position: relative;\n  display: block;\n  text-align: center;\n  background: #f8463f;\n  font-size: 92%;\n  font-family: Verdana, Geneva, Tahoma, sans-serif;\n  line-height: 1;\n  font-weight: bold;\n  color: #edf0f2;\n  padding: 12px 8px 10px;\n  width: 75%;\n  z-index: 200;\n}\n\n.closeCard {\n  z-index: 200;\n}\n\nion-content {\n  width: 100%;\n  height: 100%;\n}\n\nion-thumbnail {\n  height: 100px;\n  width: 100px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvY29tcG9uZW50cy9wcm9kdWN0LWNhcmQvcHJvZHVjdC1jYXJkLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL3Byb2R1Y3QtY2FyZC9wcm9kdWN0LWNhcmQuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxlQUFBO0VBQ0EsV0FBQTtFQUNBLFlBQUE7RUFDQSw4QkFBQTtFQUNBLFdBQUE7RUFDQSxRQUFBO0VBQ0EsT0FBQTtBQ0NGOztBRFFBO0VBQ0UsY0FBQTtFQUNBLGtCQUFBO0VBQ0EsV0FBQTtFQUNBLFdBQUE7RUFDQSxZQUFBO0FDTEY7O0FET0E7RUFDRSxnQkFBQTtBQ0pGOztBRE1BO0VBQ0UseUJBQUE7QUNIRjs7QURNQTtFQUNFLHlCQUFBO0VBQ0EsaUNBQUE7RUFDQSw2QkFBQTtFQUNBLGlDQUFBO0VBQ0EsMEJBQUE7RUFDQSx5QkFBQTtBQ0hGOztBRE1BO0VBQ0UseUJBQUE7RUFDQSxrQ0FBQTtFQUNBLDZCQUFBO0VBQ0EsaUNBQUE7RUFDQSwwQkFBQTtFQUNBLHlCQUFBO0FDSEY7O0FETUE7RUFDRSx5QkFBQTtFQUNBLGNBQUE7RUFDQSxXQUFBO0VBQ0Esa0JBQUE7RUFDQSxRQUFBO0FDSEY7O0FETUE7RUFDRSxlQUFBO0FDSEY7O0FETUE7RUFDRSxrQkFBQTtFQUNBLFNBQUE7RUFDQSxpQkFBQTtFQUNBLDhCQUFBO0VBQWdDLHNCQUFBO0VBQ2hDLGNBQUE7RUFDQSxVQUFBO0VBQ0EsWUFBQTtFQUNBLFdBQUE7RUFDQSxrQkFBQTtBQ0ZGOztBREtBO0VBQ0Usa0JBQUE7RUFDQSxXQUFBO0FDRkY7O0FES0E7RUFDRSxXQUFBO0FDRkY7O0FES0E7RUFDRSxXQUFBO0VBQ0EsYUFBQTtBQ0ZGOztBREtBO0VBRUUsV0FBQTtFQUNBLGFBQUE7QUNIRjs7QURNQTtFQUNFLFdBQUE7RUFDQSxnQ0FBQTtVQUFBLHdCQUFBO0VBQ0EsMkJBQUE7VUFBQSxtQkFBQTtFQUNBLHlCQUFBO0VBQ0EsU0FBQTtFQUNBLFVBQUE7RUFDQSxrQkFBQTtFQUNBLGFBQUE7QUNIRjs7QURNQTtFQUNFLFlBQUE7RUFDQSxnQkFBQTtFQUNBLGtCQUFBO0VBQ0Esc0JBQUE7RUFDQSxpQkFBQTtFQUNBLGtCQUFBO0FDSEY7O0FETUE7RUFDRSxlQUFBO0VBQ0EsZUFBQTtFQUNBLG1CQUFBO0VBQ0EsZUFBQTtBQ0hGOztBRE1BO0VBQ0UscUJBQUE7QUNIRjs7QURNQTtFQUNFLGVBQUE7QUNIRjs7QURNQTtFQUNFLG1CQUFBO0VBQ0EsaUJBQUE7RUFDQSxlQUFBO0FDSEY7O0FETUE7RUFDRSxrQkFBQTtFQUNBLFdBQUE7RUFDQSxVQUFBO0FDSEY7O0FETUE7RUFDRSxrQkFBQTtFQUNBLGNBQUE7RUFDQSxrQkFBQTtFQUNBLG1CQUFBO0VBQ0EsY0FBQTtFQUNBLGdEQUFBO0VBQ0EsY0FBQTtFQUNBLGlCQUFBO0VBQ0EsY0FBQTtFQUNBLHNCQUFBO0VBQ0EsVUFBQTtFQUNBLFlBQUE7QUNIRjs7QURNQTtFQUNFLFlBQUE7QUNIRjs7QURNQTtFQUNFLFdBQUE7RUFDQSxZQUFBO0FDSEY7O0FETUE7RUFDRSxhQUFBO0VBQ0EsWUFBQTtBQ0hGIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9wcm9kdWN0LWNhcmQvcHJvZHVjdC1jYXJkLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLm15LW92ZXJsYXkge1xuICBwb3NpdGlvbjogZml4ZWQ7XG4gIHdpZHRoOiAxMDAlO1xuICBoZWlnaHQ6IDEwMCU7XG4gIGJhY2tncm91bmQ6IHJnYmEoMCwgMCwgMCwgMC41KTtcbiAgei1pbmRleDogMjA7XG4gIHRvcDogOHZoO1xuICBsZWZ0OiAwO1xufVxuLy8gLmltYWdlU2hvd3tcbi8vICAgZGlzcGxheTogYmxvY2s7XG4vLyAgIGxlZnQ6IDAlO1xuLy8gICB0b3A6IDAlO1xuLy8gICBtYXgtaGVpZ2h0OiAxMjVweDtcbi8vICAgbWF4LXdpZHRoOiAxMjVweDtcbi8vICAgfVxuLnJldmlld1Byb2ZpbGUge1xuICBkaXNwbGF5OiBibG9jaztcbiAgYm9yZGVyLXJhZGl1czogNTElO1xuICB3aWR0aDogMzVweDtcbiAgbWFyZ2luOiAydnc7XG4gIGhlaWdodDogMzVweDtcbn1cbi5jb21tZW50VGV4dCB7XG4gIG1hcmdpbi1sZWZ0OiAxOCU7XG59XG4uY2FyZEhlYWRlckN1c3RvbSB7XG4gIGJhY2tncm91bmQtY29sb3I6ICNlZmVlZWU7XG59XG5cbi5pb24tY29sb3ItdmlicmFudCB7XG4gIC0taW9uLWNvbG9yLWJhc2U6ICNlZmVlZWU7XG4gIC0taW9uLWNvbG9yLWJhc2UtcmdiOiAyNTUsIDI1NSwgMDtcbiAgLS1pb24tY29sb3ItY29udHJhc3Q6ICMwMDAwMDA7XG4gIC0taW9uLWNvbG9yLWNvbnRyYXN0LXJnYjogMCwgMCwgMDtcbiAgLS1pb24tY29sb3Itc2hhZGU6ICNlMGUwMDA7XG4gIC0taW9uLWNvbG9yLXRpbnQ6ICNmZmZmMWE7XG59XG5cbi5pb24tY29sb3ItY3lhbiB7XG4gIC0taW9uLWNvbG9yLWJhc2U6ICNlMmZhZmE7XG4gIC0taW9uLWNvbG9yLWJhc2UtcmdiOiA3NywgMjU0LCAyMDk7XG4gIC0taW9uLWNvbG9yLWNvbnRyYXN0OiAjMDAwMDAwO1xuICAtLWlvbi1jb2xvci1jb250cmFzdC1yZ2I6IDAsIDAsIDA7XG4gIC0taW9uLWNvbG9yLXNoYWRlOiAjNDRlMGI4O1xuICAtLWlvbi1jb2xvci10aW50OiAjNWZmZWQ2O1xufVxuXG4uYmxhY2tTaGFkZSB7XG4gIGJhY2tncm91bmQtY29sb3I6ICM3OTc5YTc7XG4gIGNvbG9yOiAjODIxNjE2O1xuICBoZWlnaHQ6IDI4JTtcbiAgcG9zaXRpb246IHJlbGF0aXZlO1xuICB0b3A6IDgzJTtcbn1cblxuLmN1cnNvciB7XG4gIGN1cnNvcjogcG9pbnRlcjtcbn1cblxuLm92ZXJsYXkge1xuICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gIGJvdHRvbTogMDtcbiAgYmFja2dyb3VuZDogcmdiKDAsIDAsIDApO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7IC8qIEJsYWNrIHNlZS10aHJvdWdoICovXG4gIGNvbG9yOiAjZjFmMWYxO1xuICBvcGFjaXR5OiAxO1xuICBjb2xvcjogd2hpdGU7XG4gIHdpZHRoOiAxMDAlO1xuICBwYWRkaW5nLWxlZnQ6IDEwcHg7XG59XG5cbi5jb250YWluZXIge1xuICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gIHdpZHRoOiAxMDAlO1xufVxuXG4uZnVsbC13aWR0aCB7XG4gIHdpZHRoOiAxMDAlO1xufVxuXG4ubWFpbkltZyB7XG4gIHdpZHRoOiAxMDAlO1xuICBoZWlnaHQ6IDI1MHB4O1xufVxuXG4jbWFwX2NhbnZhcyB7XG4gIC8vIG1pbi13aWR0aDogMTAwcHg7XG4gIHdpZHRoOiAxMDAlO1xuICBoZWlnaHQ6IDE3NXB4O1xufVxuXG4uY2FydC12aWV3IHtcbiAgd2lkdGg6IDEwMCU7XG4gIGFuaW1hdGlvbi1kdXJhdGlvbjogMC4zcztcbiAgYW5pbWF0aW9uLWRlbGF5OiAwcztcbiAgYmFja2dyb3VuZC1jb2xvcjogIzU5NzhlZTtcbiAgYm90dG9tOiAwO1xuICBvcGFjaXR5OiAxO1xuICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gIHotaW5kZXg6IDEwMDA7XG59XG5cbi5jYXJ0LXZpZXcgaW9uLWxhYmVsIHtcbiAgY29sb3I6IHdoaXRlO1xuICBmb250LXdlaWdodDogNzAwO1xuICB0ZXh0LWFsaWduOiBjZW50ZXI7XG4gIHZlcnRpY2FsLWFsaWduOiBtaWRkbGU7XG4gIGxpbmUtaGVpZ2h0OiA1NXB4O1xuICBwYWRkaW5nLWxlZnQ6IDEwcHg7XG59XG5cbi5idXR0b24tY2FydCB7XG4gIGN1cnNvcjogcG9pbnRlcjtcbiAgdGV4dC1hbGlnbjogZW5kO1xuICBmb250LXdlaWdodDogbm9ybWFsO1xuICBmb250LXNpemU6IDI1cHg7XG59XG5cbi5wcm9kdWN0LXNsaWRlIHtcbiAgcGFkZGluZy1ib3R0b206IDEwMHB4O1xufVxuXG4udGl0bGUtY2FyZCBpb24tY2FyZC10aXRsZSB7XG4gIGZvbnQtc2l6ZTogMTZweDtcbn1cblxuLm5vcm1hbC10ZXh0IHtcbiAgZm9udC13ZWlnaHQ6IG5vcm1hbDtcbiAgdGV4dC1hbGlnbjogc3RhcnQ7XG4gIGZvbnQtc2l6ZTogMTRweDtcbn1cblxuLnJpYmJvbjEge1xuICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gIHRvcDogLTAuMXB4O1xuICByaWdodDogLTUlO1xufVxuXG4ucmliYm9uMSBzcGFuIHtcbiAgcG9zaXRpb246IHJlbGF0aXZlO1xuICBkaXNwbGF5OiBibG9jaztcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xuICBiYWNrZ3JvdW5kOiAjZjg0NjNmO1xuICBmb250LXNpemU6IDkyJTtcbiAgZm9udC1mYW1pbHk6IFZlcmRhbmEsIEdlbmV2YSwgVGFob21hLCBzYW5zLXNlcmlmO1xuICBsaW5lLWhlaWdodDogMTtcbiAgZm9udC13ZWlnaHQ6IGJvbGQ7XG4gIGNvbG9yOiAjZWRmMGYyO1xuICBwYWRkaW5nOiAxMnB4IDhweCAxMHB4O1xuICB3aWR0aDogNzUlO1xuICB6LWluZGV4OiAyMDA7XG59XG5cbi5jbG9zZUNhcmQge1xuICB6LWluZGV4OiAyMDA7XG59XG5cbmlvbi1jb250ZW50IHtcbiAgd2lkdGg6IDEwMCU7XG4gIGhlaWdodDogMTAwJTtcbn1cblxuaW9uLXRodW1ibmFpbCB7XG4gIGhlaWdodDogMTAwcHg7XG4gIHdpZHRoOiAxMDBweDtcbn1cblxuXG4iLCIubXktb3ZlcmxheSB7XG4gIHBvc2l0aW9uOiBmaXhlZDtcbiAgd2lkdGg6IDEwMCU7XG4gIGhlaWdodDogMTAwJTtcbiAgYmFja2dyb3VuZDogcmdiYSgwLCAwLCAwLCAwLjUpO1xuICB6LWluZGV4OiAyMDtcbiAgdG9wOiA4dmg7XG4gIGxlZnQ6IDA7XG59XG5cbi5yZXZpZXdQcm9maWxlIHtcbiAgZGlzcGxheTogYmxvY2s7XG4gIGJvcmRlci1yYWRpdXM6IDUxJTtcbiAgd2lkdGg6IDM1cHg7XG4gIG1hcmdpbjogMnZ3O1xuICBoZWlnaHQ6IDM1cHg7XG59XG5cbi5jb21tZW50VGV4dCB7XG4gIG1hcmdpbi1sZWZ0OiAxOCU7XG59XG5cbi5jYXJkSGVhZGVyQ3VzdG9tIHtcbiAgYmFja2dyb3VuZC1jb2xvcjogI2VmZWVlZTtcbn1cblxuLmlvbi1jb2xvci12aWJyYW50IHtcbiAgLS1pb24tY29sb3ItYmFzZTogI2VmZWVlZTtcbiAgLS1pb24tY29sb3ItYmFzZS1yZ2I6IDI1NSwgMjU1LCAwO1xuICAtLWlvbi1jb2xvci1jb250cmFzdDogIzAwMDAwMDtcbiAgLS1pb24tY29sb3ItY29udHJhc3QtcmdiOiAwLCAwLCAwO1xuICAtLWlvbi1jb2xvci1zaGFkZTogI2UwZTAwMDtcbiAgLS1pb24tY29sb3ItdGludDogI2ZmZmYxYTtcbn1cblxuLmlvbi1jb2xvci1jeWFuIHtcbiAgLS1pb24tY29sb3ItYmFzZTogI2UyZmFmYTtcbiAgLS1pb24tY29sb3ItYmFzZS1yZ2I6IDc3LCAyNTQsIDIwOTtcbiAgLS1pb24tY29sb3ItY29udHJhc3Q6ICMwMDAwMDA7XG4gIC0taW9uLWNvbG9yLWNvbnRyYXN0LXJnYjogMCwgMCwgMDtcbiAgLS1pb24tY29sb3Itc2hhZGU6ICM0NGUwYjg7XG4gIC0taW9uLWNvbG9yLXRpbnQ6ICM1ZmZlZDY7XG59XG5cbi5ibGFja1NoYWRlIHtcbiAgYmFja2dyb3VuZC1jb2xvcjogIzc5NzlhNztcbiAgY29sb3I6ICM4MjE2MTY7XG4gIGhlaWdodDogMjglO1xuICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gIHRvcDogODMlO1xufVxuXG4uY3Vyc29yIHtcbiAgY3Vyc29yOiBwb2ludGVyO1xufVxuXG4ub3ZlcmxheSB7XG4gIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgYm90dG9tOiAwO1xuICBiYWNrZ3JvdW5kOiBibGFjaztcbiAgYmFja2dyb3VuZDogcmdiYSgwLCAwLCAwLCAwLjUpO1xuICAvKiBCbGFjayBzZWUtdGhyb3VnaCAqL1xuICBjb2xvcjogI2YxZjFmMTtcbiAgb3BhY2l0eTogMTtcbiAgY29sb3I6IHdoaXRlO1xuICB3aWR0aDogMTAwJTtcbiAgcGFkZGluZy1sZWZ0OiAxMHB4O1xufVxuXG4uY29udGFpbmVyIHtcbiAgcG9zaXRpb246IHJlbGF0aXZlO1xuICB3aWR0aDogMTAwJTtcbn1cblxuLmZ1bGwtd2lkdGgge1xuICB3aWR0aDogMTAwJTtcbn1cblxuLm1haW5JbWcge1xuICB3aWR0aDogMTAwJTtcbiAgaGVpZ2h0OiAyNTBweDtcbn1cblxuI21hcF9jYW52YXMge1xuICB3aWR0aDogMTAwJTtcbiAgaGVpZ2h0OiAxNzVweDtcbn1cblxuLmNhcnQtdmlldyB7XG4gIHdpZHRoOiAxMDAlO1xuICBhbmltYXRpb24tZHVyYXRpb246IDAuM3M7XG4gIGFuaW1hdGlvbi1kZWxheTogMHM7XG4gIGJhY2tncm91bmQtY29sb3I6ICM1OTc4ZWU7XG4gIGJvdHRvbTogMDtcbiAgb3BhY2l0eTogMTtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICB6LWluZGV4OiAxMDAwO1xufVxuXG4uY2FydC12aWV3IGlvbi1sYWJlbCB7XG4gIGNvbG9yOiB3aGl0ZTtcbiAgZm9udC13ZWlnaHQ6IDcwMDtcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xuICB2ZXJ0aWNhbC1hbGlnbjogbWlkZGxlO1xuICBsaW5lLWhlaWdodDogNTVweDtcbiAgcGFkZGluZy1sZWZ0OiAxMHB4O1xufVxuXG4uYnV0dG9uLWNhcnQge1xuICBjdXJzb3I6IHBvaW50ZXI7XG4gIHRleHQtYWxpZ246IGVuZDtcbiAgZm9udC13ZWlnaHQ6IG5vcm1hbDtcbiAgZm9udC1zaXplOiAyNXB4O1xufVxuXG4ucHJvZHVjdC1zbGlkZSB7XG4gIHBhZGRpbmctYm90dG9tOiAxMDBweDtcbn1cblxuLnRpdGxlLWNhcmQgaW9uLWNhcmQtdGl0bGUge1xuICBmb250LXNpemU6IDE2cHg7XG59XG5cbi5ub3JtYWwtdGV4dCB7XG4gIGZvbnQtd2VpZ2h0OiBub3JtYWw7XG4gIHRleHQtYWxpZ246IHN0YXJ0O1xuICBmb250LXNpemU6IDE0cHg7XG59XG5cbi5yaWJib24xIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICB0b3A6IC0wLjFweDtcbiAgcmlnaHQ6IC01JTtcbn1cblxuLnJpYmJvbjEgc3BhbiB7XG4gIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgZGlzcGxheTogYmxvY2s7XG4gIHRleHQtYWxpZ246IGNlbnRlcjtcbiAgYmFja2dyb3VuZDogI2Y4NDYzZjtcbiAgZm9udC1zaXplOiA5MiU7XG4gIGZvbnQtZmFtaWx5OiBWZXJkYW5hLCBHZW5ldmEsIFRhaG9tYSwgc2Fucy1zZXJpZjtcbiAgbGluZS1oZWlnaHQ6IDE7XG4gIGZvbnQtd2VpZ2h0OiBib2xkO1xuICBjb2xvcjogI2VkZjBmMjtcbiAgcGFkZGluZzogMTJweCA4cHggMTBweDtcbiAgd2lkdGg6IDc1JTtcbiAgei1pbmRleDogMjAwO1xufVxuXG4uY2xvc2VDYXJkIHtcbiAgei1pbmRleDogMjAwO1xufVxuXG5pb24tY29udGVudCB7XG4gIHdpZHRoOiAxMDAlO1xuICBoZWlnaHQ6IDEwMCU7XG59XG5cbmlvbi10aHVtYm5haWwge1xuICBoZWlnaHQ6IDEwMHB4O1xuICB3aWR0aDogMTAwcHg7XG59Il19 */"
 
 /***/ }),
 
@@ -6978,6 +7170,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
 /* harmony import */ var src_app_api_services__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/api/services */ "./src/app/api/services.ts");
+/* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ngx-logger */ "./node_modules/ngx-logger/fesm2015/ngx-logger.js");
+/* harmony import */ var _show_auxilary_modal_show_auxilary_modal_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../show-auxilary-modal/show-auxilary-modal.component */ "./src/app/components/show-auxilary-modal/show-auxilary-modal.component.ts");
+
+
 
 
 
@@ -6986,20 +7182,24 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let ProductCardComponent = class ProductCardComponent {
-    constructor(favourite, queryResource, popoverController, router, cartService) {
+    constructor(favourite, modalController, queryResource, router, cartService, logger) {
         this.favourite = favourite;
+        this.modalController = modalController;
         this.queryResource = queryResource;
-        this.popoverController = popoverController;
         this.router = router;
         this.cartService = cartService;
+        this.logger = logger;
         this.showDescription = false;
+        this.auxilaries = [];
         this.isFavourite = false;
         this.orderCount = 0;
     }
     ngOnInit() {
         this.checkIfAlreadyFavourite();
         this.checkIfOrdered();
-        this.getAuxilaries();
+        if (this.stockCurrent.product.isAuxilaryItem === false) {
+            this.getAuxilaries(0);
+        }
     }
     addToFavourite(product) {
         this.isFavourite = true;
@@ -7009,7 +7209,19 @@ let ProductCardComponent = class ProductCardComponent {
         this.isFavourite = false;
         this.favourite.removeFromFavorite(product, 'product');
     }
-    getAuxilaries() {
+    getAuxilaries(i) {
+        this.logger.info('Got Auxilary For Product ', this.stockCurrent.product.name);
+        this.queryResource.findAuxilariesByProductIdUsingGET(this.stockCurrent.product.id)
+            .subscribe(data => {
+            data.content.forEach(a => {
+                this.auxilaries.push(a);
+            });
+            this.logger.info('Got Auxilary For Product ', this.stockCurrent.product.name, data.content);
+            ++i;
+            if (i < data.totalPages) {
+                this.getAuxilaries(i);
+            }
+        });
     }
     checkIfAlreadyFavourite() {
         this.favourite.getFavourites()
@@ -7022,11 +7234,27 @@ let ProductCardComponent = class ProductCardComponent {
         });
     }
     add(i, stock) {
-        if (this.cartService.addProduct(stock.product, stock, this.store)) {
+        if (this.auxilaries.length > 0 && this.stockCurrent.product.isAuxilaryItem === false) {
+            this.logger.info('Add Auxilary Items ', this.auxilaries);
+            this.showAddAuxilaryModal();
+            this.cartService.addProduct(stock.product, stock, this.store);
+        }
+        else {
+            this.logger.info('No Auxilary Items ', this.auxilaries);
+            this.cartService.addProduct(stock.product, stock, this.store);
         }
     }
     remove(i, stock) {
         this.cartService.removeProduct(stock);
+    }
+    showAddAuxilaryModal() {
+        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function* () {
+            const modal = yield this.modalController.create({
+                component: _show_auxilary_modal_show_auxilary_modal_component__WEBPACK_IMPORTED_MODULE_8__["ShowAuxilaryModalComponent"],
+                componentProps: { auxilaryItems: this.auxilaries }
+            });
+            modal.present();
+        });
     }
     checkIfOrdered() {
         this.cartService.observableTickets
@@ -7048,10 +7276,11 @@ let ProductCardComponent = class ProductCardComponent {
 };
 ProductCardComponent.ctorParameters = () => [
     { type: _services_favourite_service__WEBPACK_IMPORTED_MODULE_3__["FavouriteService"] },
+    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["ModalController"] },
     { type: src_app_api_services__WEBPACK_IMPORTED_MODULE_6__["QueryResourceService"] },
-    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["PopoverController"] },
     { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"] },
-    { type: _services_cart_service__WEBPACK_IMPORTED_MODULE_1__["CartService"] }
+    { type: _services_cart_service__WEBPACK_IMPORTED_MODULE_1__["CartService"] },
+    { type: ngx_logger__WEBPACK_IMPORTED_MODULE_7__["NGXLogger"] }
 ];
 tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_4__["Input"])(),
@@ -7072,10 +7301,11 @@ ProductCardComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         styles: [__webpack_require__(/*! ./product-card.component.scss */ "./src/app/components/product-card/product-card.component.scss")]
     }),
     tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services_favourite_service__WEBPACK_IMPORTED_MODULE_3__["FavouriteService"],
+        _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["ModalController"],
         src_app_api_services__WEBPACK_IMPORTED_MODULE_6__["QueryResourceService"],
-        _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["PopoverController"],
         _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"],
-        _services_cart_service__WEBPACK_IMPORTED_MODULE_1__["CartService"]])
+        _services_cart_service__WEBPACK_IMPORTED_MODULE_1__["CartService"],
+        ngx_logger__WEBPACK_IMPORTED_MODULE_7__["NGXLogger"]])
 ], ProductCardComponent);
 
 
@@ -7089,7 +7319,7 @@ ProductCardComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "img {\n  width: 40%;\n  height: 40%;\n  margin: auto;\n  display: block;\n  box-shadow: 1px 1px 1px black;\n  border-radius: 50%;\n  border: 1px solid black;\n}\n\ndiv {\n  padding: 20px;\n}\n\nion-input:focus {\n  border-bottom: 1px solid green;\n}\n\n.profileImage {\n  width: 40vw;\n  height: 40vw;\n  margin: auto;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9wcm9maWxlLWVkaXQvcHJvZmlsZS1lZGl0LmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL3Byb2ZpbGUtZWRpdC9wcm9maWxlLWVkaXQuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxVQUFBO0VBQ0EsV0FBQTtFQUNBLFlBQUE7RUFDQSxjQUFBO0VBQ0EsNkJBQUE7RUFDQSxrQkFBQTtFQUNBLHVCQUFBO0FDQ0o7O0FERUE7RUFDSSxhQUFBO0FDQ0o7O0FERUE7RUFDSSw4QkFBQTtBQ0NKOztBREVBO0VBQ0ksV0FBQTtFQUNBLFlBQUE7RUFDQSxZQUFBO0FDQ0oiLCJmaWxlIjoic3JjL2FwcC9jb21wb25lbnRzL3Byb2ZpbGUtZWRpdC9wcm9maWxlLWVkaXQuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJpbWcge1xuICAgIHdpZHRoOiA0MCU7XG4gICAgaGVpZ2h0OiA0MCU7XG4gICAgbWFyZ2luOiBhdXRvO1xuICAgIGRpc3BsYXk6IGJsb2NrO1xuICAgIGJveC1zaGFkb3c6IDFweCAxcHggMXB4IGJsYWNrO1xuICAgIGJvcmRlci1yYWRpdXM6IDUwJTtcbiAgICBib3JkZXI6IDFweCBzb2xpZCBibGFjaztcbn1cblxuZGl2IHtcbiAgICBwYWRkaW5nOiAyMHB4O1xufVxuXG5pb24taW5wdXQ6Zm9jdXMge1xuICAgIGJvcmRlci1ib3R0b206IDFweCBzb2xpZCBncmVlbjtcbn1cblxuLnByb2ZpbGVJbWFnZSB7XG4gICAgd2lkdGg6IDQwdnc7XG4gICAgaGVpZ2h0OiA0MHZ3O1xuICAgIG1hcmdpbjogYXV0bztcbn0iLCJpbWcge1xuICB3aWR0aDogNDAlO1xuICBoZWlnaHQ6IDQwJTtcbiAgbWFyZ2luOiBhdXRvO1xuICBkaXNwbGF5OiBibG9jaztcbiAgYm94LXNoYWRvdzogMXB4IDFweCAxcHggYmxhY2s7XG4gIGJvcmRlci1yYWRpdXM6IDUwJTtcbiAgYm9yZGVyOiAxcHggc29saWQgYmxhY2s7XG59XG5cbmRpdiB7XG4gIHBhZGRpbmc6IDIwcHg7XG59XG5cbmlvbi1pbnB1dDpmb2N1cyB7XG4gIGJvcmRlci1ib3R0b206IDFweCBzb2xpZCBncmVlbjtcbn1cblxuLnByb2ZpbGVJbWFnZSB7XG4gIHdpZHRoOiA0MHZ3O1xuICBoZWlnaHQ6IDQwdnc7XG4gIG1hcmdpbjogYXV0bztcbn0iXX0= */"
+module.exports = "img {\n  width: 40%;\n  height: 40%;\n  margin: auto;\n  display: block;\n  box-shadow: 1px 1px 1px black;\n  border-radius: 50%;\n  border: 1px solid black;\n}\n\ndiv {\n  padding: 20px;\n}\n\nion-input:focus {\n  border-bottom: 1px solid green;\n}\n\n.profileImage {\n  width: 40vw;\n  height: 40vw;\n  margin: auto;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvY29tcG9uZW50cy9wcm9maWxlLWVkaXQvcHJvZmlsZS1lZGl0LmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL3Byb2ZpbGUtZWRpdC9wcm9maWxlLWVkaXQuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxVQUFBO0VBQ0EsV0FBQTtFQUNBLFlBQUE7RUFDQSxjQUFBO0VBQ0EsNkJBQUE7RUFDQSxrQkFBQTtFQUNBLHVCQUFBO0FDQ0o7O0FERUE7RUFDSSxhQUFBO0FDQ0o7O0FERUE7RUFDSSw4QkFBQTtBQ0NKOztBREVBO0VBQ0ksV0FBQTtFQUNBLFlBQUE7RUFDQSxZQUFBO0FDQ0oiLCJmaWxlIjoic3JjL2FwcC9jb21wb25lbnRzL3Byb2ZpbGUtZWRpdC9wcm9maWxlLWVkaXQuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJpbWcge1xuICAgIHdpZHRoOiA0MCU7XG4gICAgaGVpZ2h0OiA0MCU7XG4gICAgbWFyZ2luOiBhdXRvO1xuICAgIGRpc3BsYXk6IGJsb2NrO1xuICAgIGJveC1zaGFkb3c6IDFweCAxcHggMXB4IGJsYWNrO1xuICAgIGJvcmRlci1yYWRpdXM6IDUwJTtcbiAgICBib3JkZXI6IDFweCBzb2xpZCBibGFjaztcbn1cblxuZGl2IHtcbiAgICBwYWRkaW5nOiAyMHB4O1xufVxuXG5pb24taW5wdXQ6Zm9jdXMge1xuICAgIGJvcmRlci1ib3R0b206IDFweCBzb2xpZCBncmVlbjtcbn1cblxuLnByb2ZpbGVJbWFnZSB7XG4gICAgd2lkdGg6IDQwdnc7XG4gICAgaGVpZ2h0OiA0MHZ3O1xuICAgIG1hcmdpbjogYXV0bztcbn0iLCJpbWcge1xuICB3aWR0aDogNDAlO1xuICBoZWlnaHQ6IDQwJTtcbiAgbWFyZ2luOiBhdXRvO1xuICBkaXNwbGF5OiBibG9jaztcbiAgYm94LXNoYWRvdzogMXB4IDFweCAxcHggYmxhY2s7XG4gIGJvcmRlci1yYWRpdXM6IDUwJTtcbiAgYm9yZGVyOiAxcHggc29saWQgYmxhY2s7XG59XG5cbmRpdiB7XG4gIHBhZGRpbmc6IDIwcHg7XG59XG5cbmlvbi1pbnB1dDpmb2N1cyB7XG4gIGJvcmRlci1ib3R0b206IDFweCBzb2xpZCBncmVlbjtcbn1cblxuLnByb2ZpbGVJbWFnZSB7XG4gIHdpZHRoOiA0MHZ3O1xuICBoZWlnaHQ6IDQwdnc7XG4gIG1hcmdpbjogYXV0bztcbn0iXX0= */"
 
 /***/ }),
 
@@ -7109,6 +7339,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
 /* harmony import */ var src_app_api_services__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/api/services */ "./src/app/api/services.ts");
 /* harmony import */ var _image_selector_image_selector_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../image-selector/image-selector.component */ "./src/app/components/image-selector/image-selector.component.ts");
+/* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ngx-logger */ "./node_modules/ngx-logger/fesm2015/ngx-logger.js");
+
 
 
 
@@ -7116,14 +7348,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let ProfileEditComponent = class ProfileEditComponent {
-    constructor(modalController, queryResourceService, commandResourceService, keycloak) {
+    constructor(modalController, logger, commandResourceService, keycloak) {
         this.modalController = modalController;
-        this.queryResourceService = queryResourceService;
+        this.logger = logger;
         this.commandResourceService = commandResourceService;
         this.keycloak = keycloak;
         this.customer = {};
     }
     ngOnInit() {
+        this.logger.info('KeyCloak ', this.profileKeycloak);
+        this.logger.info('Customer ', this.customer);
+        this.logger.info('Contact ', this.contact);
     }
     nonSaveDismiss() {
         this.modalController.dismiss();
@@ -7153,6 +7388,8 @@ let ProfileEditComponent = class ProfileEditComponent {
         });
     }
     update() {
+        this.profileKeycloak.name = this.customer.name;
+        this.logger.info('Saving User Details', this.profileKeycloak, this.customer, this.contact);
         this.keycloak.updateCurrentUserDetails(this.profileKeycloak, () => {
             this.commandResourceService.updateCustomerUsingPUT(this.customer)
                 .subscribe(c => {
@@ -7170,7 +7407,7 @@ let ProfileEditComponent = class ProfileEditComponent {
 };
 ProfileEditComponent.ctorParameters = () => [
     { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_3__["ModalController"] },
-    { type: src_app_api_services__WEBPACK_IMPORTED_MODULE_4__["QueryResourceService"] },
+    { type: ngx_logger__WEBPACK_IMPORTED_MODULE_6__["NGXLogger"] },
     { type: src_app_api_services__WEBPACK_IMPORTED_MODULE_4__["CommandResourceService"] },
     { type: _services_security_keycloak_service__WEBPACK_IMPORTED_MODULE_1__["KeycloakService"] }
 ];
@@ -7181,7 +7418,7 @@ ProfileEditComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         styles: [__webpack_require__(/*! ./profile-edit.component.scss */ "./src/app/components/profile-edit/profile-edit.component.scss")]
     }),
     tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_ionic_angular__WEBPACK_IMPORTED_MODULE_3__["ModalController"],
-        src_app_api_services__WEBPACK_IMPORTED_MODULE_4__["QueryResourceService"],
+        ngx_logger__WEBPACK_IMPORTED_MODULE_6__["NGXLogger"],
         src_app_api_services__WEBPACK_IMPORTED_MODULE_4__["CommandResourceService"],
         _services_security_keycloak_service__WEBPACK_IMPORTED_MODULE_1__["KeycloakService"]])
 ], ProfileEditComponent);
@@ -7197,7 +7434,7 @@ ProfileEditComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".mg-left {\n  margin-left: 10px;\n}\n\nion-avatar {\n  width: 25vw;\n  height: 25vw;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9wcm9maWxlLWluZm8vcHJvZmlsZS1pbmZvLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL3Byb2ZpbGUtaW5mby9wcm9maWxlLWluZm8uY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxpQkFBQTtBQ0NKOztBREVBO0VBQ0ksV0FBQTtFQUNBLFlBQUE7QUNDSiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvcHJvZmlsZS1pbmZvL3Byb2ZpbGUtaW5mby5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5tZy1sZWZ0IHtcbiAgICBtYXJnaW4tbGVmdDogMTBweDtcbn1cblxuaW9uLWF2YXRhciB7XG4gICAgd2lkdGg6IDI1dnc7XG4gICAgaGVpZ2h0OiAyNXZ3O1xufVxuIiwiLm1nLWxlZnQge1xuICBtYXJnaW4tbGVmdDogMTBweDtcbn1cblxuaW9uLWF2YXRhciB7XG4gIHdpZHRoOiAyNXZ3O1xuICBoZWlnaHQ6IDI1dnc7XG59Il19 */"
+module.exports = ".mg-left {\n  margin-left: 10px;\n}\n\nion-avatar {\n  width: 25vw;\n  height: 25vw;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvY29tcG9uZW50cy9wcm9maWxlLWluZm8vcHJvZmlsZS1pbmZvLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL3Byb2ZpbGUtaW5mby9wcm9maWxlLWluZm8uY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxpQkFBQTtBQ0NKOztBREVBO0VBQ0ksV0FBQTtFQUNBLFlBQUE7QUNDSiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvcHJvZmlsZS1pbmZvL3Byb2ZpbGUtaW5mby5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5tZy1sZWZ0IHtcbiAgICBtYXJnaW4tbGVmdDogMTBweDtcbn1cblxuaW9uLWF2YXRhciB7XG4gICAgd2lkdGg6IDI1dnc7XG4gICAgaGVpZ2h0OiAyNXZ3O1xufVxuIiwiLm1nLWxlZnQge1xuICBtYXJnaW4tbGVmdDogMTBweDtcbn1cblxuaW9uLWF2YXRhciB7XG4gIHdpZHRoOiAyNXZ3O1xuICBoZWlnaHQ6IDI1dnc7XG59Il19 */"
 
 /***/ }),
 
@@ -7360,7 +7597,7 @@ RatingComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".imageShow {\n  position: relative;\n  top: 0%;\n  height: 14vh;\n  width: 14vh;\n}\n\nion-card-header {\n  padding: 2vw 0vw;\n}\n\n.overlay {\n  background: rgba(0, 0, 0, 0.5);\n  color: white;\n  padding: 2vh;\n  position: relative;\n  bottom: 36vw;\n}\n\n.container {\n  height: 85vw;\n}\n\n.mainImg {\n  width: 60vw;\n  height: 60vw;\n  margin: auto;\n}\n\nh2 {\n  font-size: 18px;\n}\n\n.medium {\n  font-size: 14px;\n}\n\n.small {\n  font-size: 11px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9yZXN0YXVyYW50LWNhcmQvcmVzdGF1cmFudC1jYXJkLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL3Jlc3RhdXJhbnQtY2FyZC9yZXN0YXVyYW50LWNhcmQuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxrQkFBQTtFQUNBLE9BQUE7RUFDQSxZQUFBO0VBQ0EsV0FBQTtBQ0NGOztBREVBO0VBQ0UsZ0JBQUE7QUNDRjs7QURFQTtFQUNFLDhCQUFBO0VBQ0EsWUFBQTtFQUNBLFlBQUE7RUFDQSxrQkFBQTtFQUNBLFlBQUE7QUNDRjs7QURHQTtFQUNFLFlBQUE7QUNBRjs7QURHQTtFQUNFLFdBQUE7RUFDQSxZQUFBO0VBQ0EsWUFBQTtBQ0FGOztBREdBO0VBQ0UsZUFBQTtBQ0FGOztBREdBO0VBQ0UsZUFBQTtBQ0FGOztBREdBO0VBQ0UsZUFBQTtBQ0FGIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9yZXN0YXVyYW50LWNhcmQvcmVzdGF1cmFudC1jYXJkLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmltYWdlU2hvdyB7XG4gIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgdG9wOiAwJTtcbiAgaGVpZ2h0OiAxNHZoO1xuICB3aWR0aDogMTR2aDtcbn1cblxuaW9uLWNhcmQtaGVhZGVyIHtcbiAgcGFkZGluZzogMnZ3IDB2dztcbn1cblxuLm92ZXJsYXkge1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG4gIGNvbG9yOiB3aGl0ZTtcbiAgcGFkZGluZzogMnZoO1xuICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gIGJvdHRvbTogMzZ2dztcbn1cblxuXG4uY29udGFpbmVyIHtcbiAgaGVpZ2h0OiA4NXZ3O1xufVxuXG4ubWFpbkltZyB7XG4gIHdpZHRoOiA2MHZ3O1xuICBoZWlnaHQ6IDYwdnc7XG4gIG1hcmdpbjogYXV0bztcbn1cblxuaDIge1xuICBmb250LXNpemU6IDE4cHg7XG59XG5cbi5tZWRpdW0ge1xuICBmb250LXNpemU6IDE0cHg7XG59XG5cbi5zbWFsbCB7XG4gIGZvbnQtc2l6ZTogMTFweDtcbn1cbiIsIi5pbWFnZVNob3cge1xuICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gIHRvcDogMCU7XG4gIGhlaWdodDogMTR2aDtcbiAgd2lkdGg6IDE0dmg7XG59XG5cbmlvbi1jYXJkLWhlYWRlciB7XG4gIHBhZGRpbmc6IDJ2dyAwdnc7XG59XG5cbi5vdmVybGF5IHtcbiAgYmFja2dyb3VuZDogcmdiYSgwLCAwLCAwLCAwLjUpO1xuICBjb2xvcjogd2hpdGU7XG4gIHBhZGRpbmc6IDJ2aDtcbiAgcG9zaXRpb246IHJlbGF0aXZlO1xuICBib3R0b206IDM2dnc7XG59XG5cbi5jb250YWluZXIge1xuICBoZWlnaHQ6IDg1dnc7XG59XG5cbi5tYWluSW1nIHtcbiAgd2lkdGg6IDYwdnc7XG4gIGhlaWdodDogNjB2dztcbiAgbWFyZ2luOiBhdXRvO1xufVxuXG5oMiB7XG4gIGZvbnQtc2l6ZTogMThweDtcbn1cblxuLm1lZGl1bSB7XG4gIGZvbnQtc2l6ZTogMTRweDtcbn1cblxuLnNtYWxsIHtcbiAgZm9udC1zaXplOiAxMXB4O1xufSJdfQ== */"
+module.exports = ".imageShow {\n  position: relative;\n  top: 0%;\n  height: 14vh;\n  width: 14vh;\n}\n\nion-card-header {\n  padding: 2vw 0vw;\n}\n\n.overlay {\n  background: rgba(0, 0, 0, 0.5);\n  color: white;\n  padding: 2vh;\n  position: relative;\n  bottom: 36vw;\n}\n\n.container {\n  height: 85vw;\n}\n\n.mainImg {\n  width: 60vw;\n  height: 60vw;\n  margin: auto;\n}\n\nh2 {\n  font-size: 18px;\n}\n\n.medium {\n  font-size: 14px;\n}\n\n.small {\n  font-size: 11px;\n}\n\n.overflow-text-wrap {\n  font-size: 11px;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvY29tcG9uZW50cy9yZXN0YXVyYW50LWNhcmQvcmVzdGF1cmFudC1jYXJkLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL3Jlc3RhdXJhbnQtY2FyZC9yZXN0YXVyYW50LWNhcmQuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxrQkFBQTtFQUNBLE9BQUE7RUFDQSxZQUFBO0VBQ0EsV0FBQTtBQ0NGOztBREVBO0VBQ0UsZ0JBQUE7QUNDRjs7QURFQTtFQUNFLDhCQUFBO0VBQ0EsWUFBQTtFQUNBLFlBQUE7RUFDQSxrQkFBQTtFQUNBLFlBQUE7QUNDRjs7QURHQTtFQUNFLFlBQUE7QUNBRjs7QURHQTtFQUNFLFdBQUE7RUFDQSxZQUFBO0VBQ0EsWUFBQTtBQ0FGOztBREdBO0VBQ0UsZUFBQTtBQ0FGOztBREdBO0VBQ0UsZUFBQTtBQ0FGOztBREdBO0VBQ0UsZUFBQTtBQ0FGOztBREdBO0VBQ0UsZUFBQTtFQUNBLG1CQUFBO0VBQ0EsdUJBQUE7RUFDQSxnQkFBQTtBQ0FGIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9yZXN0YXVyYW50LWNhcmQvcmVzdGF1cmFudC1jYXJkLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmltYWdlU2hvdyB7XG4gIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgdG9wOiAwJTtcbiAgaGVpZ2h0OiAxNHZoO1xuICB3aWR0aDogMTR2aDtcbn1cblxuaW9uLWNhcmQtaGVhZGVyIHtcbiAgcGFkZGluZzogMnZ3IDB2dztcbn1cblxuLm92ZXJsYXkge1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG4gIGNvbG9yOiB3aGl0ZTtcbiAgcGFkZGluZzogMnZoO1xuICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gIGJvdHRvbTogMzZ2dztcbn1cblxuXG4uY29udGFpbmVyIHtcbiAgaGVpZ2h0OiA4NXZ3O1xufVxuXG4ubWFpbkltZyB7XG4gIHdpZHRoOiA2MHZ3O1xuICBoZWlnaHQ6IDYwdnc7XG4gIG1hcmdpbjogYXV0bztcbn1cblxuaDIge1xuICBmb250LXNpemU6IDE4cHg7XG59XG5cbi5tZWRpdW0ge1xuICBmb250LXNpemU6IDE0cHg7XG59XG5cbi5zbWFsbCB7XG4gIGZvbnQtc2l6ZTogMTFweDtcbn1cblxuLm92ZXJmbG93LXRleHQtd3JhcCB7XG4gIGZvbnQtc2l6ZTogMTFweDtcbiAgd2hpdGUtc3BhY2U6IG5vd3JhcDtcbiAgdGV4dC1vdmVyZmxvdzogZWxsaXBzaXM7XG4gIG92ZXJmbG93OiBoaWRkZW47XG59IiwiLmltYWdlU2hvdyB7XG4gIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgdG9wOiAwJTtcbiAgaGVpZ2h0OiAxNHZoO1xuICB3aWR0aDogMTR2aDtcbn1cblxuaW9uLWNhcmQtaGVhZGVyIHtcbiAgcGFkZGluZzogMnZ3IDB2dztcbn1cblxuLm92ZXJsYXkge1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG4gIGNvbG9yOiB3aGl0ZTtcbiAgcGFkZGluZzogMnZoO1xuICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gIGJvdHRvbTogMzZ2dztcbn1cblxuLmNvbnRhaW5lciB7XG4gIGhlaWdodDogODV2dztcbn1cblxuLm1haW5JbWcge1xuICB3aWR0aDogNjB2dztcbiAgaGVpZ2h0OiA2MHZ3O1xuICBtYXJnaW46IGF1dG87XG59XG5cbmgyIHtcbiAgZm9udC1zaXplOiAxOHB4O1xufVxuXG4ubWVkaXVtIHtcbiAgZm9udC1zaXplOiAxNHB4O1xufVxuXG4uc21hbGwge1xuICBmb250LXNpemU6IDExcHg7XG59XG5cbi5vdmVyZmxvdy10ZXh0LXdyYXAge1xuICBmb250LXNpemU6IDExcHg7XG4gIHdoaXRlLXNwYWNlOiBub3dyYXA7XG4gIHRleHQtb3ZlcmZsb3c6IGVsbGlwc2lzO1xuICBvdmVyZmxvdzogaGlkZGVuO1xufSJdfQ== */"
 
 /***/ }),
 
@@ -7488,7 +7725,7 @@ RestaurantCardComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "ion-card {\n  width: 90vw;\n}\n\n.reviews {\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-pack: end;\n          justify-content: flex-end;\n  -webkit-box-align: center;\n          align-items: center;\n  text-align: right;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9yZXZpZXcvcmV2aWV3LmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL3Jldmlldy9yZXZpZXcuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxXQUFBO0FDQ0o7O0FERUE7RUFDSSxvQkFBQTtFQUFBLGFBQUE7RUFDQSxxQkFBQTtVQUFBLHlCQUFBO0VBQ0EseUJBQUE7VUFBQSxtQkFBQTtFQUNBLGlCQUFBO0FDQ0oiLCJmaWxlIjoic3JjL2FwcC9jb21wb25lbnRzL3Jldmlldy9yZXZpZXcuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJpb24tY2FyZCB7XG4gICAgd2lkdGg6IDkwdnc7XG59XG5cbi5yZXZpZXdzIHtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGp1c3RpZnktY29udGVudDogZmxleC1lbmQ7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICB0ZXh0LWFsaWduOiByaWdodDtcblxufSIsImlvbi1jYXJkIHtcbiAgd2lkdGg6IDkwdnc7XG59XG5cbi5yZXZpZXdzIHtcbiAgZGlzcGxheTogZmxleDtcbiAganVzdGlmeS1jb250ZW50OiBmbGV4LWVuZDtcbiAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgdGV4dC1hbGlnbjogcmlnaHQ7XG59Il19 */"
+module.exports = "ion-card {\n  width: 90vw;\n}\n\n.reviews {\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-pack: end;\n          justify-content: flex-end;\n  -webkit-box-align: center;\n          align-items: center;\n  text-align: right;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvY29tcG9uZW50cy9yZXZpZXcvcmV2aWV3LmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL3Jldmlldy9yZXZpZXcuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxXQUFBO0FDQ0o7O0FERUE7RUFDSSxvQkFBQTtFQUFBLGFBQUE7RUFDQSxxQkFBQTtVQUFBLHlCQUFBO0VBQ0EseUJBQUE7VUFBQSxtQkFBQTtFQUNBLGlCQUFBO0FDQ0oiLCJmaWxlIjoic3JjL2FwcC9jb21wb25lbnRzL3Jldmlldy9yZXZpZXcuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJpb24tY2FyZCB7XG4gICAgd2lkdGg6IDkwdnc7XG59XG5cbi5yZXZpZXdzIHtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGp1c3RpZnktY29udGVudDogZmxleC1lbmQ7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICB0ZXh0LWFsaWduOiByaWdodDtcblxufSIsImlvbi1jYXJkIHtcbiAgd2lkdGg6IDkwdnc7XG59XG5cbi5yZXZpZXdzIHtcbiAgZGlzcGxheTogZmxleDtcbiAganVzdGlmeS1jb250ZW50OiBmbGV4LWVuZDtcbiAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgdGV4dC1hbGlnbjogcmlnaHQ7XG59Il19 */"
 
 /***/ }),
 
@@ -7615,6 +7852,56 @@ ReviewComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 
 /***/ }),
 
+/***/ "./src/app/components/show-auxilary-modal/show-auxilary-modal.component.scss":
+/*!***********************************************************************************!*\
+  !*** ./src/app/components/show-auxilary-modal/show-auxilary-modal.component.scss ***!
+  \***********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvc2hvdy1hdXhpbGFyeS1tb2RhbC9zaG93LWF1eGlsYXJ5LW1vZGFsLmNvbXBvbmVudC5zY3NzIn0= */"
+
+/***/ }),
+
+/***/ "./src/app/components/show-auxilary-modal/show-auxilary-modal.component.ts":
+/*!*********************************************************************************!*\
+  !*** ./src/app/components/show-auxilary-modal/show-auxilary-modal.component.ts ***!
+  \*********************************************************************************/
+/*! exports provided: ShowAuxilaryModalComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ShowAuxilaryModalComponent", function() { return ShowAuxilaryModalComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+
+
+let ShowAuxilaryModalComponent = class ShowAuxilaryModalComponent {
+    constructor() {
+        this.auxilaryItems = [];
+    }
+    ngOnInit() {
+        console.log(this.auxilaryItems);
+    }
+};
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Object)
+], ShowAuxilaryModalComponent.prototype, "auxilaryItems", void 0);
+ShowAuxilaryModalComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+        selector: 'app-show-auxilary-modal',
+        template: __webpack_require__(/*! raw-loader!./show-auxilary-modal.component.html */ "./node_modules/raw-loader/index.js!./src/app/components/show-auxilary-modal/show-auxilary-modal.component.html"),
+        styles: [__webpack_require__(/*! ./show-auxilary-modal.component.scss */ "./src/app/components/show-auxilary-modal/show-auxilary-modal.component.scss")]
+    }),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+], ShowAuxilaryModalComponent);
+
+
+
+/***/ }),
+
 /***/ "./src/app/components/store-header/store-header.component.scss":
 /*!*********************************************************************!*\
   !*** ./src/app/components/store-header/store-header.component.scss ***!
@@ -7622,7 +7909,7 @@ ReviewComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".container {\n  width: 100vw;\n  height: 100vh;\n  position: fixed;\n  background: white;\n  opacity: 1;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvY29tcG9uZW50cy9zdG9yZS1oZWFkZXIvc3RvcmUtaGVhZGVyLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL3N0b3JlLWhlYWRlci9zdG9yZS1oZWFkZXIuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxZQUFBO0VBQWEsYUFBQTtFQUFhLGVBQUE7RUFDMUIsaUJBQUE7RUFDQSxVQUFBO0FDR0oiLCJmaWxlIjoic3JjL2FwcC9jb21wb25lbnRzL3N0b3JlLWhlYWRlci9zdG9yZS1oZWFkZXIuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuY29udGFpbmVyIHtcbiAgICB3aWR0aDogMTAwdnc7aGVpZ2h0OjEwMHZoO3Bvc2l0aW9uOmZpeGVkO1xuICAgIGJhY2tncm91bmQ6d2hpdGU7XG4gICAgb3BhY2l0eTogMTtcbn0iLCIuY29udGFpbmVyIHtcbiAgd2lkdGg6IDEwMHZ3O1xuICBoZWlnaHQ6IDEwMHZoO1xuICBwb3NpdGlvbjogZml4ZWQ7XG4gIGJhY2tncm91bmQ6IHdoaXRlO1xuICBvcGFjaXR5OiAxO1xufSJdfQ== */"
+module.exports = ".container {\n  width: 100vw;\n  height: 100vh;\n  position: fixed;\n  background: white;\n  opacity: 1;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvY29tcG9uZW50cy9zdG9yZS1oZWFkZXIvc3RvcmUtaGVhZGVyLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL3N0b3JlLWhlYWRlci9zdG9yZS1oZWFkZXIuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxZQUFBO0VBQWEsYUFBQTtFQUFhLGVBQUE7RUFDMUIsaUJBQUE7RUFDQSxVQUFBO0FDR0oiLCJmaWxlIjoic3JjL2FwcC9jb21wb25lbnRzL3N0b3JlLWhlYWRlci9zdG9yZS1oZWFkZXIuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuY29udGFpbmVyIHtcbiAgICB3aWR0aDogMTAwdnc7aGVpZ2h0OjEwMHZoO3Bvc2l0aW9uOmZpeGVkO1xuICAgIGJhY2tncm91bmQ6d2hpdGU7XG4gICAgb3BhY2l0eTogMTtcbn0iLCIuY29udGFpbmVyIHtcbiAgd2lkdGg6IDEwMHZ3O1xuICBoZWlnaHQ6IDEwMHZoO1xuICBwb3NpdGlvbjogZml4ZWQ7XG4gIGJhY2tncm91bmQ6IHdoaXRlO1xuICBvcGFjaXR5OiAxO1xufSJdfQ== */"
 
 /***/ }),
 
@@ -7641,16 +7928,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var src_app_api_services_query_resource_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/api/services/query-resource.service */ "./src/app/api/services/query-resource.service.ts");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
+/* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ngx-logger */ "./node_modules/ngx-logger/fesm2015/ngx-logger.js");
+
 
 
 
 
 
 let StoreHeaderComponent = class StoreHeaderComponent {
-    constructor(queryResource, util) {
+    constructor(queryResource, util, logger) {
         this.queryResource = queryResource;
         this.util = util;
+        this.logger = logger;
         this.name = '';
+        this.searchEnable = new _angular_core__WEBPACK_IMPORTED_MODULE_3__["EventEmitter"]();
         this.showSearchBar = false;
         this.stockCurrents = [];
         this.searchTerm = '';
@@ -7658,6 +7949,8 @@ let StoreHeaderComponent = class StoreHeaderComponent {
     }
     ngOnInit() { }
     toggleSearchBar() {
+        this.logger.info('Hiding SearchBar and Emitting Event');
+        this.searchEnable.emit({});
         this.showSearchBar = !this.showSearchBar;
     }
     toggleInfiniteScroll() {
@@ -7698,12 +7991,17 @@ let StoreHeaderComponent = class StoreHeaderComponent {
 };
 StoreHeaderComponent.ctorParameters = () => [
     { type: src_app_api_services_query_resource_service__WEBPACK_IMPORTED_MODULE_2__["QueryResourceService"] },
-    { type: _services_util__WEBPACK_IMPORTED_MODULE_1__["Util"] }
+    { type: _services_util__WEBPACK_IMPORTED_MODULE_1__["Util"] },
+    { type: ngx_logger__WEBPACK_IMPORTED_MODULE_5__["NGXLogger"] }
 ];
 tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Input"])(),
     tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Object)
 ], StoreHeaderComponent.prototype, "name", void 0);
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Output"])(),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Object)
+], StoreHeaderComponent.prototype, "searchEnable", void 0);
 tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewChild"])(_ionic_angular__WEBPACK_IMPORTED_MODULE_4__["IonInfiniteScroll"], null),
     tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["IonInfiniteScroll"])
@@ -7715,7 +8013,8 @@ StoreHeaderComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         styles: [__webpack_require__(/*! ./store-header.component.scss */ "./src/app/components/store-header/store-header.component.scss")]
     }),
     tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [src_app_api_services_query_resource_service__WEBPACK_IMPORTED_MODULE_2__["QueryResourceService"],
-        _services_util__WEBPACK_IMPORTED_MODULE_1__["Util"]])
+        _services_util__WEBPACK_IMPORTED_MODULE_1__["Util"],
+        ngx_logger__WEBPACK_IMPORTED_MODULE_5__["NGXLogger"]])
 ], StoreHeaderComponent);
 
 
@@ -8056,7 +8355,7 @@ let CartService = class CartService {
                         text: 'Go To Cart',
                         cssClass: 'secondary',
                         handler: (blah) => {
-                            this.navController.navigateForward('/tabs/basket');
+                            this.navController.navigateForward('/basket');
                         }
                     }
                 ]
@@ -8314,7 +8613,8 @@ let FilterService = class FilterService {
     constructor(queryResource, logger) {
         this.queryResource = queryResource;
         this.logger = logger;
-        this.currentFilter = FILTER_TYPES.DISTANCE_WISE;
+        // Change to FILTER_TYPES.DISTANCE_WISE
+        this.currentFilter = FILTER_TYPES.TOP_RATED;
         this.filterBehaviour = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"](this.currentFilter);
         this.distance = 25;
         this.locationBehaviour = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"](this.currentCordinates);
@@ -8347,16 +8647,17 @@ let FilterService = class FilterService {
     getStoreByDistance(pageNumber, success) {
         if (this.currentCordinates !== undefined) {
             this.locationBehaviour.next(this.currentCordinates);
-            this.queryResource
-                .searchByNearestLocationUsingGET({
-                latLon: this.currentCordinates,
-                kiloMeter: this.distance
-            })
-                .subscribe(data => {
-                success(data.totalElements, data.totalPages, data.content);
-            }, err => {
-                this.logger.error('Error Finding Store By Distance and Location', err);
-            });
+            // this.queryResource
+            // .searchByNearestLocationUsingGET({
+            //   latLon: this.currentCordinates,
+            //   kiloMeter: this.distance
+            // })
+            // .subscribe(data => {
+            //   success(data.totalElements, data.totalPages, data.content);
+            // },
+            // err => {
+            //   this.logger.error('Error Finding Store By Distance and Location' , err);
+            // });
         }
     }
     getStoreByRating(pageNumber, success) {
@@ -8468,9 +8769,9 @@ let LocationService = class LocationService {
                 const latLng = data.coords.latitude + ',' + data.coords.longitude;
                 this.mapsAPILoader.load()
                     .then(() => {
-                    let google_map_pos = new google.maps.LatLng(data.coords.latitude, data.coords.longitude);
+                    const googleMapPos = new google.maps.LatLng(data.coords.latitude, data.coords.longitude);
                     this.geocoder = new google.maps.Geocoder();
-                    this.geocoder.geocode({ latLng: google_map_pos }, function (results, status) {
+                    this.geocoder.geocode({ latLng: googleMapPos }, (results, status) => {
                         func(results, data);
                     });
                 });
@@ -8536,6 +8837,63 @@ OrderService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     }),
     tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
 ], OrderService);
+
+
+
+/***/ }),
+
+/***/ "./src/app/services/route.service.ts":
+/*!*******************************************!*\
+  !*** ./src/app/services/route.service.ts ***!
+  \*******************************************/
+/*! exports provided: RouteService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RouteService", function() { return RouteService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm2015/index.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
+/* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ngx-logger */ "./node_modules/ngx-logger/fesm2015/ngx-logger.js");
+
+
+
+
+
+let RouteService = class RouteService {
+    constructor(route, logger) {
+        this.route = route;
+        this.logger = logger;
+        this.currentRoute = 'restaurant';
+        this.routeSubscription = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](this.currentRoute);
+        this.getCurrentRoute();
+    }
+    getCurrentRoute() {
+        this.route.events.subscribe((ev) => {
+            if (ev instanceof _angular_router__WEBPACK_IMPORTED_MODULE_3__["NavigationEnd"]) {
+                this.currentRoute = this.route.url.split('/')[1];
+                this.routeSubscription.next(this.currentRoute);
+                this.logger.info('Route Changed ', this.currentRoute);
+            }
+        });
+    }
+    getRouteSubscription() {
+        return this.routeSubscription;
+    }
+};
+RouteService.ctorParameters = () => [
+    { type: _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"] },
+    { type: ngx_logger__WEBPACK_IMPORTED_MODULE_4__["NGXLogger"] }
+];
+RouteService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+        providedIn: 'root'
+    }),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"],
+        ngx_logger__WEBPACK_IMPORTED_MODULE_4__["NGXLogger"]])
+], RouteService);
 
 
 
@@ -8724,14 +9082,16 @@ let KeycloakService = class KeycloakService {
     }
     updateCurrentUserDetails(keycloakUser, success, err) {
         return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function* () {
+            const lastN = keycloakUser.name.split(' ')[1];
+            const firstN = keycloakUser.name.split(' ')[0];
             this.keycloakConfig.refreshClient().then(() => {
                 this.keycloakAdmin = this.keycloakConfig.kcAdminClient;
                 this.keycloakAdmin.users.update({
                     id: keycloakUser.sub,
                     realm: 'graeshoppe'
                 }, {
-                    firstName: keycloakUser.name.split(' ')[0],
-                    lastName: keycloakUser.name.split(' ')[1],
+                    firstName: firstN,
+                    lastName: lastN !== undefined ? lastN : null,
                     email: keycloakUser.email
                 }).then(() => {
                     success();
@@ -8931,7 +9291,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/jishnuj/Desktop/Work/CustomerAppNew/src/main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! /home/jishnuj/Desktop/Work/CustomerAppLatest/src/main.ts */"./src/main.ts");
 
 
 /***/ })

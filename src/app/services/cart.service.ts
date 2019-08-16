@@ -32,7 +32,7 @@ export class CartService {
           text: 'Go To Cart',
           cssClass: 'secondary',
           handler: (blah) => {
-            this.navController.navigateForward('/tabs/basket');
+            this.navController.navigateForward('/basket');
           }
         }
       ]

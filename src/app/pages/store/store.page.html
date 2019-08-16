@@ -2,11 +2,12 @@
   <app-store-header
     *ngIf="store != undefined"
     [name]="store.name"
+    (searchEnabled)="toggleFabButton($event)"
   ></app-store-header>
 </ion-header>
 
 <ion-content>
-  <ion-fab vertical="top" horizontal="end" slot="fixed">
+  <ion-fab *ngIf="showCatgeoryFilterFab === true" vertical="top" horizontal="end" slot="fixed">
     <ion-fab-button (click)="categoryListPopOver($event)">
       <ion-icon name="pizza"></ion-icon>
     </ion-fab-button>
@@ -51,15 +52,26 @@
         </ion-row>
         <ion-row *ngIf="showCategoryWiseProducts === true">
           <ion-list *ngFor="let category of categories">
-              <ion-item>
-                <ion-label>{{category.name}}</ion-label>
+              <ion-item color="light">
+                  <ion-avatar>
+                      <ion-img
+                      [src]="
+                        'data:' +
+                        category.imageContentType +
+                        ';base64,' +
+                        category.image
+                      "
+                      class="imageShow"
+                    >
+                    </ion-img>
+                  </ion-avatar>
+                <ion-label margin>{{category.name}}</ion-label>
               </ion-item>
               <app-category-wise-products-card *ngIf="store !== undefined"
               [category]="category"
               [store]="store">
               </app-category-wise-products-card>
           </ion-list>
-
         </ion-row>
       </ion-grid>
     </ion-slide>
@@ -70,7 +82,7 @@
       <ion-grid>
         <ion-row>
           <ion-col size="12">
-            MAP HERE
+          <app-map></app-map>
           </ion-col>
         </ion-row>
         <ion-row>

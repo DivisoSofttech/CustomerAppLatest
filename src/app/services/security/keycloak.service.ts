@@ -3,7 +3,7 @@ import { KeycloakAdminConfig } from './../../configs/keycloak.admin.config';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { KeycloakAdminClient } from 'keycloak-admin/lib/client';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { map, first } from 'rxjs/operators';
 import { HttpHeaders } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
 
@@ -67,6 +67,10 @@ export class KeycloakService {
   }
 
   async updateCurrentUserDetails(keycloakUser: any , success,err): Promise<void> {
+
+    const lastN = keycloakUser.name.split(' ')[1];
+    const firstN = keycloakUser.name.split(' ')[0]
+
     this.keycloakConfig.refreshClient().then(() => {
       this.keycloakAdmin = this.keycloakConfig.kcAdminClient;
       this.keycloakAdmin.users.update(
@@ -75,8 +79,8 @@ export class KeycloakService {
           realm: 'graeshoppe'
         },
         {
-          firstName: keycloakUser.name.split(' ')[0],
-          lastName: keycloakUser.name.split(' ')[1],
+          firstName: firstN,
+          lastName: lastN !== undefined ? lastN : null,
           email: keycloakUser.email
         }
       ).then(()=> {

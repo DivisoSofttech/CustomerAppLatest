@@ -1,8 +1,9 @@
 import { Util } from './../../services/util';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { StockCurrent } from 'src/app/api/models';
 import { IonInfiniteScroll } from '@ionic/angular';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-store-header',
@@ -10,7 +11,10 @@ import { IonInfiniteScroll } from '@ionic/angular';
   styleUrls: ['./store-header.component.scss']
 })
 export class StoreHeaderComponent implements OnInit {
+
   @Input() name = '';
+
+  @Output() searchEnable = new EventEmitter();
 
   showSearchBar = false;
 
@@ -24,12 +28,15 @@ export class StoreHeaderComponent implements OnInit {
 
   constructor(
     private queryResource: QueryResourceService,
-    private util: Util
+    private util: Util,
+    private logger: NGXLogger
   ) {}
 
   ngOnInit() {}
 
   toggleSearchBar() {
+    this.logger.info('Hiding SearchBar and Emitting Event');
+    this.searchEnable.emit({});
     this.showSearchBar = !this.showSearchBar;
   }
 

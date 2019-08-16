@@ -13,8 +13,8 @@
       <ion-label style="margin-left:15px">
         <ion-text word-wrap text-wrap class="category">
           <h2 class="store-name">{{store.name | titlecase}}</h2>
-          <h3 class="medium">{{categories | arrayFormater}} </h3>
-          <h4 class="medium" style="color:#56a232">{{deliveryTypes | arrayFormater:'only'}}</h4>
+          <h3 class="medium overflow-text-wrap">{{categories | arrayFormater}} </h3>
+          <h4 class="medium overflow-text-wrap" style="color:#56a232">{{deliveryTypes | arrayFormater:'only'}}</h4>
           <p class="small" *ngIf="deliveryInfos.length > 0">Delivering From {{ deliveryInfos[0].startingTime | date:'shortTime' }}</p>
           <h5 class="medium" class="no-wrap"
           *ngIf="store.openingTime != undefined && store.closingTime != undefined"

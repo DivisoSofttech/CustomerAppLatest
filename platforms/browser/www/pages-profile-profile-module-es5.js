@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-buttons>\n      <ion-menu-button slot=\"start\" auto-hide=\"true\"></ion-menu-button>\n      <ion-title>Profile</ion-title>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  <app-profile-info *ngIf=\"customer != undefined\" [customer]=\"customer\"\n  [keyCloakUser]=\"keyCloakUser\"\n  [contact]=\"contact\"\n  ></app-profile-info>\n\n  <ion-segment \n  (ionChange)=\"segmentChanged($event)\"\n  [(ngModel)]=\"currentSegment\"\n  >\n    <ion-segment-button value=\"frequently\" checked>\n      <ion-label>\n        Frequent\n      </ion-label>\n    </ion-segment-button>\n    <ion-segment-button value=\"favourite\">\n      <ion-label>\n        Favourites\n      </ion-label>\n    </ion-segment-button>\n    <ion-segment-button value=\"history\">\n      <ion-label>History</ion-label>\n    </ion-segment-button>\n  </ion-segment>\n\n  <ion-slides>\n    <ion-slide>\n      <app-frequently-ordered-list></app-frequently-ordered-list>\n    </ion-slide>\n    <ion-slide>\n      <app-favourite-list>\n      </app-favourite-list>\n    </ion-slide>\n    <ion-slide>\n      <app-history-list\n      *ngIf=\"keyCloakUser !== undefined\"\n      [keyCloakUser]=\"keyCloakUser\"\n      ></app-history-list>\n    </ion-slide>\n  </ion-slides>\n</ion-content>\n"
+module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-buttons>\n      <ion-menu-button slot=\"start\" auto-hide=\"true\"></ion-menu-button>\n      <ion-title>Profile</ion-title>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  <app-profile-info *ngIf=\"customer != undefined\" \n  [customer]=\"customer\"\n  [keyCloakUser]=\"keyCloakUser\"\n  [contact]=\"contact\"\n  ></app-profile-info>\n\n  <ion-segment \n  (ionChange)=\"segmentChanged($event)\"\n  [(ngModel)]=\"currentSegment\"\n  >\n    <ion-segment-button value=\"frequently\" checked>\n      <ion-label>\n        Frequent\n      </ion-label>\n    </ion-segment-button>\n    <ion-segment-button value=\"favourite\">\n      <ion-label>\n        Favourites\n      </ion-label>\n    </ion-segment-button>\n    <ion-segment-button value=\"history\">\n      <ion-label>History</ion-label>\n    </ion-segment-button>\n  </ion-segment>\n\n  <ion-slides>\n    <ion-slide>\n      <app-frequently-ordered-list></app-frequently-ordered-list>\n    </ion-slide>\n    <ion-slide>\n      <app-favourite-list>\n      </app-favourite-list>\n    </ion-slide>\n    <ion-slide>\n      <app-history-list\n      *ngIf=\"keyCloakUser !== undefined\"\n      [keyCloakUser]=\"keyCloakUser\"\n      ></app-history-list>\n    </ion-slide>\n  </ion-slides>\n</ion-content>\n<ion-footer>\n  <app-footer></app-footer>\n</ion-footer>\n"
 
 /***/ }),
 
@@ -33,6 +33,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
 /* harmony import */ var _profile_page__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./profile.page */ "./src/app/pages/profile/profile.page.ts");
 /* harmony import */ var src_app_components_profile_info_profile_info_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! src/app/components/profile-info/profile-info.component */ "./src/app/components/profile-info/profile-info.component.ts");
+/* harmony import */ var src_app_components_footer_footer_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! src/app/components/footer/footer.component */ "./src/app/components/footer/footer.component.ts");
+
 
 
 
@@ -65,7 +67,7 @@ var ProfilePageModule = /** @class */ (function () {
             ],
             declarations: [_profile_page__WEBPACK_IMPORTED_MODULE_10__["ProfilePage"]],
             entryComponents: [src_app_components_profile_info_profile_info_component__WEBPACK_IMPORTED_MODULE_11__["ProfileInfoComponent"], _components_frequently_ordered_list_frequently_ordered_list_component__WEBPACK_IMPORTED_MODULE_3__["FrequentlyOrderedListComponent"], _components_favourite_list_favourite_list_component__WEBPACK_IMPORTED_MODULE_2__["FavouriteListComponent"],
-                _components_history_list_history_list_component__WEBPACK_IMPORTED_MODULE_1__["HistoryListComponent"]]
+                _components_history_list_history_list_component__WEBPACK_IMPORTED_MODULE_1__["HistoryListComponent"], src_app_components_footer_footer_component__WEBPACK_IMPORTED_MODULE_12__["FooterComponent"]]
         })
     ], ProfilePageModule);
     return ProfilePageModule;
@@ -82,7 +84,7 @@ var ProfilePageModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "app-favourite-list, app-frequently-ordered-list {\n  width: 100%;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvcGFnZXMvcHJvZmlsZS9wcm9maWxlLnBhZ2Uuc2NzcyIsInNyYy9hcHAvcGFnZXMvcHJvZmlsZS9wcm9maWxlLnBhZ2Uuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLFdBQUE7QUNDSiIsImZpbGUiOiJzcmMvYXBwL3BhZ2VzL3Byb2ZpbGUvcHJvZmlsZS5wYWdlLnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJhcHAtZmF2b3VyaXRlLWxpc3QgLCBhcHAtZnJlcXVlbnRseS1vcmRlcmVkLWxpc3Qge1xuICAgIHdpZHRoOiAxMDAlO1xufSIsImFwcC1mYXZvdXJpdGUtbGlzdCwgYXBwLWZyZXF1ZW50bHktb3JkZXJlZC1saXN0IHtcbiAgd2lkdGg6IDEwMCU7XG59Il19 */"
+module.exports = "app-favourite-list, app-frequently-ordered-list {\n  width: 100%;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvcGFnZXMvcHJvZmlsZS9wcm9maWxlLnBhZ2Uuc2NzcyIsInNyYy9hcHAvcGFnZXMvcHJvZmlsZS9wcm9maWxlLnBhZ2Uuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLFdBQUE7QUNDSiIsImZpbGUiOiJzcmMvYXBwL3BhZ2VzL3Byb2ZpbGUvcHJvZmlsZS5wYWdlLnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJhcHAtZmF2b3VyaXRlLWxpc3QgLCBhcHAtZnJlcXVlbnRseS1vcmRlcmVkLWxpc3Qge1xuICAgIHdpZHRoOiAxMDAlO1xufSIsImFwcC1mYXZvdXJpdGUtbGlzdCwgYXBwLWZyZXF1ZW50bHktb3JkZXJlZC1saXN0IHtcbiAgd2lkdGg6IDEwMCU7XG59Il19 */"
 
 /***/ }),
 

@@ -27,12 +27,13 @@ import { OrderService } from './services/order.service';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { LoggerModule } from 'ngx-logger';
 import {environment} from '../environments/environment';
+import { RouteService } from './services/route.service';
 
 @NgModule({
 
   declarations: [AppComponent],
 
-  entryComponents: [CheckoutComponent],
+  entryComponents: [],
 
   imports: [
     BrowserModule,
@@ -43,14 +44,13 @@ import {environment} from '../environments/environment';
     // Extra Modules
     ImageCropperModule,
     ConfigsModule,
-    ComponentsModule,
     IonicStorageModule.forRoot({
       name: '__mydb',
       driverOrder: ['indexeddb', 'sqlite', 'websql']
     }),
     ComponentsModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyDE6vwyjr_HUlyzP6EU4rsNxd_xchtBA1o',
+      apiKey: 'AIzaSyBdjkfcPlWTwnUq1W1YLIXMNJtMjdOXVXk',
       libraries: ['places', 'geometry']
     }),
     OAuthModule.forRoot(),
@@ -71,6 +71,7 @@ import {environment} from '../environments/environment';
     FilterService,
     FavouriteService,
     CartService,
+    RouteService,
     OrderService,
     {
       provide: HTTP_INTERCEPTORS,

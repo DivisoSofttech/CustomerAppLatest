@@ -36,6 +36,7 @@ export class MapComponent implements OnInit {
   ngOnInit() {
     this.platform.ready().then(data => {
       if (data === 'cordova') {
+        this.logger.info('Map component getting LatLon');
        this.getLatLon();
       }
     });
@@ -43,12 +44,8 @@ export class MapComponent implements OnInit {
 
 
   loadMap(coords: string) {
-    // This code is necessary for browser
-    Environment.setEnv({
-      API_KEY_FOR_BROWSER_RELEASE: 'AIzaSyAwC9dPmp280b4C18RBcGWjInRi9NGxo5c',
-      API_KEY_FOR_BROWSER_DEBUG: 'AIzaSyAwC9dPmp280b4C18RBcGWjInRi9NGxo5c'
-    });
 
+    this.logger.info('Loading Maps');
     console.log('Map lat' , coords.substring(0, coords.indexOf(',')));
 
     const mapOptions: GoogleMapOptions = {
@@ -68,6 +65,8 @@ export class MapComponent implements OnInit {
   }
 
   updateMap(coords: string) {
+
+    this.logger.info('Updating Maps');
     this.logger.info('Updating Location' , coords);
     this.logger.info('Updating Location Latitude ', parseFloat(coords.substring(0, coords.indexOf(','))));
     this.logger.info('Updating Location Longitude' , parseFloat(coords.substring(coords.indexOf(',') + 1 , coords.length)));
@@ -92,20 +91,21 @@ export class MapComponent implements OnInit {
         tilt: 30
       }
     });
-    // this.curentLocationMarker = this.mapCanvas.addMarkerSync({
-    //   position: {
-    //     lat: parseFloat(coords.substring(0, coords.indexOf(','))),
-    //     lng: parseFloat(coords.substring(coords.indexOf(',') + 1 , coords.length))
-    //   },
-    //   animation: GoogleMapsAnimation.DROP
-    // });
-    // this.curentLocationMarker.showInfoWindow();
+    this.curentLocationMarker = this.mapCanvas.addMarkerSync({
+      position: {
+        lat: parseFloat(coords.substring(0, coords.indexOf(','))),
+        lng: parseFloat(coords.substring(coords.indexOf(',') + 1 , coords.length))
+      },
+      animation: GoogleMapsAnimation.DROP
+    });
+    this.curentLocationMarker.showInfoWindow();
   }
 
   // App Specific Methods
 
   getLatLon() {
     this.filter.getLocationSubscription().subscribe(coords => {
+      this.logger.info('Got Coordinates ' , coords);
       if (coords !== undefined) {
         if (this.mapAlreadyLoaded === false) {
           this.loadMap(coords);

@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-header>\n  <app-store-header\n    *ngIf=\"store != undefined\"\n    [name]=\"store.name\"\n  ></app-store-header>\n</ion-header>\n\n<ion-content>\n  <ion-fab vertical=\"top\" horizontal=\"end\" slot=\"fixed\">\n    <ion-fab-button (click)=\"categoryListPopOver($event)\">\n      <ion-icon name=\"pizza\"></ion-icon>\n    </ion-fab-button>\n  </ion-fab>\n\n  <app-loading\n              *ngIf=\"showRestaurantLoading === true\"\n              [type]=\"'restaurant-detail'\"\n  ></app-loading>\n  <app-restaurant-card\n    *ngIf=\"store != undefined\"\n    [store]=\"store\"\n    [viewType]=\"'detailedCard'\"\n  ></app-restaurant-card>\n\n  <ion-segment\n    (ionChange)=\"segmentChanged($event)\"\n    [(ngModel)]=\"currentSegment\"\n  >\n    <ion-segment-button value=\"menu\" checked>\n      <ion-label>Menu</ion-label>\n    </ion-segment-button>\n    <ion-segment-button value=\"reviews\">\n      <ion-label>Reviews</ion-label>\n    </ion-segment-button>\n    <ion-segment-button value=\"info\">\n      <ion-label>Info</ion-label>\n    </ion-segment-button>\n  </ion-segment>\n\n  <ion-slides (ionSlideDidChange)=\"slideChanged($event)\">\n    <ion-slide>\n      <ion-grid>\n        <ion-row>\n            <app-loading\n              *ngIf=\"showLoading === true\"\n              [type]=\"'product'\"\n            ></app-loading>\n        </ion-row>\n        <ion-row>\n          <ion-list *ngIf=\"store != undefined\">\n            <app-product-card\n              *ngFor=\"let stockCurrent of stockCurrents\"\n              [store]=\"store\"\n              [stockCurrent]=\"stockCurrent\"\n            ></app-product-card>\n          </ion-list>\n        </ion-row>\n      </ion-grid>\n    </ion-slide>\n    <ion-slide>\n      <app-review *ngIf=\"store != undefined\" [store]=\"store\"></app-review>\n    </ion-slide>\n    <ion-slide>\n      <ion-grid>\n        <ion-row>\n          <ion-col size=\"12\">\n            MAP HERE\n          </ion-col>\n        </ion-row>\n        <ion-row>\n          <ion-col size=\"12\">\n            <ion-text *ngIf=\"store != undefined\">\n              <p>\n                {{ store.info }}\n              </p>\n            </ion-text>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-slide>\n  </ion-slides>\n\n  <ion-refresher slot=\"fixed\" (ionRefresh)=\"refresh($event)\">\n    <ion-refresher-content\n      pullingIcon=\"arrow-dropdown\"\n      pullingText=\"Pull to refresh\"\n      refreshingSpinner=\"circles\"\n    >\n    </ion-refresher-content>\n  </ion-refresher>\n</ion-content>\n\n<ion-footer>\n  <app-cart *ngIf=\"currentSegment === 'menu'\"></app-cart>\n</ion-footer>\n"
+module.exports = "<ion-header>\n  <app-store-header\n    *ngIf=\"store != undefined\"\n    [name]=\"store.name\"\n    (searchEnabled)=\"toggleFabButton($event)\"\n  ></app-store-header>\n</ion-header>\n\n<ion-content>\n  <ion-fab *ngIf=\"showCatgeoryFilterFab === true\" vertical=\"top\" horizontal=\"end\" slot=\"fixed\">\n    <ion-fab-button (click)=\"categoryListPopOver($event)\">\n      <ion-icon name=\"pizza\"></ion-icon>\n    </ion-fab-button>\n  </ion-fab>\n\n  <app-loading\n              *ngIf=\"showRestaurantLoading === true\"\n              [type]=\"'restaurant-detail'\"\n  ></app-loading>\n  <app-restaurant-card\n    *ngIf=\"store != undefined\"\n    [store]=\"store\"\n    [viewType]=\"'detailedCard'\"\n  ></app-restaurant-card>\n\n  <ion-segment\n    (ionChange)=\"segmentChanged($event)\"\n    [(ngModel)]=\"currentSegment\"\n  >\n    <ion-segment-button value=\"menu\" checked>\n      <ion-label>Menu</ion-label>\n    </ion-segment-button>\n    <ion-segment-button value=\"reviews\">\n      <ion-label>Reviews</ion-label>\n    </ion-segment-button>\n    <ion-segment-button value=\"info\">\n      <ion-label>Info</ion-label>\n    </ion-segment-button>\n  </ion-segment>\n\n  <ion-slides (ionSlideDidChange)=\"slideChanged($event)\">\n    <ion-slide>\n      <ion-grid>\n        <ion-row>\n          <ion-list *ngIf=\"store != undefined && showCategoryWiseProducts === false\">\n            <app-product-card\n              *ngFor=\"let stockCurrent of stockCurrents\"\n              [store]=\"store\"\n              [stockCurrent]=\"stockCurrent\"\n            ></app-product-card>\n          </ion-list>\n        </ion-row>\n        <ion-row *ngIf=\"showCategoryWiseProducts === true\">\n          <ion-list *ngFor=\"let category of categories\">\n              <ion-item color=\"light\">\n                  <ion-avatar>\n                      <ion-img\n                      [src]=\"\n                        'data:' +\n                        category.imageContentType +\n                        ';base64,' +\n                        category.image\n                      \"\n                      class=\"imageShow\"\n                    >\n                    </ion-img>\n                  </ion-avatar>\n                <ion-label margin>{{category.name}}</ion-label>\n              </ion-item>\n              <app-category-wise-products-card *ngIf=\"store !== undefined\"\n              [category]=\"category\"\n              [store]=\"store\">\n              </app-category-wise-products-card>\n          </ion-list>\n        </ion-row>\n      </ion-grid>\n    </ion-slide>\n    <ion-slide>\n      <app-review *ngIf=\"store != undefined\" [store]=\"store\"></app-review>\n    </ion-slide>\n    <ion-slide>\n      <ion-grid>\n        <ion-row>\n          <ion-col size=\"12\">\n          <app-map></app-map>\n          </ion-col>\n        </ion-row>\n        <ion-row>\n          <ion-col size=\"12\">\n            <ion-text *ngIf=\"store != undefined\">\n              <p>\n                {{ store.info }}\n              </p>\n            </ion-text>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-slide>\n  </ion-slides>\n\n  <ion-refresher slot=\"fixed\" (ionRefresh)=\"refresh($event)\">\n    <ion-refresher-content\n      pullingIcon=\"arrow-dropdown\"\n      pullingText=\"Pull to refresh\"\n      refreshingSpinner=\"circles\"\n    >\n    </ion-refresher-content>\n  </ion-refresher>\n</ion-content>\n\n<ion-footer>\n  <app-cart *ngIf=\"currentSegment === 'menu'\"></app-cart>\n</ion-footer>\n"
 
 /***/ }),
 
@@ -36,6 +36,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var src_app_components_restaurant_card_restaurant_card_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! src/app/components/restaurant-card/restaurant-card.component */ "./src/app/components/restaurant-card/restaurant-card.component.ts");
 /* harmony import */ var src_app_components_hotel_menu_popover_hotel_menu_popover_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! src/app/components/hotel-menu-popover/hotel-menu-popover.component */ "./src/app/components/hotel-menu-popover/hotel-menu-popover.component.ts");
 /* harmony import */ var src_app_components_loading_loading_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! src/app/components/loading/loading.component */ "./src/app/components/loading/loading.component.ts");
+/* harmony import */ var src_app_components_category_wise_products_card_category_wise_products_card_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! src/app/components/category-wise-products-card/category-wise-products-card.component */ "./src/app/components/category-wise-products-card/category-wise-products-card.component.ts");
+
 
 
 
@@ -72,7 +74,8 @@ var StorePageModule = /** @class */ (function () {
             declarations: [_store_page__WEBPACK_IMPORTED_MODULE_11__["StorePage"]],
             entryComponents: [_components_store_header_store_header_component__WEBPACK_IMPORTED_MODULE_3__["StoreHeaderComponent"], src_app_components_restaurant_card_restaurant_card_component__WEBPACK_IMPORTED_MODULE_12__["RestaurantCardComponent"],
                 _components_product_card_product_card_component__WEBPACK_IMPORTED_MODULE_4__["ProductCardComponent"], _components_review_review_component__WEBPACK_IMPORTED_MODULE_2__["ReviewComponent"],
-                _components_cart_cart_component__WEBPACK_IMPORTED_MODULE_1__["CartComponent"], src_app_components_hotel_menu_popover_hotel_menu_popover_component__WEBPACK_IMPORTED_MODULE_13__["HotelMenuPopoverComponent"], src_app_components_loading_loading_component__WEBPACK_IMPORTED_MODULE_14__["LoadingComponent"]
+                _components_cart_cart_component__WEBPACK_IMPORTED_MODULE_1__["CartComponent"], src_app_components_hotel_menu_popover_hotel_menu_popover_component__WEBPACK_IMPORTED_MODULE_13__["HotelMenuPopoverComponent"], src_app_components_loading_loading_component__WEBPACK_IMPORTED_MODULE_14__["LoadingComponent"],
+                src_app_components_category_wise_products_card_category_wise_products_card_component__WEBPACK_IMPORTED_MODULE_15__["CategoryWiseProductsCardComponent"]
             ]
         })
     ], StorePageModule);
@@ -90,7 +93,7 @@ var StorePageModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "ion-list {\n  width: 100%;\n}\n\nion-footer {\n  background: blue;\n  color: white;\n}\n\napp-loading {\n  width: 100%;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTmV3L3NyYy9hcHAvcGFnZXMvc3RvcmUvc3RvcmUucGFnZS5zY3NzIiwic3JjL2FwcC9wYWdlcy9zdG9yZS9zdG9yZS5wYWdlLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxXQUFBO0FDQ0Y7O0FERUE7RUFDRSxnQkFBQTtFQUNBLFlBQUE7QUNDRjs7QURFQTtFQUNFLFdBQUE7QUNDRiIsImZpbGUiOiJzcmMvYXBwL3BhZ2VzL3N0b3JlL3N0b3JlLnBhZ2Uuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbImlvbi1saXN0IHtcbiAgd2lkdGg6IDEwMCU7XG59XG5cbmlvbi1mb290ZXIge1xuICBiYWNrZ3JvdW5kOiBibHVlO1xuICBjb2xvcjogd2hpdGU7XG59XG5cbmFwcC1sb2FkaW5nIHtcbiAgd2lkdGg6IDEwMCU7XG59IiwiaW9uLWxpc3Qge1xuICB3aWR0aDogMTAwJTtcbn1cblxuaW9uLWZvb3RlciB7XG4gIGJhY2tncm91bmQ6IGJsdWU7XG4gIGNvbG9yOiB3aGl0ZTtcbn1cblxuYXBwLWxvYWRpbmcge1xuICB3aWR0aDogMTAwJTtcbn0iXX0= */"
+module.exports = "ion-list {\n  width: 100%;\n}\n\nion-footer {\n  background: blue;\n  color: white;\n}\n\napp-loading {\n  width: 100%;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvcGFnZXMvc3RvcmUvc3RvcmUucGFnZS5zY3NzIiwic3JjL2FwcC9wYWdlcy9zdG9yZS9zdG9yZS5wYWdlLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxXQUFBO0FDQ0Y7O0FERUE7RUFDRSxnQkFBQTtFQUNBLFlBQUE7QUNDRjs7QURFQTtFQUNFLFdBQUE7QUNDRiIsImZpbGUiOiJzcmMvYXBwL3BhZ2VzL3N0b3JlL3N0b3JlLnBhZ2Uuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbImlvbi1saXN0IHtcbiAgd2lkdGg6IDEwMCU7XG59XG5cbmlvbi1mb290ZXIge1xuICBiYWNrZ3JvdW5kOiBibHVlO1xuICBjb2xvcjogd2hpdGU7XG59XG5cbmFwcC1sb2FkaW5nIHtcbiAgd2lkdGg6IDEwMCU7XG59IiwiaW9uLWxpc3Qge1xuICB3aWR0aDogMTAwJTtcbn1cblxuaW9uLWZvb3RlciB7XG4gIGJhY2tncm91bmQ6IGJsdWU7XG4gIGNvbG9yOiB3aGl0ZTtcbn1cblxuYXBwLWxvYWRpbmcge1xuICB3aWR0aDogMTAwJTtcbn0iXX0= */"
 
 /***/ }),
 
@@ -111,6 +114,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var src_app_components_hotel_menu_popover_hotel_menu_popover_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/components/hotel-menu-popover/hotel-menu-popover.component */ "./src/app/components/hotel-menu-popover/hotel-menu-popover.component.ts");
 /* harmony import */ var src_app_services_util__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/services/util */ "./src/app/services/util.ts");
+/* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ngx-logger */ "./node_modules/ngx-logger/fesm5/ngx-logger.js");
+
 
 
 
@@ -120,25 +125,27 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var StorePage = /** @class */ (function () {
-    function StorePage(queryResource, route, popover, util) {
+    function StorePage(queryResource, route, popover, logger, util) {
         this.queryResource = queryResource;
         this.route = route;
         this.popover = popover;
+        this.logger = logger;
         this.util = util;
         this.stockCurrents = [];
-        this.categoryStockCurrents = {};
         this.tempStockCurrents = [];
         this.currentSegment = 'menu';
         this.selectedCategory = 'All';
-        this.showLoading = true;
         this.showRestaurantLoading = true;
+        this.showCategoryWiseProducts = true;
         this.categories = [];
+        this.entry = [];
+        this.showCatgeoryFilterFab = true;
     }
     StorePage.prototype.ngOnInit = function () {
         this.getStoreId();
         this.getStore();
-        this.getProducts(0, false);
         this.getCategories(0);
+        this.getCategoriesEntry(0);
     };
     StorePage.prototype.getStoreId = function () {
         this.storeId = this.route.snapshot.paramMap.get('id');
@@ -156,62 +163,30 @@ var StorePage = /** @class */ (function () {
             console.log('Error fetching store data', err);
         });
     };
-    StorePage.prototype.getProducts = function (i, limit) {
-        var _this = this;
-        this.queryResource
-            .findStockCurrentByStoreIdUsingGET(this.storeId)
-            .subscribe(function (result) {
-            if (result != null) {
-                result.content.forEach(function (s) {
-                    _this.stockCurrents.push(s);
-                });
-                _this.showLoading = false;
-                i++;
-                if (limit === false) {
-                    if (i < result.totalPages) {
-                        _this.getProducts(i, limit);
-                    }
-                }
-            }
-        }, function (err) {
-            console.log('Error fetching product data', err);
-            _this.showLoading = false;
-        });
-    };
-    StorePage.prototype.getCategories = function (i) {
+    StorePage.prototype.getCategoriesEntry = function (i) {
         var _this = this;
         this.queryResource
             .findCategoryAndCountUsingGET(this.storeId)
             .subscribe(function (result) {
             console.log('Got Categories', result);
-            _this.categories = result;
-            _this.categories.forEach(function (c) {
-                _this.categoryStockCurrents[c.key] = [];
-            });
-            _this.categories.forEach(function (c) {
-                _this.getProductsCategoryWise(0, c.key);
-            });
+            _this.entry = result;
         });
     };
-    StorePage.prototype.getProductsCategoryWise = function (i, cname) {
+    StorePage.prototype.getCategories = function (i) {
         var _this = this;
-        this.categories.forEach(function (c) {
-            _this.queryResource.findProductByStoreIdAndCategoryNameUsingGET({
-                userId: _this.storeId,
-                categoryName: cname
-            })
-                .subscribe(function (p) {
-                p.content.forEach(function (s) {
-                    _this.categoryStockCurrents[cname].push(s);
-                });
-                ++i;
-                if (i < p.totalPages) {
-                    _this.getProductsCategoryWise(i, cname);
-                }
-                else {
-                    console.log(cname, _this.categoryStockCurrents[cname]);
-                }
+        this.queryResource
+            .findAllCategoriesUsingGET({
+            iDPcode: this.storeId
+        })
+            .subscribe(function (result) {
+            console.log('Got Categories', result);
+            result.content.forEach(function (c) {
+                _this.categories.push(c);
             });
+            ++i;
+            if (i < result.totalPages) {
+                _this.getCategories(i);
+            }
         });
     };
     StorePage.prototype.segmentChanged = function (event) {
@@ -237,7 +212,7 @@ var StorePage = /** @class */ (function () {
                         return [4 /*yield*/, this.popover.create({
                                 component: src_app_components_hotel_menu_popover_hotel_menu_popover_component__WEBPACK_IMPORTED_MODULE_5__["HotelMenuPopoverComponent"],
                                 componentProps: {
-                                    categories: this.categories,
+                                    categories: this.entry,
                                     storeId: this.storeId,
                                     selectedCategory: this.selectedCategory
                                 },
@@ -247,19 +222,17 @@ var StorePage = /** @class */ (function () {
                     case 1:
                         popover = _a.sent();
                         popover.onDidDismiss().then(function (data) {
-                            console.log(data.data.result);
                             if (data.data !== undefined) {
                                 _this.selectedCategory = data.data.selectedCategory;
                                 if (_this.selectedCategory === 'All') {
                                     _this.stockCurrents = _this.tempStockCurrents;
+                                    _this.showCategoryWiseProducts = true;
                                 }
                                 else {
-                                    console.log('Got products');
                                     _this.stockCurrents = data.data.result.filter(function (s) { return s !== null; });
+                                    _this.logger.info('Got StockCurrent of ', _this.selectedCategory, _this.stockCurrents);
+                                    _this.showCategoryWiseProducts = false;
                                 }
-                            }
-                            else {
-                                _this.util.createToast('Error while Getting data');
                             }
                         });
                         return [4 /*yield*/, popover.present()];
@@ -285,15 +258,20 @@ var StorePage = /** @class */ (function () {
         });
     };
     StorePage.prototype.refresh = function (event) {
-        this.getProducts(0, false);
+        this.getCategories(0);
     };
     StorePage.prototype.toggleIonRefresher = function () {
         this.IonRefresher.complete();
+    };
+    StorePage.prototype.toggleFabButton = function () {
+        this.logger.info('Hiding Fab Button');
+        this.showCatgeoryFilterFab = !this.showCatgeoryFilterFab;
     };
     StorePage.ctorParameters = function () { return [
         { type: src_app_api_services_query_resource_service__WEBPACK_IMPORTED_MODULE_3__["QueryResourceService"] },
         { type: _angular_router__WEBPACK_IMPORTED_MODULE_4__["ActivatedRoute"] },
         { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_1__["PopoverController"] },
+        { type: ngx_logger__WEBPACK_IMPORTED_MODULE_7__["NGXLogger"] },
         { type: src_app_services_util__WEBPACK_IMPORTED_MODULE_6__["Util"] }
     ]; };
     tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
@@ -313,6 +291,7 @@ var StorePage = /** @class */ (function () {
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [src_app_api_services_query_resource_service__WEBPACK_IMPORTED_MODULE_3__["QueryResourceService"],
             _angular_router__WEBPACK_IMPORTED_MODULE_4__["ActivatedRoute"],
             _ionic_angular__WEBPACK_IMPORTED_MODULE_1__["PopoverController"],
+            ngx_logger__WEBPACK_IMPORTED_MODULE_7__["NGXLogger"],
             src_app_services_util__WEBPACK_IMPORTED_MODULE_6__["Util"]])
     ], StorePage);
     return StorePage;

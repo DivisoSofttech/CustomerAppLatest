@@ -8,6 +8,7 @@ import {
   CommandResourceService
 } from 'src/app/api/services';
 import { ImageSelectorComponent } from '../image-selector/image-selector.component';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-profile-edit',
@@ -15,7 +16,6 @@ import { ImageSelectorComponent } from '../image-selector/image-selector.compone
   styleUrls: ['./profile-edit.component.scss']
 })
 export class ProfileEditComponent implements OnInit {
-  
   profileKeycloak;
   customer: CustomerDTO = {};
   contact: ContactDTO;
@@ -23,20 +23,20 @@ export class ProfileEditComponent implements OnInit {
 
   defaultImage: string;
 
-
   loadingElement: HTMLIonLoadingElement;
 
   constructor(
     private modalController: ModalController,
-    private queryResourceService: QueryResourceService,
+    private logger: NGXLogger,
     private commandResourceService: CommandResourceService,
     private keycloak: KeycloakService
   ) {}
 
   ngOnInit() {
-
+    this.logger.info('KeyCloak ', this.profileKeycloak);
+    this.logger.info('Customer ', this.customer);
+    this.logger.info('Contact ', this.contact);
   }
-
 
   nonSaveDismiss() {
     this.modalController.dismiss();
@@ -62,27 +62,44 @@ export class ProfileEditComponent implements OnInit {
     });
 
     modal.onDidDismiss().then(data => {
-      this.customer.photo = data.data.imageBase64;
-      this.customer.photoContentType = data.data.imageType;
+      this.customer.photo = data.data.image.substring(
+        data.data.image.indexOf(',') + 1
+      );
+      this.customer.photoContentType = data.data.image.slice(
+        data.data.image.indexOf(':') + 1,
+        data.data.image.indexOf(';')
+      );
     });
 
     return await modal.present();
   }
 
   update() {
-    this.keycloak.updateCurrentUserDetails(this.profileKeycloak,() => {
-      this.commandResourceService.updateCustomerUsingPUT(this.customer)
-      .subscribe(c => {
-        this.customer = c;
-        if(this.contact !== undefined) {
-          this.commandResourceService.updateContactUsingPUT(this.contact)
-          .subscribe(contact => {
-            this.contact = contact;
-            this.dismiss();
+    this.profileKeycloak.name = this.customer.name;
+    this.logger.info(
+      'Saving User Details',
+      this.profileKeycloak,
+      this.customer,
+      this.contact
+    );
+    this.keycloak.updateCurrentUserDetails(
+      this.profileKeycloak,
+      () => {
+        this.commandResourceService
+          .updateCustomerUsingPUT(this.customer)
+          .subscribe(c => {
+            this.customer = c;
+            if (this.contact !== undefined) {
+              this.commandResourceService
+                .updateContactUsingPUT(this.contact)
+                .subscribe(contact => {
+                  this.contact = contact;
+                  this.dismiss();
+                });
+            }
           });
-        }
-      });
-    },
-    () => { });
+      },
+      () => {}
+    );
   }
 }

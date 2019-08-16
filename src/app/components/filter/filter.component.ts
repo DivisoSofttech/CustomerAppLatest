@@ -17,6 +17,8 @@ export class FilterComponent implements OnInit {
 
   categories = [];
 
+  deliveryType = 'Both';
+
   constructor(
     private filter: FilterService,
     private queryResource: QueryResourceService

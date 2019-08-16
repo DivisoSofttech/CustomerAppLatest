@@ -2,7 +2,7 @@ import { Util } from './services/util';
 import { KeycloakService } from './services/security/keycloak.service';
 import { Component } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { Platform, MenuController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
@@ -35,9 +35,11 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private util: Util,
-    private keycloakService: KeycloakService
+    private keycloakService: KeycloakService,
+    private menuController: MenuController
   ) {
     this.initializeApp();
+    this.menuController.enable(false);
   }
 
   initializeApp() {
