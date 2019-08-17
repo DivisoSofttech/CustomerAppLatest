@@ -795,6 +795,17 @@ module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-title>Do You Have Food
 
 /***/ }),
 
+/***/ "./node_modules/raw-loader/index.js!./src/app/components/auxilary-product-card/auxilary-product-card.component.html":
+/*!*****************************************************************************************************************!*\
+  !*** ./node_modules/raw-loader!./src/app/components/auxilary-product-card/auxilary-product-card.component.html ***!
+  \*****************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<ion-item *ngIf=\"auxilaryItem !== undefined\">\n  <ion-thumbnail>\n    <ion-img\n      [src]=\"\n        'data:' +\n        auxilaryItem.imageContentType +\n        ';base64,' +\n        auxilaryItem.image\n      \"\n      class=\"imageShow\"\n    >\n    </ion-img>\n  </ion-thumbnail>\n  <ion-card-content>\n    <ion-grid>\n      <ion-row (click)=\"toggleDescription()\">\n        <ion-col class=\"title-card\" margin-top padding-top>\n          <ion-card-title>{{ auxilaryItem.name }}</ion-card-title>\n          <ion-text\n            ><strong>&#8364;{{ auxilaryItem.sellingPrice }}</strong></ion-text\n          >\n        </ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col size=\"10\">\n          <ion-buttons>\n            <ion-button (click)=\"remove(i, stockCurrent)\" color=\"medium\">\n              <ion-icon name=\"remove\"></ion-icon>\n            </ion-button>\n            <ion-button fill=\"none\" disabled>{{ orderCount }}</ion-button>\n            <ion-button (click)=\"add(i, stockCurrent)\" color=\"medium\">\n              <ion-icon name=\"add\"></ion-icon>\n            </ion-button>\n          </ion-buttons>\n        </ion-col>\n      </ion-row>\n    </ion-grid>\n  </ion-card-content>\n</ion-item>"
+
+/***/ }),
+
 /***/ "./node_modules/raw-loader/index.js!./src/app/components/banner/banner.component.html":
 /*!***********************************************************************************!*\
   !*** ./node_modules/raw-loader!./src/app/components/banner/banner.component.html ***!
@@ -879,7 +890,7 @@ module.exports = "<ion-scroll *ngIf=\"showFilters === false\">\n  <ion-grid no-p
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-segment slot=\"end\" [value]=\"currentRoute\">\n    <ion-segment-button value=\"restaurant\" (click)=\"goTo('/restaurant')\">\n        <ion-icon name=\"list\"></ion-icon>\n    </ion-segment-button>  \n  <ion-segment-button value=\"basket\" (click)=\"goTo('/basket')\">\n    <ion-icon name=\"basket\"></ion-icon>\n    <ion-badge color=\"primary\"><strong>{{orderCount}}</strong></ion-badge>\n  </ion-segment-button>    \n  <ion-segment-button value=\"profile\" (click)=\"goTo('/profile')\">\n    <ion-icon name=\"person\"></ion-icon>\n  </ion-segment-button>  \n  <ion-segment-button (click)=\"emitFilterClick()\">\n    <ion-icon name=\"funnel\"></ion-icon>\n  </ion-segment-button>\n</ion-segment>"
+module.exports = "<ion-segment slot=\"end\" [value]=\"currentRoute\">\n    <ion-segment-button value=\"restaurant\" (click)=\"goTo('/restaurant')\">\n        <ion-icon name=\"list\"></ion-icon>\n    </ion-segment-button>  \n  <ion-segment-button value=\"basket\" (click)=\"goTo('/basket')\">\n    <ion-icon name=\"basket\"></ion-icon>\n    <ion-badge color=\"primary\"><strong>{{orderCount}}</strong></ion-badge>\n  </ion-segment-button>    \n  <ion-segment-button value=\"profile\" (click)=\"goTo('/profile')\">\n    <ion-icon name=\"person\"></ion-icon>\n  </ion-segment-button>  \n  <!-- <ion-segment-button (click)=\"emitFilterClick()\">\n    <ion-icon name=\"funnel\"></ion-icon>\n  </ion-segment-button> -->\n</ion-segment>"
 
 /***/ }),
 
@@ -890,7 +901,7 @@ module.exports = "<ion-segment slot=\"end\" [value]=\"currentRoute\">\n    <ion-
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>Frequently Order Works</p>"
+module.exports = "<div class=\"vertical-align-center\">\n\n    <p>\n        History(0)\n    </p>\n\n</div>"
 
 /***/ }),
 
@@ -1033,7 +1044,7 @@ module.exports = "<ion-card no-padding>\n  <ion-card-content>\n    <ion-textarea
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-content>\n  <ion-list *ngIf=\"auxilaryItems.length > 0\">\n      <ion-item lines=\"none\" *ngFor=\"let auxilary of auxilaryItems\">\n          <ion-thumbnail>\n            <ion-img\n              [src]=\"\n                'data:' +\n                auxilary.product.imageContentType +\n                ';base64,' +\n                auxilary.product.image\n              \"\n              class=\"imageShow\"\n            >\n            </ion-img>\n          </ion-thumbnail>\n          <ion-card-content>\n            <ion-grid>\n              <ion-row (click)=\"toggleDescription()\">\n                <ion-col class=\"title-card\" margin-top padding-top>\n                  <ion-card-title>{{ auxilary.product.name }}</ion-card-title>\n                  <ion-text\n                    ><strong>&#8364;{{ auxilary.sellPrice }}</strong></ion-text\n                  >\n                </ion-col>\n              </ion-row>\n              <ion-row>\n                <ion-col size=\"10\">\n                  <ion-buttons>\n                    <ion-button (click)=\"remove(i, stockCurrent)\" color=\"medium\">\n                      <ion-icon name=\"remove\"></ion-icon>\n                    </ion-button>\n                    <ion-button fill=\"none\" disabled>{{ orderCount }}</ion-button>\n                    <ion-button (click)=\"add(i, stockCurrent)\" color=\"medium\">\n                      <ion-icon name=\"add\"></ion-icon>\n                    </ion-button>\n                  </ion-buttons>\n                </ion-col>\n              </ion-row>\n            </ion-grid>\n          </ion-card-content>\n        </ion-item>\n  </ion-list>\n</ion-content>\n"
+module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-buttons slot=\"start\">\n      <ion-button (click)=\"dismiss()\">\n        <ion-icon name=\"arrow-back\"></ion-icon>\n      </ion-button>\n      <ion-title *ngIf=\"product !== undefined\">Add Auxilary Items For {{ product.name }}</ion-title>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n<ion-content>\n  <ion-list *ngIf=\"auxilaryItems.length > 0\">\n    <ion-label margin>Auxilary Items</ion-label>\n    <app-auxilary-product-card\n      *ngFor=\"let a of auxilaryItems\"\n      [auxilaryItem]=\"a.auxilaryItem\"\n    ></app-auxilary-product-card>\n  </ion-list>\n</ion-content>\n"
 
 /***/ }),
 
@@ -1168,7 +1179,7 @@ var BaseService = /** @class */ (function () {
 /*!*********************************!*\
   !*** ./src/app/api/services.ts ***!
   \*********************************/
-/*! exports provided: UserResourceService, AccountResourceService, AuthInfoResourceService, OrderCommandResourceService, CommandResourceService, GatewayResourceService, LogoutResourceService, PaymentCommandResourceService, QueryResourceService */
+/*! exports provided: UserResourceService, AccountResourceService, AuthInfoResourceService, OfferCommandResourceService, OrderCommandResourceService, CommandResourceService, PaymentCommandResourceService, GatewayResourceService, LogoutResourceService, QueryResourceService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1182,23 +1193,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_auth_info_resource_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./services/auth-info-resource.service */ "./src/app/api/services/auth-info-resource.service.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "AuthInfoResourceService", function() { return _services_auth_info_resource_service__WEBPACK_IMPORTED_MODULE_2__["AuthInfoResourceService"]; });
 
-/* harmony import */ var _services_order_command_resource_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./services/order-command-resource.service */ "./src/app/api/services/order-command-resource.service.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OrderCommandResourceService", function() { return _services_order_command_resource_service__WEBPACK_IMPORTED_MODULE_3__["OrderCommandResourceService"]; });
+/* harmony import */ var _services_offer_command_resource_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./services/offer-command-resource.service */ "./src/app/api/services/offer-command-resource.service.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OfferCommandResourceService", function() { return _services_offer_command_resource_service__WEBPACK_IMPORTED_MODULE_3__["OfferCommandResourceService"]; });
 
-/* harmony import */ var _services_command_resource_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./services/command-resource.service */ "./src/app/api/services/command-resource.service.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CommandResourceService", function() { return _services_command_resource_service__WEBPACK_IMPORTED_MODULE_4__["CommandResourceService"]; });
+/* harmony import */ var _services_order_command_resource_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./services/order-command-resource.service */ "./src/app/api/services/order-command-resource.service.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OrderCommandResourceService", function() { return _services_order_command_resource_service__WEBPACK_IMPORTED_MODULE_4__["OrderCommandResourceService"]; });
 
-/* harmony import */ var _services_gateway_resource_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./services/gateway-resource.service */ "./src/app/api/services/gateway-resource.service.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "GatewayResourceService", function() { return _services_gateway_resource_service__WEBPACK_IMPORTED_MODULE_5__["GatewayResourceService"]; });
+/* harmony import */ var _services_command_resource_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./services/command-resource.service */ "./src/app/api/services/command-resource.service.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CommandResourceService", function() { return _services_command_resource_service__WEBPACK_IMPORTED_MODULE_5__["CommandResourceService"]; });
 
-/* harmony import */ var _services_logout_resource_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./services/logout-resource.service */ "./src/app/api/services/logout-resource.service.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "LogoutResourceService", function() { return _services_logout_resource_service__WEBPACK_IMPORTED_MODULE_6__["LogoutResourceService"]; });
+/* harmony import */ var _services_payment_command_resource_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./services/payment-command-resource.service */ "./src/app/api/services/payment-command-resource.service.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PaymentCommandResourceService", function() { return _services_payment_command_resource_service__WEBPACK_IMPORTED_MODULE_6__["PaymentCommandResourceService"]; });
 
-/* harmony import */ var _services_payment_command_resource_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./services/payment-command-resource.service */ "./src/app/api/services/payment-command-resource.service.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PaymentCommandResourceService", function() { return _services_payment_command_resource_service__WEBPACK_IMPORTED_MODULE_7__["PaymentCommandResourceService"]; });
+/* harmony import */ var _services_gateway_resource_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./services/gateway-resource.service */ "./src/app/api/services/gateway-resource.service.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "GatewayResourceService", function() { return _services_gateway_resource_service__WEBPACK_IMPORTED_MODULE_7__["GatewayResourceService"]; });
 
-/* harmony import */ var _services_query_resource_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./services/query-resource.service */ "./src/app/api/services/query-resource.service.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "QueryResourceService", function() { return _services_query_resource_service__WEBPACK_IMPORTED_MODULE_8__["QueryResourceService"]; });
+/* harmony import */ var _services_logout_resource_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./services/logout-resource.service */ "./src/app/api/services/logout-resource.service.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "LogoutResourceService", function() { return _services_logout_resource_service__WEBPACK_IMPORTED_MODULE_8__["LogoutResourceService"]; });
+
+/* harmony import */ var _services_query_resource_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./services/query-resource.service */ "./src/app/api/services/query-resource.service.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "QueryResourceService", function() { return _services_query_resource_service__WEBPACK_IMPORTED_MODULE_9__["QueryResourceService"]; });
+
 
 
 
@@ -2512,6 +2527,81 @@ var LogoutResourceService = /** @class */ (function (_super) {
 
 /***/ }),
 
+/***/ "./src/app/api/services/offer-command-resource.service.ts":
+/*!****************************************************************!*\
+  !*** ./src/app/api/services/offer-command-resource.service.ts ***!
+  \****************************************************************/
+/*! exports provided: OfferCommandResourceService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OfferCommandResourceService", function() { return OfferCommandResourceService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+/* harmony import */ var _base_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../base-service */ "./src/app/api/base-service.ts");
+/* harmony import */ var _api_configuration__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../api-configuration */ "./src/app/api/api-configuration.ts");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+
+/* tslint:disable */
+
+
+
+
+
+/**
+ * Offer Command Resource
+ */
+var OfferCommandResourceService = /** @class */ (function (_super) {
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](OfferCommandResourceService, _super);
+    function OfferCommandResourceService(config, http) {
+        return _super.call(this, config, http) || this;
+    }
+    /**
+     * @param orderModel orderModel
+     * @return OK
+     */
+    OfferCommandResourceService.prototype.checkOfferEligibilityUsingPOSTResponse = function (orderModel) {
+        var __params = this.newParams();
+        var __headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
+        var __body = null;
+        __body = orderModel;
+        var req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('POST', this.rootUrl + "/api/claimOffer", __body, {
+            headers: __headers,
+            params: __params,
+            responseType: 'json'
+        });
+        return this.http.request(req).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["filter"])(function (_r) { return _r instanceof _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpResponse"]; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) {
+            return _r;
+        }));
+    };
+    /**
+     * @param orderModel orderModel
+     * @return OK
+     */
+    OfferCommandResourceService.prototype.checkOfferEligibilityUsingPOST = function (orderModel) {
+        return this.checkOfferEligibilityUsingPOSTResponse(orderModel).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) { return _r.body; }));
+    };
+    OfferCommandResourceService.checkOfferEligibilityUsingPOSTPath = '/api/claimOffer';
+    OfferCommandResourceService.ctorParameters = function () { return [
+        { type: _api_configuration__WEBPACK_IMPORTED_MODULE_4__["ApiConfiguration"] },
+        { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"] }
+    ]; };
+    OfferCommandResourceService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+            providedIn: 'root',
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_api_configuration__WEBPACK_IMPORTED_MODULE_4__["ApiConfiguration"],
+            _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"]])
+    ], OfferCommandResourceService);
+    return OfferCommandResourceService;
+}(_base_service__WEBPACK_IMPORTED_MODULE_3__["BaseService"]));
+
+
+
+/***/ }),
+
 /***/ "./src/app/api/services/order-command-resource.service.ts":
 /*!****************************************************************!*\
   !*** ./src/app/api/services/order-command-resource.service.ts ***!
@@ -2548,6 +2638,8 @@ var OrderCommandResourceService = /** @class */ (function (_super) {
      *
      * - `taskId`: taskId
      *
+     * - `orderId`: orderId
+     *
      * - `approvalDetailsDTO`: approvalDetailsDTO
      *
      * @return OK
@@ -2557,7 +2649,7 @@ var OrderCommandResourceService = /** @class */ (function (_super) {
         var __headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
         var __body = null;
         __body = params.approvalDetailsDTO;
-        var req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('POST', this.rootUrl + ("/api/command/acceptOrder/" + params.taskId), __body, {
+        var req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('POST', this.rootUrl + ("/api/command/acceptOrder/" + params.taskId + "/" + params.orderId), __body, {
             headers: __headers,
             params: __params,
             responseType: 'json'
@@ -2570,6 +2662,8 @@ var OrderCommandResourceService = /** @class */ (function (_super) {
      * @param params The `OrderCommandResourceService.AcceptOrderUsingPOSTParams` containing the following parameters:
      *
      * - `taskId`: taskId
+     *
+     * - `orderId`: orderId
      *
      * - `approvalDetailsDTO`: approvalDetailsDTO
      *
@@ -2715,37 +2809,11 @@ var OrderCommandResourceService = /** @class */ (function (_super) {
     OrderCommandResourceService.prototype.collectDeliveryDetailsUsingPOST = function (params) {
         return this.collectDeliveryDetailsUsingPOSTResponse(params).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) { return _r.body; }));
     };
-    /**
-     * @param orderDTO orderDTO
-     * @return OK
-     */
-    OrderCommandResourceService.prototype.updateOrderUsingPUTResponse = function (orderDTO) {
-        var __params = this.newParams();
-        var __headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
-        var __body = null;
-        __body = orderDTO;
-        var req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('PUT', this.rootUrl + "/api/command/updateOrder", __body, {
-            headers: __headers,
-            params: __params,
-            responseType: 'json'
-        });
-        return this.http.request(req).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["filter"])(function (_r) { return _r instanceof _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpResponse"]; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) {
-            return _r;
-        }));
-    };
-    /**
-     * @param orderDTO orderDTO
-     * @return OK
-     */
-    OrderCommandResourceService.prototype.updateOrderUsingPUT = function (orderDTO) {
-        return this.updateOrderUsingPUTResponse(orderDTO).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) { return _r.body; }));
-    };
-    OrderCommandResourceService.acceptOrderUsingPOSTPath = '/api/command/acceptOrder/{taskId}';
+    OrderCommandResourceService.acceptOrderUsingPOSTPath = '/api/command/acceptOrder/{taskId}/{orderId}';
     OrderCommandResourceService.initiateOrderUsingPOSTPath = '/api/command/order/initiateOrder';
     OrderCommandResourceService.createAddressUsingPOSTPath = '/api/command/orders/addresses';
     OrderCommandResourceService.getAllSavedAddressUsingGETPath = '/api/command/orders/addresses/{customerId}';
     OrderCommandResourceService.collectDeliveryDetailsUsingPOSTPath = '/api/command/orders/collectDeliveryDetails/{taskId}/{orderId}';
-    OrderCommandResourceService.updateOrderUsingPUTPath = '/api/command/updateOrder';
     OrderCommandResourceService.ctorParameters = function () { return [
         { type: _api_configuration__WEBPACK_IMPORTED_MODULE_4__["ApiConfiguration"] },
         { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"] }
@@ -2796,6 +2864,112 @@ var PaymentCommandResourceService = /** @class */ (function (_super) {
         return _super.call(this, config, http) || this;
     }
     /**
+     * @param paymentDTO paymentDTO
+     * @return OK
+     */
+    PaymentCommandResourceService.prototype.createPaymentUsingPOSTResponse = function (paymentDTO) {
+        var __params = this.newParams();
+        var __headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
+        var __body = null;
+        __body = paymentDTO;
+        var req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('POST', this.rootUrl + "/api/command/payments", __body, {
+            headers: __headers,
+            params: __params,
+            responseType: 'json'
+        });
+        return this.http.request(req).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["filter"])(function (_r) { return _r instanceof _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpResponse"]; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) {
+            return _r;
+        }));
+    };
+    /**
+     * @param paymentDTO paymentDTO
+     * @return OK
+     */
+    PaymentCommandResourceService.prototype.createPaymentUsingPOST = function (paymentDTO) {
+        return this.createPaymentUsingPOSTResponse(paymentDTO).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) { return _r.body; }));
+    };
+    /**
+     * @param params The `PaymentCommandResourceService.ExecutePaymentUsingPOSTParams` containing the following parameters:
+     *
+     * - `paymentId`: paymentId
+     *
+     * - `paymentExecutionRequest`: paymentExecutionRequest
+     */
+    PaymentCommandResourceService.prototype.executePaymentUsingPOSTResponse = function (params) {
+        var __params = this.newParams();
+        var __headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
+        var __body = null;
+        __body = params.paymentExecutionRequest;
+        var req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('POST', this.rootUrl + ("/api/command/paypal/execute/" + params.paymentId), __body, {
+            headers: __headers,
+            params: __params,
+            responseType: 'json'
+        });
+        return this.http.request(req).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["filter"])(function (_r) { return _r instanceof _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpResponse"]; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) {
+            return _r;
+        }));
+    };
+    /**
+     * @param params The `PaymentCommandResourceService.ExecutePaymentUsingPOSTParams` containing the following parameters:
+     *
+     * - `paymentId`: paymentId
+     *
+     * - `paymentExecutionRequest`: paymentExecutionRequest
+     */
+    PaymentCommandResourceService.prototype.executePaymentUsingPOST = function (params) {
+        return this.executePaymentUsingPOSTResponse(params).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) { return _r.body; }));
+    };
+    /**
+     * @param paymentInitiateRequest paymentInitiateRequest
+     * @return OK
+     */
+    PaymentCommandResourceService.prototype.initiatePaymentUsingPOSTResponse = function (paymentInitiateRequest) {
+        var __params = this.newParams();
+        var __headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
+        var __body = null;
+        __body = paymentInitiateRequest;
+        var req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('POST', this.rootUrl + "/api/command/paypal/initiate", __body, {
+            headers: __headers,
+            params: __params,
+            responseType: 'json'
+        });
+        return this.http.request(req).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["filter"])(function (_r) { return _r instanceof _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpResponse"]; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) {
+            return _r;
+        }));
+    };
+    /**
+     * @param paymentInitiateRequest paymentInitiateRequest
+     * @return OK
+     */
+    PaymentCommandResourceService.prototype.initiatePaymentUsingPOST = function (paymentInitiateRequest) {
+        return this.initiatePaymentUsingPOSTResponse(paymentInitiateRequest).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) { return _r.body; }));
+    };
+    /**
+     * @param processPaymentRequest processPaymentRequest
+     * @return OK
+     */
+    PaymentCommandResourceService.prototype.processPaymentUsingPOSTResponse = function (processPaymentRequest) {
+        var __params = this.newParams();
+        var __headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
+        var __body = null;
+        __body = processPaymentRequest;
+        var req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('POST', this.rootUrl + "/api/command/processPayment", __body, {
+            headers: __headers,
+            params: __params,
+            responseType: 'json'
+        });
+        return this.http.request(req).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["filter"])(function (_r) { return _r instanceof _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpResponse"]; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) {
+            return _r;
+        }));
+    };
+    /**
+     * @param processPaymentRequest processPaymentRequest
+     * @return OK
+     */
+    PaymentCommandResourceService.prototype.processPaymentUsingPOST = function (processPaymentRequest) {
+        return this.processPaymentUsingPOSTResponse(processPaymentRequest).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) { return _r.body; }));
+    };
+    /**
      * @param orderRequest orderRequest
      * @return OK
      */
@@ -2804,7 +2978,7 @@ var PaymentCommandResourceService = /** @class */ (function (_super) {
         var __headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
         var __body = null;
         __body = orderRequest;
-        var req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('POST', this.rootUrl + "/api/payments/razorpay/order", __body, {
+        var req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('POST', this.rootUrl + "/api/command/razorpay/order", __body, {
             headers: __headers,
             params: __params,
             responseType: 'json'
@@ -2820,7 +2994,11 @@ var PaymentCommandResourceService = /** @class */ (function (_super) {
     PaymentCommandResourceService.prototype.createOrderUsingPOST = function (orderRequest) {
         return this.createOrderUsingPOSTResponse(orderRequest).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) { return _r.body; }));
     };
-    PaymentCommandResourceService.createOrderUsingPOSTPath = '/api/payments/razorpay/order';
+    PaymentCommandResourceService.createPaymentUsingPOSTPath = '/api/command/payments';
+    PaymentCommandResourceService.executePaymentUsingPOSTPath = '/api/command/paypal/execute/{paymentId}';
+    PaymentCommandResourceService.initiatePaymentUsingPOSTPath = '/api/command/paypal/initiate';
+    PaymentCommandResourceService.processPaymentUsingPOSTPath = '/api/command/processPayment';
+    PaymentCommandResourceService.createOrderUsingPOSTPath = '/api/command/razorpay/order';
     PaymentCommandResourceService.ctorParameters = function () { return [
         { type: _api_configuration__WEBPACK_IMPORTED_MODULE_4__["ApiConfiguration"] },
         { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"] }
@@ -3197,6 +3375,54 @@ var QueryResourceService = /** @class */ (function (_super) {
      */
     QueryResourceService.prototype.findCategoryAndCountUsingGET = function (params) {
         return this.findCategoryAndCountUsingGETResponse(params).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) { return _r.body; }));
+    };
+    /**
+     * @param params The `QueryResourceService.FindCategoryAndCountBystoreIdUsingGETParams` containing the following parameters:
+     *
+     * - `storeId`: storeId
+     *
+     * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     *
+     * - `size`: Size of a page
+     *
+     * - `page`: Page number of the requested page
+     *
+     * @return OK
+     */
+    QueryResourceService.prototype.findCategoryAndCountBystoreIdUsingGETResponse = function (params) {
+        var __params = this.newParams();
+        var __headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
+        var __body = null;
+        (params.sort || []).forEach(function (val) { if (val != null)
+            __params = __params.append('sort', val.toString()); });
+        if (params.size != null)
+            __params = __params.set('size', params.size.toString());
+        if (params.page != null)
+            __params = __params.set('page', params.page.toString());
+        var req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('GET', this.rootUrl + ("/api/query/findCategoryAndCountBystoreId/" + params.storeId), __body, {
+            headers: __headers,
+            params: __params,
+            responseType: 'json'
+        });
+        return this.http.request(req).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["filter"])(function (_r) { return _r instanceof _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpResponse"]; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) {
+            return _r;
+        }));
+    };
+    /**
+     * @param params The `QueryResourceService.FindCategoryAndCountBystoreIdUsingGETParams` containing the following parameters:
+     *
+     * - `storeId`: storeId
+     *
+     * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     *
+     * - `size`: Size of a page
+     *
+     * - `page`: Page number of the requested page
+     *
+     * @return OK
+     */
+    QueryResourceService.prototype.findCategoryAndCountBystoreIdUsingGET = function (params) {
+        return this.findCategoryAndCountBystoreIdUsingGETResponse(params).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) { return _r.body; }));
     };
     /**
      * @param params The `QueryResourceService.FindProductByCategoryIdAndUserIdUsingGETParams` containing the following parameters:
@@ -3783,54 +4009,6 @@ var QueryResourceService = /** @class */ (function (_super) {
         return this.headerUsingGETResponse(params).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) { return _r.body; }));
     };
     /**
-     * @param params The `QueryResourceService.FindNotAuxilaryProductsUsingGETParams` containing the following parameters:
-     *
-     * - `iDPcode`: iDPcode
-     *
-     * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-     *
-     * - `size`: Size of a page
-     *
-     * - `page`: Page number of the requested page
-     *
-     * @return OK
-     */
-    QueryResourceService.prototype.findNotAuxilaryProductsUsingGETResponse = function (params) {
-        var __params = this.newParams();
-        var __headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
-        var __body = null;
-        (params.sort || []).forEach(function (val) { if (val != null)
-            __params = __params.append('sort', val.toString()); });
-        if (params.size != null)
-            __params = __params.set('size', params.size.toString());
-        if (params.page != null)
-            __params = __params.set('page', params.page.toString());
-        var req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('GET', this.rootUrl + ("/api/query/not-aux-product/" + params.iDPcode), __body, {
-            headers: __headers,
-            params: __params,
-            responseType: 'json'
-        });
-        return this.http.request(req).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["filter"])(function (_r) { return _r instanceof _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpResponse"]; }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) {
-            return _r;
-        }));
-    };
-    /**
-     * @param params The `QueryResourceService.FindNotAuxilaryProductsUsingGETParams` containing the following parameters:
-     *
-     * - `iDPcode`: iDPcode
-     *
-     * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-     *
-     * - `size`: Size of a page
-     *
-     * - `page`: Page number of the requested page
-     *
-     * @return OK
-     */
-    QueryResourceService.prototype.findNotAuxilaryProductsUsingGET = function (params) {
-        return this.findNotAuxilaryProductsUsingGETResponse(params).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) { return _r.body; }));
-    };
-    /**
      * @param params The `QueryResourceService.FindOrdersByCustomerIdUsingGETParams` containing the following parameters:
      *
      * - `customerId`: customerId
@@ -4209,14 +4387,19 @@ var QueryResourceService = /** @class */ (function (_super) {
         return this.findAndSortStoreBydeliveryTimeUsingGETResponse(params).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) { return _r.body; }));
     };
     /**
-     * @param categoryName categoryName
+     * @param params The `QueryResourceService.FindStockCurrentByCategoryNameAndStoreIdUsingGETParams` containing the following parameters:
+     *
+     * - `storeId`: storeId
+     *
+     * - `categoryName`: categoryName
+     *
      * @return OK
      */
-    QueryResourceService.prototype.findStockCurrentByCategoryNameUsingGETResponse = function (categoryName) {
+    QueryResourceService.prototype.findStockCurrentByCategoryNameAndStoreIdUsingGETResponse = function (params) {
         var __params = this.newParams();
         var __headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
         var __body = null;
-        var req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('GET', this.rootUrl + ("/api/query/stock-current-by-categoryname/" + categoryName), __body, {
+        var req = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpRequest"]('GET', this.rootUrl + ("/api/query/stock-current-by-categoryname/" + params.categoryName + "/" + params.storeId), __body, {
             headers: __headers,
             params: __params,
             responseType: 'json'
@@ -4226,11 +4409,16 @@ var QueryResourceService = /** @class */ (function (_super) {
         }));
     };
     /**
-     * @param categoryName categoryName
+     * @param params The `QueryResourceService.FindStockCurrentByCategoryNameAndStoreIdUsingGETParams` containing the following parameters:
+     *
+     * - `storeId`: storeId
+     *
+     * - `categoryName`: categoryName
+     *
      * @return OK
      */
-    QueryResourceService.prototype.findStockCurrentByCategoryNameUsingGET = function (categoryName) {
-        return this.findStockCurrentByCategoryNameUsingGETResponse(categoryName).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) { return _r.body; }));
+    QueryResourceService.prototype.findStockCurrentByCategoryNameAndStoreIdUsingGET = function (params) {
+        return this.findStockCurrentByCategoryNameAndStoreIdUsingGETResponse(params).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (_r) { return _r.body; }));
     };
     /**
      * @param params The `QueryResourceService.SearchStockCurrentsUsingGETParams` containing the following parameters:
@@ -4862,6 +5050,7 @@ var QueryResourceService = /** @class */ (function (_super) {
     QueryResourceService.findAllCategoriesUsingGETPath = '/api/query/findAllCategories/{iDPcode}';
     QueryResourceService.findAllCustomersWithoutSearchUsingGETPath = '/api/query/findAllCustomers';
     QueryResourceService.findCategoryAndCountUsingGETPath = '/api/query/findCategoryAndCount';
+    QueryResourceService.findCategoryAndCountBystoreIdUsingGETPath = '/api/query/findCategoryAndCountBystoreId/{storeId}';
     QueryResourceService.findProductByCategoryIdAndUserIdUsingGETPath = '/api/query/findProductByCategoryIdAndUserId/{categoryId}/{userId}';
     QueryResourceService.findAllProductBySearchTermUsingGETPath = '/api/query/findProductBySearchTerm/{searchTerm}';
     QueryResourceService.findProductByStoreIdAndCategoryNameUsingGETPath = '/api/query/findProductByStoreIdAndCategoryName/{userId}/{categoryName}';
@@ -4875,7 +5064,6 @@ var QueryResourceService = /** @class */ (function (_super) {
     QueryResourceService.findAllProductByStoreIdUsingGETPath = '/api/query/findproducts/{storeId}';
     QueryResourceService.getOrderDocketUsingGETPath = '/api/query/getOrderDocket/{orderMasterId}';
     QueryResourceService.headerUsingGETPath = '/api/query/header/{searchTerm}';
-    QueryResourceService.findNotAuxilaryProductsUsingGETPath = '/api/query/not-aux-product/{iDPcode}';
     QueryResourceService.findOrdersByCustomerIdUsingGETPath = '/api/query/ordersByCustomerId/{customerId}';
     QueryResourceService.findAndSortProductByPriceUsingGETPath = '/api/query/productByPrice/{from}/{to}';
     QueryResourceService.findProductUsingGETPath = '/api/query/products/{id}';
@@ -4887,7 +5075,7 @@ var QueryResourceService = /** @class */ (function (_super) {
     QueryResourceService.findReviewsByStoreIdUsingGETPath = '/api/query/review/{userName}';
     QueryResourceService.findAllReviewsUsingGETPath = '/api/query/reviews';
     QueryResourceService.findAndSortStoreBydeliveryTimeUsingGETPath = '/api/query/sortStoreByMinAmount';
-    QueryResourceService.findStockCurrentByCategoryNameUsingGETPath = '/api/query/stock-current-by-categoryname/{categoryName}';
+    QueryResourceService.findStockCurrentByCategoryNameAndStoreIdUsingGETPath = '/api/query/stock-current-by-categoryname/{categoryName}/{storeId}';
     QueryResourceService.searchStockCurrentsUsingGETPath = '/api/query/stock-current/{searchTerm}';
     QueryResourceService.findOneStockCurrentUsingGETPath = '/api/query/stock-currents/{id}';
     QueryResourceService.findStockCurrentByStoreIdUsingGETPath = '/api/query/stockcurrent/{storeId}';
@@ -5572,6 +5760,63 @@ var AllergyComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/components/auxilary-product-card/auxilary-product-card.component.scss":
+/*!***************************************************************************************!*\
+  !*** ./src/app/components/auxilary-product-card/auxilary-product-card.component.scss ***!
+  \***************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvYXV4aWxhcnktcHJvZHVjdC1jYXJkL2F1eGlsYXJ5LXByb2R1Y3QtY2FyZC5jb21wb25lbnQuc2NzcyJ9 */"
+
+/***/ }),
+
+/***/ "./src/app/components/auxilary-product-card/auxilary-product-card.component.ts":
+/*!*************************************************************************************!*\
+  !*** ./src/app/components/auxilary-product-card/auxilary-product-card.component.ts ***!
+  \*************************************************************************************/
+/*! exports provided: AuxilaryProductCardComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AuxilaryProductCardComponent", function() { return AuxilaryProductCardComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_app_services_cart_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/services/cart.service */ "./src/app/services/cart.service.ts");
+
+
+
+var AuxilaryProductCardComponent = /** @class */ (function () {
+    function AuxilaryProductCardComponent(cart) {
+        this.cart = cart;
+        this.orderCount = 0;
+    }
+    AuxilaryProductCardComponent.prototype.ngOnInit = function () { };
+    AuxilaryProductCardComponent.prototype.addToCart = function (auxilaryItem) {
+    };
+    AuxilaryProductCardComponent.ctorParameters = function () { return [
+        { type: src_app_services_cart_service__WEBPACK_IMPORTED_MODULE_2__["CartService"] }
+    ]; };
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Object)
+    ], AuxilaryProductCardComponent.prototype, "auxilaryItem", void 0);
+    AuxilaryProductCardComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-auxilary-product-card',
+            template: __webpack_require__(/*! raw-loader!./auxilary-product-card.component.html */ "./node_modules/raw-loader/index.js!./src/app/components/auxilary-product-card/auxilary-product-card.component.html"),
+            styles: [__webpack_require__(/*! ./auxilary-product-card.component.scss */ "./src/app/components/auxilary-product-card/auxilary-product-card.component.scss")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [src_app_services_cart_service__WEBPACK_IMPORTED_MODULE_2__["CartService"]])
+    ], AuxilaryProductCardComponent);
+    return AuxilaryProductCardComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/components/banner/banner.component.scss":
 /*!*********************************************************!*\
   !*** ./src/app/components/banner/banner.component.scss ***!
@@ -5739,7 +5984,6 @@ var CartComponent = /** @class */ (function () {
     CartComponent.prototype.getCartDetails = function () {
         var _this = this;
         this.cart.observableTickets.subscribe(function (data) {
-            console.log(data);
             _this.cartSize = data.length;
             _this.totalPrice = _this.cart.totalPrice;
             _this.orderLines = data;
@@ -6040,6 +6284,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _map_map_component__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./map/map.component */ "./src/app/components/map/map.component.ts");
 /* harmony import */ var _category_wise_products_card_category_wise_products_card_component__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./category-wise-products-card/category-wise-products-card.component */ "./src/app/components/category-wise-products-card/category-wise-products-card.component.ts");
 /* harmony import */ var _show_auxilary_modal_show_auxilary_modal_component__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./show-auxilary-modal/show-auxilary-modal.component */ "./src/app/components/show-auxilary-modal/show-auxilary-modal.component.ts");
+/* harmony import */ var _auxilary_product_card_auxilary_product_card_component__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./auxilary-product-card/auxilary-product-card.component */ "./src/app/components/auxilary-product-card/auxilary-product-card.component.ts");
+
 
 
 
@@ -6105,6 +6351,7 @@ var ComponentsModule = /** @class */ (function () {
                 _address_list_address_list_component__WEBPACK_IMPORTED_MODULE_27__["AddressListComponent"],
                 _hotel_menu_popover_hotel_menu_popover_component__WEBPACK_IMPORTED_MODULE_29__["HotelMenuPopoverComponent"],
                 _category_wise_products_card_category_wise_products_card_component__WEBPACK_IMPORTED_MODULE_33__["CategoryWiseProductsCardComponent"],
+                _auxilary_product_card_auxilary_product_card_component__WEBPACK_IMPORTED_MODULE_35__["AuxilaryProductCardComponent"],
                 _show_auxilary_modal_show_auxilary_modal_component__WEBPACK_IMPORTED_MODULE_34__["ShowAuxilaryModalComponent"],
                 _pipes_array_formater_pipe__WEBPACK_IMPORTED_MODULE_10__["ArrayFormaterPipe"],
                 _pipes_closed_pipe__WEBPACK_IMPORTED_MODULE_8__["ClosedPipe"],
@@ -6142,7 +6389,8 @@ var ComponentsModule = /** @class */ (function () {
                 _address_list_address_list_component__WEBPACK_IMPORTED_MODULE_27__["AddressListComponent"],
                 _hotel_menu_popover_hotel_menu_popover_component__WEBPACK_IMPORTED_MODULE_29__["HotelMenuPopoverComponent"],
                 _category_wise_products_card_category_wise_products_card_component__WEBPACK_IMPORTED_MODULE_33__["CategoryWiseProductsCardComponent"],
-                _show_auxilary_modal_show_auxilary_modal_component__WEBPACK_IMPORTED_MODULE_34__["ShowAuxilaryModalComponent"]
+                _show_auxilary_modal_show_auxilary_modal_component__WEBPACK_IMPORTED_MODULE_34__["ShowAuxilaryModalComponent"],
+                _auxilary_product_card_auxilary_product_card_component__WEBPACK_IMPORTED_MODULE_35__["AuxilaryProductCardComponent"],
             ],
             schemas: [_angular_core__WEBPACK_IMPORTED_MODULE_18__["CUSTOM_ELEMENTS_SCHEMA"]],
             entryComponents: [
@@ -6155,7 +6403,8 @@ var ComponentsModule = /** @class */ (function () {
                 _address_list_address_list_component__WEBPACK_IMPORTED_MODULE_27__["AddressListComponent"],
                 _loading_loading_component__WEBPACK_IMPORTED_MODULE_28__["LoadingComponent"],
                 _checkout_checkout_component__WEBPACK_IMPORTED_MODULE_31__["CheckoutComponent"],
-                _show_auxilary_modal_show_auxilary_modal_component__WEBPACK_IMPORTED_MODULE_34__["ShowAuxilaryModalComponent"]
+                _show_auxilary_modal_show_auxilary_modal_component__WEBPACK_IMPORTED_MODULE_34__["ShowAuxilaryModalComponent"],
+                _auxilary_product_card_auxilary_product_card_component__WEBPACK_IMPORTED_MODULE_35__["AuxilaryProductCardComponent"]
             ]
         })
     ], ComponentsModule);
@@ -6422,7 +6671,7 @@ var FilterComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "ion-badge {\n  position: absolute;\n  left: 65px;\n  border-radius: 50%;\n  width: 25px;\n  height: 25px;\n  text-align: center;\n  -webkit-box-pack: center;\n          justify-content: center;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvY29tcG9uZW50cy9mb290ZXIvZm9vdGVyLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL2Zvb3Rlci9mb290ZXIuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxrQkFBQTtFQUNBLFVBQUE7RUFDQSxrQkFBQTtFQUNBLFdBQUE7RUFDQSxZQUFBO0VBQ0Esa0JBQUE7RUFDQSx3QkFBQTtVQUFBLHVCQUFBO0VBQ0Esb0JBQUE7RUFBQSxhQUFBO0VBQ0EseUJBQUE7VUFBQSxtQkFBQTtBQ0NKIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9mb290ZXIvZm9vdGVyLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiaW9uLWJhZGdlIHtcbiAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgbGVmdDogNjVweDtcbiAgICBib3JkZXItcmFkaXVzOiA1MCU7XG4gICAgd2lkdGg6IDI1cHg7XG4gICAgaGVpZ2h0OiAyNXB4O1xuICAgIHRleHQtYWxpZ246IGNlbnRlcjtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG59IiwiaW9uLWJhZGdlIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBsZWZ0OiA2NXB4O1xuICBib3JkZXItcmFkaXVzOiA1MCU7XG4gIHdpZHRoOiAyNXB4O1xuICBoZWlnaHQ6IDI1cHg7XG4gIHRleHQtYWxpZ246IGNlbnRlcjtcbiAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gIGRpc3BsYXk6IGZsZXg7XG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG59Il19 */"
+module.exports = "ion-badge {\n  position: absolute;\n  left: 83px;\n  border-radius: 50%;\n  width: 25px;\n  height: 25px;\n  text-align: center;\n  -webkit-box-pack: center;\n          justify-content: center;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvY29tcG9uZW50cy9mb290ZXIvZm9vdGVyLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL2Zvb3Rlci9mb290ZXIuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxrQkFBQTtFQUNBLFVBQUE7RUFDQSxrQkFBQTtFQUNBLFdBQUE7RUFDQSxZQUFBO0VBQ0Esa0JBQUE7RUFDQSx3QkFBQTtVQUFBLHVCQUFBO0VBQ0Esb0JBQUE7RUFBQSxhQUFBO0VBQ0EseUJBQUE7VUFBQSxtQkFBQTtBQ0NKIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9mb290ZXIvZm9vdGVyLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiaW9uLWJhZGdlIHtcbiAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgbGVmdDogODNweDtcbiAgICBib3JkZXItcmFkaXVzOiA1MCU7XG4gICAgd2lkdGg6IDI1cHg7XG4gICAgaGVpZ2h0OiAyNXB4O1xuICAgIHRleHQtYWxpZ246IGNlbnRlcjtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG59IiwiaW9uLWJhZGdlIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBsZWZ0OiA4M3B4O1xuICBib3JkZXItcmFkaXVzOiA1MCU7XG4gIHdpZHRoOiAyNXB4O1xuICBoZWlnaHQ6IDI1cHg7XG4gIHRleHQtYWxpZ246IGNlbnRlcjtcbiAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gIGRpc3BsYXk6IGZsZXg7XG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG59Il19 */"
 
 /***/ }),
 
@@ -6883,7 +7132,10 @@ var HotelMenuPopoverComponent = /** @class */ (function () {
     HotelMenuPopoverComponent.prototype.getProducts = function (i, loader) {
         // Change this API Later to findStockCurrentByStoreIdAndCategoryName()
         var _this = this;
-        this.queryResourceService.findStockCurrentByCategoryNameUsingGET(this.selectedCategory)
+        this.queryResourceService.findStockCurrentByCategoryNameAndStoreIdUsingGET({
+            storeId: this.storeId,
+            categoryName: this.selectedCategory
+        })
             .subscribe(function (data) {
             loader.dismiss();
             console.log('Category ', _this.selectedCategory, ' Produts ', data);
@@ -7204,6 +7456,7 @@ var MapComponent = /** @class */ (function () {
     MapComponent.prototype.getLatLon = function () {
         var _this = this;
         this.filter.getLocationSubscription().subscribe(function (coords) {
+            _this.logger.info('Got Coordinates ', coords);
             if (coords !== undefined) {
                 if (_this.mapAlreadyLoaded === false) {
                     _this.loadMap(coords);
@@ -7276,6 +7529,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var src_app_api_services__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/api/services */ "./src/app/api/services.ts");
 /* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ngx-logger */ "./node_modules/ngx-logger/fesm5/ngx-logger.js");
 /* harmony import */ var _show_auxilary_modal_show_auxilary_modal_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../show-auxilary-modal/show-auxilary-modal.component */ "./src/app/components/show-auxilary-modal/show-auxilary-modal.component.ts");
+/* harmony import */ var src_app_services_util__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/services/util */ "./src/app/services/util.ts");
+
 
 
 
@@ -7286,13 +7541,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var ProductCardComponent = /** @class */ (function () {
-    function ProductCardComponent(favourite, modalController, queryResource, router, cartService, logger) {
+    function ProductCardComponent(favourite, modalController, queryResource, router, cartService, logger, util) {
         this.favourite = favourite;
         this.modalController = modalController;
         this.queryResource = queryResource;
         this.router = router;
         this.cartService = cartService;
         this.logger = logger;
+        this.util = util;
         this.showDescription = false;
         this.auxilaries = [];
         this.isFavourite = false;
@@ -7315,7 +7571,6 @@ var ProductCardComponent = /** @class */ (function () {
     };
     ProductCardComponent.prototype.getAuxilaries = function (i) {
         var _this = this;
-        this.logger.info('Got Auxilary For Product ', this.stockCurrent.product.name);
         this.queryResource.findAuxilariesByProductIdUsingGET(this.stockCurrent.product.id)
             .subscribe(function (data) {
             data.content.forEach(function (a) {
@@ -7332,7 +7587,6 @@ var ProductCardComponent = /** @class */ (function () {
         var _this = this;
         this.favourite.getFavourites()
             .subscribe(function (data) {
-            console.log(_this.favourite.getFavouriteProductsID());
             if (_this.favourite.getFavouriteProductsID()
                 .includes(_this.stockCurrent.product.id)) {
                 _this.isFavourite = true;
@@ -7343,7 +7597,7 @@ var ProductCardComponent = /** @class */ (function () {
         if (this.auxilaries.length > 0 && this.stockCurrent.product.isAuxilaryItem === false) {
             this.logger.info('Add Auxilary Items ', this.auxilaries);
             this.showAddAuxilaryModal();
-            this.cartService.addProduct(stock.product, stock, this.store);
+            // this.cartService.addProduct(stock.product, stock , this.store);
         }
         else {
             this.logger.info('No Auxilary Items ', this.auxilaries);
@@ -7360,7 +7614,10 @@ var ProductCardComponent = /** @class */ (function () {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.modalController.create({
                             component: _show_auxilary_modal_show_auxilary_modal_component__WEBPACK_IMPORTED_MODULE_8__["ShowAuxilaryModalComponent"],
-                            componentProps: { auxilaryItems: this.auxilaries }
+                            componentProps: {
+                                auxilaryItems: this.auxilaries,
+                                product: this.stockCurrent.product
+                            }
                         })];
                     case 1:
                         modal = _a.sent();
@@ -7374,9 +7631,7 @@ var ProductCardComponent = /** @class */ (function () {
         var _this = this;
         this.cartService.observableTickets
             .subscribe(function (data) {
-            console.log('Orders ', data);
             var p = data.filter(function (o) { return o.productId === _this.stockCurrent.product.id; });
-            console.log(p);
             if (p.length > 0) {
                 _this.orderCount = p[0].quantity;
             }
@@ -7394,7 +7649,8 @@ var ProductCardComponent = /** @class */ (function () {
         { type: src_app_api_services__WEBPACK_IMPORTED_MODULE_6__["QueryResourceService"] },
         { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"] },
         { type: _services_cart_service__WEBPACK_IMPORTED_MODULE_1__["CartService"] },
-        { type: ngx_logger__WEBPACK_IMPORTED_MODULE_7__["NGXLogger"] }
+        { type: ngx_logger__WEBPACK_IMPORTED_MODULE_7__["NGXLogger"] },
+        { type: src_app_services_util__WEBPACK_IMPORTED_MODULE_9__["Util"] }
     ]; };
     tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_4__["Input"])(),
@@ -7419,7 +7675,8 @@ var ProductCardComponent = /** @class */ (function () {
             src_app_api_services__WEBPACK_IMPORTED_MODULE_6__["QueryResourceService"],
             _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"],
             _services_cart_service__WEBPACK_IMPORTED_MODULE_1__["CartService"],
-            ngx_logger__WEBPACK_IMPORTED_MODULE_7__["NGXLogger"]])
+            ngx_logger__WEBPACK_IMPORTED_MODULE_7__["NGXLogger"],
+            src_app_services_util__WEBPACK_IMPORTED_MODULE_9__["Util"]])
     ], ProductCardComponent);
     return ProductCardComponent;
 }());
@@ -7737,7 +7994,7 @@ var RatingComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".imageShow {\n  position: relative;\n  top: 0%;\n  height: 14vh;\n  width: 14vh;\n}\n\nion-card-header {\n  padding: 2vw 0vw;\n}\n\n.overlay {\n  background: rgba(0, 0, 0, 0.5);\n  color: white;\n  padding: 2vh;\n  position: relative;\n  bottom: 36vw;\n}\n\n.container {\n  height: 85vw;\n}\n\n.mainImg {\n  width: 60vw;\n  height: 60vw;\n  margin: auto;\n}\n\nh2 {\n  font-size: 18px;\n}\n\n.medium {\n  font-size: 14px;\n}\n\n.small {\n  font-size: 11px;\n}\n\n.overflow-text-wrap {\n  font-size: 11px;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvY29tcG9uZW50cy9yZXN0YXVyYW50LWNhcmQvcmVzdGF1cmFudC1jYXJkLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL3Jlc3RhdXJhbnQtY2FyZC9yZXN0YXVyYW50LWNhcmQuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxrQkFBQTtFQUNBLE9BQUE7RUFDQSxZQUFBO0VBQ0EsV0FBQTtBQ0NGOztBREVBO0VBQ0UsZ0JBQUE7QUNDRjs7QURFQTtFQUNFLDhCQUFBO0VBQ0EsWUFBQTtFQUNBLFlBQUE7RUFDQSxrQkFBQTtFQUNBLFlBQUE7QUNDRjs7QURHQTtFQUNFLFlBQUE7QUNBRjs7QURHQTtFQUNFLFdBQUE7RUFDQSxZQUFBO0VBQ0EsWUFBQTtBQ0FGOztBREdBO0VBQ0UsZUFBQTtBQ0FGOztBREdBO0VBQ0UsZUFBQTtBQ0FGOztBREdBO0VBQ0UsZUFBQTtBQ0FGOztBREdBO0VBQ0UsZUFBQTtFQUNBLG1CQUFBO0VBQ0EsdUJBQUE7RUFDQSxnQkFBQTtBQ0FGIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9yZXN0YXVyYW50LWNhcmQvcmVzdGF1cmFudC1jYXJkLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmltYWdlU2hvdyB7XG4gIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgdG9wOiAwJTtcbiAgaGVpZ2h0OiAxNHZoO1xuICB3aWR0aDogMTR2aDtcbn1cblxuaW9uLWNhcmQtaGVhZGVyIHtcbiAgcGFkZGluZzogMnZ3IDB2dztcbn1cblxuLm92ZXJsYXkge1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG4gIGNvbG9yOiB3aGl0ZTtcbiAgcGFkZGluZzogMnZoO1xuICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gIGJvdHRvbTogMzZ2dztcbn1cblxuXG4uY29udGFpbmVyIHtcbiAgaGVpZ2h0OiA4NXZ3O1xufVxuXG4ubWFpbkltZyB7XG4gIHdpZHRoOiA2MHZ3O1xuICBoZWlnaHQ6IDYwdnc7XG4gIG1hcmdpbjogYXV0bztcbn1cblxuaDIge1xuICBmb250LXNpemU6IDE4cHg7XG59XG5cbi5tZWRpdW0ge1xuICBmb250LXNpemU6IDE0cHg7XG59XG5cbi5zbWFsbCB7XG4gIGZvbnQtc2l6ZTogMTFweDtcbn1cblxuLm92ZXJmbG93LXRleHQtd3JhcCB7XG4gIGZvbnQtc2l6ZTogMTFweDtcbiAgd2hpdGUtc3BhY2U6IG5vd3JhcDtcbiAgdGV4dC1vdmVyZmxvdzogZWxsaXBzaXM7XG4gIG92ZXJmbG93OiBoaWRkZW47XG59IiwiLmltYWdlU2hvdyB7XG4gIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgdG9wOiAwJTtcbiAgaGVpZ2h0OiAxNHZoO1xuICB3aWR0aDogMTR2aDtcbn1cblxuaW9uLWNhcmQtaGVhZGVyIHtcbiAgcGFkZGluZzogMnZ3IDB2dztcbn1cblxuLm92ZXJsYXkge1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG4gIGNvbG9yOiB3aGl0ZTtcbiAgcGFkZGluZzogMnZoO1xuICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gIGJvdHRvbTogMzZ2dztcbn1cblxuLmNvbnRhaW5lciB7XG4gIGhlaWdodDogODV2dztcbn1cblxuLm1haW5JbWcge1xuICB3aWR0aDogNjB2dztcbiAgaGVpZ2h0OiA2MHZ3O1xuICBtYXJnaW46IGF1dG87XG59XG5cbmgyIHtcbiAgZm9udC1zaXplOiAxOHB4O1xufVxuXG4ubWVkaXVtIHtcbiAgZm9udC1zaXplOiAxNHB4O1xufVxuXG4uc21hbGwge1xuICBmb250LXNpemU6IDExcHg7XG59XG5cbi5vdmVyZmxvdy10ZXh0LXdyYXAge1xuICBmb250LXNpemU6IDExcHg7XG4gIHdoaXRlLXNwYWNlOiBub3dyYXA7XG4gIHRleHQtb3ZlcmZsb3c6IGVsbGlwc2lzO1xuICBvdmVyZmxvdzogaGlkZGVuO1xufSJdfQ== */"
+module.exports = ".imageShow {\n  position: relative;\n  top: 0%;\n  height: 14vh;\n  width: 14vh;\n}\n\nion-card-header {\n  padding: 2vw 0vw;\n}\n\n.overlay {\n  background: rgba(0, 0, 0, 0.7);\n  color: white;\n  padding: 2vh;\n  position: relative;\n}\n\n.mainImg {\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n  height: -webkit-fit-content;\n  height: -moz-fit-content;\n  height: fit-content;\n  margin: auto;\n}\n\nh2 {\n  font-size: 18px;\n}\n\n.medium {\n  font-size: 14px;\n}\n\n.small {\n  font-size: 11px;\n}\n\n.overflow-text-wrap {\n  font-size: 11px;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvY29tcG9uZW50cy9yZXN0YXVyYW50LWNhcmQvcmVzdGF1cmFudC1jYXJkLmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9jb21wb25lbnRzL3Jlc3RhdXJhbnQtY2FyZC9yZXN0YXVyYW50LWNhcmQuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxrQkFBQTtFQUNBLE9BQUE7RUFDQSxZQUFBO0VBQ0EsV0FBQTtBQ0NGOztBREVBO0VBQ0UsZ0JBQUE7QUNDRjs7QURFQTtFQUNFLDhCQUFBO0VBQ0EsWUFBQTtFQUNBLFlBQUE7RUFDQSxrQkFBQTtBQ0NGOztBRE1BO0VBQ0UsMEJBQUE7RUFBQSx1QkFBQTtFQUFBLGtCQUFBO0VBQ0EsMkJBQUE7RUFBQSx3QkFBQTtFQUFBLG1CQUFBO0VBQ0EsWUFBQTtBQ0hGOztBRE1BO0VBQ0UsZUFBQTtBQ0hGOztBRE1BO0VBQ0UsZUFBQTtBQ0hGOztBRE1BO0VBQ0UsZUFBQTtBQ0hGOztBRE1BO0VBQ0UsZUFBQTtFQUNBLG1CQUFBO0VBQ0EsdUJBQUE7RUFDQSxnQkFBQTtBQ0hGIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9yZXN0YXVyYW50LWNhcmQvcmVzdGF1cmFudC1jYXJkLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmltYWdlU2hvdyB7XG4gIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgdG9wOiAwJTtcbiAgaGVpZ2h0OiAxNHZoO1xuICB3aWR0aDogMTR2aDtcbn1cblxuaW9uLWNhcmQtaGVhZGVyIHtcbiAgcGFkZGluZzogMnZ3IDB2dztcbn1cblxuLm92ZXJsYXkge1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNyk7XG4gIGNvbG9yOiB3aGl0ZTtcbiAgcGFkZGluZzogMnZoO1xuICBwb3NpdGlvbjogcmVsYXRpdmU7XG59XG5cblxuLmNvbnRhaW5lciB7XG59XG5cbi5tYWluSW1nIHtcbiAgd2lkdGg6IGZpdC1jb250ZW50O1xuICBoZWlnaHQ6IGZpdC1jb250ZW50O1xuICBtYXJnaW46IGF1dG87XG59XG5cbmgyIHtcbiAgZm9udC1zaXplOiAxOHB4O1xufVxuXG4ubWVkaXVtIHtcbiAgZm9udC1zaXplOiAxNHB4O1xufVxuXG4uc21hbGwge1xuICBmb250LXNpemU6IDExcHg7XG59XG5cbi5vdmVyZmxvdy10ZXh0LXdyYXAge1xuICBmb250LXNpemU6IDExcHg7XG4gIHdoaXRlLXNwYWNlOiBub3dyYXA7XG4gIHRleHQtb3ZlcmZsb3c6IGVsbGlwc2lzO1xuICBvdmVyZmxvdzogaGlkZGVuO1xufSIsIi5pbWFnZVNob3cge1xuICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gIHRvcDogMCU7XG4gIGhlaWdodDogMTR2aDtcbiAgd2lkdGg6IDE0dmg7XG59XG5cbmlvbi1jYXJkLWhlYWRlciB7XG4gIHBhZGRpbmc6IDJ2dyAwdnc7XG59XG5cbi5vdmVybGF5IHtcbiAgYmFja2dyb3VuZDogcmdiYSgwLCAwLCAwLCAwLjcpO1xuICBjb2xvcjogd2hpdGU7XG4gIHBhZGRpbmc6IDJ2aDtcbiAgcG9zaXRpb246IHJlbGF0aXZlO1xufVxuXG4ubWFpbkltZyB7XG4gIHdpZHRoOiBmaXQtY29udGVudDtcbiAgaGVpZ2h0OiBmaXQtY29udGVudDtcbiAgbWFyZ2luOiBhdXRvO1xufVxuXG5oMiB7XG4gIGZvbnQtc2l6ZTogMThweDtcbn1cblxuLm1lZGl1bSB7XG4gIGZvbnQtc2l6ZTogMTRweDtcbn1cblxuLnNtYWxsIHtcbiAgZm9udC1zaXplOiAxMXB4O1xufVxuXG4ub3ZlcmZsb3ctdGV4dC13cmFwIHtcbiAgZm9udC1zaXplOiAxMXB4O1xuICB3aGl0ZS1zcGFjZTogbm93cmFwO1xuICB0ZXh0LW92ZXJmbG93OiBlbGxpcHNpcztcbiAgb3ZlcmZsb3c6IGhpZGRlbjtcbn0iXX0= */"
 
 /***/ }),
 
@@ -7756,16 +8013,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_favourite_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../services/favourite.service */ "./src/app/services/favourite.service.ts");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
+/* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ngx-logger */ "./node_modules/ngx-logger/fesm5/ngx-logger.js");
+
 
 
 
 
 
 var RestaurantCardComponent = /** @class */ (function () {
-    function RestaurantCardComponent(favourite, queryResource, nav) {
+    function RestaurantCardComponent(favourite, queryResource, nav, logger) {
         this.favourite = favourite;
         this.queryResource = queryResource;
         this.nav = nav;
+        this.logger = logger;
         this.store = {};
         this.viewType = 'normal';
         this.deliveryTypes = [];
@@ -7775,7 +8035,6 @@ var RestaurantCardComponent = /** @class */ (function () {
     RestaurantCardComponent.prototype.ngOnInit = function () {
         this.timeNow = new Date();
         this.getStoreCategory();
-        console.log(this.viewType);
         if (this.viewType === 'normal') {
             this.checkIfAlreadyFavourite();
             this.getStoreDeliveryInfo();
@@ -7784,14 +8043,14 @@ var RestaurantCardComponent = /** @class */ (function () {
     };
     RestaurantCardComponent.prototype.getStoreCategory = function () {
         var _this = this;
-        console.log('Getting Category', this.store.regNo);
+        this.logger.info('Getting Category', this.store.regNo);
         this.queryResource
             .findStoreTypeByStoreIdUsingGET({ storeId: this.store.regNo })
             .subscribe(function (success) {
-            console.log('Got Categpries', success.content);
+            _this.logger.info('Got Categpries ', _this.store.regNo, success.content);
             _this.categories = success.content;
         }, function (err) {
-            console.log('Error getting Store category', _this.store.regNo);
+            _this.logger.fatal('Error getting Store category', _this.store.regNo, err);
         });
     };
     RestaurantCardComponent.prototype.getStoreDeliveryType = function () {
@@ -7823,7 +8082,6 @@ var RestaurantCardComponent = /** @class */ (function () {
         var _this = this;
         this.favourite.getFavourites()
             .subscribe(function (data) {
-            console.log(_this.favourite.getFavouriteStoresID());
             if (_this.favourite.getFavouriteStoresID()
                 .includes(_this.store.id)) {
                 _this.isFavourite = true;
@@ -7836,7 +8094,8 @@ var RestaurantCardComponent = /** @class */ (function () {
     RestaurantCardComponent.ctorParameters = function () { return [
         { type: _services_favourite_service__WEBPACK_IMPORTED_MODULE_2__["FavouriteService"] },
         { type: src_app_api_services_query_resource_service__WEBPACK_IMPORTED_MODULE_1__["QueryResourceService"] },
-        { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["NavController"] }
+        { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["NavController"] },
+        { type: ngx_logger__WEBPACK_IMPORTED_MODULE_5__["NGXLogger"] }
     ]; };
     tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Input"])(),
@@ -7854,7 +8113,8 @@ var RestaurantCardComponent = /** @class */ (function () {
         }),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services_favourite_service__WEBPACK_IMPORTED_MODULE_2__["FavouriteService"],
             src_app_api_services_query_resource_service__WEBPACK_IMPORTED_MODULE_1__["QueryResourceService"],
-            _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["NavController"]])
+            _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["NavController"],
+            ngx_logger__WEBPACK_IMPORTED_MODULE_5__["NGXLogger"]])
     ], RestaurantCardComponent);
     return RestaurantCardComponent;
 }());
@@ -8023,26 +8283,37 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ShowAuxilaryModalComponent", function() { return ShowAuxilaryModalComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
+
 
 
 var ShowAuxilaryModalComponent = /** @class */ (function () {
-    function ShowAuxilaryModalComponent() {
+    function ShowAuxilaryModalComponent(modalController) {
+        this.modalController = modalController;
         this.auxilaryItems = [];
     }
-    ShowAuxilaryModalComponent.prototype.ngOnInit = function () {
-        console.log(this.auxilaryItems);
+    ShowAuxilaryModalComponent.prototype.ngOnInit = function () { };
+    ShowAuxilaryModalComponent.prototype.dismiss = function () {
+        this.modalController.dismiss();
     };
+    ShowAuxilaryModalComponent.ctorParameters = function () { return [
+        { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["ModalController"] }
+    ]; };
     tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Object)
     ], ShowAuxilaryModalComponent.prototype, "auxilaryItems", void 0);
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Object)
+    ], ShowAuxilaryModalComponent.prototype, "product", void 0);
     ShowAuxilaryModalComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-show-auxilary-modal',
             template: __webpack_require__(/*! raw-loader!./show-auxilary-modal.component.html */ "./node_modules/raw-loader/index.js!./src/app/components/show-auxilary-modal/show-auxilary-modal.component.html"),
             styles: [__webpack_require__(/*! ./show-auxilary-modal.component.scss */ "./src/app/components/show-auxilary-modal/show-auxilary-modal.component.scss")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_ionic_angular__WEBPACK_IMPORTED_MODULE_2__["ModalController"]])
     ], ShowAuxilaryModalComponent);
     return ShowAuxilaryModalComponent;
 }());
@@ -8625,8 +8896,6 @@ var CartService = /** @class */ (function () {
         this.currentShop = undefined;
         this.updateCart();
     };
-    CartService.prototype.getTotalQunatity = function () {
-    };
     CartService.ctorParameters = function () { return [
         { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_3__["AlertController"] },
         { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_3__["NavController"] }
@@ -8719,7 +8988,6 @@ var FavouriteService = /** @class */ (function () {
     FavouriteService.prototype.removeFromFavorite = function (data, type) {
         var tmpArray = this.favourites.filter(function (favourite) { return !(favourite.data.id === data.id
             && favourite.type === type); });
-        console.log('Temp Array is', tmpArray);
         this.favourites = tmpArray;
         this.refresh();
     };
@@ -8738,7 +9006,6 @@ var FavouriteService = /** @class */ (function () {
     };
     FavouriteService.prototype.getFavouriteStoresID = function () {
         var idArray = [];
-        console.log(this.favourites);
         for (var _i = 0, _a = this.favourites; _i < _a.length; _i++) {
             var fav = _a[_i];
             if (fav.type === 'store') {
@@ -8812,6 +9079,10 @@ var FilterService = /** @class */ (function () {
     };
     FilterService.prototype.getLocationSubscription = function () {
         return this.locationBehaviour;
+    };
+    FilterService.prototype.setCoordinates = function (latLon) {
+        this.currentCordinates = latLon;
+        this.locationBehaviour.next(latLon);
     };
     FilterService.prototype.setFilter = function (filter) {
         this.currentFilter = filter;

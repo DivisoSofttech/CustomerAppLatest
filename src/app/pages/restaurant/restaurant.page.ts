@@ -5,6 +5,8 @@ import { Util } from 'src/app/services/util';
 import { IonInfiniteScroll, IonRefresher, IonSlides } from '@ionic/angular';
 import { NGXLogger } from 'ngx-logger';
 import { MapComponent } from 'src/app/components/map/map.component';
+import { RouteService } from 'src/app/services/route.service';
+import { FooterComponent } from 'src/app/components/footer/footer.component';
 
 @Component({
   selector: 'app-restaurant',
@@ -24,11 +26,14 @@ export class RestaurantPage implements OnInit {
   @ViewChild(IonInfiniteScroll , null) ionInfiniteScroll: IonInfiniteScroll;
   @ViewChild(IonRefresher , null) IonRefresher: IonRefresher;
   @ViewChild(MapComponent , null) mapComponent: MapComponent;
+  @ViewChild(FooterComponent , null) footer: FooterComponent;
+
+
 
   constructor(
     private filter: FilterService,
     private util: Util,
-    private logger: NGXLogger
+    private logger: NGXLogger,
   ) {}
 
   ngOnInit() {
@@ -37,7 +42,7 @@ export class RestaurantPage implements OnInit {
 
   updatedLocation(event) {
     this.logger.info('Changed Current Location - LatLon ' , event);
-    this.filter.currentCordinates = event.latLon;
+    this.filter.setCoordinates(event.latLon);
     // this.logger.info('Setting Distance_wise Filter');
     // this.filter.setFilter(FILTER_TYPES.DISTANCE_WISE);
     // this.logger.info('Getting Stores');
@@ -96,4 +101,11 @@ export class RestaurantPage implements OnInit {
   toggleFilteromponent() {
     this.showFilters = !this.showFilters;
   }
+
+  // Fix for Footer
+  ionViewDidEnter() {
+    this.logger.info('Ion View Did enter');
+    this.footer.setcurrentRoute('restaurant');
+  }
+
 }

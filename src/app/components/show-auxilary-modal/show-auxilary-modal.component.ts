@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-show-auxilary-modal',
@@ -9,10 +10,15 @@ export class ShowAuxilaryModalComponent implements OnInit {
 
   @Input() auxilaryItems = [];
 
-  constructor() { }
+  @Input() product;
 
-  ngOnInit() {
-    console.log(this.auxilaryItems);
+  constructor(
+    private modalController: ModalController
+  ) { }
+
+  ngOnInit() {}
+
+  dismiss() {
+    this.modalController.dismiss();
   }
-
 }

@@ -1,41 +1,51 @@
 import { CartService } from '../../services/cart.service';
-import { Component, OnInit, Input } from '@angular/core';
-import { OrderLine, Store } from 'src/app/api/models';
-import { QueryResourceService } from 'src/app/api/services';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { OrderLine, Store, Order } from 'src/app/api/models';
+import { QueryResourceService, OfferCommandResourceService } from 'src/app/api/services';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-delivery-item-details',
   templateUrl: './delivery-item-details.component.html',
-  styleUrls: ['./delivery-item-details.component.scss'],
+  styleUrls: ['./delivery-item-details.component.scss']
 })
-export class DeliveryItemDetailsComponent implements OnInit {
+export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
 
-  @Input() orders: OrderLine[] = [];
+  orders: OrderLine[] = [];
 
   totalPrice;
 
   deliveryCharge;
 
   products = [];
-  
-  @Input() store: Store;
 
-  @Input() storeSetting;
+  store: Store;
+
+  storeSetting;
+
+  cartSubscription;
 
   constructor(
     private cart: CartService,
-    private queryResource: QueryResourceService
-  ) { }
+    private queryResource: QueryResourceService,
+    private offerCommandResource: OfferCommandResourceService,
+    private logger: NGXLogger
+  ) {}
 
   ngOnInit() {
-    this.getAllProductsFromOrders();
-    this.getcartDetails();
+    this.getCartDetails();
   }
 
-  getcartDetails() {
-    this.cart.observableTickets
-    .subscribe(data => {
+  getCartDetails() {
+    this.cartSubscription = this.cart.observableTickets.subscribe(data => {
+      this.logger.info('Getting cart Details', data);
       this.totalPrice = this.cart.totalPrice;
+      this.orders = data;
+      this.storeSetting = this.cart.currentShopSetting;
+      this.store = this.cart.currentShop;
+      if (this.products.length === 0 && this.orders.length > 0) {
+        this.getAllProductsFromOrders();
+      }
     });
   }
 
@@ -47,24 +57,34 @@ export class DeliveryItemDetailsComponent implements OnInit {
     this.cart.decrease(p);
   }
 
-  removeTicket(index) {
-    this.cart.removeTicket(index);
-    console.log(this.orders.length);
-    this.products.splice(index, 1);
+  removeOrder(o, p) {
+    this.products = this.products.filter(pr => pr !== p);
+    this.logger.info('Removing Order ', o);
+    this.cart.removeOrder(o);
   }
 
   getAllProductsFromOrders() {
     this.orders.forEach(o => {
-      this.queryResource.findProductUsingGET(o.productId)
-      .subscribe(p => {
+      this.queryResource.findProductUsingGET(o.productId).subscribe(p => {
         this.products.push(p);
       });
     });
   }
 
   getOffers() {
-  
+    let grandtotal = 0;
+    this.orders.forEach(orderLine => {
+      grandtotal += orderLine.pricePerUnit * orderLine.quantity;
+    });
+    this.offerCommandResource.checkOfferEligibilityUsingPOST({
+      orderTotal: grandtotal
+    })
+    .subscribe(data => {
+      console.log(data);
+    });
   }
 
-
+  ngOnDestroy() {
+    this.cartSubscription.unsubscribe();
+  }
 }

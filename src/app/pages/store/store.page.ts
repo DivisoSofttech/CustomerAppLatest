@@ -3,7 +3,7 @@ import { ViewChild } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { StockCurrent, Entry, Category } from 'src/app/api/models';
+import { StockCurrent, Entry, Category, Store } from 'src/app/api/models';
 import { HotelMenuPopoverComponent } from 'src/app/components/hotel-menu-popover/hotel-menu-popover.component';
 import { Util } from 'src/app/services/util';
 import { NGXLogger } from 'ngx-logger';
@@ -17,7 +17,7 @@ export class StorePage implements OnInit {
 
   storeId;
 
-  store;
+  store: Store;
 
   stockCurrents: StockCurrent[] = [];
 
@@ -65,23 +65,28 @@ export class StorePage implements OnInit {
       .findStoreByRegisterNumberUsingGET(this.storeId)
       .subscribe(
         result => {
-          console.log('Got Store', result);
+          this.logger.info('Got Store ' , result.name , result);
           this.store = result;
           this.showRestaurantLoading = false;
         },
         err => {
           this.showRestaurantLoading = false;
-          console.log('Error fetching store data', err);
+          this.logger.fatal('Error Fetching Stores' , err);
         }
       );
   }
 
   getCategoriesEntry(i) {
     this.queryResource
-    .findCategoryAndCountUsingGET(this.storeId)
+    .findCategoryAndCountBystoreIdUsingGET({
+      storeId: this.storeId
+    })
     .subscribe(result => {
-      console.log('Got Categories' , result);
+      this.logger.info('Got Categories Entry' , result);
       this.entry = result;
+    },
+    err => {
+      this.logger.fatal('Error Fetching Categories Entry' , err);
     });
   }
 
@@ -91,7 +96,7 @@ export class StorePage implements OnInit {
       iDPcode: this.storeId
     })
     .subscribe(result => {
-      console.log('Got Categories' , result);
+      this.logger.info('Got Categories' , result);
       result.content.forEach(c => {
         this.categories.push(c);
       });

@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Product, StockCurrent, OrderLine, Store } from '../api/models';
 import { BehaviorSubject } from 'rxjs';
 import { AlertController, NavController } from '@ionic/angular';
+import { QueryResourceService } from '../api/services';
+import { Util } from './util';
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +17,15 @@ export class CartService {
   observableTickets: BehaviorSubject<OrderLine[]>;
   observablePrice: BehaviorSubject<number>;
   currentShop: Store;
+  currentShopSetting;
   
   
-  constructor(private alertController: AlertController,
-              private navController: NavController) {
+  constructor(
+    private alertController: AlertController,
+    private navController: NavController,
+    private queryResource: QueryResourceService,
+    private util: Util
+  ) {
     this.observableTickets = new BehaviorSubject<OrderLine[]>(this.orderLines);
     this.observablePrice = new BehaviorSubject<number>(this.totalPrice);
   }
@@ -41,13 +48,12 @@ export class CartService {
   }
 
   addProduct(product: Product, stockCurrent: StockCurrent, shop: Store) {
+
     if (this.currentShopId === 0) {
-      console.log('Shop From CartService ' , shop);
       this.currentShop = shop;
       this.currentShopId = shop.id;
+      this.getStoreSettings();
     }
-
-
 
     if (this.currentShopId === shop.id) {
 
@@ -77,7 +83,14 @@ export class CartService {
       this.presentAlert();
       return false;
     }
+  }
 
+  getStoreSettings() {
+    this.queryResource
+    .getStoreSettingsUsingGET(this.currentShop.regNo)
+    .subscribe(setting => {
+      this.currentShopSetting = setting;
+    });
   }
 
   add(product: Product) {
@@ -120,6 +133,16 @@ export class CartService {
     this.updateCart();
   }
 
+
+
+
+
+  // New Methods
+
+  getCartDetails() {
+    return this.observableTickets;
+  }
+
   updateCart() {
     this.totalPrice = 0;
     this.orderLines.forEach(order => {
@@ -136,8 +159,11 @@ export class CartService {
     this.updateCart();
   }
 
-  getTotalQunatity() {
-
-
+  removeOrder(order: OrderLine) {
+    console.warn('Previous Length' , this.orderLines.length);
+    this.orderLines = this.orderLines.filter(ol => ol !== order);
+    console.warn('After Filter Length' , this.orderLines.length);
+    this.updateCart();
   }
+
 }

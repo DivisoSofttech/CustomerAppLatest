@@ -1,5 +1,5 @@
-import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { Component, OnInit, EventEmitter, Output, OnDestroy, Input, ViewChild } from '@angular/core';
+import { NavController, IonSegment } from '@ionic/angular';
 import { CartService } from 'src/app/services/cart.service';
 import { NGXLogger } from 'ngx-logger';
 import { RouteService } from 'src/app/services/route.service';
@@ -14,46 +14,39 @@ export class FooterComponent implements OnInit , OnDestroy {
 
   @Output() filter = new EventEmitter();
 
-  currentRoute;
+  @ViewChild(IonSegment , null) ionSegment: IonSegment; 
 
   orderCount  = 0;
 
-  routeSubscription;
+  cartSubscription;
 
   constructor(
     private navController: NavController,
     private logger: NGXLogger,
-    private route: RouteService,
     private cart: CartService
   ) { }
 
   ngOnInit() {
-    this.cart.observableTickets
+    this.cartSubscription = this.cart.observableTickets
     .subscribe(data => {
       this.orderCount = data.length;
     });
-    this.getCurrentRoute();
   }
 
   goTo(url) {
     this.navController.navigateForward(url);
   }
 
-  getCurrentRoute() {
-    this.routeSubscription = this.route.getRouteSubscription()
-    .subscribe(data => {
-      this.currentRoute = data;
-      console.warn(this.currentRoute);
-    })
+  setcurrentRoute(url) {
+    this.ionSegment.value = url;
   }
 
   emitFilterClick() {
-    this.filter.emit('');
+    this.filter.emit({});
   }
 
   ngOnDestroy() {
-    console.log('destroy');
-    this.routeSubscription.unsubscribe();
+    this.cartSubscription.unsubscribe();
   }
 
 }

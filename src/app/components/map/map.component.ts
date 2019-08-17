@@ -79,7 +79,9 @@ export class MapComponent implements OnInit {
   }
 
   setCurrentLocationMarker(coords) {
+
     this.logger.info('Setting Marker' , coords);
+
     if (this.curentLocationMarker !== undefined) {
       this.logger.info('Removing Old Marker' , coords);
       this.curentLocationMarker.remove();

@@ -45,7 +45,6 @@ export class CartComponent implements OnInit {
     private orderService: OrderService,
     private modalController: ModalController,
     private navController: NavController,
-    private queryResource: QueryResourceService,
     private storage: Storage,
     private util: Util
   ) {}
@@ -58,47 +57,31 @@ export class CartComponent implements OnInit {
   getCustomer() {
     this.util.createLoader().then(loader => {
       loader.present();
-      this.storage.get('user').then(user => {
-        this.queryResource
-          .findCustomerByReferenceUsingGET(user.preferred_username)
-          .subscribe(
-            customer => {
-              console.log('Got Customer', customer);
-              loader.dismiss();
-              this.customer = customer;
-            },
-            err => {
-              loader.dismiss();
-            }
-          );
+      this.storage.get('customer').then(user => {
+        this.customer = user;
+        loader.dismiss();
+      })
+      .catch(err => {
+        loader.dismiss();
       });
     });
   }
 
   getCartDetails() {
     this.cart.observableTickets.subscribe(data => {
-      console.log(data);
       this.cartSize = data.length;
       this.totalPrice = this.cart.totalPrice;
       this.orderLines = data;
-      if (this.cart.currentShop !== undefined &&
-        data !== undefined && this.store !== this.cart.currentShop) {
-        this.store = this.cart.currentShop;
-        if(this.store.minAmount > this.totalPrice) {
-          this.neededCheckOutAmount = this.store.minAmount - this.totalPrice;
-        }
-        this.getStoreSettings();
+      this.storeSetting = this.cart.currentShopSetting;
+      this.store = this.cart.currentShop;
+      if(this.store !== undefined && this.store.minAmount > this.totalPrice) {
+        this.neededCheckOutAmount = this.store.minAmount - this.totalPrice;
+      } else {
+        this.neededCheckOutAmount = 0;
       }
     });
   }
 
-  getStoreSettings() {
-    this.queryResource
-    .getStoreSettingsUsingGET(this.store.regNo)
-    .subscribe(setting => {
-      this.storeSetting = setting;
-    });
-  }
 
   async presentAllergyModal() {
     const modal = await this.modalController.create({
@@ -116,7 +99,7 @@ export class CartComponent implements OnInit {
     });
     grandtotal = grandtotal + this.storeSetting.deliveryCharge;
     const order: Order = {
-      customerId: this.customer.name,
+      customerId: this.customer.reference,
       orderLines: this.orderLines,
       grandTotal: grandtotal,
       storeId: this.cart.storeId

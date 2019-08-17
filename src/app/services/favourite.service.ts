@@ -68,7 +68,6 @@ export class FavouriteService {
   removeFromFavorite(data , type) {
     const tmpArray = this.favourites.filter(favourite => !(favourite.data.id === data.id
       && favourite.type === type));
-    console.log('Temp Array is' , tmpArray);
     this.favourites = tmpArray;
     this.refresh();
   }
@@ -92,7 +91,6 @@ export class FavouriteService {
 
   getFavouriteStoresID() {
     const idArray = [];
-    console.log(this.favourites);
     for (const fav of this.favourites) {
       if (fav.type === 'store') {
       idArray.push(fav.data.id);

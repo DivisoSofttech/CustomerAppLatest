@@ -76,7 +76,9 @@
           color="primary" expand="full" (click)="continue('delivery')"
           >Continue</ion-button
         >
-        <ion-button *ngIf="currentSegment==='collection'" color="primary" expand="full" (click)="continue('collection')"
+        <ion-button *ngIf="currentSegment==='collection'"
+        [disabled]="neededCheckOutAmount !== 0"
+         color="primary" expand="full" (click)="continue('collection')"
         >Continue</ion-button
       >
       </ion-col>
@@ -109,12 +111,7 @@
   </ion-segment>
 
   <div>
-    <app-delivery-item-details
-     *ngIf="orderLines !== undefined && storeSetting !== undefined"
-      [orders]="orderLines"
-      [store]="store"
-      [storeSetting]="storeSetting"
-    ></app-delivery-item-details>
+    <app-delivery-item-details></app-delivery-item-details>
   </div>
 </div>
 

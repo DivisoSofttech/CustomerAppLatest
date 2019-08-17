@@ -40,7 +40,7 @@
 
   <ion-slides (ionSlideDidChange)="slideChanged($event)">
     <ion-slide>
-      <ion-grid>
+      <ion-grid no-padding>
         <ion-row>
           <ion-list *ngIf="store != undefined && showCategoryWiseProducts === false">
             <app-product-card
@@ -83,6 +83,11 @@
         <ion-row>
           <ion-col size="12">
           <app-map></app-map>
+          </ion-col>
+          <ion-col size="12" *ngIf="store !== undefined">
+            <ion-text *ngIf="store.info">
+              <p>{{ store.info }}</p>
+            </ion-text>
           </ion-col>
         </ion-row>
         <ion-row>

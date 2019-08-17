@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services';
-import { PopoverController, LoadingController } from '@ionic/angular';
+import { PopoverController} from '@ionic/angular';
 import { Util } from 'src/app/services/util';
 
 @Component({
@@ -37,10 +37,13 @@ export class HotelMenuPopoverComponent implements OnInit {
   }
 
   getProducts(i , loader) {
-    
+
     // Change this API Later to findStockCurrentByStoreIdAndCategoryName()
 
-    this.queryResourceService.findStockCurrentByCategoryNameUsingGET(this.selectedCategory)
+    this.queryResourceService.findStockCurrentByCategoryNameAndStoreIdUsingGET({
+      storeId: this.storeId,
+      categoryName: this.selectedCategory
+    })
       .subscribe(data => {
         loader.dismiss();
         console.log('Category ' , this.selectedCategory , ' Produts ' , data);

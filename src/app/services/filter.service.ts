@@ -42,6 +42,11 @@ export class FilterService {
     return this.locationBehaviour;
   }
 
+  public setCoordinates(latLon) {
+    this.currentCordinates = latLon;
+    this.locationBehaviour.next(latLon);
+  }
+
   public setFilter(filter) {
     this.currentFilter = filter;
     this.filterBehaviour.next(filter);

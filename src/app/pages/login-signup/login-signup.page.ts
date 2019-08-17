@@ -6,6 +6,7 @@ import { QueryResourceService } from 'src/app/api/services/query-resource.servic
 import { CommandResourceService } from 'src/app/api/services';
 import { Util } from 'src/app/services/util';
 import { ApiConfiguration } from 'src/app/api/api-configuration';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-login-signup',
@@ -27,12 +28,11 @@ export class LoginSignupPage implements OnInit {
     private commandResourceService: CommandResourceService,
     private util: Util,
     private apiConfiguration: ApiConfiguration,
-    private menuController: MenuController
+    private storage: Storage
   ) {}
 
   ngOnInit() {
     this.isLoggedIn();
-    // this.menuController.enable(false);
   }
 
   // Login and Register Methods
@@ -97,6 +97,7 @@ export class LoginSignupPage implements OnInit {
         .subscribe(
           customer => {
             console.log('Got Customer', customer);
+            this.storage.set('customer' , customer);
             loader.dismiss();
             this.util.navigateRoot();
           },
@@ -115,6 +116,7 @@ export class LoginSignupPage implements OnInit {
                 .subscribe(
                   customer => {
                     console.log('Customer Created', customer);
+                    this.storage.set('customer' , customer);
                     loader.dismiss();
                     this.util.navigateRoot();
                   },

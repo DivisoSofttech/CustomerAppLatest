@@ -4,6 +4,8 @@ import { Storage } from '@ionic/storage';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonSlides } from '@ionic/angular';
 import { QueryResourceService } from 'src/app/api/services';
+import { NGXLogger } from 'ngx-logger';
+import { FooterComponent } from 'src/app/components/footer/footer.component';
 
 @Component({
   selector: 'app-profile',
@@ -22,9 +24,13 @@ export class ProfilePage implements OnInit {
 
   contact: ContactDTO;
 
+  @ViewChild(FooterComponent , null) footer: FooterComponent;
+
+
   constructor(
     private storage: Storage,
-    private queryResource: QueryResourceService
+    private queryResource: QueryResourceService,
+    private logger: NGXLogger
   ) { }
 
   ngOnInit() {
@@ -68,6 +74,12 @@ export class ProfilePage implements OnInit {
         });
       });
     });
+  }
+
+  // Fix for Footer Button Change
+  ionViewDidEnter() {
+    this.logger.info('Ion View Did enter');
+    this.footer.setcurrentRoute('profile');
   }
 
 }

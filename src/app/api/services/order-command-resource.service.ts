@@ -13,7 +13,6 @@ import { Order } from '../models/order';
 import { AddressDTO } from '../models/address-dto';
 import { PageOfAddress } from '../models/page-of-address';
 import { DeliveryInfo } from '../models/delivery-info';
-import { OrderDTO } from '../models/order-dto';
 
 /**
  * Order Command Resource
@@ -22,12 +21,11 @@ import { OrderDTO } from '../models/order-dto';
   providedIn: 'root',
 })
 class OrderCommandResourceService extends __BaseService {
-  static readonly acceptOrderUsingPOSTPath = '/api/command/acceptOrder/{taskId}';
+  static readonly acceptOrderUsingPOSTPath = '/api/command/acceptOrder/{taskId}/{orderId}';
   static readonly initiateOrderUsingPOSTPath = '/api/command/order/initiateOrder';
   static readonly createAddressUsingPOSTPath = '/api/command/orders/addresses';
   static readonly getAllSavedAddressUsingGETPath = '/api/command/orders/addresses/{customerId}';
   static readonly collectDeliveryDetailsUsingPOSTPath = '/api/command/orders/collectDeliveryDetails/{taskId}/{orderId}';
-  static readonly updateOrderUsingPUTPath = '/api/command/updateOrder';
 
   constructor(
     config: __Configuration,
@@ -41,6 +39,8 @@ class OrderCommandResourceService extends __BaseService {
    *
    * - `taskId`: taskId
    *
+   * - `orderId`: orderId
+   *
    * - `approvalDetailsDTO`: approvalDetailsDTO
    *
    * @return OK
@@ -50,10 +50,11 @@ class OrderCommandResourceService extends __BaseService {
     let __headers = new HttpHeaders();
     let __body: any = null;
 
+
     __body = params.approvalDetailsDTO;
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/api/command/acceptOrder/${params.taskId}`,
+      this.rootUrl + `/api/command/acceptOrder/${params.taskId}/${params.orderId}`,
       __body,
       {
         headers: __headers,
@@ -72,6 +73,8 @@ class OrderCommandResourceService extends __BaseService {
    * @param params The `OrderCommandResourceService.AcceptOrderUsingPOSTParams` containing the following parameters:
    *
    * - `taskId`: taskId
+   *
+   * - `orderId`: orderId
    *
    * - `approvalDetailsDTO`: approvalDetailsDTO
    *
@@ -263,42 +266,6 @@ class OrderCommandResourceService extends __BaseService {
       __map(_r => _r.body as CommandResource)
     );
   }
-
-  /**
-   * @param orderDTO orderDTO
-   * @return OK
-   */
-  updateOrderUsingPUTResponse(orderDTO: OrderDTO): __Observable<__StrictHttpResponse<OrderDTO>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-    __body = orderDTO;
-    let req = new HttpRequest<any>(
-      'PUT',
-      this.rootUrl + `/api/command/updateOrder`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<OrderDTO>;
-      })
-    );
-  }
-  /**
-   * @param orderDTO orderDTO
-   * @return OK
-   */
-  updateOrderUsingPUT(orderDTO: OrderDTO): __Observable<OrderDTO> {
-    return this.updateOrderUsingPUTResponse(orderDTO).pipe(
-      __map(_r => _r.body as OrderDTO)
-    );
-  }
 }
 
 module OrderCommandResourceService {
@@ -312,6 +279,11 @@ module OrderCommandResourceService {
      * taskId
      */
     taskId: string;
+
+    /**
+     * orderId
+     */
+    orderId: string;
 
     /**
      * approvalDetailsDTO
