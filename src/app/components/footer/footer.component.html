@@ -1,5 +1,5 @@
-<ion-segment slot="end" [(ngModel)]="currentRoute">
-    <ion-segment-button value="restaurant" (click)="goTo('/restaurant')">
+<ion-segment slot="end">
+    <ion-segment-button [checked]="currentRoute === 'restaurant'" (click)="goTo('/restaurant')">
         <ion-icon name="list"></ion-icon>
     </ion-segment-button>  
   <ion-segment-button value="basket" (click)="goTo('/basket')">

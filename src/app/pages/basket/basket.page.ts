@@ -30,7 +30,10 @@ export class BasketPage implements OnInit {
     .subscribe(store => {
       this.store = store;
     });
+  }
 
+  clearCart() {
+    this.cart.emptyCart();
   }
 
 }
