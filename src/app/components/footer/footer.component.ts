@@ -1,5 +1,5 @@
-import { Component, OnInit, EventEmitter, Output, OnDestroy, Input } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { Component, OnInit, EventEmitter, Output, OnDestroy, Input, ViewChild } from '@angular/core';
+import { NavController, IonSegment } from '@ionic/angular';
 import { CartService } from 'src/app/services/cart.service';
 import { NGXLogger } from 'ngx-logger';
 import { RouteService } from 'src/app/services/route.service';
@@ -14,9 +14,11 @@ export class FooterComponent implements OnInit , OnDestroy {
 
   @Output() filter = new EventEmitter();
 
-  @Input() currentRoute;
+  @ViewChild(IonSegment , null) ionSegment: IonSegment; 
 
   orderCount  = 0;
+
+  cartSubscription;
 
   constructor(
     private navController: NavController,
@@ -25,7 +27,7 @@ export class FooterComponent implements OnInit , OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.cart.observableTickets
+    this.cartSubscription = this.cart.observableTickets
     .subscribe(data => {
       this.orderCount = data.length;
     });
@@ -35,12 +37,16 @@ export class FooterComponent implements OnInit , OnDestroy {
     this.navController.navigateForward(url);
   }
 
+  setcurrentRoute(url) {
+    this.ionSegment.value = url;
+  }
+
   emitFilterClick() {
-    this.filter.emit('');
+    this.filter.emit({});
   }
 
   ngOnDestroy() {
-    console.log('destroy');
+    this.cartSubscription.unsubscribe();
   }
 
 }

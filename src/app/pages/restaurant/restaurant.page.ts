@@ -6,6 +6,7 @@ import { IonInfiniteScroll, IonRefresher, IonSlides } from '@ionic/angular';
 import { NGXLogger } from 'ngx-logger';
 import { MapComponent } from 'src/app/components/map/map.component';
 import { RouteService } from 'src/app/services/route.service';
+import { FooterComponent } from 'src/app/components/footer/footer.component';
 
 @Component({
   selector: 'app-restaurant',
@@ -25,6 +26,9 @@ export class RestaurantPage implements OnInit {
   @ViewChild(IonInfiniteScroll , null) ionInfiniteScroll: IonInfiniteScroll;
   @ViewChild(IonRefresher , null) IonRefresher: IonRefresher;
   @ViewChild(MapComponent , null) mapComponent: MapComponent;
+  @ViewChild(FooterComponent , null) footer: FooterComponent;
+
+
 
   constructor(
     private filter: FilterService,
@@ -97,4 +101,11 @@ export class RestaurantPage implements OnInit {
   toggleFilteromponent() {
     this.showFilters = !this.showFilters;
   }
+
+  // Fix for Footer
+  ionViewDidEnter() {
+    this.logger.info('Ion View Did enter');
+    this.footer.setcurrentRoute('restaurant');
+  }
+
 }
