@@ -34,9 +34,9 @@
     <ion-searchbar
       showCancelButton
       debounce="1500"
-      placeholder="Enter Restaurant Name"
+      placeholder="Search"
       (ionCancel)="toggleSearchBar()"
-      (ionChange)="searchRestaurants($event)"
+      (ionChange)="search($event)"
     ></ion-searchbar>
   </ion-buttons>
 
@@ -61,12 +61,25 @@
 
 <ion-content
   class="container"
-  [style.display]="(storeSearchResults.length > 0 && showSearchBar === true) ? 'block' : 'none'"
+  [style.display]="(showSearchPane === true && showSearchBar === true) ? 'block' : 'none'"
 >
-  <app-restaurant-card
-    *ngFor="let store of storeSearchResults"
-    [store]="store"
-  ></app-restaurant-card>
+  <ion-grid >
+    <ion-row *ngIf="storeSearchResults.length > 0">
+      <app-restaurant-card
+      *ngFor="let store of storeSearchResults"
+      [store]="store"
+    ></app-restaurant-card>
+    </ion-row>
+    <ion-row 
+      *ngIf="storeSearchResults.length === 0"
+      class="vertical-align-center"
+    >
+      <ion-col text-center>
+        <p>No Results Found(0)</p>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
 
   <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
     <ion-infinite-scroll-content

@@ -1,19 +1,25 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
+        <ion-title *ngIf="product !== undefined">Add Auxilary</ion-title>
+    </ion-buttons>
+    <ion-buttons slot="end">
       <ion-button (click)="dismiss()">
-        <ion-icon name="arrow-back"></ion-icon>
+        <ion-icon name="close"></ion-icon>
       </ion-button>
-      <ion-title *ngIf="product !== undefined">Add Auxilary Items For {{ product.name }}</ion-title>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
   <ion-list *ngIf="auxilaryItems.length > 0">
-    <ion-label margin>Auxilary Items</ion-label>
     <app-auxilary-product-card
       *ngFor="let a of auxilaryItems"
       [auxilaryItem]="a.auxilaryItem"
+      [product]="a.product"
+      (auxilaryUpdated)="auxilaryUpated($event)"
     ></app-auxilary-product-card>
   </ion-list>
 </ion-content>
+<ion-footer>
+  <ion-button expand="block" margin (click)="addToCart()">Done</ion-button>
+</ion-footer>

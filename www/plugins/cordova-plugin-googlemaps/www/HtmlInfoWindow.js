@@ -1,5 +1,4 @@
-cordova.define("cordova-plugin-googlemaps.HtmlInfoWindow", function(require, exports, module) {
-
+cordova.define("cordova-plugin-googlemaps.HtmlInfoWindow", function(require, exports, module) { 
 var utils = require('cordova/utils'),
   event = require('./event'),
   BaseClass = require('./BaseClass');

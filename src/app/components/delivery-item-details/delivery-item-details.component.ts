@@ -3,6 +3,8 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { OrderLine, Store, Order } from 'src/app/api/models';
 import { QueryResourceService, OfferCommandResourceService } from 'src/app/api/services';
 import { NGXLogger } from 'ngx-logger';
+import { ShowAuxilaryModalComponent } from '../show-auxilary-modal/show-auxilary-modal.component';
+import { PopoverController } from '@ionic/angular';
 
 @Component({
   selector: 'app-delivery-item-details',
@@ -17,7 +19,15 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
 
   deliveryCharge;
 
-  products = [];
+  products = {
+
+    length: 0
+  };
+
+  auxilaryProducts = {
+
+    lenght: 0
+  };
 
   store: Store;
 
@@ -25,11 +35,16 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
 
   cartSubscription;
 
+  productGetSubscription = { };
+
+  productsGot = false;
+
   constructor(
     private cart: CartService,
     private queryResource: QueryResourceService,
     private offerCommandResource: OfferCommandResourceService,
-    private logger: NGXLogger
+    private logger: NGXLogger,
+    private popover: PopoverController
   ) {}
 
   ngOnInit() {
@@ -43,31 +58,64 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
       this.orders = data;
       this.storeSetting = this.cart.currentShopSetting;
       this.store = this.cart.currentShop;
-      if (this.products.length === 0 && this.orders.length > 0) {
-        this.getAllProductsFromOrders();
-      }
+      this.getAllProductsFromOrders();
+      this.getAuxilaryproductsFromOrders();
     });
   }
 
-  increaseProductCount(p) {
-    this.cart.add(p);
+  increaseProductCount(product , orderLine) {
+    if (this.cart.auxilaryItems[product.id] !== undefined) {
+      this.showAddAuxilaryPopover(product);
+    } else {
+      this.cart.increase(orderLine , product);
+    }
   }
 
-  decreaseProductCount(p) {
-    this.cart.decrease(p);
+  decreaseProductCount(product , orderLine) {
+    this.cart.decrease(orderLine , product);
   }
 
-  removeOrder(o, p) {
-    this.products = this.products.filter(pr => pr !== p);
-    this.logger.info('Removing Order ', o);
-    this.cart.removeOrder(o);
+  removeOrder(orderLine, product) {
+    this.logger.info('Removing Order ', orderLine);
+    this.cart.removeOrder(orderLine);
+  }
+
+  increaseAuxilaryProductCount(product , orderLine) {
+    this.cart.increaseAuxilary(product , orderLine);
+  }
+
+  decreaseAuxilaryProductCount(product , orderLine) {
+    this.cart.decreaseAuxilary(product,orderLine);
+  }
+
+  removeAuxilaryOrder(product , orderLine) {
+    this.cart.removeAuxilary(product , orderLine);
   }
 
   getAllProductsFromOrders() {
     this.orders.forEach(o => {
-      this.queryResource.findProductUsingGET(o.productId).subscribe(p => {
-        this.products.push(p);
-      });
+      if (this.products[o.productId] === undefined) {
+        this.productGetSubscription[o.productId] = this.queryResource.findProductUsingGET(o.productId).subscribe(p => {
+          this.products[o.productId] = p;
+          if (this.orders.indexOf(o) === this.orders.length - 1) {
+            this.productsGot = true;
+            this.products.length = this.orders.length;
+          }
+        });
+      }
+    });
+  }
+
+  getAuxilaryproductsFromOrders() {
+    this.orders.forEach(o => {
+      if (o.requiedAuxilaries !== undefined && o.requiedAuxilaries.length > 0) {
+        o.requiedAuxilaries.forEach(a => {
+          this.queryResource.findProductUsingGET(a.productId)
+          .subscribe(data => {
+            this.auxilaryProducts[a.productId] = data;
+          });
+        });
+      }
     });
   }
 
@@ -84,7 +132,24 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
+  async showAddAuxilaryPopover(p) {
+    const popoverElement = await this.popover.create({
+      component: ShowAuxilaryModalComponent,
+      componentProps: {
+          auxilaryItems: this.cart.auxilaryItems[p.id],
+          product: p
+        }
+    });
+    return await popoverElement.present();
+  }
+
   ngOnDestroy() {
     this.cartSubscription.unsubscribe();
+    this.orders.forEach(o => {
+      if (this.productGetSubscription[o.productId] !== undefined) {
+        this.productGetSubscription[o.productId].unsubscribe();
+      }
+    });
   }
+
 }

@@ -31,6 +31,8 @@ export class HeaderComponent implements OnInit {
 
   showPlaceSearch = false;
 
+  showSearchPane =  false;
+
   searchTerm = '';
 
   pageCount = 0;
@@ -53,6 +55,8 @@ export class HeaderComponent implements OnInit {
     this.logger.info('SearchBar Toggled - View' , this.showSearchBar);
     this.showPlaceSearch = false;
     this.showSearchBar = !this.showSearchBar;
+    this.showSearchPane = !this.showSearchPane;
+
   }
 
   togglePlaceSearch() {
@@ -105,16 +109,15 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  getRestaurantsByName(i) {
+  getSearchResults(i) {
     this.queryResource
-      .findStoreBySearchTermUsingGET({
+      .headerUsingGET({
         searchTerm: this.searchTerm,
         page: 0
       })
       .subscribe(result => {
         console.log(result.content);
         if (result.content.length === 0) {
-          this.util.createToast('Sorry, couldn\'t find any match');
           return;
         } else {
           ++i;
@@ -128,16 +131,16 @@ export class HeaderComponent implements OnInit {
       });
   }
 
-  searchRestaurants(event) {
+  search(event) {
     this.logger.info('Getting Restaurants By Name');
     this.searchTerm = event.detail.value;
     this.storeSearchResults = [];
-    this.getRestaurantsByName(0);
+    this.getSearchResults(0);
   }
 
   loadMoreData() {
     this.logger.info('Loading More Data');
     this.pageCount++;
-    this.getRestaurantsByName(this.pageCount);
+    this.getSearchResults(this.pageCount);
   }
 }

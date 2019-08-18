@@ -4,6 +4,7 @@ import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angu
 import { StockCurrent } from 'src/app/api/models';
 import { IonInfiniteScroll } from '@ionic/angular';
 import { NGXLogger } from 'ngx-logger';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-store-header',
@@ -18,18 +19,22 @@ export class StoreHeaderComponent implements OnInit {
 
   showSearchBar = false;
 
+  showSearchPane = false;
+
   stockCurrents: StockCurrent[] = [];
 
   searchTerm = '';
 
   pageCount = 0;
 
+  @Input() storeId;
+
   @ViewChild(IonInfiniteScroll, null) infiniteScroll: IonInfiniteScroll;
 
   constructor(
     private queryResource: QueryResourceService,
     private util: Util,
-    private logger: NGXLogger
+    private logger: NGXLogger,
   ) {}
 
   ngOnInit() {}
@@ -38,6 +43,7 @@ export class StoreHeaderComponent implements OnInit {
     this.logger.info('Hiding SearchBar and Emitting Event');
     this.searchEnable.emit({});
     this.showSearchBar = !this.showSearchBar;
+    this.showSearchPane = !this.showSearchPane;
   }
 
   toggleInfiniteScroll() {
@@ -46,8 +52,9 @@ export class StoreHeaderComponent implements OnInit {
 
   getProductsByName(i) {
     this.queryResource
-      .findStockCurrentByProductNameUsingGET({
+      .findStockCurrentByProductNameAndStoreIdUsingGET({
         name: this.searchTerm,
+        storeId: this.storeId,
         page: i
       })
       .subscribe(data => {

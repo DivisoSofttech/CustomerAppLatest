@@ -100,15 +100,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
 /* harmony import */ var src_app_api_services__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/api/services */ "./src/app/api/services.ts");
+/* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ngx-logger */ "./node_modules/ngx-logger/fesm2015/ngx-logger.js");
+/* harmony import */ var src_app_components_footer_footer_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/components/footer/footer.component */ "./src/app/components/footer/footer.component.ts");
+
+
 
 
 
 
 
 let ProfilePage = class ProfilePage {
-    constructor(storage, queryResource) {
+    constructor(storage, queryResource, logger) {
         this.storage = storage;
         this.queryResource = queryResource;
+        this.logger = logger;
         this.currentSegment = 'frequently';
     }
     ngOnInit() {
@@ -154,15 +159,25 @@ let ProfilePage = class ProfilePage {
             });
         });
     }
+    // Fix for Footer Button Change
+    ionViewDidEnter() {
+        this.logger.info('Ion View Did enter');
+        this.footer.setcurrentRoute('profile');
+    }
 };
 ProfilePage.ctorParameters = () => [
     { type: _ionic_storage__WEBPACK_IMPORTED_MODULE_1__["Storage"] },
-    { type: src_app_api_services__WEBPACK_IMPORTED_MODULE_4__["QueryResourceService"] }
+    { type: src_app_api_services__WEBPACK_IMPORTED_MODULE_4__["QueryResourceService"] },
+    { type: ngx_logger__WEBPACK_IMPORTED_MODULE_5__["NGXLogger"] }
 ];
 tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ViewChild"])(_ionic_angular__WEBPACK_IMPORTED_MODULE_3__["IonSlides"], null),
     tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", _ionic_angular__WEBPACK_IMPORTED_MODULE_3__["IonSlides"])
 ], ProfilePage.prototype, "ionSlides", void 0);
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ViewChild"])(src_app_components_footer_footer_component__WEBPACK_IMPORTED_MODULE_6__["FooterComponent"], null),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", src_app_components_footer_footer_component__WEBPACK_IMPORTED_MODULE_6__["FooterComponent"])
+], ProfilePage.prototype, "footer", void 0);
 ProfilePage = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Component"])({
         selector: 'app-profile',
@@ -170,7 +185,8 @@ ProfilePage = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         styles: [__webpack_require__(/*! ./profile.page.scss */ "./src/app/pages/profile/profile.page.scss")]
     }),
     tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_ionic_storage__WEBPACK_IMPORTED_MODULE_1__["Storage"],
-        src_app_api_services__WEBPACK_IMPORTED_MODULE_4__["QueryResourceService"]])
+        src_app_api_services__WEBPACK_IMPORTED_MODULE_4__["QueryResourceService"],
+        ngx_logger__WEBPACK_IMPORTED_MODULE_5__["NGXLogger"]])
 ], ProfilePage);
 
 

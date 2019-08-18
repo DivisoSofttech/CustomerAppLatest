@@ -31,6 +31,7 @@ export class ProductCardComponent implements OnInit {
   constructor(
     private favourite: FavouriteService,
     private modalController: ModalController,
+    private popover: PopoverController,
     private queryResource: QueryResourceService,
     private router: Router,
     private cartService: CartService,
@@ -84,8 +85,8 @@ export class ProductCardComponent implements OnInit {
   
     if(this.auxilaries.length > 0 && this.stockCurrent.product.isAuxilaryItem === false) {
       this.logger.info('Add Auxilary Items ' , this.auxilaries);
-      this.showAddAuxilaryModal();
-      this.cartService.addProduct(stock.product, stock , this.store);
+      this.cartService.addAuxilary(this.stockCurrent.product , this.auxilaries);
+      this.showAddAuxilaryPopover();
     } else {
       this.logger.info('No Auxilary Items ' , this.auxilaries);
       this.cartService.addProduct(stock.product, stock , this.store);
@@ -96,27 +97,27 @@ export class ProductCardComponent implements OnInit {
       this.cartService.removeProduct(stock);
   }
 
-  async showAddAuxilaryModal() {
-
-    const modal = await this.modalController.create(
-      {
-        component: ShowAuxilaryModalComponent,
-        componentProps: {
+  async showAddAuxilaryPopover() {
+    this.cartService.addShop(this.store);
+    const popoverElement = await this.popover.create({
+      component: ShowAuxilaryModalComponent,
+      componentProps: {
           auxilaryItems: this.auxilaries,
           product: this.stockCurrent.product
         }
-      }
-    );
-    modal.present();
+    });
+    return await popoverElement.present();
   }
 
   checkIfOrdered() {
     this.cartService.observableTickets
     .subscribe(data => {
-      const p = data.filter(o => o.productId === this.stockCurrent.product.id);
-      if (p.length > 0) {
-        this.orderCount = p[0].quantity;
-      } else {
+      const ol = data.filter(o => o.productId === this.stockCurrent.product.id);
+      this.orderCount = 0;
+      ol.forEach(o => {
+        this.orderCount = this.orderCount + o.quantity;
+      });
+      if (ol.length === 0) {
         this.orderCount = 0;
       }
     });

@@ -2,6 +2,7 @@ import { BannerDTO } from './../../api/models/banner-dto';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { IonSlides, Platform } from '@ionic/angular';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-banner',
@@ -22,7 +23,8 @@ export class BannerComponent implements OnInit {
 
   constructor(
     private platform: Platform,
-    private queryResource: QueryResourceService
+    private queryResource: QueryResourceService,
+    private logger: NGXLogger
   ) {}
 
   ngOnInit() {
@@ -43,12 +45,12 @@ export class BannerComponent implements OnInit {
   getBanners() {
     this.queryResource.findStoreBannersUsingGET({})
     .subscribe(data => {
-      console.log('Banners Got');
+      this.logger.info('Banners got', data);
       this.banners = data;
       this.slides.startAutoplay();
     },
     err => {
-      console.log('Error getting banners');
+      this.logger.warn('Unable to get Banners', err);
     });
   }
 

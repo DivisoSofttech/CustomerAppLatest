@@ -1,5 +1,4 @@
-cordova.define("cordova-plugin-googlemaps.Thread", function(require, exports, module) {
-// Thread.js
+cordova.define("cordova-plugin-googlemaps.Thread", function(require, exports, module) { // Thread.js
 // https://threadjs.deep-rain.com
 // https://github.com/deep-rain/thread
 //                               Apache License

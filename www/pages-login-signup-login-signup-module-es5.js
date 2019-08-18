@@ -91,6 +91,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var src_app_api_services__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/api/services */ "./src/app/api/services.ts");
 /* harmony import */ var src_app_services_util__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/services/util */ "./src/app/services/util.ts");
 /* harmony import */ var src_app_api_api_configuration__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/api/api-configuration */ "./src/app/api/api-configuration.ts");
+/* harmony import */ var _ionic_storage__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @ionic/storage */ "./node_modules/@ionic/storage/fesm5/ionic-storage.js");
+
 
 
 
@@ -100,13 +102,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var LoginSignupPage = /** @class */ (function () {
-    function LoginSignupPage(keycloakService, queryResourceService, commandResourceService, util, apiConfiguration, menuController) {
+    function LoginSignupPage(keycloakService, queryResourceService, commandResourceService, util, apiConfiguration, storage) {
         this.keycloakService = keycloakService;
         this.queryResourceService = queryResourceService;
         this.commandResourceService = commandResourceService;
         this.util = util;
         this.apiConfiguration = apiConfiguration;
-        this.menuController = menuController;
+        this.storage = storage;
         this.username = '';
         this.password = '';
         this.email = '';
@@ -115,7 +117,6 @@ var LoginSignupPage = /** @class */ (function () {
     }
     LoginSignupPage.prototype.ngOnInit = function () {
         this.isLoggedIn();
-        // this.menuController.enable(false);
     };
     // Login and Register Methods
     LoginSignupPage.prototype.login = function () {
@@ -175,6 +176,7 @@ var LoginSignupPage = /** @class */ (function () {
                 .findCustomerByReferenceUsingGET(reference)
                 .subscribe(function (customer) {
                 console.log('Got Customer', customer);
+                _this.storage.set('customer', customer);
                 loader.dismiss();
                 _this.util.navigateRoot();
             }, function (err) {
@@ -188,6 +190,7 @@ var LoginSignupPage = /** @class */ (function () {
                     })
                         .subscribe(function (customer) {
                         console.log('Customer Created', customer);
+                        _this.storage.set('customer', customer);
                         loader.dismiss();
                         _this.util.navigateRoot();
                     }, function (eror) {
@@ -251,7 +254,7 @@ var LoginSignupPage = /** @class */ (function () {
         { type: src_app_api_services__WEBPACK_IMPORTED_MODULE_5__["CommandResourceService"] },
         { type: src_app_services_util__WEBPACK_IMPORTED_MODULE_6__["Util"] },
         { type: src_app_api_api_configuration__WEBPACK_IMPORTED_MODULE_7__["ApiConfiguration"] },
-        { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["MenuController"] }
+        { type: _ionic_storage__WEBPACK_IMPORTED_MODULE_8__["Storage"] }
     ]; };
     tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewChild"])('slides', null),
@@ -268,7 +271,7 @@ var LoginSignupPage = /** @class */ (function () {
             src_app_api_services__WEBPACK_IMPORTED_MODULE_5__["CommandResourceService"],
             src_app_services_util__WEBPACK_IMPORTED_MODULE_6__["Util"],
             src_app_api_api_configuration__WEBPACK_IMPORTED_MODULE_7__["ApiConfiguration"],
-            _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["MenuController"]])
+            _ionic_storage__WEBPACK_IMPORTED_MODULE_8__["Storage"]])
     ], LoginSignupPage);
     return LoginSignupPage;
 }());

@@ -1,5 +1,4 @@
-cordova.define("cordova-plugin-googlemaps.Geocoder", function(require, exports, module) {
-
+cordova.define("cordova-plugin-googlemaps.Geocoder", function(require, exports, module) { 
 
 /*****************************************************************************
  * Geocoder class

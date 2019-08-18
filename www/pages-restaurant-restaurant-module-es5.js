@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-header>\n  <app-header (placeChanged)=\"updatedLocation($event)\"></app-header>\n</ion-header>\n<ion-content>\n  <app-map></app-map>\n  <app-banner></app-banner>\n\n  <ion-list>\n    <div class=\"highlightText\">\n      <ion-label>\n        <h2>What's Nearby!</h2>\n      </ion-label>\n    </div>\n    <app-restaurant-card\n      *ngFor=\"let store of stores\"\n      [store]=\"store\"\n    ></app-restaurant-card>\n  </ion-list>\n\n  <app-loading *ngIf=\"showLoading === true\" [type]=\"'restaurant'\"></app-loading>\n\n  <ion-infinite-scroll threshold=\"100px\" (ionInfinite)=\"loadMoreStores($event)\">\n    <ion-infinite-scroll-content\n      loadingSpinner=\"bubbles\"\n      loadingText=\"Loading more data...\"\n    >\n    </ion-infinite-scroll-content>\n  </ion-infinite-scroll>\n  <ion-refresher slot=\"fixed\" (ionRefresh)=\"doRefresh($event)\">\n    <ion-refresher-content\n      pullingIcon=\"arrow-dropdown\"\n      pullingText=\"Pull to refresh\"\n      refreshingSpinner=\"circles\"\n    >\n    </ion-refresher-content>\n  </ion-refresher>\n</ion-content>\n<ion-footer>\n  <app-filter\n    *ngIf=\"showFilters\"\n    (closeFilter)=\"toggleFilteromponent()\"\n  ></app-filter>\n  <app-footer \n  (filter)=\"toggleFilteromponent()\"\n  [currentRoute]='restaurant'\n  ></app-footer>\n</ion-footer>\n"
+module.exports = "<ion-header>\n  <app-header (placeChanged)=\"updatedLocation($event)\"></app-header>\n</ion-header>\n<ion-content>\n  <app-map></app-map>\n  <app-banner></app-banner>\n\n  <ion-list>\n    <div class=\"highlightText\">\n      <ion-label>\n        <h2>What's Nearby!</h2>\n      </ion-label>\n    </div>\n    <app-restaurant-card\n      *ngFor=\"let store of stores\"\n      [store]=\"store\"\n    ></app-restaurant-card>\n  </ion-list>\n\n  <app-loading *ngIf=\"showLoading === true\" [type]=\"'restaurant'\"></app-loading>\n\n  <ion-infinite-scroll threshold=\"100px\" (ionInfinite)=\"loadMoreStores($event)\">\n    <ion-infinite-scroll-content\n      loadingSpinner=\"bubbles\"\n      loadingText=\"Loading more data...\"\n    >\n    </ion-infinite-scroll-content>\n  </ion-infinite-scroll>\n  <ion-refresher slot=\"fixed\" (ionRefresh)=\"doRefresh($event)\">\n    <ion-refresher-content\n      pullingIcon=\"arrow-dropdown\"\n      pullingText=\"Pull to refresh\"\n      refreshingSpinner=\"circles\"\n    >\n    </ion-refresher-content>\n  </ion-refresher>\n</ion-content>\n<ion-footer>\n  <app-filter\n    *ngIf=\"showFilters\"\n    (closeFilter)=\"toggleFilteromponent()\"\n  ></app-filter>\n  <app-footer \n  (filter)=\"toggleFilteromponent()\"\n  ></app-footer>\n</ion-footer>\n"
 
 /***/ }),
 
@@ -109,6 +109,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
 /* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ngx-logger */ "./node_modules/ngx-logger/fesm5/ngx-logger.js");
 /* harmony import */ var src_app_components_map_map_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/components/map/map.component */ "./src/app/components/map/map.component.ts");
+/* harmony import */ var src_app_components_footer_footer_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/components/footer/footer.component */ "./src/app/components/footer/footer.component.ts");
+
 
 
 
@@ -149,7 +151,8 @@ var RestaurantPage = /** @class */ (function () {
                 stores.forEach(function (s) {
                     _this.stores.push(s);
                 });
-                _this.mapComponent.setStores(stores);
+                // Dumb data Unti provided with store location
+                _this.mapComponent.setStoreLocationMarkers(stores);
                 _this.showLoading = false;
                 _this.toggleIonRefresher();
             });
@@ -182,10 +185,16 @@ var RestaurantPage = /** @class */ (function () {
         this.ionInfiniteScroll.disabled = !this.ionInfiniteScroll.disabled;
     };
     RestaurantPage.prototype.toggleIonRefresher = function () {
+        this.logger.info('Disableing Ion Refresher');
         this.IonRefresher.complete();
     };
     RestaurantPage.prototype.toggleFilteromponent = function () {
         this.showFilters = !this.showFilters;
+    };
+    // Fix for Footer
+    RestaurantPage.prototype.ionViewDidEnter = function () {
+        this.logger.info('Ion View Did enter');
+        this.footer.setcurrentRoute('restaurant');
     };
     RestaurantPage.ctorParameters = function () { return [
         { type: _services_filter_service__WEBPACK_IMPORTED_MODULE_1__["FilterService"] },
@@ -204,6 +213,10 @@ var RestaurantPage = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ViewChild"])(src_app_components_map_map_component__WEBPACK_IMPORTED_MODULE_6__["MapComponent"], null),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", src_app_components_map_map_component__WEBPACK_IMPORTED_MODULE_6__["MapComponent"])
     ], RestaurantPage.prototype, "mapComponent", void 0);
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ViewChild"])(src_app_components_footer_footer_component__WEBPACK_IMPORTED_MODULE_7__["FooterComponent"], null),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", src_app_components_footer_footer_component__WEBPACK_IMPORTED_MODULE_7__["FooterComponent"])
+    ], RestaurantPage.prototype, "footer", void 0);
     RestaurantPage = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Component"])({
             selector: 'app-restaurant',

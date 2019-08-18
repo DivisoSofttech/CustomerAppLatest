@@ -1,5 +1,4 @@
-cordova.define("cordova-plugin-googlemaps.MarkerCluster", function(require, exports, module) {
-
+cordova.define("cordova-plugin-googlemaps.MarkerCluster", function(require, exports, module) { 
 /* eslint no-useless-escape: off */
 
 var utils = require('cordova/utils'),
@@ -334,16 +333,11 @@ MarkerCluster.prototype.remove = function (callback) {
 
   keys = Object.keys(self._markerMap);
   keys.forEach(function (markerId) {
-    try {
-      self._markerMap[markerId].remove();
-    } catch(e) {
-      // ignore
-    }
-  });
-  keys.forEach(function (markerId) {
-    self._markerMap[markerId].destroy();
-    self._markerMap[markerId] = undefined;
-    delete self._markerMap[markerId];
+    self._markerMap[markerId].remove(function() {
+      self._markerMap[markerId].destroy();
+      self._markerMap[markerId] = undefined;
+      delete self._markerMap[markerId];
+    });
   });
   if (self.boundsDraw && self.get('polygon')) {
     self.get('polygon').remove();

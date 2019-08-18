@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-buttons>\n      <ion-menu-button slot=\"start\" auto-hide=\"true\"></ion-menu-button>\n      <ion-title>Basket</ion-title>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  <app-cart\n    *ngIf=\"store !== undefined\"\n    [store]=\"store\"\n    [viewType]=\"'full'\"\n  ></app-cart>\n</ion-content>\n"
+module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-buttons>\n      <ion-menu-button slot=\"start\" auto-hide=\"true\"></ion-menu-button>\n      <ion-title>Basket</ion-title>\n    </ion-buttons>\n    <ion-buttons slot=\"end\">\n      <ion-button (click)=\"clearCart()\">\n        <ion-icon name=\"refresh-circle\"></ion-icon>\n      </ion-button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  <app-cart\n    *ngIf=\"store !== undefined\"\n    [store]=\"store\"\n    [viewType]=\"'full'\"\n  ></app-cart>\n</ion-content>\n"
 
 /***/ }),
 
@@ -115,6 +115,9 @@ var BasketPage = /** @class */ (function () {
             .subscribe(function (store) {
             _this.store = store;
         });
+    };
+    BasketPage.prototype.clearCart = function () {
+        this.cart.emptyCart();
     };
     BasketPage.ctorParameters = function () { return [
         { type: src_app_services_cart_service__WEBPACK_IMPORTED_MODULE_3__["CartService"] },
