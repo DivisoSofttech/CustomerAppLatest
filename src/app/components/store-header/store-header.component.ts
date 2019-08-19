@@ -58,12 +58,12 @@ export class StoreHeaderComponent implements OnInit {
         page: i
       })
       .subscribe(data => {
-        console.log(data);
         if (data.content.length === 0) {
           this.util.createToast('Sorry, couldn\'t find any match');
           return;
         } else {
           ++i;
+          this.logger.info('Found products For ' , this.searchTerm , data.content , 'page ' , i);
           if (i === data.totalPages) {
             this.toggleInfiniteScroll();
           }
