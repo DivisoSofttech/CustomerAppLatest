@@ -19,6 +19,8 @@ export class CartService {
   currentShop: Store;
   currentShopSetting;
   auxilaryItems = {};
+  currentDeliveryTypes;
+  MAX_ORDERS: number = 10;
 
   constructor(
     private alertController: AlertController,
@@ -53,6 +55,7 @@ export class CartService {
       this.currentShop = shop;
       this.currentShopId = shop.id;
       this.getStoreSettings();
+      this.getStoreDeliveryType();
     }
 
     if (this.currentShopId === shop.id) {
@@ -87,6 +90,21 @@ export class CartService {
 
   getStoreSettings() {
     this.currentShopSetting = this.currentShop.storeSettings;
+    this.getStoreDeliveryType();
+  }
+
+  getStoreDeliveryType() {
+    this.queryResource
+    .findAllDeliveryTypesByStoreIdUsingGET({
+      storeId: this.currentShopId
+    })
+    .subscribe(
+      success => {
+        console.error(success.content);
+        this.currentDeliveryTypes = success.content;
+      },
+      err => {}
+    );
   }
 
   add(product: Product) {
@@ -173,12 +191,15 @@ export class CartService {
   }
 
   addShop(shop) {
-    this.currentShop = shop;
-    this.currentShopId = shop.id;
-    this.getStoreSettings();
+    if(this.currentShopId === 0) {
+      this.currentShop = shop;
+      this.currentShopId = shop.id;
+      this.getStoreSettings();
+    }
   }
 
   addOrder(order: OrderLine) {
+
     this.orderLines.push(order);
     console.log(this.orderLines.length);
     this.updateCart();
@@ -187,11 +208,11 @@ export class CartService {
   increase(o , p) {
     this.orderLines.forEach((ol , i) => {
       if (ol === o) {
-        if (this.orderLines[i].quantity < 5) {
+        if (this.orderLines[i].quantity < this.MAX_ORDERS) {
           this.orderLines[i].quantity++;
           this.updateCart();
         } else {
-          alert('Order is limited to 5 items');
+          alert('Order is limited to ' + this.MAX_ORDERS + ' items');
         }
       }
     });

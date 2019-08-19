@@ -135,3 +135,11 @@
       </ion-card>
 </div>
 
+<div *ngIf="type==='delivery'">
+  <ion-item lines="full" *ngFor="let a of [1,2,3,4,5]">
+      <ion-skeleton-text animated></ion-skeleton-text>
+      <ion-skeleton-text animated></ion-skeleton-text>
+      <ion-skeleton-text animated></ion-skeleton-text>
+  </ion-item>
+</div>
+
