@@ -4,7 +4,6 @@
   <ion-item>
     <ion-label>Addresses</ion-label>
     <ion-select  cancelText="Add New Address" okText="ok"
-    (ionCancel)=" addNewAddress()"
     (ionChange)="addressChanged($event)"
     value="{{currentId}}">
       <ion-select-option *ngFor="let address of addresses" value="{{address.id}}">{{address.name}}</ion-select-option>

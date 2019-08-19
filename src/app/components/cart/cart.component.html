@@ -10,9 +10,6 @@
     </ion-col>
     <ion-col size="4" text-center no-padding [routerLink]="['/basket']">
       <ion-label  class="cursor highlight">View Cart</ion-label>
-      <ion-label class="button-cart highlight" routerLinkActive="router-link-active">
-        <ion-icon name="basket" slot="icon-only"></ion-icon>
-      </ion-label>
     </ion-col>
   </ion-row>
 </ion-grid>
@@ -111,7 +108,7 @@
   </ion-segment>
 
   <div>
-    <app-delivery-item-details></app-delivery-item-details>
+    <app-delivery-item-details class="vertical-align-center ion-padding-top ion-margin-top"></app-delivery-item-details>
   </div>
 </div>
 

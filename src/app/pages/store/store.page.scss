@@ -1,7 +1,3 @@
-ion-list {
-  width: 100%;
-}
-
 ion-footer {
   background: blue;
   color: white;
@@ -10,3 +6,23 @@ ion-footer {
 app-loading {
   width: 100%;
 }
+.animation-duration {
+  animation-duration: 700ms;
+  animation-delay: 0s;
+}
+
+ion-slide {
+  overflow: hidden;
+}
+
+app-review {
+  width: 100%;
+  margin-right: 2%;
+  margin-left: 2%;
+}
+
+app-category-wise-products-card {
+  margin-left: 2%;
+  margin-right: 2%;
+}
+

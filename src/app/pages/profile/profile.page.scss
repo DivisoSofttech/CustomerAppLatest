@@ -1,3 +1,7 @@
-app-favourite-list , app-frequently-ordered-list {
+app-favourite-list, app-frequently-ordered-list, app-history-list{
     width: 100%;
+}
+
+ion-slide {
+    overflow: hidden;
 }

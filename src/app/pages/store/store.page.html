@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-fab *ngIf="showCatgeoryFilterFab === true" vertical="top" horizontal="end" slot="fixed">
+  <ion-fab class="animated animation-duration" [ngClass]="currentSegment === 'menu' ? 'rotateIn' : 'rotateOut'" vertical="top" horizontal="end" slot="fixed">
     <ion-fab-button (click)="categoryListPopOver($event)">
       <ion-icon name="pizza"></ion-icon>
     </ion-fab-button>
@@ -52,8 +52,9 @@
           </ion-list>
         </ion-row>
         <ion-row *ngIf="showCategoryWiseProducts === true">
-          <ion-list *ngFor="let category of categories">
-              <ion-item color="light">
+          <ion-col size-lg="6" size-md="6" *ngFor="let category of categories" no-margin no-padding>
+          <ion-list>
+              <ion-item color="light" lines="none">
                   <ion-avatar>
                       <ion-img
                       [src]="
@@ -73,6 +74,7 @@
               [store]="store">
               </app-category-wise-products-card>
           </ion-list>
+          </ion-col>
         </ion-row>
       </ion-grid>
     </ion-slide>
@@ -115,6 +117,6 @@
   </ion-refresher>
 </ion-content>
 
-<ion-footer>
-  <app-cart *ngIf="currentSegment === 'menu'"></app-cart>
+<ion-footer class="animated animation-duration" [ngClass]="currentSegment === 'menu' ? 'slideInUp': 'slideOutDown'" >
+  <app-cart></app-cart>
 </ion-footer>

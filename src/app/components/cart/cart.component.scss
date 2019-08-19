@@ -1,14 +1,22 @@
-ion-icon[name='basket'] {
-    font-size: 13px;
-    margin-left: 2px;
+.cart {
+    font-size: 75vw;
+    opacity: 0.5;
+}
+
+@media only screen and (min-width: 640px) {
+    .cart {
+        font-size: 23vw;
+        opacity: 0.5;
+    }
+}
+
+
+.overlay-cart-icon {
+    font-size: 25px;
 }
 
 .h35 {
     height: 40vh;
-}
-
-.h35 ion-icon {
-    font-size: 70vw;
 }
 
 .bg-grey {
