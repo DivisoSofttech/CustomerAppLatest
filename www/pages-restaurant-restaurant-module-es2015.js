@@ -7,7 +7,11 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
+<<<<<<< HEAD
 module.exports = "<ion-header>\r\n  <app-header (placeChanged)=\"updatedLocation($event)\"></app-header>\r\n</ion-header>\r\n<ion-content>\r\n  <app-map></app-map>\r\n  <app-banner></app-banner>\r\n\r\n  <ion-list>\r\n    <div class=\"highlightText\">\r\n      <ion-label>\r\n        <h2>What's Nearby!</h2>\r\n      </ion-label>\r\n    </div>\r\n    <app-restaurant-card\r\n      *ngFor=\"let store of stores\"\r\n      [store]=\"store\"\r\n    ></app-restaurant-card>\r\n  </ion-list>\r\n\r\n  <app-loading *ngIf=\"showLoading === true\" [type]=\"'restaurant'\"></app-loading>\r\n\r\n  <ion-infinite-scroll threshold=\"100px\" (ionInfinite)=\"loadMoreStores($event)\">\r\n    <ion-infinite-scroll-content\r\n      loadingSpinner=\"bubbles\"\r\n      loadingText=\"Loading more data...\"\r\n    >\r\n    </ion-infinite-scroll-content>\r\n  </ion-infinite-scroll>\r\n  <ion-refresher slot=\"fixed\" (ionRefresh)=\"doRefresh($event)\">\r\n    <ion-refresher-content\r\n      pullingIcon=\"arrow-dropdown\"\r\n      pullingText=\"Pull to refresh\"\r\n      refreshingSpinner=\"circles\"\r\n    >\r\n    </ion-refresher-content>\r\n  </ion-refresher>\r\n</ion-content>\r\n<ion-footer>\r\n  <app-filter\r\n    *ngIf=\"showFilters\"\r\n    (closeFilter)=\"toggleFilteromponent()\"\r\n  ></app-filter>\r\n  <app-footer \r\n  (filter)=\"toggleFilteromponent()\"\r\n  ></app-footer>\r\n</ion-footer>\r\n"
+=======
+module.exports = "<ion-header>\n  <app-header (placeChanged)=\"updatedLocation($event)\"></app-header>\n</ion-header>\n<ion-content>\n  <app-map></app-map>\n  <app-banner></app-banner>\n\n  <ion-list>\n    <div class=\"highlightText\">\n      <ion-label>\n        <h2>What's Nearby!</h2>\n      </ion-label>\n    </div>\n    <app-restaurant-card\n      *ngFor=\"let store of stores\"\n      [store]=\"store\"\n    ></app-restaurant-card>\n  </ion-list>\n\n  <app-loading *ngIf=\"showLoading === true\" [type]=\"'restaurant'\"></app-loading>\n\n  <ion-infinite-scroll threshold=\"100px\" (ionInfinite)=\"loadMoreStores($event)\">\n    <ion-infinite-scroll-content\n      loadingSpinner=\"bubbles\"\n      loadingText=\"Loading more data...\"\n    >\n    </ion-infinite-scroll-content>\n  </ion-infinite-scroll>\n  <ion-refresher slot=\"fixed\" (ionRefresh)=\"doRefresh($event)\">\n    <ion-refresher-content\n      pullingIcon=\"arrow-dropdown\"\n      pullingText=\"Pull to refresh\"\n      refreshingSpinner=\"circles\"\n    >\n    </ion-refresher-content>\n  </ion-refresher>\n</ion-content>\n<ion-footer>\n  <app-filter\n    *ngIf=\"showFilters\"\n    (closeFilter)=\"toggleFilteromponent()\"\n  ></app-filter>\n  <app-footer \n  (filter)=\"toggleFilteromponent()\"\n  ></app-footer>\n</ion-footer>\n"
+>>>>>>> 55c1a055289f9a1985a8aa8e0cc24c2f3ce4e5f7
 
 /***/ }),
 
@@ -147,7 +151,8 @@ let RestaurantPage = class RestaurantPage {
                 stores.forEach(s => {
                     this.stores.push(s);
                 });
-                this.mapComponent.setStores(stores);
+                // Dumb data Unti provided with store location
+                this.mapComponent.setStoreLocationMarkers(stores);
                 this.showLoading = false;
                 this.toggleIonRefresher();
             });
@@ -179,6 +184,7 @@ let RestaurantPage = class RestaurantPage {
         this.ionInfiniteScroll.disabled = !this.ionInfiniteScroll.disabled;
     }
     toggleIonRefresher() {
+        this.logger.info('Disableing Ion Refresher');
         this.IonRefresher.complete();
     }
     toggleFilteromponent() {

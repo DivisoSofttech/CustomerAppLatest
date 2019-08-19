@@ -1,5 +1,4 @@
-cordova.define("cordova-plugin-googlemaps.Polygon", function(require, exports, module) {
-var utils = require('cordova/utils'),
+cordova.define("cordova-plugin-googlemaps.Polygon", function(require, exports, module) { var utils = require('cordova/utils'),
   common = require('./Common'),
   Overlay = require('./Overlay');
 

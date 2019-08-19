@@ -5,7 +5,6 @@ import { Util } from 'src/app/services/util';
 import { IonInfiniteScroll, IonRefresher, IonSlides } from '@ionic/angular';
 import { NGXLogger } from 'ngx-logger';
 import { MapComponent } from 'src/app/components/map/map.component';
-import { RouteService } from 'src/app/services/route.service';
 import { FooterComponent } from 'src/app/components/footer/footer.component';
 
 @Component({
@@ -60,7 +59,9 @@ export class RestaurantPage implements OnInit {
         stores.forEach(s => {
           this.stores.push(s);
         });
-        this.mapComponent.setStores(stores);
+
+        // show stores in map
+        this.mapComponent.setStoreLocationMarkers(stores);
         this.showLoading = false;
         this.toggleIonRefresher();
       });
@@ -95,6 +96,7 @@ export class RestaurantPage implements OnInit {
   }
 
   toggleIonRefresher() {
+    this.logger.info('Disableing Ion Refresher');
     this.IonRefresher.complete();
   }
 
@@ -104,7 +106,6 @@ export class RestaurantPage implements OnInit {
 
   // Fix for Footer
   ionViewDidEnter() {
-    this.logger.info('Ion View Did enter');
     this.footer.setcurrentRoute('restaurant');
   }
 

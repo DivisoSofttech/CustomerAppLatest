@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { CartService } from 'src/app/services/cart.service';
-import { OrderLine, AuxilaryOrderLine } from 'src/app/api/models';
+import { OrderLine, AuxilaryOrderLine, Product } from 'src/app/api/models';
 
 @Component({
   selector: 'app-auxilary-product-card',
@@ -9,20 +9,40 @@ import { OrderLine, AuxilaryOrderLine } from 'src/app/api/models';
 })
 export class AuxilaryProductCardComponent implements OnInit {
 
-  order: AuxilaryOrderLine;
+  @Input() auxilaryItem: Product;
 
-  @Input() auxilaryItem;
+  auxilaryOrderLine: AuxilaryOrderLine = {};
 
-  orderCount = 0;
+  @Output() auxilaryUpdated = new EventEmitter();
+
 
   constructor(
     private cart: CartService
   ) { }
 
-  ngOnInit() {}
-
-  addToCart(auxilaryItem) {
-
+  ngOnInit() {
+    this.auxilaryOrderLine = {
+      productId: this.auxilaryItem.id,
+      pricePerUnit: this.auxilaryItem.sellingPrice,
+      quantity: 0
+    };
   }
+
+  add() {
+    this.auxilaryOrderLine.quantity++;
+    this.auxilaryOrderLine.total = this.auxilaryOrderLine.quantity * this.auxilaryOrderLine.pricePerUnit;
+    if(this.auxilaryOrderLine.quantity > 0) {
+      this.auxilaryUpdated.emit(this.auxilaryOrderLine);
+    }
+  }
+
+  remove() {
+    if(this.auxilaryOrderLine.quantity !== 0) {
+      this.auxilaryOrderLine.quantity--;
+      this.auxilaryOrderLine.total = this.auxilaryOrderLine.quantity * this.auxilaryOrderLine.pricePerUnit;
+      this.auxilaryUpdated.emit(this.auxilaryOrderLine);
+    }
+  }
+
 
 }

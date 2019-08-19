@@ -2,7 +2,6 @@ import { Component, OnInit, EventEmitter, Output, OnDestroy, Input, ViewChild } 
 import { NavController, IonSegment } from '@ionic/angular';
 import { CartService } from 'src/app/services/cart.service';
 import { NGXLogger } from 'ngx-logger';
-import { RouteService } from 'src/app/services/route.service';
 
 
 @Component({
@@ -14,7 +13,7 @@ export class FooterComponent implements OnInit , OnDestroy {
 
   @Output() filter = new EventEmitter();
 
-  @ViewChild(IonSegment , null) ionSegment: IonSegment; 
+  @ViewChild(IonSegment , null) ionSegment: IonSegment;
 
   orderCount  = 0;
 

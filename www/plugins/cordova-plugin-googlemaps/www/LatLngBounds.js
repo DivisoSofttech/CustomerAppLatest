@@ -1,5 +1,4 @@
-cordova.define("cordova-plugin-googlemaps.LatLngBounds", function(require, exports, module) {
-var LatLng = require('./LatLng');
+cordova.define("cordova-plugin-googlemaps.LatLngBounds", function(require, exports, module) { var LatLng = require('./LatLng');
 
 /*****************************************************************************
  * LatLngBounds Class

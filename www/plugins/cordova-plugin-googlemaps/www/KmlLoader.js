@@ -1,5 +1,4 @@
-cordova.define("cordova-plugin-googlemaps.KmlLoader", function(require, exports, module) {
-
+cordova.define("cordova-plugin-googlemaps.KmlLoader", function(require, exports, module) { 
 
 
 var utils = require('cordova/utils'),
@@ -1064,7 +1063,6 @@ KmlLoader.prototype.parseLookAtTag = function(params, callback) {
 //-------------------------------
 function kmlColorToRGBA(colorStr) {
   var rgba = [];
-  colorStr = colorStr + ''; // convert to String mandatory
   colorStr = colorStr.replace('#', '');
   for (var i = 6; i >= 0; i -= 2) {
     rgba.push(parseInt(colorStr.substring(i, i + 2), 16));

@@ -59,7 +59,7 @@ class QueryResourceService extends __BaseService {
   static readonly findProductByStoreIdAndCategoryNameUsingGETPath = '/api/query/findProductByStoreIdAndCategoryName/{userId}/{categoryName}';
   static readonly findRatingReviewByStoreidAndCustomerNameUsingGETPath = '/api/query/findRatingReview/{storeId}';
   static readonly findStockCurrentByProductIdUsingGETPath = '/api/query/findStockCurrentByProductId/{productId}';
-  static readonly findStockCurrentByProductNameUsingGETPath = '/api/query/findStockCurrentByProductName/{name}';
+  static readonly findStockCurrentByProductNameAndStoreIdUsingGETPath = '/api/query/findStockCurrentByProductNameStoreId/{name}/{storeId}';
   static readonly findStockCurrentByStoreIdAndCategoryIdUsingGETPath = '/api/query/findStockCurrentByStoreIdAndCategoryId/{userId}/{categoryId}';
   static readonly findStoreBySearchTermUsingGETPath = '/api/query/findStore/{searchTerm}';
   static readonly findStoreByTypeNameUsingGETPath = '/api/query/findStoreByTypeName/{name}';
@@ -891,7 +891,9 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
-   * @param params The `QueryResourceService.FindStockCurrentByProductNameUsingGETParams` containing the following parameters:
+   * @param params The `QueryResourceService.FindStockCurrentByProductNameAndStoreIdUsingGETParams` containing the following parameters:
+   *
+   * - `storeId`: storeId
    *
    * - `name`: name
    *
@@ -903,17 +905,18 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  findStockCurrentByProductNameUsingGETResponse(params: QueryResourceService.FindStockCurrentByProductNameUsingGETParams): __Observable<__StrictHttpResponse<PageOfStockCurrent>> {
+  findStockCurrentByProductNameAndStoreIdUsingGETResponse(params: QueryResourceService.FindStockCurrentByProductNameAndStoreIdUsingGETParams): __Observable<__StrictHttpResponse<PageOfStockCurrent>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
+
 
     (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
     if (params.size != null) __params = __params.set('size', params.size.toString());
     if (params.page != null) __params = __params.set('page', params.page.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/api/query/findStockCurrentByProductName/${params.name}`,
+      this.rootUrl + `/api/query/findStockCurrentByProductNameStoreId/${params.name}/${params.storeId}`,
       __body,
       {
         headers: __headers,
@@ -929,7 +932,9 @@ class QueryResourceService extends __BaseService {
     );
   }
   /**
-   * @param params The `QueryResourceService.FindStockCurrentByProductNameUsingGETParams` containing the following parameters:
+   * @param params The `QueryResourceService.FindStockCurrentByProductNameAndStoreIdUsingGETParams` containing the following parameters:
+   *
+   * - `storeId`: storeId
    *
    * - `name`: name
    *
@@ -941,8 +946,8 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  findStockCurrentByProductNameUsingGET(params: QueryResourceService.FindStockCurrentByProductNameUsingGETParams): __Observable<PageOfStockCurrent> {
-    return this.findStockCurrentByProductNameUsingGETResponse(params).pipe(
+  findStockCurrentByProductNameAndStoreIdUsingGET(params: QueryResourceService.FindStockCurrentByProductNameAndStoreIdUsingGETParams): __Observable<PageOfStockCurrent> {
+    return this.findStockCurrentByProductNameAndStoreIdUsingGETResponse(params).pipe(
       __map(_r => _r.body as PageOfStockCurrent)
     );
   }
@@ -2900,9 +2905,14 @@ module QueryResourceService {
   }
 
   /**
-   * Parameters for findStockCurrentByProductNameUsingGET
+   * Parameters for findStockCurrentByProductNameAndStoreIdUsingGET
    */
-  export interface FindStockCurrentByProductNameUsingGETParams {
+  export interface FindStockCurrentByProductNameAndStoreIdUsingGETParams {
+
+    /**
+     * storeId
+     */
+    storeId: string;
 
     /**
      * name

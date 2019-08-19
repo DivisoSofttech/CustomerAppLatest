@@ -20,15 +20,17 @@
 </ion-toolbar>
 
 <ion-content class="container" 
-  [style.display]="(stockCurrents.length > 0 && showSearchBar === true) ? 'block' : 'none'"
-  *ngIf="showSearchBar === true">
-  <ion-list>
+  [style.display]="(showSearchPane === true && showSearchBar === true) ? 'block' : 'none'">
+  <ion-list *ngIf="stockCurrents.length > 0">
     <app-product-card
       *ngFor="let stockCurrent of stockCurrents"
       [store]="store"
       [stockCurrent]="stockCurrent"
     ></app-product-card>
   </ion-list>
+  <div *ngIf="stockCurrents.length === 0" class="vertical-align-center">
+    <p>No Results Found(0)</p>
+  </div>
 
   <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreData($event)">
     <ion-infinite-scroll-content

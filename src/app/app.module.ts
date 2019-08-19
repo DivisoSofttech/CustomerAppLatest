@@ -24,10 +24,8 @@ import { Camera } from '@ionic-native/camera/ngx';
 import { ComponentsModule } from './components/components.module';
 import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 import { OrderService } from './services/order.service';
-import { CheckoutComponent } from './components/checkout/checkout.component';
 import { LoggerModule } from 'ngx-logger';
 import {environment} from '../environments/environment';
-import { RouteService } from './services/route.service';
 
 @NgModule({
 
@@ -71,7 +69,6 @@ import { RouteService } from './services/route.service';
     FilterService,
     FavouriteService,
     CartService,
-    RouteService,
     OrderService,
     {
       provide: HTTP_INTERCEPTORS,

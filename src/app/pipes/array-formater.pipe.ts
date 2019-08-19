@@ -9,9 +9,7 @@ export class ArrayFormaterPipe implements PipeTransform {
     let str = '';
     if (value !== undefined) {
       str = Array.prototype.map.call(value, s => s.name.charAt(0).toUpperCase() + s.name.slice(1)).toString();
-      console.log(str);
       if (value.length === 1 && args !== undefined) {
-        console.log(str);
         return str + ' ' + args;
       }
     }

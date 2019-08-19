@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Product, StockCurrent, OrderLine, Store } from '../api/models';
+import { Product, StockCurrent, OrderLine, Store, AuxilaryLineItem } from '../api/models';
 import { BehaviorSubject } from 'rxjs';
 import { AlertController, NavController } from '@ionic/angular';
 import { QueryResourceService } from '../api/services';
@@ -18,8 +18,8 @@ export class CartService {
   observablePrice: BehaviorSubject<number>;
   currentShop: Store;
   currentShopSetting;
-  
-  
+  auxilaryItems = {};
+
   constructor(
     private alertController: AlertController,
     private navController: NavController,
@@ -103,17 +103,6 @@ export class CartService {
     });
   }
 
-  decrease(product : Product) {
-    this.orderLines.forEach(orderLine => {
-      if (orderLine.productId === product.id) {
-        if(orderLine.quantity > 1) {
-          orderLine.quantity--;
-          orderLine.total -= orderLine.pricePerUnit;
-          this.updateCart();  
-        }
-      }
-    });
-  }
 
   removeProduct(stockCurrent: StockCurrent) {
     this.orderLines.forEach(orderLine => {
@@ -133,21 +122,36 @@ export class CartService {
     this.updateCart();
   }
 
-
-
-
-
   // New Methods
 
   getCartDetails() {
     return this.observableTickets;
   }
 
+  calculatePrice() {
+    let orderTotal = 0;
+    let auxilaryTotal = 0;
+    this.orderLines.forEach(orderLine => {
+      if(orderLine.requiedAuxilaries !== undefined) {
+        auxilaryTotal = 0;
+        orderLine.requiedAuxilaries.forEach(auxilaryOrderLine => {
+          auxilaryOrderLine.total = auxilaryOrderLine.quantity * auxilaryOrderLine.pricePerUnit;
+          auxilaryTotal += auxilaryOrderLine.total;
+        });
+        orderLine.total = (orderLine.quantity * orderLine.pricePerUnit) + auxilaryTotal;
+      }
+      orderTotal += orderLine.total;
+    });
+    this.totalPrice = orderTotal;
+  }
+
   updateCart() {
     this.totalPrice = 0;
-    this.orderLines.forEach(order => {
-      this.totalPrice += order.total;
-    });
+    if (this.orderLines.length === 0) {
+      this.currentShop = {};
+      this.currentShopId = 0;
+    }
+    this.calculatePrice();
     this.observableTickets.next(this.orderLines);
     this.observablePrice.next(this.totalPrice);
   }
@@ -163,6 +167,86 @@ export class CartService {
     console.warn('Previous Length' , this.orderLines.length);
     this.orderLines = this.orderLines.filter(ol => ol !== order);
     console.warn('After Filter Length' , this.orderLines.length);
+    this.updateCart();
+  }
+
+  addAuxilary(p: Product , a: AuxilaryLineItem[]) {
+    if (a !== undefined) {
+      this.auxilaryItems[p.id]  = a;
+    }
+  }
+
+  addShop(shop) {
+    this.currentShop = shop;
+    this.currentShopId = shop.id;
+    this.getStoreSettings();
+  }
+
+  addOrder(order: OrderLine) {
+    this.orderLines.push(order);
+    console.log(this.orderLines.length);
+    this.updateCart();
+  }
+
+  increase(o , p) {
+    this.orderLines.forEach((ol , i) => {
+      if (ol === o) {
+        if (this.orderLines[i].quantity < 5) {
+          this.orderLines[i].quantity++;
+        } else {
+          alert('Order is limited to 5 items');
+        }
+      }
+    });
+    this.updateCart();
+  }
+
+  decrease(o , p) {
+    this.orderLines.forEach((ol , i) => {
+      if (ol === o) {
+        if (this.orderLines[i].quantity > 1) {
+          this.orderLines[i].quantity--;
+        }
+      }
+    });
+    this.updateCart();
+  }
+
+  increaseAuxilary(auxilaryItem,orderLine) {
+
+    this.orderLines.forEach( ol => {
+      if (ol === orderLine) {
+        ol.requiedAuxilaries.forEach( al => {
+          if (auxilaryItem.id === al.productId) {
+            al.quantity++;
+          }
+        });
+      }
+    });
+    this.updateCart();
+  }
+
+  decreaseAuxilary(auxilaryItem , orderLine) {
+    this.orderLines.forEach( ol => {
+      if (ol === orderLine) {
+        ol.requiedAuxilaries.forEach( al => {
+          if (auxilaryItem.id === al.productId) {
+            if(al.quantity > 1) {
+              al.quantity--;
+            }
+          }
+        });
+      }
+    });
+    this.updateCart();
+  }
+
+  removeAuxilary(auxilaryItem , orderLine) {
+    this.orderLines.forEach( ol => {
+      if (ol === orderLine) {
+        ol.requiedAuxilaries = ol.requiedAuxilaries.filter(aux => aux.productId !== auxilaryItem.id);
+      }
+    });
     this.updateCart();
   }
 

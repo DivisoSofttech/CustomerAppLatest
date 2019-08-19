@@ -1,5 +1,4 @@
-cordova.define("cordova-plugin-googlemaps.commandQueueExecutor", function(require, exports, module) {
-/*****************************************************************************
+cordova.define("cordova-plugin-googlemaps.commandQueueExecutor", function(require, exports, module) { /*****************************************************************************
  * Command queue mechanism
  * (Save the number of method executing at the same time)
  *****************************************************************************/

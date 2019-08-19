@@ -7,7 +7,11 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
+<<<<<<< HEAD
 module.exports = "<ion-header>\r\n  <ion-toolbar>\r\n    <ion-buttons>\r\n      <ion-menu-button slot=\"start\" auto-hide=\"true\"></ion-menu-button>\r\n      <ion-title>Basket</ion-title>\r\n    </ion-buttons>\r\n    <ion-buttons slot=\"end\">\r\n      <ion-button (click)=\"clearCart()\">\r\n        <ion-icon name=\"refresh-circle\"></ion-icon>\r\n      </ion-button>\r\n    </ion-buttons>\r\n  </ion-toolbar>\r\n</ion-header>\r\n\r\n<ion-content>\r\n  <app-cart\r\n    *ngIf=\"store !== undefined\"\r\n    [store]=\"store\"\r\n    [viewType]=\"'full'\"\r\n  ></app-cart>\r\n</ion-content>\r\n"
+=======
+module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-buttons>\n      <ion-menu-button slot=\"start\" auto-hide=\"true\"></ion-menu-button>\n      <ion-title>Basket</ion-title>\n    </ion-buttons>\n    <ion-buttons slot=\"end\">\n      <ion-button (click)=\"clearCart()\">\n        <ion-icon name=\"refresh-circle\"></ion-icon>\n      </ion-button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  <app-cart\n    *ngIf=\"store !== undefined\"\n    [store]=\"store\"\n    [viewType]=\"'full'\"\n  ></app-cart>\n</ion-content>\n"
+>>>>>>> 55c1a055289f9a1985a8aa8e0cc24c2f3ce4e5f7
 
 /***/ }),
 

@@ -2,6 +2,7 @@
   <app-store-header
     *ngIf="store != undefined"
     [name]="store.name"
+    [storeId]="store.regNo"
     (searchEnabled)="toggleFabButton($event)"
   ></app-store-header>
 </ion-header>
@@ -82,7 +83,8 @@
       <ion-grid>
         <ion-row>
           <ion-col size="12">
-          <app-map></app-map>
+          <app-map
+          [showActiveLocation]="'false'"></app-map>
           </ion-col>
           <ion-col size="12" *ngIf="store !== undefined">
             <ion-text *ngIf="store.info">
