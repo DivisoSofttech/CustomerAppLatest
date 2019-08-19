@@ -39,6 +39,8 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
 
   productsGot = false;
 
+  productBaseAuxItemsArray = {};
+
   constructor(
     private cart: CartService,
     private queryResource: QueryResourceService,
@@ -49,6 +51,7 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getCartDetails();
+    this.productBaseAuxItemsArray = this.cart.auxilaryItems;
   }
 
   getCartDetails() {
@@ -141,6 +144,9 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
         }
     });
     return await popoverElement.present();
+  }
+
+  async showUpdateAuxilaryPopover(p) {
   }
 
   ngOnDestroy() {

@@ -160,9 +160,8 @@ var StorePage = /** @class */ (function () {
             _this.logger.info('Got Store ', result.name, result);
             _this.store = result;
             _this.showRestaurantLoading = false;
-            // Load The Map
-            // Dumb data until Location is Set
-            _this.map.loadMap('15.8505159,76.2710833');
+            // Show the Store In Map
+            _this.map.loadMap(_this.store.location);
         }, function (err) {
             _this.showRestaurantLoading = false;
             _this.logger.fatal('Error Fetching Stores', err);
@@ -198,18 +197,6 @@ var StorePage = /** @class */ (function () {
             }
             _this.toggleIonRefresher();
         });
-    };
-    StorePage.prototype.segmentChanged = function (event) {
-        this.currentSegment = event.detail.value;
-        if (this.currentSegment === 'menu') {
-            this.ionSlides.slideTo(0);
-        }
-        else if (this.currentSegment === 'reviews') {
-            this.ionSlides.slideTo(1);
-        }
-        else {
-            this.ionSlides.slideTo(2);
-        }
     };
     StorePage.prototype.categoryListPopOver = function (ev) {
         return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
@@ -250,6 +237,18 @@ var StorePage = /** @class */ (function () {
                 }
             });
         });
+    };
+    StorePage.prototype.segmentChanged = function (event) {
+        this.currentSegment = event.detail.value;
+        if (this.currentSegment === 'menu') {
+            this.ionSlides.slideTo(0);
+        }
+        else if (this.currentSegment === 'reviews') {
+            this.ionSlides.slideTo(1);
+        }
+        else {
+            this.ionSlides.slideTo(2);
+        }
     };
     StorePage.prototype.slideChanged = function (event) {
         var _this = this;

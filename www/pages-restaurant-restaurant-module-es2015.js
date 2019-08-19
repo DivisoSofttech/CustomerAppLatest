@@ -147,7 +147,7 @@ let RestaurantPage = class RestaurantPage {
                 stores.forEach(s => {
                     this.stores.push(s);
                 });
-                // Dumb data Unti provided with store location
+                // show stores in map
                 this.mapComponent.setStoreLocationMarkers(stores);
                 this.showLoading = false;
                 this.toggleIonRefresher();
@@ -188,7 +188,6 @@ let RestaurantPage = class RestaurantPage {
     }
     // Fix for Footer
     ionViewDidEnter() {
-        this.logger.info('Ion View Did enter');
         this.footer.setcurrentRoute('restaurant');
     }
 };

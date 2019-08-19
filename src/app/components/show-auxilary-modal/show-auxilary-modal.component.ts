@@ -18,6 +18,8 @@ export class ShowAuxilaryModalComponent implements OnInit {
 
   auxilaryOrderLines: AuxilaryOrderLine[] = [];
 
+  @Input() type = 'addAuxilary';
+
   constructor(
     private popover: PopoverController,
     private cart: CartService
@@ -54,6 +56,7 @@ export class ShowAuxilaryModalComponent implements OnInit {
 
   addToCart() {
     let total = 0;
+    this.auxilaryOrderLines = this.auxilaryOrderLines.filter(al => al.quantity !== 0);
     this.auxilaryOrderLines.forEach(al => {
       total = total + al.total;
     });

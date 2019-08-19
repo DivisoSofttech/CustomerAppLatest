@@ -156,9 +156,8 @@ let StorePage = class StorePage {
             this.logger.info('Got Store ', result.name, result);
             this.store = result;
             this.showRestaurantLoading = false;
-            // Load The Map
-            // Dumb data until Location is Set
-            this.map.loadMap('15.8505159,76.2710833');
+            // Show the Store In Map
+            this.map.loadMap(this.store.location);
         }, err => {
             this.showRestaurantLoading = false;
             this.logger.fatal('Error Fetching Stores', err);
@@ -193,18 +192,6 @@ let StorePage = class StorePage {
             this.toggleIonRefresher();
         });
     }
-    segmentChanged(event) {
-        this.currentSegment = event.detail.value;
-        if (this.currentSegment === 'menu') {
-            this.ionSlides.slideTo(0);
-        }
-        else if (this.currentSegment === 'reviews') {
-            this.ionSlides.slideTo(1);
-        }
-        else {
-            this.ionSlides.slideTo(2);
-        }
-    }
     categoryListPopOver(ev) {
         return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function* () {
             this.tempStockCurrents = this.stockCurrents;
@@ -234,6 +221,18 @@ let StorePage = class StorePage {
             });
             return yield popover.present();
         });
+    }
+    segmentChanged(event) {
+        this.currentSegment = event.detail.value;
+        if (this.currentSegment === 'menu') {
+            this.ionSlides.slideTo(0);
+        }
+        else if (this.currentSegment === 'reviews') {
+            this.ionSlides.slideTo(1);
+        }
+        else {
+            this.ionSlides.slideTo(2);
+        }
     }
     slideChanged(event) {
         let index;

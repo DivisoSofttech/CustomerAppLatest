@@ -151,7 +151,7 @@ var RestaurantPage = /** @class */ (function () {
                 stores.forEach(function (s) {
                     _this.stores.push(s);
                 });
-                // Dumb data Unti provided with store location
+                // show stores in map
                 _this.mapComponent.setStoreLocationMarkers(stores);
                 _this.showLoading = false;
                 _this.toggleIonRefresher();
@@ -193,7 +193,6 @@ var RestaurantPage = /** @class */ (function () {
     };
     // Fix for Footer
     RestaurantPage.prototype.ionViewDidEnter = function () {
-        this.logger.info('Ion View Did enter');
         this.footer.setcurrentRoute('restaurant');
     };
     RestaurantPage.ctorParameters = function () { return [

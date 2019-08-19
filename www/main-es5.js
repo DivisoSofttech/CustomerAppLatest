@@ -791,7 +791,7 @@ module.exports = "<ion-list *ngIf=\"!showAddressPanel\">\n  <ion-list-header>Sel
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-title>Do You Have Food Allergy</ion-title>\n    <ion-buttons slot=\"end\">\n      <ion-button (click)=\"dismiss()\">\n        <ion-icon name=\"close\"></ion-icon>\n      </ion-button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n<div class=\"container\">\n    <h4>If you or someone you're ordering for has a food allergy or intolerance , click here {{store.contactNo}}</h4>\n</div>"
+module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-title>Do You Have Food Allergy</ion-title>\n    <ion-buttons slot=\"end\">\n      <ion-button (click)=\"dismiss()\">\n        <ion-icon name=\"close\"></ion-icon>\n      </ion-button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n<div class=\"container\">\n    <h4>If you or someone you're ordering for has a food allergy or intolerance , call {{store.contactNo}}</h4>\n</div>"
 
 /***/ }),
 
@@ -857,7 +857,7 @@ module.exports = "<ion-header>\n  <ion-toolbar color=\"primary\">\n    <ion-butt
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-list can-swipe=\"true\" *ngIf=\"orders.length > 0 && productsGot === true\">\n  <ion-card *ngFor=\"let orderLine of orders\">\n\n    <!--Main Product Start-->\n    <ion-item-sliding>\n      <ion-item-options side=\"start\">\n        <ion-item-option\n          color=\"primary\"\n          (click)=\"increaseProductCount(products[orderLine.productId], orderLine)\">\n          <ion-icon name=\"add\"></ion-icon>\n        </ion-item-option>\n        <ion-item-option\n          color=\"warning\"\n          (click)=\"\n            decreaseProductCount(products[orderLine.productId], orderLine)\">\n          <ion-icon name=\"remove\"></ion-icon>\n        </ion-item-option>\n      </ion-item-options>\n      <ion-item lines=\"full\" *ngIf=\"products[orderLine.productId] !== undefined\">\n        <ion-label text-start class=\"wrap\">{{\n          products[orderLine.productId].name\n        }}</ion-label>\n        <ion-label text-center>{{ \"x\" + orderLine.quantity }}</ion-label>\n        <ion-label text-end\n          >&#8364;{{\n            (orderLine.pricePerUnit | number: \"1.1-2\") + \"   \"\n          }}</ion-label\n        >\n      </ion-item>\n      <ion-item-options side=\"end\">\n        <ion-item-option\n          color=\"danger\"\n          (click)=\"removeOrder(orderLine, products[orderLine.productId])\">\n          <ion-icon slot=\"icon-only\" name=\"trash\"></ion-icon>\n        </ion-item-option>\n      </ion-item-options>\n    </ion-item-sliding>\n    <!--Main Product End-->\n\n    <!--Auxilary Product Start-->\n    <ion-list\n      *ngIf=\"\n        orderLine.requiedAuxilaries !== undefined &&\n        orderLine.requiedAuxilaries.length > 0\">\n        <ion-item-sliding  *ngFor=\"let aux of orderLine.requiedAuxilaries\">\n          <ion-item-options side=\"start\">\n            <ion-item-option\n            color=\"primary\"\n            (click)=\"increaseAuxilaryProductCount( auxilaryProducts[aux.productId], orderLine)\">\n            <ion-icon name=\"add\"></ion-icon>\n          </ion-item-option>\n          <ion-item-option\n            color=\"warning\"\n            (click)=\"\n              decreaseAuxilaryProductCount( auxilaryProducts[aux.productId], orderLine)\">\n            <ion-icon name=\"remove\"></ion-icon>\n          </ion-item-option>\n          </ion-item-options>\n          <ion-item color=\"light\">\n            <ion-label text-start class=\"wrap\">{{\n              auxilaryProducts[aux.productId].name\n            }}</ion-label>\n            <ion-label text-center>{{ \"x\" + aux.quantity }}</ion-label>\n            <ion-label text-end\n              >&#8364;{{ (aux.pricePerUnit | number: \"1.1-2\") + \"   \" }}</ion-label\n            >\n          </ion-item>\n          <ion-item-options>\n            <ion-item-option\n            color=\"danger\"\n            (click)=\"removeAuxilaryOrder(orderLine,  auxilaryProducts[aux.productId])\">\n            <ion-icon slot=\"icon-only\" name=\"trash\"></ion-icon>\n          </ion-item-option>\n          </ion-item-options>\n        </ion-item-sliding>\n    </ion-list>\n    <!--Auxilary Product End-->\n\n  </ion-card>\n\n  <ion-item\n    lines=\"full\"\n    *ngIf=\"storeSetting !== undefined && orders.length > 0\">\n    <ion-label text-start>Delivery charge</ion-label>\n    <ion-label text-center> </ion-label>\n    <ion-label text-end>{{ storeSetting.deliveryCharge }}</ion-label>\n  </ion-item>\n  <ion-item lines=\"full\" *ngIf=\"orders.length > 0\">\n    <ion-avatar slot=\"start\">\n      <ion-img src=\"/assets/svg/discount.svg\"></ion-img>\n    </ion-avatar>\n    <ion-text word-wrap text-left no-margin>\n      <p>\n        <strong> 50% </strong>discount on gfsggsfgafsgfasfgas\n        ssgshsghgshgshghsghgh\n      </p>\n    </ion-text>\n    <ion-text text-end>50 </ion-text>\n  </ion-item>\n  <ion-item *ngIf=\"storeSetting !== undefined\" lines=\"full\">\n    <ion-label text-start>\n      <h3></h3>\n    </ion-label>\n    <ion-label text-center> </ion-label>\n    <ion-label text-end>\n      <h3>\n        <strong>Subtotal</strong>\n        <strong>\n          {{ totalPrice + storeSetting.deliveryCharge }}\n        </strong>\n      </h3>\n    </ion-label>\n  </ion-item>\n</ion-list>\n"
+module.exports = "<ion-list can-swipe=\"true\" *ngIf=\"orders.length > 0 && productsGot === true\">\n  <ion-card *ngFor=\"let orderLine of orders\">\n\n    <!--Main Product Start-->\n    <ion-item-sliding>\n      <ion-item-options side=\"start\">\n        <ion-item-option\n          color=\"primary\"\n          (click)=\"increaseProductCount(products[orderLine.productId], orderLine)\">\n          <ion-icon name=\"add\"></ion-icon>\n        </ion-item-option>\n        <ion-item-option\n          color=\"warning\"\n          (click)=\"\n            decreaseProductCount(products[orderLine.productId], orderLine)\">\n          <ion-icon name=\"remove\"></ion-icon>\n        </ion-item-option>\n      </ion-item-options>\n      <ion-item color=\"secondary\" lines=\"full\" *ngIf=\"products[orderLine.productId] !== undefined\">\n        <ion-label text-start class=\"wrap\">{{\n          products[orderLine.productId].name\n        }}</ion-label>\n        <ion-label text-center>{{ \"x\" + orderLine.quantity }}</ion-label>\n        <ion-label text-end\n          >&#8364;{{\n            (orderLine.pricePerUnit | number: \"1.1-2\") + \"   \"\n          }}</ion-label\n        >\n      </ion-item>\n      <ion-item-options side=\"end\">\n        <ion-item-option\n          color=\"danger\"\n          (click)=\"removeOrder(orderLine, products[orderLine.productId])\">\n          <ion-icon slot=\"icon-only\" name=\"trash\"></ion-icon>\n        </ion-item-option>\n      </ion-item-options>\n    </ion-item-sliding>\n    <!--Main Product End-->\n\n    <!--Auxilary Product Start-->\n    <ion-list\n      *ngIf=\"\n        orderLine.requiedAuxilaries !== undefined &&\n        orderLine.requiedAuxilaries.length > 0\">\n        <ion-item-sliding  *ngFor=\"let aux of orderLine.requiedAuxilaries\">\n          <ion-item-options side=\"start\">\n            <ion-item-option\n            color=\"primary\"\n            (click)=\"increaseAuxilaryProductCount( auxilaryProducts[aux.productId], orderLine)\">\n            <ion-icon name=\"add\"></ion-icon>\n          </ion-item-option>\n          <ion-item-option\n            color=\"warning\"\n            (click)=\"\n              decreaseAuxilaryProductCount( auxilaryProducts[aux.productId], orderLine)\">\n            <ion-icon name=\"remove\"></ion-icon>\n          </ion-item-option>\n          </ion-item-options>\n          <ion-item>\n            <ion-label text-start class=\"wrap\">{{\n              auxilaryProducts[aux.productId].name\n            }}</ion-label>\n            <ion-label text-center>{{ \"x\" + aux.quantity }}</ion-label>\n            <ion-label text-end\n              >&#8364;{{ (aux.pricePerUnit | number: \"1.1-2\") + \"   \" }}</ion-label\n            >\n          </ion-item>\n          <ion-item-options>\n            <ion-item-option\n            color=\"danger\"\n            (click)=\"removeAuxilaryOrder(auxilaryProducts[aux.productId],orderLine)\">\n            <ion-icon slot=\"icon-only\" name=\"trash\"></ion-icon>\n          </ion-item-option>\n          </ion-item-options>\n        </ion-item-sliding>\n    </ion-list>\n    <!--Auxilary Product End-->\n\n  </ion-card>\n\n  <ion-card>\n    <ion-item color=\"secondary\"\n    lines=\"full\"\n    *ngIf=\"storeSetting !== undefined && orders.length > 0\">\n    <ion-label text-start>Delivery charge</ion-label>\n    <ion-label text-center> </ion-label>\n    <ion-label text-end>{{ storeSetting.deliveryCharge }}</ion-label>\n  </ion-item>\n  <ion-item lines=\"full\" *ngIf=\"orders.length > 0\">\n    <ion-avatar slot=\"start\">\n      <ion-img src=\"/assets/svg/discount.svg\"></ion-img>\n    </ion-avatar>\n    <ion-text word-wrap text-left no-margin>\n      <p>\n        <strong> 50% </strong>discount on gfsggsfgafsgfasfgas\n        ssgshsghgshgshghsghgh\n      </p>\n    </ion-text>\n    <ion-text text-end>50 </ion-text>\n  </ion-item>\n  <ion-item *ngIf=\"storeSetting !== undefined\" lines=\"full\">\n    <ion-label text-start>\n      <h3></h3>\n    </ion-label>\n    <ion-label text-center> </ion-label>\n    <ion-label text-end>\n      <h3>\n        <strong>Subtotal</strong>\n        <strong>\n          {{ totalPrice + storeSetting.deliveryCharge }}\n        </strong>\n      </h3>\n    </ion-label>\n  </ion-item>\n\n  </ion-card>\n</ion-list>\n"
 
 /***/ }),
 
@@ -5472,8 +5472,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_order_service__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./services/order.service */ "./src/app/services/order.service.ts");
 /* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ngx-logger */ "./node_modules/ngx-logger/fesm5/ngx-logger.js");
 /* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ../environments/environment */ "./src/environments/environment.ts");
-/* harmony import */ var _services_route_service__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./services/route.service */ "./src/app/services/route.service.ts");
-
 
 
 
@@ -5541,7 +5539,6 @@ var AppModule = /** @class */ (function () {
                 _services_filter_service__WEBPACK_IMPORTED_MODULE_3__["FilterService"],
                 _services_favourite_service__WEBPACK_IMPORTED_MODULE_2__["FavouriteService"],
                 _services_cart_service__WEBPACK_IMPORTED_MODULE_1__["CartService"],
-                _services_route_service__WEBPACK_IMPORTED_MODULE_27__["RouteService"],
                 _services_order_service__WEBPACK_IMPORTED_MODULE_24__["OrderService"],
                 {
                     provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_18__["HTTP_INTERCEPTORS"],
@@ -5807,7 +5804,9 @@ var AuxilaryProductCardComponent = /** @class */ (function () {
     AuxilaryProductCardComponent.prototype.add = function () {
         this.auxilaryOrderLine.quantity++;
         this.auxilaryOrderLine.total = this.auxilaryOrderLine.quantity * this.auxilaryOrderLine.pricePerUnit;
-        this.auxilaryUpdated.emit(this.auxilaryOrderLine);
+        if (this.auxilaryOrderLine.quantity > 0) {
+            this.auxilaryUpdated.emit(this.auxilaryOrderLine);
+        }
     };
     AuxilaryProductCardComponent.prototype.remove = function () {
         if (this.auxilaryOrderLine.quantity !== 0) {
@@ -6495,38 +6494,39 @@ var DeliveryItemDetailsComponent = /** @class */ (function () {
             _this.getAuxilaryproductsFromOrders();
         });
     };
-    DeliveryItemDetailsComponent.prototype.increaseProductCount = function (p, o) {
-        if (this.cart.auxilaryItems[p.id] !== undefined) {
-            this.showAddAuxilaryPopover(p);
+    DeliveryItemDetailsComponent.prototype.increaseProductCount = function (product, orderLine) {
+        if (this.cart.auxilaryItems[product.id] !== undefined) {
+            this.showAddAuxilaryPopover(product);
         }
         else {
-            this.cart.increase(o, p);
+            this.cart.increase(orderLine, product);
         }
     };
-    DeliveryItemDetailsComponent.prototype.increaseAuxilaryProductCount = function (o, p) {
+    DeliveryItemDetailsComponent.prototype.decreaseProductCount = function (product, orderLine) {
+        this.cart.decrease(orderLine, product);
     };
-    DeliveryItemDetailsComponent.prototype.decreaseProductCount = function (p, o) {
-        this.cart.decrease(o, p);
+    DeliveryItemDetailsComponent.prototype.removeOrder = function (orderLine, product) {
+        this.logger.info('Removing Order ', orderLine);
+        this.cart.removeOrder(orderLine);
     };
-    DeliveryItemDetailsComponent.prototype.decreaseAuxilaryProductCount = function (o, p) {
+    DeliveryItemDetailsComponent.prototype.increaseAuxilaryProductCount = function (product, orderLine) {
+        this.cart.increaseAuxilary(product, orderLine);
     };
-    DeliveryItemDetailsComponent.prototype.removeOrder = function (o, p) {
-        this.products[o.productId] = null;
-        this.logger.info('Removing Order ', o);
-        this.cart.removeOrder(o);
+    DeliveryItemDetailsComponent.prototype.decreaseAuxilaryProductCount = function (product, orderLine) {
+        this.cart.decreaseAuxilary(product, orderLine);
     };
-    DeliveryItemDetailsComponent.prototype.removeAuxilaryOrder = function (o, p) {
-        console.log('Removing Auxilary');
+    DeliveryItemDetailsComponent.prototype.removeAuxilaryOrder = function (product, orderLine) {
+        this.cart.removeAuxilary(product, orderLine);
     };
     DeliveryItemDetailsComponent.prototype.getAllProductsFromOrders = function () {
         var _this = this;
         this.orders.forEach(function (o) {
-            if (_this.products[o.productId] == undefined) {
+            if (_this.products[o.productId] === undefined) {
                 _this.productGetSubscription[o.productId] = _this.queryResource.findProductUsingGET(o.productId).subscribe(function (p) {
                     _this.products[o.productId] = p;
                     if (_this.orders.indexOf(o) === _this.orders.length - 1) {
                         _this.productsGot = true;
-                        _this.products['length'] = _this.orders.length;
+                        _this.products.length = _this.orders.length;
                     }
                 });
             }
@@ -6557,15 +6557,6 @@ var DeliveryItemDetailsComponent = /** @class */ (function () {
             console.log(data);
         });
     };
-    DeliveryItemDetailsComponent.prototype.ngOnDestroy = function () {
-        var _this = this;
-        this.cartSubscription.unsubscribe();
-        this.orders.forEach(function (o) {
-            if (_this.productGetSubscription[o.productId] !== undefined) {
-                _this.productGetSubscription[o.productId].unsubscribe();
-            }
-        });
-    };
     DeliveryItemDetailsComponent.prototype.showAddAuxilaryPopover = function (p) {
         return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
             var popoverElement;
@@ -6584,6 +6575,15 @@ var DeliveryItemDetailsComponent = /** @class */ (function () {
                     case 2: return [2 /*return*/, _a.sent()];
                 }
             });
+        });
+    };
+    DeliveryItemDetailsComponent.prototype.ngOnDestroy = function () {
+        var _this = this;
+        this.cartSubscription.unsubscribe();
+        this.orders.forEach(function (o) {
+            if (_this.productGetSubscription[o.productId] !== undefined) {
+                _this.productGetSubscription[o.productId].unsubscribe();
+            }
         });
     };
     DeliveryItemDetailsComponent.ctorParameters = function () { return [
@@ -7513,20 +7513,25 @@ var MapComponent = /** @class */ (function () {
         });
     };
     MapComponent.prototype.loadMap = function (coords) {
-        if (coords !== undefined && coords !== null) {
-            this.logger.info('Loading Maps', coords);
-            var latlngArr = coords.split(',');
-            var latLng = new _ionic_native_google_maps__WEBPACK_IMPORTED_MODULE_2__["LatLng"](parseFloat(latlngArr[0]), parseFloat(latlngArr[1]));
-            var mapOptions = {
-                camera: {
-                    zoom: 14,
-                    tilt: 30
+        var _this = this;
+        this.platform.ready().then(function (data) {
+            if (data === 'cordova') {
+                if (coords !== undefined && coords !== null) {
+                    _this.logger.info('Loading Maps', coords);
+                    var latlngArr = coords.split(',');
+                    var latLng = new _ionic_native_google_maps__WEBPACK_IMPORTED_MODULE_2__["LatLng"](parseFloat(latlngArr[0]), parseFloat(latlngArr[1]));
+                    var mapOptions = {
+                        camera: {
+                            zoom: 14,
+                            tilt: 30
+                        }
+                    };
+                    _this.mapCanvas = _ionic_native_google_maps__WEBPACK_IMPORTED_MODULE_2__["GoogleMaps"].create('map_canvas', mapOptions);
+                    _this.logger.info('Setting Marker', mapOptions);
+                    _this.setCurrentLocationMarker(latLng);
                 }
-            };
-            this.mapCanvas = _ionic_native_google_maps__WEBPACK_IMPORTED_MODULE_2__["GoogleMaps"].create('map_canvas', mapOptions);
-            this.logger.info('Setting Marker', mapOptions);
-            this.setCurrentLocationMarker(latLng);
-        }
+            }
+        });
     };
     MapComponent.prototype.updateMap = function (coords) {
         this.logger.info('Updating Maps');
@@ -7563,17 +7568,21 @@ var MapComponent = /** @class */ (function () {
     };
     MapComponent.prototype.setStoreLocationMarkers = function (stores) {
         var _this = this;
-        stores.forEach(function (s) {
-            if (s.location !== undefined && s.location !== null) {
-                var latlngArr = s.location.split(',');
-                var latLng = new _ionic_native_google_maps__WEBPACK_IMPORTED_MODULE_2__["LatLng"](parseFloat(latlngArr[0]), parseFloat(latlngArr[1]));
-                var i = _this.storeLocationMarkers.length;
-                _this.storeLocationMarkers[i] = _this.mapCanvas.addMarkerSync({
-                    icon: 'assets/icon/marker.png',
-                    position: latLng,
-                    animation: _ionic_native_google_maps__WEBPACK_IMPORTED_MODULE_2__["GoogleMapsAnimation"].DROP
+        this.platform.ready().then(function (data) {
+            if (data === 'cordova') {
+                stores.forEach(function (s) {
+                    if (s.location !== undefined && s.location !== null) {
+                        var latlngArr = s.location.split(',');
+                        var latLng = new _ionic_native_google_maps__WEBPACK_IMPORTED_MODULE_2__["LatLng"](parseFloat(latlngArr[0]), parseFloat(latlngArr[1]));
+                        var i = _this.storeLocationMarkers.length;
+                        _this.storeLocationMarkers[i] = _this.mapCanvas.addMarkerSync({
+                            icon: 'assets/icon/marker.png',
+                            position: latLng,
+                            animation: _ionic_native_google_maps__WEBPACK_IMPORTED_MODULE_2__["GoogleMapsAnimation"].DROP
+                        });
+                        _this.curentLocationMarker.showInfoWindow();
+                    }
                 });
-                _this.curentLocationMarker.showInfoWindow();
             }
         });
     };
@@ -8427,7 +8436,6 @@ var ShowAuxilaryModalComponent = /** @class */ (function () {
         this.popover.dismiss();
     };
     ShowAuxilaryModalComponent.prototype.auxilaryUpated = function (event) {
-        console.log('Auxilary price', event.total);
         var tempArray = this.auxilaryOrderLines.filter(function (al) { return al.productId === event.productId; });
         if (tempArray.length > 0) {
             this.auxilaryOrderLines.map(function (m, i) {
@@ -8437,7 +8445,6 @@ var ShowAuxilaryModalComponent = /** @class */ (function () {
             });
         }
         else {
-            console.log('Adding Price');
             this.auxilaryOrderLines.push(event);
         }
     };
@@ -9050,16 +9057,29 @@ var CartService = /** @class */ (function () {
     CartService.prototype.getCartDetails = function () {
         return this.observableTickets;
     };
+    CartService.prototype.calculatePrice = function () {
+        var orderTotal = 0;
+        var auxilaryTotal = 0;
+        this.orderLines.forEach(function (orderLine) {
+            if (orderLine.requiedAuxilaries !== undefined) {
+                auxilaryTotal = 0;
+                orderLine.requiedAuxilaries.forEach(function (auxilaryOrderLine) {
+                    auxilaryOrderLine.total = auxilaryOrderLine.quantity * auxilaryOrderLine.pricePerUnit;
+                    auxilaryTotal += auxilaryOrderLine.total;
+                });
+                orderLine.total = (orderLine.quantity * orderLine.pricePerUnit) + auxilaryTotal;
+            }
+            orderTotal += orderLine.total;
+        });
+        this.totalPrice = orderTotal;
+    };
     CartService.prototype.updateCart = function () {
-        var _this = this;
         this.totalPrice = 0;
         if (this.orderLines.length === 0) {
             this.currentShop = {};
             this.currentShopId = 0;
         }
-        this.orderLines.forEach(function (order) {
-            _this.totalPrice += order.total;
-        });
+        this.calculatePrice();
         this.observableTickets.next(this.orderLines);
         this.observablePrice.next(this.totalPrice);
     };
@@ -9092,44 +9112,59 @@ var CartService = /** @class */ (function () {
     };
     CartService.prototype.increase = function (o, p) {
         var _this = this;
-        var auxilaryTotal = 0;
         this.orderLines.forEach(function (ol, i) {
             if (ol === o) {
                 if (_this.orderLines[i].quantity < 5) {
                     _this.orderLines[i].quantity++;
-                    _this.orderLines[i].total = _this.orderLines[i].pricePerUnit * _this.orderLines[i].quantity;
-                    if (_this.orderLines[i].requiedAuxilaries !== undefined) {
-                        _this.orderLines[i].requiedAuxilaries.forEach(function (al) {
-                            al.total = al.quantity * al.pricePerUnit;
-                            auxilaryTotal += al.total;
-                        });
-                    }
                 }
                 else {
                     alert('Order is limited to 5 items');
                 }
-                _this.orderLines[i].total = _this.orderLines[i].total + auxilaryTotal;
             }
-            _this.totalPrice += _this.orderLines[i].total;
         });
         this.updateCart();
     };
     CartService.prototype.decrease = function (o, p) {
         var _this = this;
-        var auxilaryTotal = 0;
         this.orderLines.forEach(function (ol, i) {
             if (ol === o) {
                 if (_this.orderLines[i].quantity > 1) {
                     _this.orderLines[i].quantity--;
-                    _this.orderLines[i].total = _this.orderLines[i].pricePerUnit * _this.orderLines[i].quantity;
-                    if (_this.orderLines[i].requiedAuxilaries !== undefined) {
-                        _this.orderLines[i].requiedAuxilaries.forEach(function (al) {
-                            al.total = al.quantity * al.pricePerUnit;
-                            auxilaryTotal += al.total;
-                        });
-                    }
-                    _this.orderLines[i].total = _this.orderLines[i].total + auxilaryTotal;
                 }
+            }
+        });
+        this.updateCart();
+    };
+    CartService.prototype.increaseAuxilary = function (auxilaryItem, orderLine) {
+        this.orderLines.forEach(function (ol) {
+            if (ol === orderLine) {
+                ol.requiedAuxilaries.forEach(function (al) {
+                    if (auxilaryItem.id === al.productId) {
+                        al.quantity++;
+                    }
+                });
+            }
+        });
+        this.updateCart();
+    };
+    CartService.prototype.decreaseAuxilary = function (auxilaryItem, orderLine) {
+        this.orderLines.forEach(function (ol) {
+            if (ol === orderLine) {
+                ol.requiedAuxilaries.forEach(function (al) {
+                    if (auxilaryItem.id === al.productId) {
+                        if (al.quantity > 1) {
+                            al.quantity--;
+                        }
+                    }
+                });
+            }
+        });
+        this.updateCart();
+    };
+    CartService.prototype.removeAuxilary = function (auxilaryItem, orderLine) {
+        this.orderLines.forEach(function (ol) {
+            if (ol === orderLine) {
+                ol.requiedAuxilaries = ol.requiedAuxilaries.filter(function (aux) { return aux.productId !== auxilaryItem.id; });
             }
         });
         this.updateCart();
@@ -9552,65 +9587,6 @@ var OrderService = /** @class */ (function () {
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
     ], OrderService);
     return OrderService;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/services/route.service.ts":
-/*!*******************************************!*\
-  !*** ./src/app/services/route.service.ts ***!
-  \*******************************************/
-/*! exports provided: RouteService */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RouteService", function() { return RouteService; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ngx-logger */ "./node_modules/ngx-logger/fesm5/ngx-logger.js");
-
-
-
-
-
-var RouteService = /** @class */ (function () {
-    function RouteService(route, logger) {
-        this.route = route;
-        this.logger = logger;
-        this.currentRoute = 'restaurant';
-        this.routeSubscription = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](this.currentRoute);
-        this.getCurrentRoute();
-    }
-    RouteService.prototype.getCurrentRoute = function () {
-        var _this = this;
-        this.route.events.subscribe(function (ev) {
-            if (ev instanceof _angular_router__WEBPACK_IMPORTED_MODULE_3__["NavigationEnd"]) {
-                _this.currentRoute = _this.route.url.split('/')[1];
-                _this.routeSubscription.next(_this.currentRoute);
-                _this.logger.info('Route Changed ', _this.currentRoute);
-            }
-        });
-    };
-    RouteService.prototype.getRouteSubscription = function () {
-        return this.routeSubscription;
-    };
-    RouteService.ctorParameters = function () { return [
-        { type: _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"] },
-        { type: ngx_logger__WEBPACK_IMPORTED_MODULE_4__["NGXLogger"] }
-    ]; };
-    RouteService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
-            providedIn: 'root'
-        }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"],
-            ngx_logger__WEBPACK_IMPORTED_MODULE_4__["NGXLogger"]])
-    ], RouteService);
-    return RouteService;
 }());
 
 

@@ -12,11 +12,11 @@
       </ion-img>
       <ion-label style="margin-left:15px">
         <ion-text word-wrap text-wrap class="category">
-          <h2 class="store-name">{{store.name | titlecase}}</h2>
-          <h3 class="medium overflow-text-wrap">{{categories | arrayFormater}} </h3>
-          <h4 class="medium overflow-text-wrap" style="color:#56a232">{{deliveryTypes | arrayFormater:'only'}}</h4>
-          <p class="small" *ngIf="deliveryInfos.length > 0">Delivering From {{ deliveryInfos[0].startingTime | date:'shortTime' }}</p>
-          <h5 class="medium" class="no-wrap"
+          <h2 class="store-name fnt-sserif">{{store.name | titlecase}}</h2>
+          <h3 class="medium overflow-text-wrap fnt-sserif cl-grey">{{categories | arrayFormater}} </h3>
+          <h4 class="medium overflow-text-wrap fnt-sserif cl-grey" style="color:#56a232">{{deliveryTypes | arrayFormater:'only'}}</h4>
+          <p class="small fnt-sserif cl-grey" *ngIf="deliveryInfos.length > 0">Delivering From {{ deliveryInfos[0].startingTime | date:'shortTime' }}</p>
+          <h5 class="medium fnt-sserif cl-grey" class="no-wrap"
           *ngIf="store.openingTime != undefined && store.closingTime != undefined"
           >{{store.openingTime | date: 'shortTime' }} to {{ store.closingTime |  date: 'shortTime'}}</h5>
         </ion-text>

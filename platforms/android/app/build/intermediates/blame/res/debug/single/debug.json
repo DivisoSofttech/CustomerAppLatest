@@ -12,12 +12,12 @@
         "source": "/home/jishnuj/.gradle/caches/transforms-1/files-1.1/play-services-base-16.0.1.aar/23088cf17864385e32be93e81feda58d/res/drawable-mdpi-v4/googleg_disabled_color_18.png"
     },
     {
-        "merged": "/home/jishnuj/Desktop/Work/CustomerAppLatest/platforms/android/app/build/intermediates/res/merged/debug/layout_notification_action_tombstone.xml.flat",
-        "source": "/home/jishnuj/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/e4ada26e7b6f2d8aaf412711f755d798/res/layout/notification_action_tombstone.xml"
-    },
-    {
         "merged": "/home/jishnuj/Desktop/Work/CustomerAppLatest/platforms/android/app/build/intermediates/res/merged/debug/drawable-mdpi-v4_notification_bg_low_normal.9.png.flat",
         "source": "/home/jishnuj/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/e4ada26e7b6f2d8aaf412711f755d798/res/drawable-mdpi-v4/notification_bg_low_normal.9.png"
+    },
+    {
+        "merged": "/home/jishnuj/Desktop/Work/CustomerAppLatest/platforms/android/app/build/intermediates/res/merged/debug/layout_notification_action_tombstone.xml.flat",
+        "source": "/home/jishnuj/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/e4ada26e7b6f2d8aaf412711f755d798/res/layout/notification_action_tombstone.xml"
     },
     {
         "merged": "/home/jishnuj/Desktop/Work/CustomerAppLatest/platforms/android/app/build/intermediates/res/merged/debug/drawable_common_google_signin_btn_icon_dark_focused.xml.flat",
@@ -44,20 +44,20 @@
         "source": "/home/jishnuj/.gradle/caches/transforms-1/files-1.1/play-services-base-16.0.1.aar/23088cf17864385e32be93e81feda58d/res/drawable-xxhdpi-v4/googleg_standard_color_18.png"
     },
     {
-        "merged": "/home/jishnuj/Desktop/Work/CustomerAppLatest/platforms/android/app/build/intermediates/res/merged/debug/layout-v21_notification_action_tombstone.xml.flat",
-        "source": "/home/jishnuj/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/e4ada26e7b6f2d8aaf412711f755d798/res/layout-v21/notification_action_tombstone.xml"
-    },
-    {
         "merged": "/home/jishnuj/Desktop/Work/CustomerAppLatest/platforms/android/app/build/intermediates/res/merged/debug/drawable-xxhdpi_ic_action_next_item.png.flat",
         "source": "/home/jishnuj/Desktop/Work/CustomerAppLatest/platforms/android/app/src/main/res/drawable-xxhdpi/ic_action_next_item.png"
     },
     {
-        "merged": "/home/jishnuj/Desktop/Work/CustomerAppLatest/platforms/android/app/build/intermediates/res/merged/debug/drawable-xhdpi_ic_action_next_item.png.flat",
-        "source": "/home/jishnuj/Desktop/Work/CustomerAppLatest/platforms/android/app/src/main/res/drawable-xhdpi/ic_action_next_item.png"
+        "merged": "/home/jishnuj/Desktop/Work/CustomerAppLatest/platforms/android/app/build/intermediates/res/merged/debug/layout-v21_notification_action_tombstone.xml.flat",
+        "source": "/home/jishnuj/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/e4ada26e7b6f2d8aaf412711f755d798/res/layout-v21/notification_action_tombstone.xml"
     },
     {
         "merged": "/home/jishnuj/Desktop/Work/CustomerAppLatest/platforms/android/app/build/intermediates/res/merged/debug/drawable-mdpi-v4_googleg_standard_color_18.png.flat",
         "source": "/home/jishnuj/.gradle/caches/transforms-1/files-1.1/play-services-base-16.0.1.aar/23088cf17864385e32be93e81feda58d/res/drawable-mdpi-v4/googleg_standard_color_18.png"
+    },
+    {
+        "merged": "/home/jishnuj/Desktop/Work/CustomerAppLatest/platforms/android/app/build/intermediates/res/merged/debug/drawable-xhdpi_ic_action_next_item.png.flat",
+        "source": "/home/jishnuj/Desktop/Work/CustomerAppLatest/platforms/android/app/src/main/res/drawable-xhdpi/ic_action_next_item.png"
     },
     {
         "merged": "/home/jishnuj/Desktop/Work/CustomerAppLatest/platforms/android/app/build/intermediates/res/merged/debug/drawable_common_google_signin_btn_text_dark_focused.xml.flat",

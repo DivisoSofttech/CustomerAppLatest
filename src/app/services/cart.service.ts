@@ -86,11 +86,7 @@ export class CartService {
   }
 
   getStoreSettings() {
-    this.queryResource
-    .getStoreSettingsUsingGET(this.currentShop.regNo)
-    .subscribe(setting => {
-      this.currentShopSetting = setting;
-    });
+    this.currentShopSetting = this.currentShop.storeSettings;
   }
 
   add(product: Product) {
@@ -138,8 +134,8 @@ export class CartService {
           auxilaryOrderLine.total = auxilaryOrderLine.quantity * auxilaryOrderLine.pricePerUnit;
           auxilaryTotal += auxilaryOrderLine.total;
         });
-        orderLine.total = (orderLine.quantity * orderLine.pricePerUnit) + auxilaryTotal;
-      }
+      } 
+      orderLine.total = (orderLine.quantity * orderLine.pricePerUnit) + auxilaryTotal;
       orderTotal += orderLine.total;
     });
     this.totalPrice = orderTotal;
@@ -193,12 +189,12 @@ export class CartService {
       if (ol === o) {
         if (this.orderLines[i].quantity < 5) {
           this.orderLines[i].quantity++;
+          this.updateCart();
         } else {
           alert('Order is limited to 5 items');
         }
       }
     });
-    this.updateCart();
   }
 
   decrease(o , p) {

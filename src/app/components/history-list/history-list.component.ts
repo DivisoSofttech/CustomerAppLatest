@@ -35,7 +35,9 @@ export class HistoryListComponent implements OnInit {
     .subscribe(porders => {
       porders.content.forEach(o => {
         this.orders.push(o);
-        this.getStores(o.storeId);
+        if(this.stores[o.storeId] === undefined) {
+          this.getStores(o.storeId);
+        }
       });
       ++i;
       if (i === porders.totalPages) {
@@ -45,6 +47,7 @@ export class HistoryListComponent implements OnInit {
   }
 
   getStores(id) {
+    this.stores[id] = {};
     this.queryResource.findStoreByRegisterNumberUsingGET(id)
     .subscribe(store => {
       this.logger.info('Store ' , store);

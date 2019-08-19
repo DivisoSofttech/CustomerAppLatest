@@ -23,7 +23,7 @@
         <ion-label text-center>{{ "x" + orderLine.quantity }}</ion-label>
         <ion-label text-end
           >&#8364;{{
-            (orderLine.pricePerUnit | number: "1.1-2") + "   "
+            (orderLine.total | number: "1.1-2") + "   "
           }}</ion-label
         >
       </ion-item>
@@ -42,6 +42,10 @@
       *ngIf="
         orderLine.requiedAuxilaries !== undefined &&
         orderLine.requiedAuxilaries.length > 0">
+        <ion-list-header>
+          <ion-label>Extras</ion-label>
+          <ion-icon name="add" class="addAuxilaryButton"></ion-icon>
+        </ion-list-header>
         <ion-item-sliding  *ngFor="let aux of orderLine.requiedAuxilaries">
           <ion-item-options side="start">
             <ion-item-option
@@ -56,13 +60,13 @@
             <ion-icon name="remove"></ion-icon>
           </ion-item-option>
           </ion-item-options>
-          <ion-item>
+          <ion-item *ngIf="auxilaryProducts[aux.productId] !== undefined"> 
             <ion-label text-start class="wrap">{{
               auxilaryProducts[aux.productId].name
             }}</ion-label>
             <ion-label text-center>{{ "x" + aux.quantity }}</ion-label>
             <ion-label text-end
-              >&#8364;{{ (aux.pricePerUnit | number: "1.1-2") + "   " }}</ion-label
+              >&#8364;{{ (aux.total | number: "1.1-2") + "   " }}</ion-label
             >
           </ion-item>
           <ion-item-options>
@@ -76,6 +80,7 @@
     </ion-list>
     <!--Auxilary Product End-->
 
+    
   </ion-card>
 
   <ion-card>
