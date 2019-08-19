@@ -33,7 +33,6 @@
   </ion-list>
 
   <ion-infinite-scroll
-    *ngIf="currentSubPage == 'history'"
     (ionInfinite)="loadMoreData($event)"
     loadingSpinner="bubbles"
     loadingText="Loading Users..."

@@ -5,4 +5,13 @@
 ion-avatar {
     width: 25vw;
     height: 25vw;
+    max-width: 1
 }
+
+@media only screen and (min-width: 640px) {
+    ion-avatar {
+        width: 15vw;
+        height: 15vw;
+        max-width: 1
+    }
+  }

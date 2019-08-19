@@ -39,7 +39,6 @@ export class AppComponent {
     private menuController: MenuController
   ) {
     this.initializeApp();
-    this.menuController.enable(false);
   }
 
   initializeApp() {

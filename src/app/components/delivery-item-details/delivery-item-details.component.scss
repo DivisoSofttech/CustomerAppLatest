@@ -2,3 +2,14 @@
     font-size: 32px;
     margin: 10px;
 }
+
+textarea {
+    width: 95vw;
+    height: 100px;
+}
+
+@media only screen and (min-width: 640px) {
+    .page-parent {
+        width: 75%;
+    }
+}

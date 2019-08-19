@@ -22,11 +22,15 @@
         allergy.
       </p>
     </ion-text>
-    <textarea
+    <ion-item>
+      <ion-label position="floating">Note</ion-label>
+      <ion-textarea
       [(ngModel)]="note"
       class="textArea"
       placeholder="E.g. The doorbell doesn't work.Do not include any details about allergy"
-    ></textarea>
+      rows="5"
+      ></ion-textarea>
+    </ion-item>
   </ion-col>
 </ion-row>
 </ion-grid>

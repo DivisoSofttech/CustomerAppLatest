@@ -31,17 +31,6 @@ export class BannerComponent implements OnInit {
     this.getBanners();
   }
 
-  ionViewWillLeave() {
-    this.slides.stopAutoplay();
-  }
-  ionViewDideave() {
-    this.slides.stopAutoplay();
-  }
-
-  ionViewDidEnter() {
-    this.slides.startAutoplay();
-  }
-
   getBanners() {
     this.queryResource.findStoreBannersUsingGET({})
     .subscribe(data => {

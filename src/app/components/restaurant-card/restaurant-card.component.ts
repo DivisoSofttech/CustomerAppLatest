@@ -49,7 +49,7 @@ export class RestaurantCardComponent implements OnInit {
       .findStoreTypeByStoreIdUsingGET({ storeId: this.store.regNo })
       .subscribe(
         success => {
-          this.logger.info('Got Categories ' , this.store.regNo , success.content);
+          this.logger.info('Got Categpries ' , this.store.regNo , success.content);
           this.categories = success.content;
         },
         err => {
@@ -79,6 +79,10 @@ export class RestaurantCardComponent implements OnInit {
       },
       err => {}
     );
+  }
+
+  getStoreRating() {
+   
   }
 
   addToFavourite(store: Store) {

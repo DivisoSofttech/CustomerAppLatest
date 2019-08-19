@@ -38,7 +38,7 @@
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    height: 40vh;
+    position: relative;
     font-family: monospace;
 }
 
@@ -77,12 +77,11 @@ ion-modal.modal-popover {
 ion-popover{
 
     .popover-wrapper{
-    .popover-content{
-    width:80vw;
-    max-width:500px;
+        .popover-content{
+        width:80vw;
+        max-width:500px;
+        }
     }
-    }
-    }
-    
-    
+}
+
 

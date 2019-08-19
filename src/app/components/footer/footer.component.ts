@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, OnDestroy, Input, ViewChild } from '@angular/core';
-import { NavController, IonSegment } from '@ionic/angular';
+import { NavController, IonSegment, Platform } from '@ionic/angular';
 import { CartService } from 'src/app/services/cart.service';
 import { NGXLogger } from 'ngx-logger';
 
@@ -16,14 +16,17 @@ export class FooterComponent implements OnInit , OnDestroy {
   @ViewChild(IonSegment , null) ionSegment: IonSegment;
 
   orderCount  = 0;
-
+  showTabs = true;
   cartSubscription;
 
   constructor(
     private navController: NavController,
     private logger: NGXLogger,
-    private cart: CartService
-  ) { }
+    private cart: CartService,
+    private platform: Platform
+  ) {
+    this.showTabs = this.platform.width() > 640 ? false : true;
+  }
 
   ngOnInit() {
     this.cartSubscription = this.cart.observableTickets
