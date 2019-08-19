@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-header>\n    <ion-toolbar>\n      <ion-title>Login</ion-title>\n    </ion-toolbar>\n  </ion-header>\n  \n  <ion-segment (ionChange)=\"slide($event)\" [value]=\"value\" class=\"mobile\">\n    <ion-segment-button value=\"login\">\n      <ion-label>Login</ion-label>\n    </ion-segment-button>\n    <ion-segment-button value=\"signup\">\n      <ion-label>Register</ion-label>\n    </ion-segment-button>\n  </ion-segment>\n  \n  <ion-content padding class=\"mobile\">\n    <ion-slides #slides (ionSlideDidChange)=\"slideChange()\">\n      <ion-slide>\n        <ion-grid margin-top>\n          <ion-row justify-content-center text-center class=\"centre\">\n            <ion-col size=\"6\" justify-content-center>\n              <div class=\"circle\">\n                <ion-icon class=\"large-icon\" name=\"person\"></ion-icon>\n              </div>\n            </ion-col>\n          </ion-row>\n          <ion-row justify-content-center class=\"centre\">\n            <ion-col text-center class=\"container-box\">\n              <ion-item class=\"item-inner\">\n                <ion-label color=\"medium\" position=\"floating\">Username or Email</ion-label>\n                <ion-input [(ngModel)]=\"username\" background=\"light\"></ion-input>\n              </ion-item>\n              <ion-item class=\"item-inner\">\n                <ion-label color=\"medium\" position=\"floating\">Password</ion-label>\n                <ion-input [(ngModel)]=\"password\" type=\"password\"></ion-input>\n              </ion-item>\n              <ion-button [disabled]=\"loginDisabled()\" (click)=\"login()\" expand=\"block\" margin-top margin-bottom>Login\n              </ion-button>\n            </ion-col>\n          </ion-row>\n        </ion-grid>\n      </ion-slide>\n      <ion-slide>\n        <ion-grid margin-top>\n          <ion-row justify-content-center>\n            <ion-col size=\"6\" text-center>\n              <div class=\"circle\">\n                <ion-icon class=\"large-icon\" name=\"person\"></ion-icon>\n              </div>\n            </ion-col>\n          </ion-row>\n          <ion-row justify-content-center class=\"centre\">\n            <ion-col text-center class=\"container-box\">\n              <ion-item class=\"item-inner\">\n                <ion-label color=\"medium\" position=\"floating\">Username</ion-label>\n                <ion-input [(ngModel)]=\"username\" background=\"light\"></ion-input>\n              </ion-item>\n              <ion-item class=\"item-inner\">\n                <ion-label color=\"medium\" position=\"floating\">Email</ion-label>\n                <ion-input [(ngModel)]=\"email\" background=\"light\"></ion-input>\n              </ion-item>\n              <ion-item class=\"item-inner\">\n                <ion-label color=\"medium\" position=\"floating\">Password</ion-label>\n                <ion-input [(ngModel)]=\"password\" type=\"password\"></ion-input>\n              </ion-item>\n              <ion-button [disabled]=\"registerDisabled()\" (click)=\"signup()\" expand=\"block\" margin-top margin-bottom>\n                Register</ion-button>\n            </ion-col>\n          </ion-row>\n        </ion-grid>\n      </ion-slide>\n    </ion-slides>\n  </ion-content>\n"
+module.exports = "<ion-header>\r\n    <ion-toolbar>\r\n      <ion-title>Login</ion-title>\r\n    </ion-toolbar>\r\n  </ion-header>\r\n  \r\n  <ion-segment (ionChange)=\"slide($event)\" [value]=\"value\" class=\"mobile\">\r\n    <ion-segment-button value=\"login\">\r\n      <ion-label>Login</ion-label>\r\n    </ion-segment-button>\r\n    <ion-segment-button value=\"signup\">\r\n      <ion-label>Register</ion-label>\r\n    </ion-segment-button>\r\n  </ion-segment>\r\n  \r\n  <ion-content padding class=\"mobile\">\r\n    <ion-slides #slides (ionSlideDidChange)=\"slideChange()\">\r\n      <ion-slide>\r\n        <ion-grid margin-top>\r\n          <ion-row justify-content-center text-center class=\"centre\">\r\n            <ion-col size=\"6\" justify-content-center>\r\n              <div class=\"circle\">\r\n                <ion-icon class=\"large-icon\" name=\"person\"></ion-icon>\r\n              </div>\r\n            </ion-col>\r\n          </ion-row>\r\n          <ion-row justify-content-center class=\"centre\">\r\n            <ion-col text-center class=\"container-box\">\r\n              <ion-item class=\"item-inner\">\r\n                <ion-label color=\"medium\" position=\"floating\">Username or Email</ion-label>\r\n                <ion-input [(ngModel)]=\"username\" background=\"light\"></ion-input>\r\n              </ion-item>\r\n              <ion-item class=\"item-inner\">\r\n                <ion-label color=\"medium\" position=\"floating\">Password</ion-label>\r\n                <ion-input [(ngModel)]=\"password\" type=\"password\"></ion-input>\r\n              </ion-item>\r\n              <ion-button [disabled]=\"loginDisabled()\" (click)=\"login()\" expand=\"block\" margin-top margin-bottom>Login\r\n              </ion-button>\r\n            </ion-col>\r\n          </ion-row>\r\n        </ion-grid>\r\n      </ion-slide>\r\n      <ion-slide>\r\n        <ion-grid margin-top>\r\n          <ion-row justify-content-center>\r\n            <ion-col size=\"6\" text-center>\r\n              <div class=\"circle\">\r\n                <ion-icon class=\"large-icon\" name=\"person\"></ion-icon>\r\n              </div>\r\n            </ion-col>\r\n          </ion-row>\r\n          <ion-row justify-content-center class=\"centre\">\r\n            <ion-col text-center class=\"container-box\">\r\n              <ion-item class=\"item-inner\">\r\n                <ion-label color=\"medium\" position=\"floating\">Username</ion-label>\r\n                <ion-input [(ngModel)]=\"username\" background=\"light\"></ion-input>\r\n              </ion-item>\r\n              <ion-item class=\"item-inner\">\r\n                <ion-label color=\"medium\" position=\"floating\">Email</ion-label>\r\n                <ion-input [(ngModel)]=\"email\" background=\"light\"></ion-input>\r\n              </ion-item>\r\n              <ion-item class=\"item-inner\">\r\n                <ion-label color=\"medium\" position=\"floating\">Password</ion-label>\r\n                <ion-input [(ngModel)]=\"password\" type=\"password\"></ion-input>\r\n              </ion-item>\r\n              <ion-button [disabled]=\"registerDisabled()\" (click)=\"signup()\" expand=\"block\" margin-top margin-bottom>\r\n                Register</ion-button>\r\n            </ion-col>\r\n          </ion-row>\r\n        </ion-grid>\r\n      </ion-slide>\r\n    </ion-slides>\r\n  </ion-content>\r\n"
 
 /***/ }),
 
@@ -69,7 +69,7 @@ var LoginSignupPageModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".cursor {\n  cursor: pointer;\n}\n\n.large-icon {\n  font-size: 125px;\n  opacity: 0.4;\n}\n\n.circle {\n  display: inline-block;\n  background-color: aliceblue;\n  border-radius: 50%;\n  height: 135px;\n  width: 135px;\n}\n\n.centre {\n  text-align: center;\n}\n\n.container-box {\n  width: 100%;\n  max-width: 750px;\n  display: inline-block;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvcGFnZXMvbG9naW4tc2lnbnVwL2xvZ2luLXNpZ251cC5wYWdlLnNjc3MiLCJzcmMvYXBwL3BhZ2VzL2xvZ2luLXNpZ251cC9sb2dpbi1zaWdudXAucGFnZS5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksZUFBQTtBQ0NKOztBREVBO0VBQ0ksZ0JBQUE7RUFDQSxZQUFBO0FDQ0o7O0FERUE7RUFDSSxxQkFBQTtFQUNBLDJCQUFBO0VBQ0Esa0JBQUE7RUFDQSxhQUFBO0VBQ0EsWUFBQTtBQ0NKOztBREVBO0VBQ0ksa0JBQUE7QUNDSjs7QURFQTtFQUNJLFdBQUE7RUFDQSxnQkFBQTtFQUNBLHFCQUFBO0FDQ0oiLCJmaWxlIjoic3JjL2FwcC9wYWdlcy9sb2dpbi1zaWdudXAvbG9naW4tc2lnbnVwLnBhZ2Uuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5jdXJzb3Ige1xuICAgIGN1cnNvcjogcG9pbnRlcjtcbn1cblxuLmxhcmdlLWljb24ge1xuICAgIGZvbnQtc2l6ZTogMTI1cHg7XG4gICAgb3BhY2l0eTogLjQ7XG59XG5cbi5jaXJjbGUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiBhbGljZWJsdWU7XG4gICAgYm9yZGVyLXJhZGl1czogNTAlO1xuICAgIGhlaWdodDogMTM1cHg7XG4gICAgd2lkdGg6IDEzNXB4O1xufVxuXG4uY2VudHJlIHtcbiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7XG59XG5cbi5jb250YWluZXItYm94IHtcbiAgICB3aWR0aDogMTAwJTtcbiAgICBtYXgtd2lkdGg6IDc1MHB4O1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbn1cbiIsIi5jdXJzb3Ige1xuICBjdXJzb3I6IHBvaW50ZXI7XG59XG5cbi5sYXJnZS1pY29uIHtcbiAgZm9udC1zaXplOiAxMjVweDtcbiAgb3BhY2l0eTogMC40O1xufVxuXG4uY2lyY2xlIHtcbiAgZGlzcGxheTogaW5saW5lLWJsb2NrO1xuICBiYWNrZ3JvdW5kLWNvbG9yOiBhbGljZWJsdWU7XG4gIGJvcmRlci1yYWRpdXM6IDUwJTtcbiAgaGVpZ2h0OiAxMzVweDtcbiAgd2lkdGg6IDEzNXB4O1xufVxuXG4uY2VudHJlIHtcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xufVxuXG4uY29udGFpbmVyLWJveCB7XG4gIHdpZHRoOiAxMDAlO1xuICBtYXgtd2lkdGg6IDc1MHB4O1xuICBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7XG59Il19 */"
+module.exports = ".cursor {\n  cursor: pointer;\n}\n\n.large-icon {\n  font-size: 125px;\n  opacity: 0.4;\n}\n\n.circle {\n  display: inline-block;\n  background-color: aliceblue;\n  border-radius: 50%;\n  height: 135px;\n  width: 135px;\n}\n\n.centre {\n  text-align: center;\n}\n\n.container-box {\n  width: 100%;\n  max-width: 750px;\n  display: inline-block;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvcGFnZXMvbG9naW4tc2lnbnVwL0Y6XFxQcm9qZWN0c1xcQ0EtTGF0ZXN0XFxDdXN0b21lckFwcExhdGVzdC9zcmNcXGFwcFxccGFnZXNcXGxvZ2luLXNpZ251cFxcbG9naW4tc2lnbnVwLnBhZ2Uuc2NzcyIsInNyYy9hcHAvcGFnZXMvbG9naW4tc2lnbnVwL2xvZ2luLXNpZ251cC5wYWdlLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxlQUFBO0FDQ0o7O0FERUE7RUFDSSxnQkFBQTtFQUNBLFlBQUE7QUNDSjs7QURFQTtFQUNJLHFCQUFBO0VBQ0EsMkJBQUE7RUFDQSxrQkFBQTtFQUNBLGFBQUE7RUFDQSxZQUFBO0FDQ0o7O0FERUE7RUFDSSxrQkFBQTtBQ0NKOztBREVBO0VBQ0ksV0FBQTtFQUNBLGdCQUFBO0VBQ0EscUJBQUE7QUNDSiIsImZpbGUiOiJzcmMvYXBwL3BhZ2VzL2xvZ2luLXNpZ251cC9sb2dpbi1zaWdudXAucGFnZS5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmN1cnNvciB7XHJcbiAgICBjdXJzb3I6IHBvaW50ZXI7XHJcbn1cclxuXHJcbi5sYXJnZS1pY29uIHtcclxuICAgIGZvbnQtc2l6ZTogMTI1cHg7XHJcbiAgICBvcGFjaXR5OiAuNDtcclxufVxyXG5cclxuLmNpcmNsZSB7XHJcbiAgICBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7XHJcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiBhbGljZWJsdWU7XHJcbiAgICBib3JkZXItcmFkaXVzOiA1MCU7XHJcbiAgICBoZWlnaHQ6IDEzNXB4O1xyXG4gICAgd2lkdGg6IDEzNXB4O1xyXG59XHJcblxyXG4uY2VudHJlIHtcclxuICAgIHRleHQtYWxpZ246IGNlbnRlcjtcclxufVxyXG5cclxuLmNvbnRhaW5lci1ib3gge1xyXG4gICAgd2lkdGg6IDEwMCU7XHJcbiAgICBtYXgtd2lkdGg6IDc1MHB4O1xyXG4gICAgZGlzcGxheTogaW5saW5lLWJsb2NrO1xyXG59XHJcbiIsIi5jdXJzb3Ige1xuICBjdXJzb3I6IHBvaW50ZXI7XG59XG5cbi5sYXJnZS1pY29uIHtcbiAgZm9udC1zaXplOiAxMjVweDtcbiAgb3BhY2l0eTogMC40O1xufVxuXG4uY2lyY2xlIHtcbiAgZGlzcGxheTogaW5saW5lLWJsb2NrO1xuICBiYWNrZ3JvdW5kLWNvbG9yOiBhbGljZWJsdWU7XG4gIGJvcmRlci1yYWRpdXM6IDUwJTtcbiAgaGVpZ2h0OiAxMzVweDtcbiAgd2lkdGg6IDEzNXB4O1xufVxuXG4uY2VudHJlIHtcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xufVxuXG4uY29udGFpbmVyLWJveCB7XG4gIHdpZHRoOiAxMDAlO1xuICBtYXgtd2lkdGg6IDc1MHB4O1xuICBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7XG59Il19 */"
 
 /***/ }),
 
@@ -91,6 +91,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var src_app_api_services__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/api/services */ "./src/app/api/services.ts");
 /* harmony import */ var src_app_services_util__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/services/util */ "./src/app/services/util.ts");
 /* harmony import */ var src_app_api_api_configuration__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/api/api-configuration */ "./src/app/api/api-configuration.ts");
+/* harmony import */ var _ionic_storage__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @ionic/storage */ "./node_modules/@ionic/storage/fesm5/ionic-storage.js");
+
 
 
 
@@ -100,13 +102,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var LoginSignupPage = /** @class */ (function () {
-    function LoginSignupPage(keycloakService, queryResourceService, commandResourceService, util, apiConfiguration, menuController) {
+    function LoginSignupPage(keycloakService, queryResourceService, commandResourceService, util, apiConfiguration, storage) {
         this.keycloakService = keycloakService;
         this.queryResourceService = queryResourceService;
         this.commandResourceService = commandResourceService;
         this.util = util;
         this.apiConfiguration = apiConfiguration;
-        this.menuController = menuController;
+        this.storage = storage;
         this.username = '';
         this.password = '';
         this.email = '';
@@ -115,7 +117,6 @@ var LoginSignupPage = /** @class */ (function () {
     }
     LoginSignupPage.prototype.ngOnInit = function () {
         this.isLoggedIn();
-        // this.menuController.enable(false);
     };
     // Login and Register Methods
     LoginSignupPage.prototype.login = function () {
@@ -175,6 +176,7 @@ var LoginSignupPage = /** @class */ (function () {
                 .findCustomerByReferenceUsingGET(reference)
                 .subscribe(function (customer) {
                 console.log('Got Customer', customer);
+                _this.storage.set('customer', customer);
                 loader.dismiss();
                 _this.util.navigateRoot();
             }, function (err) {
@@ -188,6 +190,7 @@ var LoginSignupPage = /** @class */ (function () {
                     })
                         .subscribe(function (customer) {
                         console.log('Customer Created', customer);
+                        _this.storage.set('customer', customer);
                         loader.dismiss();
                         _this.util.navigateRoot();
                     }, function (eror) {
@@ -251,7 +254,7 @@ var LoginSignupPage = /** @class */ (function () {
         { type: src_app_api_services__WEBPACK_IMPORTED_MODULE_5__["CommandResourceService"] },
         { type: src_app_services_util__WEBPACK_IMPORTED_MODULE_6__["Util"] },
         { type: src_app_api_api_configuration__WEBPACK_IMPORTED_MODULE_7__["ApiConfiguration"] },
-        { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["MenuController"] }
+        { type: _ionic_storage__WEBPACK_IMPORTED_MODULE_8__["Storage"] }
     ]; };
     tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewChild"])('slides', null),
@@ -268,7 +271,7 @@ var LoginSignupPage = /** @class */ (function () {
             src_app_api_services__WEBPACK_IMPORTED_MODULE_5__["CommandResourceService"],
             src_app_services_util__WEBPACK_IMPORTED_MODULE_6__["Util"],
             src_app_api_api_configuration__WEBPACK_IMPORTED_MODULE_7__["ApiConfiguration"],
-            _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["MenuController"]])
+            _ionic_storage__WEBPACK_IMPORTED_MODULE_8__["Storage"]])
     ], LoginSignupPage);
     return LoginSignupPage;
 }());

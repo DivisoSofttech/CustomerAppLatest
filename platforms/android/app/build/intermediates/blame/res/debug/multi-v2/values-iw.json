@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/home/jishnuj/Desktop/Work/CustomerAppLatest/platforms/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-iw/values-iw.xml",
+            "outputFile": "F:\\Projects\\CA-Latest\\CustomerAppLatest\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-iw\\values-iw.xml",
             "map": [
                 {
-                    "source": "/home/jishnuj/.gradle/caches/transforms-1/files-1.1/play-services-base-16.0.1.aar/23088cf17864385e32be93e81feda58d/res/values-iw/values.xml",
+                    "source": "C:\\Users\\imanz\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-base-16.0.1.aar\\7c3dd94cc2f9644a474baab21dec7163\\res\\values-iw\\values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "/home/jishnuj/.gradle/caches/transforms-1/files-1.1/play-services-basement-16.0.1.aar/1c25d8f943ee43cd2de2e1d4a05aa719/res/values-iw/values.xml",
+                    "source": "C:\\Users\\imanz\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-basement-16.0.1.aar\\634c6ec22c8868b204ae6cd10d98262e\\res\\values-iw\\values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
@@ -38,7 +38,7 @@
                     }
                 },
                 {
-                    "source": "/home/jishnuj/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/e4ada26e7b6f2d8aaf412711f755d798/res/values-iw/values-iw.xml",
+                    "source": "C:\\Users\\imanz\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\e1de84cfaf2d41dc95c04a587f1f64c1\\res\\values-iw\\values-iw.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

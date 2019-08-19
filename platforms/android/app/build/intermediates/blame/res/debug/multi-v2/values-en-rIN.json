@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/home/jishnuj/Desktop/Work/CustomerAppLatest/platforms/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-en-rIN/values-en-rIN.xml",
+            "outputFile": "F:\\Projects\\CA-Latest\\CustomerAppLatest\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-en-rIN\\values-en-rIN.xml",
             "map": [
                 {
-                    "source": "/home/jishnuj/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/e4ada26e7b6f2d8aaf412711f755d798/res/values-en-rIN/values-en-rIN.xml",
+                    "source": "C:\\Users\\imanz\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\e1de84cfaf2d41dc95c04a587f1f64c1\\res\\values-en-rIN\\values-en-rIN.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

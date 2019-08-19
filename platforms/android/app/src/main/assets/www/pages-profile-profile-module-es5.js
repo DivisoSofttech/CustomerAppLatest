@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-buttons>\n      <ion-menu-button slot=\"start\" auto-hide=\"true\"></ion-menu-button>\n      <ion-title>Profile</ion-title>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  <app-profile-info *ngIf=\"customer != undefined\" \n  [customer]=\"customer\"\n  [keyCloakUser]=\"keyCloakUser\"\n  [contact]=\"contact\"\n  ></app-profile-info>\n\n  <ion-segment \n  (ionChange)=\"segmentChanged($event)\"\n  [(ngModel)]=\"currentSegment\"\n  >\n    <ion-segment-button value=\"frequently\" checked>\n      <ion-label>\n        Frequent\n      </ion-label>\n    </ion-segment-button>\n    <ion-segment-button value=\"favourite\">\n      <ion-label>\n        Favourites\n      </ion-label>\n    </ion-segment-button>\n    <ion-segment-button value=\"history\">\n      <ion-label>History</ion-label>\n    </ion-segment-button>\n  </ion-segment>\n\n  <ion-slides>\n    <ion-slide>\n      <app-frequently-ordered-list></app-frequently-ordered-list>\n    </ion-slide>\n    <ion-slide>\n      <app-favourite-list>\n      </app-favourite-list>\n    </ion-slide>\n    <ion-slide>\n      <app-history-list\n      *ngIf=\"keyCloakUser !== undefined\"\n      [keyCloakUser]=\"keyCloakUser\"\n      ></app-history-list>\n    </ion-slide>\n  </ion-slides>\n</ion-content>\n<ion-footer>\n  <app-footer></app-footer>\n</ion-footer>\n"
+module.exports = "<ion-header>\r\n  <ion-toolbar>\r\n    <ion-buttons>\r\n      <ion-menu-button slot=\"start\" auto-hide=\"true\"></ion-menu-button>\r\n      <ion-title>Profile</ion-title>\r\n    </ion-buttons>\r\n  </ion-toolbar>\r\n</ion-header>\r\n\r\n<ion-content>\r\n  <app-profile-info *ngIf=\"customer != undefined\" \r\n  [customer]=\"customer\"\r\n  [keyCloakUser]=\"keyCloakUser\"\r\n  [contact]=\"contact\"\r\n  ></app-profile-info>\r\n\r\n  <ion-segment \r\n  (ionChange)=\"segmentChanged($event)\"\r\n  [(ngModel)]=\"currentSegment\"\r\n  >\r\n    <ion-segment-button value=\"frequently\" checked>\r\n      <ion-label>\r\n        Frequent\r\n      </ion-label>\r\n    </ion-segment-button>\r\n    <ion-segment-button value=\"favourite\">\r\n      <ion-label>\r\n        Favourites\r\n      </ion-label>\r\n    </ion-segment-button>\r\n    <ion-segment-button value=\"history\">\r\n      <ion-label>History</ion-label>\r\n    </ion-segment-button>\r\n  </ion-segment>\r\n\r\n  <ion-slides>\r\n    <ion-slide>\r\n      <app-frequently-ordered-list></app-frequently-ordered-list>\r\n    </ion-slide>\r\n    <ion-slide>\r\n      <app-favourite-list>\r\n      </app-favourite-list>\r\n    </ion-slide>\r\n    <ion-slide>\r\n      <app-history-list\r\n      *ngIf=\"keyCloakUser !== undefined\"\r\n      [keyCloakUser]=\"keyCloakUser\"\r\n      ></app-history-list>\r\n    </ion-slide>\r\n  </ion-slides>\r\n</ion-content>\r\n<ion-footer>\r\n  <app-footer></app-footer>\r\n</ion-footer>\r\n"
 
 /***/ }),
 
@@ -84,7 +84,7 @@ var ProfilePageModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "app-favourite-list, app-frequently-ordered-list {\n  width: 100%;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvcGFnZXMvcHJvZmlsZS9wcm9maWxlLnBhZ2Uuc2NzcyIsInNyYy9hcHAvcGFnZXMvcHJvZmlsZS9wcm9maWxlLnBhZ2Uuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLFdBQUE7QUNDSiIsImZpbGUiOiJzcmMvYXBwL3BhZ2VzL3Byb2ZpbGUvcHJvZmlsZS5wYWdlLnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJhcHAtZmF2b3VyaXRlLWxpc3QgLCBhcHAtZnJlcXVlbnRseS1vcmRlcmVkLWxpc3Qge1xuICAgIHdpZHRoOiAxMDAlO1xufSIsImFwcC1mYXZvdXJpdGUtbGlzdCwgYXBwLWZyZXF1ZW50bHktb3JkZXJlZC1saXN0IHtcbiAgd2lkdGg6IDEwMCU7XG59Il19 */"
+module.exports = "app-favourite-list, app-frequently-ordered-list {\n  width: 100%;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvcGFnZXMvcHJvZmlsZS9GOlxcUHJvamVjdHNcXENBLUxhdGVzdFxcQ3VzdG9tZXJBcHBMYXRlc3Qvc3JjXFxhcHBcXHBhZ2VzXFxwcm9maWxlXFxwcm9maWxlLnBhZ2Uuc2NzcyIsInNyYy9hcHAvcGFnZXMvcHJvZmlsZS9wcm9maWxlLnBhZ2Uuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLFdBQUE7QUNDSiIsImZpbGUiOiJzcmMvYXBwL3BhZ2VzL3Byb2ZpbGUvcHJvZmlsZS5wYWdlLnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJhcHAtZmF2b3VyaXRlLWxpc3QgLCBhcHAtZnJlcXVlbnRseS1vcmRlcmVkLWxpc3Qge1xyXG4gICAgd2lkdGg6IDEwMCU7XHJcbn0iLCJhcHAtZmF2b3VyaXRlLWxpc3QsIGFwcC1mcmVxdWVudGx5LW9yZGVyZWQtbGlzdCB7XG4gIHdpZHRoOiAxMDAlO1xufSJdfQ== */"
 
 /***/ }),
 
@@ -103,15 +103,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
 /* harmony import */ var src_app_api_services__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/api/services */ "./src/app/api/services.ts");
+/* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ngx-logger */ "./node_modules/ngx-logger/fesm5/ngx-logger.js");
+/* harmony import */ var src_app_components_footer_footer_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/components/footer/footer.component */ "./src/app/components/footer/footer.component.ts");
+
+
 
 
 
 
 
 var ProfilePage = /** @class */ (function () {
-    function ProfilePage(storage, queryResource) {
+    function ProfilePage(storage, queryResource, logger) {
         this.storage = storage;
         this.queryResource = queryResource;
+        this.logger = logger;
         this.currentSegment = 'frequently';
     }
     ProfilePage.prototype.ngOnInit = function () {
@@ -159,14 +164,24 @@ var ProfilePage = /** @class */ (function () {
             });
         });
     };
+    // Fix for Footer Button Change
+    ProfilePage.prototype.ionViewDidEnter = function () {
+        this.logger.info('Ion View Did enter');
+        this.footer.setcurrentRoute('profile');
+    };
     ProfilePage.ctorParameters = function () { return [
         { type: _ionic_storage__WEBPACK_IMPORTED_MODULE_1__["Storage"] },
-        { type: src_app_api_services__WEBPACK_IMPORTED_MODULE_4__["QueryResourceService"] }
+        { type: src_app_api_services__WEBPACK_IMPORTED_MODULE_4__["QueryResourceService"] },
+        { type: ngx_logger__WEBPACK_IMPORTED_MODULE_5__["NGXLogger"] }
     ]; };
     tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ViewChild"])(_ionic_angular__WEBPACK_IMPORTED_MODULE_3__["IonSlides"], null),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", _ionic_angular__WEBPACK_IMPORTED_MODULE_3__["IonSlides"])
     ], ProfilePage.prototype, "ionSlides", void 0);
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ViewChild"])(src_app_components_footer_footer_component__WEBPACK_IMPORTED_MODULE_6__["FooterComponent"], null),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", src_app_components_footer_footer_component__WEBPACK_IMPORTED_MODULE_6__["FooterComponent"])
+    ], ProfilePage.prototype, "footer", void 0);
     ProfilePage = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Component"])({
             selector: 'app-profile',
@@ -174,7 +189,8 @@ var ProfilePage = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./profile.page.scss */ "./src/app/pages/profile/profile.page.scss")]
         }),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_ionic_storage__WEBPACK_IMPORTED_MODULE_1__["Storage"],
-            src_app_api_services__WEBPACK_IMPORTED_MODULE_4__["QueryResourceService"]])
+            src_app_api_services__WEBPACK_IMPORTED_MODULE_4__["QueryResourceService"],
+            ngx_logger__WEBPACK_IMPORTED_MODULE_5__["NGXLogger"]])
     ], ProfilePage);
     return ProfilePage;
 }());

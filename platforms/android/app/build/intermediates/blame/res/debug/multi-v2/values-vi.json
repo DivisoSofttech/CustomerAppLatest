@@ -1,27 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/home/jishnuj/Desktop/Work/CustomerAppLatest/platforms/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-vi/values-vi.xml",
+            "outputFile": "F:\\Projects\\CA-Latest\\CustomerAppLatest\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-vi\\values-vi.xml",
             "map": [
                 {
-                    "source": "/home/jishnuj/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/e4ada26e7b6f2d8aaf412711f755d798/res/values-vi/values-vi.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    },
-                    "to": {
-                        "startLines": "37",
-                        "startColumns": "4",
-                        "startOffsets": "5328",
-                        "endColumns": "100",
-                        "endOffsets": "5424"
-                    }
-                },
-                {
-                    "source": "/home/jishnuj/.gradle/caches/transforms-1/files-1.1/play-services-base-16.0.1.aar/23088cf17864385e32be93e81feda58d/res/values-vi/values.xml",
+                    "source": "C:\\Users\\imanz\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-base-16.0.1.aar\\7c3dd94cc2f9644a474baab21dec7163\\res\\values-vi\\values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
@@ -38,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "/home/jishnuj/.gradle/caches/transforms-1/files-1.1/play-services-basement-16.0.1.aar/1c25d8f943ee43cd2de2e1d4a05aa719/res/values-vi/values.xml",
+                    "source": "C:\\Users\\imanz\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-basement-16.0.1.aar\\634c6ec22c8868b204ae6cd10d98262e\\res\\values-vi\\values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
@@ -55,13 +38,30 @@
                     }
                 },
                 {
-                    "source": "/home/jishnuj/Desktop/Work/CustomerAppLatest/platforms/android/app/src/main/res/values-vi/pgm_strings.xml",
+                    "source": "C:\\Users\\imanz\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\e1de84cfaf2d41dc95c04a587f1f64c1\\res\\values-vi\\values-vi.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "37",
+                        "startColumns": "4",
+                        "startOffsets": "5328",
+                        "endColumns": "100",
+                        "endOffsets": "5424"
+                    }
+                },
+                {
+                    "source": "F:\\Projects\\CA-Latest\\CustomerAppLatest\\platforms\\android\\app\\src\\main\\res\\values-vi\\pgm_strings.xml",
                     "from": {
                         "startLines": "3,18,2,5,4,6,7,8,9,10,11,12,13,14,17,15,16",
                         "startColumns": "2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2",
-                        "startOffsets": "108,2390,53,370,236,591,743,860,1036,1174,1348,1534,1691,1867,2275,2026,2167",
+                        "startOffsets": "111,2408,55,375,240,597,750,868,1045,1184,1359,1546,1704,1881,2292,2041,2183",
                         "endColumns": "127,104,54,220,133,151,116,175,137,173,185,156,175,158,114,140,107",
-                        "endOffsets": "233,2492,105,588,367,740,857,1033,1171,1345,1531,1688,1864,2023,2387,2164,2272"
+                        "endOffsets": "236,2510,107,593,371,746,864,1041,1180,1355,1542,1700,1877,2037,2404,2179,2288"
                     },
                     "to": {
                         "startLines": "20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36",

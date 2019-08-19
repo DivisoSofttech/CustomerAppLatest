@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-header>\n  <app-header (placeChanged)=\"updatedLocation($event)\"></app-header>\n</ion-header>\n<ion-content>\n  <app-map></app-map>\n  <app-banner></app-banner>\n\n  <ion-list>\n    <div class=\"highlightText\">\n      <ion-label>\n        <h2>What's Nearby!</h2>\n      </ion-label>\n    </div>\n    <app-restaurant-card\n      *ngFor=\"let store of stores\"\n      [store]=\"store\"\n    ></app-restaurant-card>\n  </ion-list>\n\n  <app-loading *ngIf=\"showLoading === true\" [type]=\"'restaurant'\"></app-loading>\n\n  <ion-infinite-scroll threshold=\"100px\" (ionInfinite)=\"loadMoreStores($event)\">\n    <ion-infinite-scroll-content\n      loadingSpinner=\"bubbles\"\n      loadingText=\"Loading more data...\"\n    >\n    </ion-infinite-scroll-content>\n  </ion-infinite-scroll>\n  <ion-refresher slot=\"fixed\" (ionRefresh)=\"doRefresh($event)\">\n    <ion-refresher-content\n      pullingIcon=\"arrow-dropdown\"\n      pullingText=\"Pull to refresh\"\n      refreshingSpinner=\"circles\"\n    >\n    </ion-refresher-content>\n  </ion-refresher>\n</ion-content>\n<ion-footer>\n  <app-filter\n    *ngIf=\"showFilters\"\n    (closeFilter)=\"toggleFilteromponent()\"\n  ></app-filter>\n  <app-footer \n  (filter)=\"toggleFilteromponent()\"\n  [currentRoute]='restaurant'\n  ></app-footer>\n</ion-footer>\n"
+module.exports = "<ion-header>\r\n  <app-header (placeChanged)=\"updatedLocation($event)\"></app-header>\r\n</ion-header>\r\n<ion-content>\r\n  <app-map></app-map>\r\n  <app-banner></app-banner>\r\n\r\n  <ion-list>\r\n    <div class=\"highlightText\">\r\n      <ion-label>\r\n        <h2>What's Nearby!</h2>\r\n      </ion-label>\r\n    </div>\r\n    <app-restaurant-card\r\n      *ngFor=\"let store of stores\"\r\n      [store]=\"store\"\r\n    ></app-restaurant-card>\r\n  </ion-list>\r\n\r\n  <app-loading *ngIf=\"showLoading === true\" [type]=\"'restaurant'\"></app-loading>\r\n\r\n  <ion-infinite-scroll threshold=\"100px\" (ionInfinite)=\"loadMoreStores($event)\">\r\n    <ion-infinite-scroll-content\r\n      loadingSpinner=\"bubbles\"\r\n      loadingText=\"Loading more data...\"\r\n    >\r\n    </ion-infinite-scroll-content>\r\n  </ion-infinite-scroll>\r\n  <ion-refresher slot=\"fixed\" (ionRefresh)=\"doRefresh($event)\">\r\n    <ion-refresher-content\r\n      pullingIcon=\"arrow-dropdown\"\r\n      pullingText=\"Pull to refresh\"\r\n      refreshingSpinner=\"circles\"\r\n    >\r\n    </ion-refresher-content>\r\n  </ion-refresher>\r\n</ion-content>\r\n<ion-footer>\r\n  <app-filter\r\n    *ngIf=\"showFilters\"\r\n    (closeFilter)=\"toggleFilteromponent()\"\r\n  ></app-filter>\r\n  <app-footer \r\n  (filter)=\"toggleFilteromponent()\"\r\n  ></app-footer>\r\n</ion-footer>\r\n"
 
 /***/ }),
 
@@ -85,7 +85,7 @@ RestaurantPageModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".highlightText {\n  padding: 3px 13px;\n  background: #f8f4f4;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL2ppc2hudWovRGVza3RvcC9Xb3JrL0N1c3RvbWVyQXBwTGF0ZXN0L3NyYy9hcHAvcGFnZXMvcmVzdGF1cmFudC9yZXN0YXVyYW50LnBhZ2Uuc2NzcyIsInNyYy9hcHAvcGFnZXMvcmVzdGF1cmFudC9yZXN0YXVyYW50LnBhZ2Uuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGlCQUFBO0VBQ0EsbUJBQUE7QUNDRiIsImZpbGUiOiJzcmMvYXBwL3BhZ2VzL3Jlc3RhdXJhbnQvcmVzdGF1cmFudC5wYWdlLnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuaGlnaGxpZ2h0VGV4dCB7XG4gIHBhZGRpbmc6IDNweCAxM3B4O1xuICBiYWNrZ3JvdW5kOiAjZjhmNGY0O1xufVxuIiwiLmhpZ2hsaWdodFRleHQge1xuICBwYWRkaW5nOiAzcHggMTNweDtcbiAgYmFja2dyb3VuZDogI2Y4ZjRmNDtcbn0iXX0= */"
+module.exports = ".highlightText {\n  padding: 3px 13px;\n  background: #f8f4f4;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvcGFnZXMvcmVzdGF1cmFudC9GOlxcUHJvamVjdHNcXENBLUxhdGVzdFxcQ3VzdG9tZXJBcHBMYXRlc3Qvc3JjXFxhcHBcXHBhZ2VzXFxyZXN0YXVyYW50XFxyZXN0YXVyYW50LnBhZ2Uuc2NzcyIsInNyYy9hcHAvcGFnZXMvcmVzdGF1cmFudC9yZXN0YXVyYW50LnBhZ2Uuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGlCQUFBO0VBQ0EsbUJBQUE7QUNDRiIsImZpbGUiOiJzcmMvYXBwL3BhZ2VzL3Jlc3RhdXJhbnQvcmVzdGF1cmFudC5wYWdlLnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuaGlnaGxpZ2h0VGV4dCB7XHJcbiAgcGFkZGluZzogM3B4IDEzcHg7XHJcbiAgYmFja2dyb3VuZDogI2Y4ZjRmNDtcclxufVxyXG4iLCIuaGlnaGxpZ2h0VGV4dCB7XG4gIHBhZGRpbmc6IDNweCAxM3B4O1xuICBiYWNrZ3JvdW5kOiAjZjhmNGY0O1xufSJdfQ== */"
 
 /***/ }),
 
@@ -106,6 +106,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
 /* harmony import */ var ngx_logger__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ngx-logger */ "./node_modules/ngx-logger/fesm2015/ngx-logger.js");
 /* harmony import */ var src_app_components_map_map_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/components/map/map.component */ "./src/app/components/map/map.component.ts");
+/* harmony import */ var src_app_components_footer_footer_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/components/footer/footer.component */ "./src/app/components/footer/footer.component.ts");
+
 
 
 
@@ -182,6 +184,11 @@ let RestaurantPage = class RestaurantPage {
     toggleFilteromponent() {
         this.showFilters = !this.showFilters;
     }
+    // Fix for Footer
+    ionViewDidEnter() {
+        this.logger.info('Ion View Did enter');
+        this.footer.setcurrentRoute('restaurant');
+    }
 };
 RestaurantPage.ctorParameters = () => [
     { type: _services_filter_service__WEBPACK_IMPORTED_MODULE_1__["FilterService"] },
@@ -200,6 +207,10 @@ tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ViewChild"])(src_app_components_map_map_component__WEBPACK_IMPORTED_MODULE_6__["MapComponent"], null),
     tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", src_app_components_map_map_component__WEBPACK_IMPORTED_MODULE_6__["MapComponent"])
 ], RestaurantPage.prototype, "mapComponent", void 0);
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ViewChild"])(src_app_components_footer_footer_component__WEBPACK_IMPORTED_MODULE_7__["FooterComponent"], null),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", src_app_components_footer_footer_component__WEBPACK_IMPORTED_MODULE_7__["FooterComponent"])
+], RestaurantPage.prototype, "footer", void 0);
 RestaurantPage = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Component"])({
         selector: 'app-restaurant',
