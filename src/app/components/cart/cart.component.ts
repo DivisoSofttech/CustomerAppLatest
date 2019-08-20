@@ -8,6 +8,7 @@ import { OrderLine, Store, StoreSettings } from 'src/app/api/models';
 import { ModalController, NavController } from '@ionic/angular';
 import { Util } from 'src/app/services/util';
 import { OrderService } from 'src/app/services/order.service';
+import { OrderCommandResourceService } from 'src/app/api/services';
 
 @Component({
   selector: 'app-cart',
@@ -48,7 +49,8 @@ export class CartComponent implements OnInit {
     private modalController: ModalController,
     private navController: NavController,
     private storage: Storage,
-    private util: Util
+    private util: Util,
+    private orderCommandResource: OrderCommandResourceService
   ) {}
 
   ngOnInit() {
@@ -88,6 +90,7 @@ export class CartComponent implements OnInit {
       this.orderLines = data;
       this.storeSetting = this.cart.currentShopSetting;
       this.store = this.cart.currentShop;
+
       this.checkDeliveryTypeExists();
       if(this.store !== undefined && this.store.minAmount > this.totalPrice) {
         this.neededCheckOutAmount = this.store.minAmount - this.totalPrice;
@@ -117,13 +120,18 @@ export class CartComponent implements OnInit {
       customerId: this.customer.reference,
       orderLines: this.orderLines,
       grandTotal: grandtotal,
-      storeId: this.cart.storeId
+      storeId: this.cart.storeId,
+      email: this.customer.email
     };
 
     this.orderService.setCustomer(this.customer);
     this.orderService.setOrder(order);
     this.orderService.setDeliveryType(deliveryType);
-    this.navController.navigateForward('/checkout');
+    this.orderService.initiateOrder().subscribe((resource) => {
+      this.orderService.setResource(resource);
+      this.navController.navigateForward('/checkout');
+    },
+    (err) => {console.log('oops something went wrong'); });
   }
 
   segmenChanged(event) {
