@@ -23,6 +23,7 @@ ion-col ion-text {
 
 .sortFilters {
     width: 95vw;
+    height: 10vh;
     border: 1px solid #e6dcdc;
     margin: auto;
     margin-top: 10px;
@@ -30,4 +31,8 @@ ion-col ion-text {
 
 ion-list {
     width: 100%;
+}
+
+.selected {
+    color: blue;
 }

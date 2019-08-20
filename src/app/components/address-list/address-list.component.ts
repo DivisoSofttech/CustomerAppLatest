@@ -1,3 +1,4 @@
+import { Util } from './../../services/util';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Address } from 'src/app/api/models';
 import { ModalController } from '@ionic/angular';
@@ -31,7 +32,8 @@ export class AddressListComponent implements OnInit {
 
   constructor(
     private modalController: ModalController,
-    private orderCommandResource: OrderCommandResourceService
+    private orderCommandResource: OrderCommandResourceService,
+    private util: Util
   ) {}
 
   getAllAdress(i) {
@@ -53,14 +55,22 @@ export class AddressListComponent implements OnInit {
   }
 
   saveAddress() {
-    this.address.customerId = this.customer.reference;
-    this.orderCommandResource
-    .createAddressUsingPOST(this.address)
-    .subscribe(address => {
-      console.log(address);
-      this.address = address;
-      this.dismiss(this.address);
+    this.util.createLoader()
+    .then(loader => {
+      loader.present();
+      this.address.customerId = this.customer.reference;
+      this.orderCommandResource
+      .createAddressUsingPOST(this.address)
+      .subscribe(address => {
+        console.log(address);
+        this.address = address;
+        loader.dismiss();
+        this.dismiss(this.address);
+      },err => {
+        loader.dismiss();
+      });
     });
+
   }
 
   async addNewAddress() {

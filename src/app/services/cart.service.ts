@@ -20,7 +20,7 @@ export class CartService {
   currentShopSetting;
   auxilaryItems = {};
   currentDeliveryTypes;
-  MAX_ORDERS: number = 10;
+  MAX_ORDERS = 10;
 
   constructor(
     private alertController: AlertController,
@@ -102,6 +102,7 @@ export class CartService {
       success => {
         console.error(success.content);
         this.currentDeliveryTypes = success.content;
+        this.observableTickets.next(this.orderLines);
       },
       err => {}
     );
@@ -146,13 +147,13 @@ export class CartService {
     let orderTotal = 0;
     let auxilaryTotal = 0;
     this.orderLines.forEach(orderLine => {
-      if(orderLine.requiedAuxilaries !== undefined) {
+      if (orderLine.requiedAuxilaries !== undefined) {
         auxilaryTotal = 0;
         orderLine.requiedAuxilaries.forEach(auxilaryOrderLine => {
           auxilaryOrderLine.total = auxilaryOrderLine.quantity * auxilaryOrderLine.pricePerUnit;
           auxilaryTotal += auxilaryOrderLine.total;
         });
-      } 
+      }
       orderLine.total = (orderLine.quantity * orderLine.pricePerUnit) + auxilaryTotal;
       orderTotal += orderLine.total;
     });
@@ -191,7 +192,7 @@ export class CartService {
   }
 
   addShop(shop) {
-    if(this.currentShopId === 0) {
+    if (this.currentShopId === 0) {
       this.currentShop = shop;
       this.currentShopId = shop.id;
       this.getStoreSettings();
@@ -229,7 +230,7 @@ export class CartService {
     this.updateCart();
   }
 
-  increaseAuxilary(auxilaryItem,orderLine) {
+  increaseAuxilary(auxilaryItem, orderLine) {
 
     this.orderLines.forEach( ol => {
       if (ol === orderLine) {
@@ -248,7 +249,7 @@ export class CartService {
       if (ol === orderLine) {
         ol.requiedAuxilaries.forEach( al => {
           if (auxilaryItem.id === al.productId) {
-            if(al.quantity > 1) {
+            if (al.quantity > 1) {
               al.quantity--;
             }
           }

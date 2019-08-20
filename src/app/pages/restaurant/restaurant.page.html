@@ -39,9 +39,9 @@
 <ion-footer>
   <app-filter
     *ngIf="showFilters"
-    (closeFilter)="toggleFilteromponent()"
+    (closeFilter)="toggleFilteromponent($event)"
   ></app-filter>
   <app-footer 
-  (filter)="toggleFilteromponent()"
+  (filter)="toggleFilteromponent('open')"
   ></app-footer>
 </ion-footer>
