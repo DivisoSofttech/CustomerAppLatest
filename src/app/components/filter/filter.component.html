@@ -1,15 +1,21 @@
 <ion-scroll *ngIf="showFilters === false">
   <ion-grid no-padding>
     <ion-row inline class="sortFilters">
-      <ion-col text-center size="3">
+      <ion-col text-center size="3" [ngClass]="currentFilterType === filterTypes.TOP_RATED?'selected':''" >
         <ion-button fill="none" (click)="setFilterType(filterTypes.TOP_RATED)">
           <ion-icon name="star-half" slot="icon-only"></ion-icon>
         </ion-button>
-        <ion-text color="medium" class="el-bl">Top Rated</ion-text>
+        <ion-text class="el-bl">Top Rated</ion-text>
+      </ion-col>
+      <ion-col text-center size="3" [ngClass]="currentFilterType === filterTypes.DELIVERY_TIME?'selected':''">
+        <ion-button fill="none" (click)="setFilterType(filterTypes.DELIVERY_TIME)">
+          <ion-icon name="clock" slot="icon-only"></ion-icon>
+        </ion-button>
+        <ion-text class="el-bl">Delivery Time</ion-text>
       </ion-col>
     </ion-row>
   </ion-grid>
-
+<!-- 
   <ion-grid>
     <ion-row>
       <ion-col>
@@ -63,5 +69,5 @@
         </ion-button>
       </ion-col>
     </ion-row>
-  </ion-grid>
+  </ion-grid> -->
 </ion-scroll>

@@ -50,6 +50,7 @@ export class RestaurantPage implements OnInit {
   getStores() {
     this.filter.getSubscription().subscribe(data => {
       this.stores = [];
+      this.showLoading = true;
       this.filter.getStores(0, (totalElements, totalPages, stores) => {
 
         this.logger.info('Got Stores ' , stores);
@@ -102,8 +103,11 @@ export class RestaurantPage implements OnInit {
     this.IonRefresher.complete();
   }
 
-  toggleFilteromponent() {
+  toggleFilteromponent(event) {
     this.showFilters = !this.showFilters;
+    if (event === 'close') {
+      this.footer.setcurrentRoute('restaurant');
+    }
   }
 
   // Fix for Footer

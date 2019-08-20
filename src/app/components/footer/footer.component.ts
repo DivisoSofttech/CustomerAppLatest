@@ -40,7 +40,9 @@ export class FooterComponent implements OnInit , OnDestroy {
   }
 
   setcurrentRoute(url) {
-    this.ionSegment.value = url;
+    if(this.ionSegment !== null) {
+      this.ionSegment.value = url;
+    }
   }
 
   emitFilterClick() {
