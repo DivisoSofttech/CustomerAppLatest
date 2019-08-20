@@ -51,14 +51,15 @@ export class RestaurantPage implements OnInit {
     this.filter.getSubscription().subscribe(data => {
       this.stores = [];
       this.showLoading = true;
+      this.toggleInfiniteScroll();
       this.filter.getStores(0, (totalElements, totalPages, stores) => {
 
         this.logger.info('Got Stores ' , stores);
-        if (totalPages === 1) {
-          this.logger.info('Disabling Infinite Scroll');
+        if (totalPages > 1) {
+          this.logger.info('Enabling Infinite Scroll');
           this.toggleInfiniteScroll();
         }
-        this.logger.info('Got Stores ' , data);
+
         stores.forEach(s => {
           this.stores.push(s);
         });
