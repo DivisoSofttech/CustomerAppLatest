@@ -5,6 +5,7 @@ import { QueryResourceService, OfferCommandResourceService } from 'src/app/api/s
 import { NGXLogger } from 'ngx-logger';
 import { ShowAuxilaryModalComponent } from '../show-auxilary-modal/show-auxilary-modal.component';
 import { PopoverController } from '@ionic/angular';
+import { OrderService } from 'src/app/services/order.service';
 
 @Component({
   selector: 'app-delivery-item-details',
@@ -47,7 +48,8 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
     private queryResource: QueryResourceService,
     private offerCommandResource: OfferCommandResourceService,
     private logger: NGXLogger,
-    private popover: PopoverController
+    private popover: PopoverController,
+    private orderService: OrderService
   ) {}
 
   ngOnInit() {
@@ -129,9 +131,8 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
       grandtotal += orderLine.pricePerUnit * orderLine.quantity;
     });
     this.offerCommandResource.checkOfferEligibilityUsingPOST({
-      orderTotal: grandtotal
-    })
-    .subscribe(data => {
+      orderModel: {orderTotal: grandtotal}, customerId: this.orderService.customer.reference
+    }).subscribe(data => {
       console.log(data);
     });
   }

@@ -7,8 +7,8 @@ import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-respo
 import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
+import { NotificationDTO } from '../models/notification-dto';
 import { CommandResource } from '../models/command-resource';
-import { ApprovalDetailsDTO } from '../models/approval-details-dto';
 import { Order } from '../models/order';
 import { AddressDTO } from '../models/address-dto';
 import { PageOfAddress } from '../models/page-of-address';
@@ -21,11 +21,12 @@ import { DeliveryInfo } from '../models/delivery-info';
   providedIn: 'root',
 })
 class OrderCommandResourceService extends __BaseService {
-  static readonly acceptOrderUsingPOSTPath = '/api/command/acceptOrder/{taskId}/{orderId}';
+  static readonly updateNotificationUsingPUTPath = '/api/command/notifications';
   static readonly initiateOrderUsingPOSTPath = '/api/command/order/initiateOrder';
   static readonly createAddressUsingPOSTPath = '/api/command/orders/addresses';
   static readonly getAllSavedAddressUsingGETPath = '/api/command/orders/addresses/{customerId}';
   static readonly collectDeliveryDetailsUsingPOSTPath = '/api/command/orders/collectDeliveryDetails/{taskId}/{orderId}';
+  static readonly sendUsingGETPath = '/api/command/sendMessage';
 
   constructor(
     config: __Configuration,
@@ -35,26 +36,17 @@ class OrderCommandResourceService extends __BaseService {
   }
 
   /**
-   * @param params The `OrderCommandResourceService.AcceptOrderUsingPOSTParams` containing the following parameters:
-   *
-   * - `taskId`: taskId
-   *
-   * - `orderId`: orderId
-   *
-   * - `approvalDetailsDTO`: approvalDetailsDTO
-   *
+   * @param notificationDTO notificationDTO
    * @return OK
    */
-  acceptOrderUsingPOSTResponse(params: OrderCommandResourceService.AcceptOrderUsingPOSTParams): __Observable<__StrictHttpResponse<CommandResource>> {
+  updateNotificationUsingPUTResponse(notificationDTO: NotificationDTO): __Observable<__StrictHttpResponse<NotificationDTO>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-
-
-    __body = params.approvalDetailsDTO;
+    __body = notificationDTO;
     let req = new HttpRequest<any>(
-      'POST',
-      this.rootUrl + `/api/command/acceptOrder/${params.taskId}/${params.orderId}`,
+      'PUT',
+      this.rootUrl + `/api/command/notifications`,
       __body,
       {
         headers: __headers,
@@ -65,24 +57,17 @@ class OrderCommandResourceService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<CommandResource>;
+        return _r as __StrictHttpResponse<NotificationDTO>;
       })
     );
   }
   /**
-   * @param params The `OrderCommandResourceService.AcceptOrderUsingPOSTParams` containing the following parameters:
-   *
-   * - `taskId`: taskId
-   *
-   * - `orderId`: orderId
-   *
-   * - `approvalDetailsDTO`: approvalDetailsDTO
-   *
+   * @param notificationDTO notificationDTO
    * @return OK
    */
-  acceptOrderUsingPOST(params: OrderCommandResourceService.AcceptOrderUsingPOSTParams): __Observable<CommandResource> {
-    return this.acceptOrderUsingPOSTResponse(params).pipe(
-      __map(_r => _r.body as CommandResource)
+  updateNotificationUsingPUT(notificationDTO: NotificationDTO): __Observable<NotificationDTO> {
+    return this.updateNotificationUsingPUTResponse(notificationDTO).pipe(
+      __map(_r => _r.body as NotificationDTO)
     );
   }
 
@@ -266,30 +251,45 @@ class OrderCommandResourceService extends __BaseService {
       __map(_r => _r.body as CommandResource)
     );
   }
+
+  /**
+   * @param name undefined
+   * @return OK
+   */
+  sendUsingGETResponse(name?: string): __Observable<__StrictHttpResponse<string>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    if (name != null) __params = __params.set('name', name.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/command/sendMessage`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'text'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<string>;
+      })
+    );
+  }
+  /**
+   * @param name undefined
+   * @return OK
+   */
+  sendUsingGET(name?: string): __Observable<string> {
+    return this.sendUsingGETResponse(name).pipe(
+      __map(_r => _r.body as string)
+    );
+  }
 }
 
 module OrderCommandResourceService {
-
-  /**
-   * Parameters for acceptOrderUsingPOST
-   */
-  export interface AcceptOrderUsingPOSTParams {
-
-    /**
-     * taskId
-     */
-    taskId: string;
-
-    /**
-     * orderId
-     */
-    orderId: string;
-
-    /**
-     * approvalDetailsDTO
-     */
-    approvalDetailsDTO: ApprovalDetailsDTO;
-  }
 
   /**
    * Parameters for getAllSavedAddressUsingGET

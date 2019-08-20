@@ -11,13 +11,9 @@ import { CartService } from 'src/app/services/cart.service';
 export class CheckoutComponent implements OnInit {
 
   customer;
-
-  selectedAddress;  
-
-  note;
-
+  selectedAddress;
+  note: string;
   order: Order;
-  
   deliveryType: any;
 
   constructor(
@@ -25,10 +21,9 @@ export class CheckoutComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.orderService.deliveryType);
+    console.log(this.orderService.deliveryInfo);
     console.log(this.orderService.order);
     console.log(this.orderService.customer);
-    console.log(this.orderService.address);
     this.getCustomer();
     this.getOrderDetails();
   }
@@ -40,7 +35,6 @@ export class CheckoutComponent implements OnInit {
 
   getOrderDetails() {
     this.order = this.orderService.order;
-    this.deliveryType = this.orderService.deliveryType;
   }
 
   setNote() {
@@ -59,7 +53,8 @@ export class CheckoutComponent implements OnInit {
   }
 
   checkOut() {
-
-    // 
+    this.orderService.collectDeliveryInfo().subscribe((resource) => {
+      this.orderService.resource = resource;
+    }, (err) => { console.log('oops something went wrong while collecting deliveryinfo'); });
   }
 }

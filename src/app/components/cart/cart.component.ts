@@ -39,8 +39,8 @@ export class CartComponent implements OnInit {
   neededCheckOutAmount = 0;
 
   storeSetting: StoreSettings;
-  deliveryOk: boolean = false;
-  collectionOk: boolean = false;
+  deliveryOk = false;
+  collectionOk = false;
 
 
   constructor(
@@ -56,6 +56,7 @@ export class CartComponent implements OnInit {
   ngOnInit() {
     this.getCartDetails();
     this.getCustomer();
+    this.orderService.customer = this.customer;
   }
 
   getCustomer() {
@@ -72,14 +73,14 @@ export class CartComponent implements OnInit {
   }
 
   checkDeliveryTypeExists() {
-  if(this.cart.currentDeliveryTypes !== undefined) {
+  if (this.cart.currentDeliveryTypes !== undefined) {
     this.cart.currentDeliveryTypes.forEach(element => {
-      if(element.name === 'delivery') {
+      if (element.name === 'delivery') {
         this.deliveryOk = true;
-      } else if(element.name === 'collection') {
+      } else if (element.name === 'collection') {
         this.collectionOk = true;
       }
-    }); 
+    });
     }
   }
 
@@ -92,7 +93,7 @@ export class CartComponent implements OnInit {
       this.store = this.cart.currentShop;
 
       this.checkDeliveryTypeExists();
-      if(this.store !== undefined && this.store.minAmount > this.totalPrice) {
+      if (this.store !== undefined && this.store.minAmount > this.totalPrice) {
         this.neededCheckOutAmount = this.store.minAmount - this.totalPrice;
       } else {
         this.neededCheckOutAmount = 0;
@@ -114,24 +115,28 @@ export class CartComponent implements OnInit {
     let grandtotal = 0;
     this.orderLines.forEach(orderLine => {
       grandtotal += orderLine.pricePerUnit * orderLine.quantity;
+      orderLine.requiedAuxilaries.forEach(auxilary => grandtotal += auxilary.pricePerUnit * auxilary.quantity );
     });
     grandtotal = grandtotal + this.storeSetting.deliveryCharge;
     const order: Order = {
       customerId: this.customer.reference,
       orderLines: this.orderLines,
       grandTotal: grandtotal,
-      storeId: this.cart.storeId,
+      storeId: this.store.regNo,
       email: this.customer.email
     };
 
     this.orderService.setCustomer(this.customer);
     this.orderService.setOrder(order);
     this.orderService.setDeliveryType(deliveryType);
+    this.orderService.setDeliveryCharge(this.storeSetting.deliveryCharge);
     this.orderService.initiateOrder().subscribe((resource) => {
       this.orderService.setResource(resource);
+      console.log('Next task name is ' + resource.nextTaskId + ' Next task name '
+       + resource.nextTaskName + ' selfid ' + resource.selfId + ' order id is ' + resource.orderId);
       this.navController.navigateForward('/checkout');
     },
-    (err) => {console.log('oops something went wrong'); });
+    (err) => {console.log('oops something went wrong while initiating order ' + err ); });
   }
 
   segmenChanged(event) {
