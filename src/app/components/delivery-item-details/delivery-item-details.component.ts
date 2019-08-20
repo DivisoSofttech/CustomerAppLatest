@@ -26,7 +26,7 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
 
   auxilaryProducts = {
 
-    lenght: 0
+    length: 0
   };
 
   store: Store;
@@ -40,6 +40,7 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
   productsGot = false;
 
   productBaseAuxItemsArray = {};
+
 
   constructor(
     private cart: CartService,

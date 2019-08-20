@@ -39,6 +39,8 @@ export class CartComponent implements OnInit {
   neededCheckOutAmount = 0;
 
   storeSetting: StoreSettings;
+  deliveryOk: boolean = false;
+  collectionOk: boolean = false;
 
 
   constructor(
@@ -69,6 +71,18 @@ export class CartComponent implements OnInit {
     });
   }
 
+  checkDeliveryTypeExists() {
+  if(this.cart.currentDeliveryTypes !== undefined) {
+    this.cart.currentDeliveryTypes.forEach(element => {
+      if(element.name === 'delivery') {
+        this.deliveryOk = true;
+      } else if(element.name === 'collection') {
+        this.collectionOk = true;
+      }
+    }); 
+    }
+  }
+
   getCartDetails() {
     this.cart.observableTickets.subscribe(data => {
       this.cartSize = data.length;
@@ -76,7 +90,9 @@ export class CartComponent implements OnInit {
       this.orderLines = data;
       this.storeSetting = this.cart.currentShopSetting;
       this.store = this.cart.currentShop;
-      if ( this.store !== undefined && this.store.minAmount > this.totalPrice) {
+
+      this.checkDeliveryTypeExists();
+      if(this.store !== undefined && this.store.minAmount > this.totalPrice) {
         this.neededCheckOutAmount = this.store.minAmount - this.totalPrice;
       } else {
         this.neededCheckOutAmount = 0;

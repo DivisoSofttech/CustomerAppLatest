@@ -1,3 +1,9 @@
+<ion-item
+*ngIf="store !== undefined && viewType === 'full'"
+>
+<ion-label>
+  {{store.name}}
+</ion-label></ion-item>
 <ion-grid no-padding margin *ngIf="viewType === 'minimal'">
   <ion-row>
     <ion-col size="4" text-center no-padding>
@@ -68,16 +74,23 @@
     </ion-row>
     <ion-row>
       <ion-col size="12">
-        <ion-button *ngIf="currentSegment==='delivery'"
+        <ion-button *ngIf="currentSegment==='delivery' && deliveryOk"
           [disabled]="neededCheckOutAmount !== 0"
           color="primary" expand="full" (click)="continue('delivery')"
           >Continue</ion-button
         >
-        <ion-button *ngIf="currentSegment==='collection'"
+        <ion-button *ngIf="currentSegment==='collection' && collectionOk"
         [disabled]="neededCheckOutAmount !== 0"
          color="primary" expand="full" (click)="continue('collection')"
         >Continue</ion-button
       >
+      <div *ngIf="!deliveryOk && !collectionOk && orderLines.length > 0"
+        class="vertical-align-center"
+      >
+        <ion-label text-center>
+            Unable to Order From This Restaurant , Does'nt Provide a Delivery Mode
+        </ion-label>
+      </div>
       </ion-col>
       <ion-col size="12">
         <ion-item (click)="presentAllergyModal()" lines="full">
@@ -103,13 +116,14 @@
     (ionChange)="segmenChanged($event)"
     *ngIf="orderLines.length !== 0"
   >
-    <ion-segment-button value="collection">Collection</ion-segment-button>
-    <ion-segment-button value="delivery" checked>Delivery</ion-segment-button>
+    <ion-segment-button *ngIf="collectionOk" value="collection">Collection</ion-segment-button>
+    <ion-segment-button *ngIf="deliveryOk" value="delivery" checked>Delivery</ion-segment-button>
   </ion-segment>
 
   <div>
     <app-delivery-item-details class="vertical-align-center ion-padding-top ion-margin-top"></app-delivery-item-details>
   </div>
+
 </div>
 
 <ion-footer *ngIf="viewType === 'full' &&  currentSegment === 'delivery'

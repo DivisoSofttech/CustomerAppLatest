@@ -1,3 +1,8 @@
+
+<app-loading 
+*ngIf="orders.length > 0 && productsGot === false"
+[type]="'delivery'"></app-loading>
+
 <ion-list can-swipe="true" *ngIf="orders.length > 0 && productsGot === true" class="page-parent">
   <ion-card *ngFor="let orderLine of orders">
 
@@ -84,7 +89,7 @@
   </ion-card>
 
   <ion-card>
-    <ion-item color="secondary"
+    <ion-item color="medium"
     lines="full"
     *ngIf="storeSetting !== undefined && orders.length > 0">
     <ion-label text-start>Delivery charge</ion-label>

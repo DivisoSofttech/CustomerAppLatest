@@ -82,11 +82,15 @@ export class ProductCardComponent implements OnInit {
   }
 
   add(i, stock: StockCurrent) {
-  
+    this.cartService.addShop(this.store);
     if(this.auxilaries.length > 0 && this.stockCurrent.product.isAuxilaryItem === false) {
       this.logger.info('Add Auxilary Items ' , this.auxilaries);
       this.cartService.addAuxilary(this.stockCurrent.product , this.auxilaries);
-      this.showAddAuxilaryPopover();
+      if(this.cartService.currentShopId === this.store.id) {
+        this.showAddAuxilaryPopover();
+      } else {
+        this.cartService.presentAlert();
+      }
     } else {
       this.logger.info('No Auxilary Items ' , this.auxilaries);
       this.cartService.addProduct(stock.product, stock , this.store);
