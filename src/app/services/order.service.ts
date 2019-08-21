@@ -15,7 +15,7 @@ export class OrderService {
   constructor(private orderCommandService: OrderCommandResourceService) { }
 
    initiateOrder() {
-     console.log('Order is' + this.order);
+      console.log('Order is' + this.order);
      return this.orderCommandService.initiateOrderUsingPOST(this.order);
   }
 

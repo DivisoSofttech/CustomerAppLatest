@@ -115,7 +115,6 @@ export class CartComponent implements OnInit {
     let grandtotal = 0;
     this.orderLines.forEach(orderLine => {
       grandtotal += orderLine.pricePerUnit * orderLine.quantity;
-      orderLine.requiedAuxilaries.forEach(auxilary => grandtotal += auxilary.pricePerUnit * auxilary.quantity );
     });
     grandtotal = grandtotal + this.storeSetting.deliveryCharge;
     const order: Order = {
@@ -130,13 +129,17 @@ export class CartComponent implements OnInit {
     this.orderService.setOrder(order);
     this.orderService.setDeliveryType(deliveryType);
     this.orderService.setDeliveryCharge(this.storeSetting.deliveryCharge);
-    this.orderService.initiateOrder().subscribe((resource) => {
+    this.util.createLoader().then(loader =>{
+      loader.present();
+      this.orderService.initiateOrder().subscribe((resource) => {
       this.orderService.setResource(resource);
+      loader.dismiss();
       console.log('Next task name is ' + resource.nextTaskId + ' Next task name '
        + resource.nextTaskName + ' selfid ' + resource.selfId + ' order id is ' + resource.orderId);
       this.navController.navigateForward('/checkout');
-    },
-    (err) => {console.log('oops something went wrong while initiating order ' + err ); });
+    });
+    })
+   
   }
 
   segmenChanged(event) {
