@@ -1,7 +1,7 @@
 <ion-toolbar *ngIf="showSearchBar === false">
   <ion-buttons slot="start">
     <ion-back-button></ion-back-button>
-    <ion-title>{{ name.substring(0, 15) + "..." | uppercase }}</ion-title>
+    <ion-title>{{ name  | uppercase }}</ion-title>
   </ion-buttons>
   <ion-buttons slot="end">
     <ion-button (click)="toggleSearchBar()">

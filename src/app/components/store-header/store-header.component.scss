@@ -3,3 +3,10 @@
     background:white;
     opacity: 1;
 }
+
+ion-buttons , ion-title {
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}

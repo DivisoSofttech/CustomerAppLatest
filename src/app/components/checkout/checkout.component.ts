@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { OrderService } from 'src/app/services/order.service';
 import { Order } from 'src/app/api/models';
 import { CartService } from 'src/app/services/cart.service';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-checkout',
@@ -21,7 +22,8 @@ export class CheckoutComponent implements OnInit {
   deliveryType: any;
 
   constructor(
-    private orderService: OrderService
+    private orderService: OrderService,
+    private logger: NGXLogger
   ) { }
 
   ngOnInit() {
@@ -53,13 +55,18 @@ export class CheckoutComponent implements OnInit {
   }
 
   addressSelectedEvent(event) {
-    this.setNote();
     console.log(event);
     this.setAddress(event);
   }
 
   checkOut() {
-
-    // 
+    this.setNote();
+    this.logger.info(' ----------------------------- ');
+    this.logger.info('Customer : ' , this.customer);
+    this.logger.info('Order : ' , this.order);
+    this.logger.info('Order Type : ' , this.deliveryType);
+    this.logger.info('Note : ' , this.note);
+    this.logger.info('Address : ' , this.selectedAddress);
+    this.logger.info(' ----------------------------- ');
   }
 }

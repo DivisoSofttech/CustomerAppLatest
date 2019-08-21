@@ -25,7 +25,6 @@ export class FooterComponent implements OnInit , OnDestroy {
     private cart: CartService,
     private platform: Platform
   ) {
-    this.showTabs = this.platform.width() > 640 ? false : true;
   }
 
   ngOnInit() {
