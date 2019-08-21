@@ -42,6 +42,10 @@ export class AddressListComponent implements OnInit {
       page: i
     })
     .subscribe(paddress => {
+      if(paddress.content.length > 0) {
+        this.currentId = paddress.content[0].id;
+        this.addressSelected.emit(paddress.content[0]);
+      }
       paddress.content.forEach(a => {
         this.addresses.push(a);
       });

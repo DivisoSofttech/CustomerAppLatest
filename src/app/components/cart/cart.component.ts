@@ -118,13 +118,13 @@ export class CartComponent implements OnInit {
     });
     grandtotal = grandtotal + this.storeSetting.deliveryCharge;
     const order: Order = {
-      customerId: this.customer.reference,
       orderLines: this.orderLines,
       grandTotal: grandtotal,
-      storeId: this.store.regNo,
       email: this.customer.email
+      storeId: this.cart.storeId,
     };
 
+    this.orderService.setShop(this.store);
     this.orderService.setCustomer(this.customer);
     this.orderService.setOrder(order);
     this.orderService.setDeliveryType(deliveryType);

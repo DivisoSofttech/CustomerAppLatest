@@ -1,8 +1,8 @@
 import { StoreDTO } from './../../api/models/store-dto';
-import { FilterService, FILTER_TYPES } from './../../services/filter.service';
+import { FilterService } from './../../services/filter.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Util } from 'src/app/services/util';
-import { IonInfiniteScroll, IonRefresher, IonSlides } from '@ionic/angular';
+import { IonInfiniteScroll, IonRefresher } from '@ionic/angular';
 import { NGXLogger } from 'ngx-logger';
 import { MapComponent } from 'src/app/components/map/map.component';
 import { FooterComponent } from 'src/app/components/footer/footer.component';
@@ -74,7 +74,7 @@ export class RestaurantPage implements OnInit {
 
   loadMoreStores(event) {
     this.logger.info('Load More Stores if exists');
-    this.page++;
+    ++this.page;
     this.filter.getStores(this.page, (totalElements, totalPages, stores) => {
       this.logger.info('Got Stores ' , stores);
       if (this.page === totalPages) {

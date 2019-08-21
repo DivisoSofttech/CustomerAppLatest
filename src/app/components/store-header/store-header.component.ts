@@ -29,6 +29,8 @@ export class StoreHeaderComponent implements OnInit {
 
   @Input() storeId;
 
+  @Input() store;
+
   @ViewChild(IonInfiniteScroll, null) infiniteScroll: IonInfiniteScroll;
 
   constructor(
