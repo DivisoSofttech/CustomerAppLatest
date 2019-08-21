@@ -1,4 +1,3 @@
-import { NGXLogger } from 'ngx-logger';
 import { Injectable } from '@angular/core';
 import { Product, StockCurrent, OrderLine, Store, AuxilaryLineItem } from '../api/models';
 import { BehaviorSubject } from 'rxjs';
@@ -27,8 +26,7 @@ export class CartService {
     private alertController: AlertController,
     private navController: NavController,
     private queryResource: QueryResourceService,
-    private util: Util,
-    private logger: NGXLogger
+    private util: Util
   ) {
     this.observableTickets = new BehaviorSubject<OrderLine[]>(this.orderLines);
     this.observablePrice = new BehaviorSubject<number>(this.totalPrice);
@@ -149,8 +147,8 @@ export class CartService {
     let orderTotal = 0;
     let auxilaryTotal = 0;
     this.orderLines.forEach(orderLine => {
-      auxilaryTotal = 0;
       if (orderLine.requiedAuxilaries !== undefined) {
+        auxilaryTotal = 0;
         orderLine.requiedAuxilaries.forEach(auxilaryOrderLine => {
           auxilaryOrderLine.total = auxilaryOrderLine.quantity * auxilaryOrderLine.pricePerUnit;
           auxilaryTotal += auxilaryOrderLine.total;
@@ -160,7 +158,6 @@ export class CartService {
       orderTotal += orderLine.total;
     });
     this.totalPrice = orderTotal;
-    this.logger.info('OrderLines ', this.orderLines);
   }
 
   updateCart() {

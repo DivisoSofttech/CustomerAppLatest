@@ -56,14 +56,15 @@ export class CartComponent implements OnInit {
   ngOnInit() {
     this.getCartDetails();
     this.getCustomer();
-    this.orderService.customer = this.customer;
   }
 
   getCustomer() {
     this.util.createLoader().then(loader => {
       loader.present();
-      this.storage.get('customer').then(user => {
+      this.storage.get('user').then(user => {
+        console.log('User from storage ' + user);
         this.customer = user;
+        this.orderService.setCustomer(user);
         loader.dismiss();
       })
       .catch(err => {
@@ -120,16 +121,15 @@ export class CartComponent implements OnInit {
     const order: Order = {
       orderLines: this.orderLines,
       grandTotal: grandtotal,
-      email: this.customer.email
-      storeId: this.cart.storeId,
+      email: this.customer.email,
+      storeId: this.cart.storeId
     };
 
     this.orderService.setShop(this.store);
-    this.orderService.setCustomer(this.customer);
     this.orderService.setOrder(order);
     this.orderService.setDeliveryType(deliveryType);
     this.orderService.setDeliveryCharge(this.storeSetting.deliveryCharge);
-    this.util.createLoader().then(loader =>{
+    this.util.createLoader().then(loader => {
       loader.present();
       this.orderService.initiateOrder().subscribe((resource) => {
       this.orderService.setResource(resource);
@@ -138,8 +138,7 @@ export class CartComponent implements OnInit {
        + resource.nextTaskName + ' selfid ' + resource.selfId + ' order id is ' + resource.orderId);
       this.navController.navigateForward('/checkout');
     });
-    })
-   
+    });
   }
 
   segmenChanged(event) {

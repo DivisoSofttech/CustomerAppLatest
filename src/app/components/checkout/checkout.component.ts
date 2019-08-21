@@ -17,12 +17,14 @@ export class CheckoutComponent implements OnInit {
   order: Order;
   deliveryType: any;
 
+
   constructor(
     private orderService: OrderService,
     private logger: NGXLogger
   ) { }
 
   ngOnInit() {
+    this.deliveryType = this.orderService.deliveryInfo.deliveryType;
     console.log(this.orderService.deliveryInfo);
     console.log(this.orderService.order);
     console.log(this.orderService.customer);
