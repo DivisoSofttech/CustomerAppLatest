@@ -16,7 +16,7 @@ export class OrderService {
   resource: CommandResource;
   deliveryInfo: DeliveryInfo = {};
   customer;
-
+  paymentMethod;
   shop;
 
   constructor(

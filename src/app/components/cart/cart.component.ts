@@ -132,6 +132,7 @@ export class CartComponent implements OnInit {
       this.orderService.initiateOrder().subscribe(resource => {
       this.orderService.setResource(resource);
       loader.dismiss();
+      this.orderService.order.orderId = resource.orderId;
       console.log('Next task name is ' + resource.nextTaskId + ' Next task name '
        + resource.nextTaskName + ' selfid ' + resource.selfId + ' order id is ' + resource.orderId);
       this.navController.navigateForward('/checkout');

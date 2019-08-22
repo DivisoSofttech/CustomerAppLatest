@@ -5,7 +5,7 @@ import {
   PaymentCommandResourceService
 } from 'src/app/api/services';
 import {
-  ModalController,
+  ModalController, Platform, NavController,
 } from '@ionic/angular';
 import {
   PayPal,
@@ -13,7 +13,6 @@ import {
   PayPalConfiguration
 } from '@ionic-native/paypal/ngx';
 import { PaymentSuccessfullInfoComponent } from '../payment-successfull-info/payment-successfull-info.component';
-import { resource } from 'selenium-webdriver/http';
 
 declare var RazorpayCheckout;
 
@@ -24,7 +23,6 @@ declare var RazorpayCheckout;
 })
 export class ProcessPaymentComponent implements OnInit {
 
-  paymentMethod: string;
   paymentId: string;
   provider: string;
   constructor(
@@ -32,8 +30,9 @@ export class ProcessPaymentComponent implements OnInit {
     private modalCtrl: ModalController,
     private payPal: PayPal,
     private orderService: OrderService,
-    private util: Util
-  ) {}
+    private util: Util,
+    private platform: Platform,
+    private navCtrl: NavController  ) {}
 
 
   processPayment(ref: string, status: string) {
@@ -45,16 +44,17 @@ export class ProcessPaymentComponent implements OnInit {
       status, paymentDTO: {
         amount: this.orderService.order.grandTotal,
         payee: this.orderService.shop.regNo,
-        payer: this.orderService.customer.preferref_username,
-        paymentType: this.paymentMethod,
+        payer: this.orderService.customer.preferred_username,
+        paymentType: this.orderService.paymentMethod,
         provider: this.provider,
         status,
         targetId: this.orderService.order.orderId,
         total: this.orderService.order.grandTotal,
-        ref: this.paymentId
+        ref
       }}
     ).subscribe( () => {
       loader.dismiss();
+      this.presentModal();
     }, (error) => console.log('An error occured during processing payment ' + error));
   });
   }
@@ -63,14 +63,17 @@ export class ProcessPaymentComponent implements OnInit {
     const intNumber = Math.trunc(this.orderService.order.grandTotal);
     const fractNumber = this.orderService.order.grandTotal % 1;
     const amount = intNumber * 100 + Math.round(fractNumber);
-    this.paymentCommandService
+    this.util.createLoader().then( loader => {
+      loader.present();
+      this.paymentCommandService
       .createOrderUsingPOST({
         amount,
-        currency: 'EUR',
+        currency: 'INR',
         payment_capture: 1,
         receipt: 'receipt12340'
       })
       .subscribe(response => {
+        loader.dismiss();
         console.log('Response is orde id ' + response.id);
         const options = {
           description: 'Graeshoppe Payment',
@@ -83,7 +86,7 @@ export class ProcessPaymentComponent implements OnInit {
             email: 'pranav@razorpay.com',
             contact: '8879524924',
             name: 'Pranav Gupta',
-            method: this.paymentMethod
+            method: this.orderService.paymentMethod
           }
         };
 
@@ -93,8 +96,6 @@ export class ProcessPaymentComponent implements OnInit {
           const orderId = success.razorpay_order_id;
           const signature = success.razorpay_signature;
           that.paymentId = success.razorpay_payment_id;
-          that.state = success.razorpay_state;
-          console.log('State is', success.razorpay_state);
           that.processPayment(success.razorpay_payment_id, 'success');
           console.log(
             'Payment id in callback function ' +
@@ -112,9 +113,11 @@ export class ProcessPaymentComponent implements OnInit {
         RazorpayCheckout.on('payment.cancel', cancelCallback);
         RazorpayCheckout.open(options);
       });
+
+    });
   }
 
-  payWithPaypal() {
+  payWithPaypalSDK() {
     console.log('In Paypal payment');
     this.payPal
       .init({
@@ -193,6 +196,35 @@ export class ProcessPaymentComponent implements OnInit {
 
   }
 
+  payWithPaypal() {
+    this.util.createLoader().then( loader => {
+      loader.present();
+      this.paymentCommandService.initiatePaymentUsingPOST({
+      intent: 'sale',
+      payer: { payment_method: 'paypal'},
+      transactions: [
+        {
+          amount: {
+            total: this.orderService.order.grandTotal + '',
+            currency: 'EUR',
+            details: {}
+          }
+        }
+      ],
+      note_to_payer: 'Contact us for any queries',
+      redirect_urls: {
+        return_url: '',
+        cancel_url: ''
+      }
+    }).subscribe( paymentResponse => {
+      paymentResponse.links.forEach( link => {
+        if (link.rel === 'approvalUrl') {
+          this.navCtrl.navigateForward(link.href);
+        }
+      });
+    });
+  });
+  }
 
   async presentModal() {
     this.dismiss();
@@ -207,14 +239,21 @@ export class ProcessPaymentComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('Payment method is ' + this.paymentMethod);
+    console.log('Payment method is ' + this.orderService.paymentMethod);
     console.log('Amount is ' + this.orderService.order.grandTotal);
     console.log('Task id is ' + this.orderService.resource.nextTaskId);
-    if (this.paymentMethod === 'paypal') {
+    if (this.orderService.paymentMethod === 'paypal') {
       console.log('Paypal Method');
-      this.payWithPaypal();
-    } else if (this.paymentMethod === 'cod') {
+      if (this.platform.is('android') || this.platform.is('ios')) {
+        console.log('This is a browser routed paypalsdk android ios ');
+        this.payWithPaypalSDK();
+      } else if (this.platform.is('desktop') || this.platform.is('pwa')) {
+        console.log('This is a browser routed paypal ');
+        this.payWithPaypal();
+      }
+    } else if (this.orderService.paymentMethod === 'cod') {
       console.log('Cash on elivery option ');
+      this.processPayment('pay-cod', 'success');
     } else {
       console.log('Razorpay payment ');
       this.payWithRazorPay();

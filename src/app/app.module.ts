@@ -26,6 +26,8 @@ import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 import { OrderService } from './services/order.service';
 import { LoggerModule } from 'ngx-logger';
 import {environment} from '../environments/environment';
+import { PayPal } from '@ionic-native/paypal/ngx';
+import { LocationStrategy, HashLocationStrategy, Location } from '@angular/common';
 
 @NgModule({
 
@@ -60,10 +62,12 @@ import {environment} from '../environments/environment';
     StatusBar,
     Util,
     SplashScreen,
+    PayPal,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
 
     // Extra Services
     LocationService,
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
     Geolocation,
     GoogleMapsAPIWrapper,
     FilterService,

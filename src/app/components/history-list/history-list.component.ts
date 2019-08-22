@@ -65,9 +65,6 @@ export class HistoryListComponent implements OnInit {
       page: i,
     })
     .subscribe(porders => {
-      if (i === porders.totalPages) {
-        this.toggleInfiniteScroll();
-      }
       porders.content.forEach(o => {
         this.orders.push(o);
         if (this.stores[o.storeId] === undefined) {
@@ -75,6 +72,9 @@ export class HistoryListComponent implements OnInit {
         }
       });
       ++i;
+      if (i === porders.totalPages) {
+        this.toggleInfiniteScroll();
+      }
     });
   }
 

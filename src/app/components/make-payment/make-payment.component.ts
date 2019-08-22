@@ -13,13 +13,15 @@ import { ProcessPaymentComponent } from '../process-payment/process-payment.comp
 export class MakePaymentComponent implements OnInit {
 
   paymentMethod;
-
+  toBePaid;
   constructor(
     private modalController: ModalController,
-    private navController: NavController
+    private navController: NavController,
+    private orderService: OrderService
       ) { }
 
   dismiss() {
+    this.orderService.paymentMethod = this.paymentMethod;
     this.modalController.dismiss();
   }
 
@@ -30,7 +32,9 @@ export class MakePaymentComponent implements OnInit {
     });
     return await modal.present();
   }
-  ngOnInit() {}
+  ngOnInit() {
+    this.toBePaid = this.orderService.order.grandTotal;
+  }
 
   returnToSale() {
     this.navController.navigateRoot('/tabs/home');
