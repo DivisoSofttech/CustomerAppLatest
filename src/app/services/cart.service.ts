@@ -54,6 +54,7 @@ export class CartService {
     if (this.currentShopId === 0) {
       this.currentShop = shop;
       this.currentShopId = shop.id;
+      this.storeId = this.currentShop.regNo;
       this.getStoreSettings();
       this.getStoreDeliveryType();
     }
@@ -195,6 +196,7 @@ export class CartService {
     if (this.currentShopId === 0) {
       this.currentShop = shop;
       this.currentShopId = shop.id;
+      this.storeId = this.currentShop.regNo;
       this.getStoreSettings();
     }
   }

@@ -38,7 +38,7 @@ export class AddressListComponent implements OnInit {
 
   getAllAdress(i) {
     this.orderCommandResource.getAllSavedAddressUsingGET({
-      customerId: this.customer.reference,
+      customerId: this.customer.preferred_username,
       page: i
     })
     .subscribe(paddress => {

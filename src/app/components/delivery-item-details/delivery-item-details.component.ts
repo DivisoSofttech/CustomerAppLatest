@@ -55,9 +55,9 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getCartDetails();
     this.productBaseAuxItemsArray = this.cart.auxilaryItems;
-    this.orderService.claimMyOffer(this.totalPrice).subscribe(response => {
-      console.log('response for cliam offer ' + response);
-    });
+    // this.orderService.claimMyOffer(this.totalPrice).subscribe(response => {
+    //   console.log('response for cliam offer ' + response);
+    // });
   }
 
   getCartDetails() {

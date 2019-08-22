@@ -114,15 +114,13 @@ export class CartComponent implements OnInit {
 
   continue(deliveryType) {
     let grandtotal = 0;
-    this.orderLines.forEach(orderLine => {
-      grandtotal += orderLine.pricePerUnit * orderLine.quantity;
-    });
-    grandtotal = grandtotal + this.storeSetting.deliveryCharge;
+    grandtotal = grandtotal + this.storeSetting.deliveryCharge + this.cart.totalPrice;
     const order: Order = {
       orderLines: this.orderLines,
       grandTotal: grandtotal,
       email: this.customer.email,
-      storeId: this.cart.storeId
+      storeId: this.cart.storeId,
+      customerId: this.customer.preferred_username
     };
 
     this.orderService.setShop(this.store);

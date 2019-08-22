@@ -12,7 +12,7 @@ import { NGXLogger } from 'ngx-logger';
 })
 export class OrderService {
 
-  order;
+  order: Order;
   resource: CommandResource;
   deliveryInfo: DeliveryInfo = {};
   customer;
@@ -28,7 +28,6 @@ export class OrderService {
   ) { }
 
    initiateOrder() {
-      console.log('Order is' + this.order);
       return this.orderCommandService.initiateOrderUsingPOST(this.order);
   }
 

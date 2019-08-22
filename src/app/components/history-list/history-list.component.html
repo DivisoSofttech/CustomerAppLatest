@@ -29,6 +29,7 @@
         </p>
         <h3><b>Order id :</b> {{ order.orderId }}</h3>
       </ion-label>
+      <ion-button *ngIf="order.status.name == 'approved'" (click)="confirmOrder(order)">Confirm</ion-button>
     </ion-item>
   </ion-list>
 
