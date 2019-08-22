@@ -1,3 +1,6 @@
+import { PaymentSuccessfullInfoComponent } from './payment-successfull-info/payment-successfull-info.component';
+import { ProcessPaymentComponent } from './process-payment/process-payment.component';
+import { MakePaymentComponent } from './make-payment/make-payment.component';
 import { HistoryListComponent } from './history-list/history-list.component';
 import { FavouriteListComponent } from './favourite-list/favourite-list.component';
 import { FrequentlyOrderedListComponent } from './frequently-ordered-list/frequently-ordered-list.component';
@@ -33,6 +36,7 @@ import { MapComponent } from './map/map.component';
 import { CategoryWiseProductsCardComponent } from './category-wise-products-card/category-wise-products-card.component';
 import { ShowAuxilaryModalComponent } from './show-auxilary-modal/show-auxilary-modal.component';
 import { AuxilaryProductCardComponent } from './auxilary-product-card/auxilary-product-card.component';
+import { WaitInformatonPopoverComponent } from './wait-informaton-popover/wait-informaton-popover.component';
 
 
 
@@ -43,7 +47,9 @@ import { AuxilaryProductCardComponent } from './auxilary-product-card/auxilary-p
     ImageSelectorComponent,
     RatingComponent,
     LoadingComponent,
-
+    MakePaymentComponent,
+    ProcessPaymentComponent,
+    PaymentSuccessfullInfoComponent,
     HeaderComponent,
     FooterComponent,
     StoreHeaderComponent,
@@ -67,10 +73,10 @@ import { AuxilaryProductCardComponent } from './auxilary-product-card/auxilary-p
     CategoryWiseProductsCardComponent,
     AuxilaryProductCardComponent,
     ShowAuxilaryModalComponent,
-
     ArrayFormaterPipe,
     ClosedPipe,
     DateDifferencePipe,
+    WaitInformatonPopoverComponent
 
   ],
 
@@ -87,7 +93,9 @@ import { AuxilaryProductCardComponent } from './auxilary-product-card/auxilary-p
     ImageSelectorComponent,
     RatingComponent,
     LoadingComponent,
-
+    MakePaymentComponent,
+    ProcessPaymentComponent,
+    PaymentSuccessfullInfoComponent,
     HeaderComponent,
     FooterComponent,
     StoreHeaderComponent,
@@ -110,7 +118,7 @@ import { AuxilaryProductCardComponent } from './auxilary-product-card/auxilary-p
     HotelMenuPopoverComponent,
     CategoryWiseProductsCardComponent,
     ShowAuxilaryModalComponent,
-    AuxilaryProductCardComponent,
+    AuxilaryProductCardComponent
 
   ],
 
@@ -118,6 +126,9 @@ import { AuxilaryProductCardComponent } from './auxilary-product-card/auxilary-p
 
   entryComponents: [
     ImageSelectorComponent,
+    MakePaymentComponent,
+    ProcessPaymentComponent,
+    PaymentSuccessfullInfoComponent,
     RestaurantCardComponent,
     RatingComponent,
     DeliveryItemDetailsComponent,
@@ -127,7 +138,8 @@ import { AuxilaryProductCardComponent } from './auxilary-product-card/auxilary-p
     LoadingComponent,
     CheckoutComponent,
     ShowAuxilaryModalComponent,
-    AuxilaryProductCardComponent
+    AuxilaryProductCardComponent,
+    WaitInformatonPopoverComponent
 
   ]
 })

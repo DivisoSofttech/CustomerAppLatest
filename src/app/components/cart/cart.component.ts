@@ -8,6 +8,7 @@ import { OrderLine, Store, StoreSettings } from 'src/app/api/models';
 import { ModalController, NavController } from '@ionic/angular';
 import { Util } from 'src/app/services/util';
 import { OrderService } from 'src/app/services/order.service';
+import { OrderCommandResourceService } from 'src/app/api/services';
 
 @Component({
   selector: 'app-cart',
@@ -38,6 +39,8 @@ export class CartComponent implements OnInit {
   neededCheckOutAmount = 0;
 
   storeSetting: StoreSettings;
+  deliveryOk = false;
+  collectionOk = false;
 
 
   constructor(
@@ -46,7 +49,8 @@ export class CartComponent implements OnInit {
     private modalController: ModalController,
     private navController: NavController,
     private storage: Storage,
-    private util: Util
+    private util: Util,
+    private orderCommandResource: OrderCommandResourceService
   ) {}
 
   ngOnInit() {
@@ -57,14 +61,28 @@ export class CartComponent implements OnInit {
   getCustomer() {
     this.util.createLoader().then(loader => {
       loader.present();
-      this.storage.get('customer').then(user => {
+      this.storage.get('user').then(user => {
+        console.log('User from storage ' + user);
         this.customer = user;
+        this.orderService.setCustomer(user);
         loader.dismiss();
       })
       .catch(err => {
         loader.dismiss();
       });
     });
+  }
+
+  checkDeliveryTypeExists() {
+  if (this.cart.currentDeliveryTypes !== undefined) {
+    this.cart.currentDeliveryTypes.forEach(element => {
+      if (element.name === 'delivery') {
+        this.deliveryOk = true;
+      } else if (element.name === 'collection') {
+        this.collectionOk = true;
+      }
+    });
+    }
   }
 
   getCartDetails() {
@@ -74,7 +92,9 @@ export class CartComponent implements OnInit {
       this.orderLines = data;
       this.storeSetting = this.cart.currentShopSetting;
       this.store = this.cart.currentShop;
-      if(this.store !== undefined && this.store.minAmount > this.totalPrice) {
+
+      this.checkDeliveryTypeExists();
+      if (this.store !== undefined && this.store.minAmount > this.totalPrice) {
         this.neededCheckOutAmount = this.store.minAmount - this.totalPrice;
       } else {
         this.neededCheckOutAmount = 0;
@@ -94,21 +114,29 @@ export class CartComponent implements OnInit {
 
   continue(deliveryType) {
     let grandtotal = 0;
-    this.orderLines.forEach(orderLine => {
-      grandtotal += orderLine.pricePerUnit * orderLine.quantity;
-    });
-    grandtotal = grandtotal + this.storeSetting.deliveryCharge;
+    grandtotal = grandtotal + this.storeSetting.deliveryCharge + this.cart.totalPrice;
     const order: Order = {
-      customerId: this.customer.reference,
       orderLines: this.orderLines,
       grandTotal: grandtotal,
-      storeId: this.cart.storeId
+      email: this.customer.email,
+      storeId: this.cart.storeId,
+      customerId: this.customer.preferred_username
     };
 
-    this.orderService.setCustomer(this.customer);
+    this.orderService.setShop(this.store);
     this.orderService.setOrder(order);
     this.orderService.setDeliveryType(deliveryType);
-    this.navController.navigateForward('/checkout');
+    this.orderService.setDeliveryCharge(this.storeSetting.deliveryCharge);
+    this.util.createLoader().then(loader => {
+      loader.present();
+      this.orderService.initiateOrder().subscribe((resource) => {
+      this.orderService.setResource(resource);
+      loader.dismiss();
+      console.log('Next task name is ' + resource.nextTaskId + ' Next task name '
+       + resource.nextTaskName + ' selfid ' + resource.selfId + ' order id is ' + resource.orderId);
+      this.navController.navigateForward('/checkout');
+    });
+    });
   }
 
   segmenChanged(event) {

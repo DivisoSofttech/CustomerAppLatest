@@ -25,7 +25,6 @@ export class FooterComponent implements OnInit , OnDestroy {
     private cart: CartService,
     private platform: Platform
   ) {
-    this.showTabs = this.platform.width() > 640 ? false : true;
   }
 
   ngOnInit() {
@@ -40,7 +39,9 @@ export class FooterComponent implements OnInit , OnDestroy {
   }
 
   setcurrentRoute(url) {
-    this.ionSegment.value = url;
+    if(this.ionSegment !== null) {
+      this.ionSegment.value = url;
+    }
   }
 
   emitFilterClick() {

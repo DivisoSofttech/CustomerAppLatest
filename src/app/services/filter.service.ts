@@ -4,6 +4,9 @@ import { BehaviorSubject } from 'rxjs';
 import { NGXLogger } from 'ngx-logger';
 
 export enum FILTER_TYPES {
+
+  NO_FILTER,
+
   CATEGORY_WISE,
   DISTANCE_WISE, // This is the Default filter
   DELIVERY_TYPE,
@@ -19,7 +22,7 @@ export enum FILTER_TYPES {
 export class FilterService {
 
   // Change to FILTER_TYPES.DISTANCE_WISE
-  private currentFilter = FILTER_TYPES.TOP_RATED;
+  private currentFilter = FILTER_TYPES.NO_FILTER;
   private filterBehaviour = new BehaviorSubject<any>(this.currentFilter);
 
 
@@ -58,6 +61,13 @@ export class FilterService {
 
   public getStores(pageNumber, success) {
     switch (this.currentFilter) {
+      case FILTER_TYPES.NO_FILTER:
+        this.logger.info('Finding All Stores');
+        this.getStoreNoFilter(pageNumber,success);
+        break;
+      case FILTER_TYPES.DELIVERY_TIME:
+        this.getStoreByDeliveryTime(pageNumber , success);
+        break;
       case FILTER_TYPES.DISTANCE_WISE:
         this.logger.info('Finding Store By Distance and Location' , this.distance);
         this.getStoreByDistance(pageNumber, success);
@@ -70,7 +80,8 @@ export class FilterService {
   }
 
   private getStoreByDistance(pageNumber, success) {
-    if(this.currentCordinates !== undefined) {
+    this.logger.info('Getting STores Via Distance Filter');
+    if (this.currentCordinates !== undefined) {
       this.locationBehaviour.next(this.currentCordinates);
       // this.queryResource
       // .searchByNearestLocationUsingGET({
@@ -87,12 +98,39 @@ export class FilterService {
   }
 
   private getStoreByRating(pageNumber, success) {
+    this.logger.info('Getting STores Via Rating Filter');
     this.queryResource.findStoreByRatingUsingGET(
     ).subscribe(data => {
       success(data.totalElements, data.totalPages, data.content);
     },
     err => {
       this.logger.error('Error Finding Store By Distance' , err);
+    });
+  }
+
+  private getStoreNoFilter(pageNumber , success) {
+    this.logger.info('Getting STores Via No Filter');
+    this.queryResource.findAllStoresUsingGET({
+      page: pageNumber
+    })
+    .subscribe(data => {
+      success(data.totalElements , data.totalPages , data.content);
+    },
+    err => {
+      this.logger.error('Error Finding Stores' , err);
+    });
+  }
+
+  private getStoreByDeliveryTime(pageNumber , success) {
+    this.logger.info('Getting STores Via Delivery Time Filter');
+    this.queryResource.findAndSortStoreBydeliveryTimeUsingGET({
+      page: pageNumber
+    })
+    .subscribe(data => {
+      success(data.totalElements , data.totalPages , data.content);
+    },
+    err => {
+      this.logger.error('Error Finding Stores' , err);
     });
   }
 

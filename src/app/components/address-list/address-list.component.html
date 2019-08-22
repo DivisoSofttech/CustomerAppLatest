@@ -3,11 +3,14 @@
 
   <ion-item>
     <ion-label>Addresses</ion-label>
-    <ion-select  cancelText="Add New Address" okText="ok"
+    <ion-select  cancelText="cancel" okText="ok"
     (ionChange)="addressChanged($event)"
     value="{{currentId}}">
       <ion-select-option *ngFor="let address of addresses" value="{{address.id}}">{{address.name}}</ion-select-option>
     </ion-select>
+  </ion-item>
+  <ion-item lines="full"> 
+    <ion-label (click)="addNewAddress()">Add new Address</ion-label>
   </ion-item>
   
 

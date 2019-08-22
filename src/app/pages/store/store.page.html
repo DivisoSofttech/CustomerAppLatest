@@ -3,6 +3,7 @@
     *ngIf="store != undefined"
     [name]="store.name"
     [storeId]="store.regNo"
+    [store]="store"
     (searchEnabled)="toggleFabButton($event)"
   ></app-store-header>
 </ion-header>

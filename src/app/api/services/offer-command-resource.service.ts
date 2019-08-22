@@ -16,7 +16,7 @@ import { OrderModel } from '../models/order-model';
   providedIn: 'root',
 })
 class OfferCommandResourceService extends __BaseService {
-  static readonly checkOfferEligibilityUsingPOSTPath = '/api/claimOffer';
+  static readonly checkOfferEligibilityUsingPOSTPath = '/api/claimOffer/{customerId}';
 
   constructor(
     config: __Configuration,
@@ -26,17 +26,23 @@ class OfferCommandResourceService extends __BaseService {
   }
 
   /**
-   * @param orderModel orderModel
+   * @param params The `OfferCommandResourceService.CheckOfferEligibilityUsingPOSTParams` containing the following parameters:
+   *
+   * - `orderModel`: orderModel
+   *
+   * - `customerId`: customerId
+   *
    * @return OK
    */
-  checkOfferEligibilityUsingPOSTResponse(orderModel: OrderModel): __Observable<__StrictHttpResponse<OrderModel>> {
+  checkOfferEligibilityUsingPOSTResponse(params: OfferCommandResourceService.CheckOfferEligibilityUsingPOSTParams): __Observable<__StrictHttpResponse<OrderModel>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = orderModel;
+    __body = params.orderModel;
+
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/api/claimOffer`,
+      this.rootUrl + `/api/claimOffer/${params.customerId}`,
       __body,
       {
         headers: __headers,
@@ -52,17 +58,38 @@ class OfferCommandResourceService extends __BaseService {
     );
   }
   /**
-   * @param orderModel orderModel
+   * @param params The `OfferCommandResourceService.CheckOfferEligibilityUsingPOSTParams` containing the following parameters:
+   *
+   * - `orderModel`: orderModel
+   *
+   * - `customerId`: customerId
+   *
    * @return OK
    */
-  checkOfferEligibilityUsingPOST(orderModel: OrderModel): __Observable<OrderModel> {
-    return this.checkOfferEligibilityUsingPOSTResponse(orderModel).pipe(
+  checkOfferEligibilityUsingPOST(params: OfferCommandResourceService.CheckOfferEligibilityUsingPOSTParams): __Observable<OrderModel> {
+    return this.checkOfferEligibilityUsingPOSTResponse(params).pipe(
       __map(_r => _r.body as OrderModel)
     );
   }
 }
 
 module OfferCommandResourceService {
+
+  /**
+   * Parameters for checkOfferEligibilityUsingPOST
+   */
+  export interface CheckOfferEligibilityUsingPOSTParams {
+
+    /**
+     * orderModel
+     */
+    orderModel: OrderModel;
+
+    /**
+     * customerId
+     */
+    customerId: string;
+  }
 }
 
 export { OfferCommandResourceService }

@@ -1,3 +1,4 @@
+import { Util } from './../../services/util';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Address } from 'src/app/api/models';
 import { ModalController } from '@ionic/angular';
@@ -31,15 +32,20 @@ export class AddressListComponent implements OnInit {
 
   constructor(
     private modalController: ModalController,
-    private orderCommandResource: OrderCommandResourceService
+    private orderCommandResource: OrderCommandResourceService,
+    private util: Util
   ) {}
 
   getAllAdress(i) {
     this.orderCommandResource.getAllSavedAddressUsingGET({
-      customerId: this.customer.reference,
+      customerId: this.customer.preferred_username,
       page: i
     })
     .subscribe(paddress => {
+      if(paddress.content.length > 0) {
+        this.currentId = paddress.content[0].id;
+        this.addressSelected.emit(paddress.content[0]);
+      }
       paddress.content.forEach(a => {
         this.addresses.push(a);
       });
@@ -53,14 +59,22 @@ export class AddressListComponent implements OnInit {
   }
 
   saveAddress() {
-    this.address.customerId = this.customer.reference;
-    this.orderCommandResource
-    .createAddressUsingPOST(this.address)
-    .subscribe(address => {
-      console.log(address);
-      this.address = address;
-      this.dismiss(this.address);
+    this.util.createLoader()
+    .then(loader => {
+      loader.present();
+      this.address.customerId = this.customer.reference;
+      this.orderCommandResource
+      .createAddressUsingPOST(this.address)
+      .subscribe(address => {
+        console.log(address);
+        this.address = address;
+        loader.dismiss();
+        this.dismiss(this.address);
+      },err => {
+        loader.dismiss();
+      });
     });
+
   }
 
   async addNewAddress() {

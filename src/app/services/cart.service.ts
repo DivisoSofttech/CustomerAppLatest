@@ -19,6 +19,8 @@ export class CartService {
   currentShop: Store;
   currentShopSetting;
   auxilaryItems = {};
+  currentDeliveryTypes;
+  MAX_ORDERS = 10;
 
   constructor(
     private alertController: AlertController,
@@ -52,7 +54,9 @@ export class CartService {
     if (this.currentShopId === 0) {
       this.currentShop = shop;
       this.currentShopId = shop.id;
+      this.storeId = this.currentShop.regNo;
       this.getStoreSettings();
+      this.getStoreDeliveryType();
     }
 
     if (this.currentShopId === shop.id) {
@@ -87,6 +91,22 @@ export class CartService {
 
   getStoreSettings() {
     this.currentShopSetting = this.currentShop.storeSettings;
+    this.getStoreDeliveryType();
+  }
+
+  getStoreDeliveryType() {
+    this.queryResource
+    .findAllDeliveryTypesByStoreIdUsingGET({
+      storeId: this.currentShopId
+    })
+    .subscribe(
+      success => {
+        console.error(success.content);
+        this.currentDeliveryTypes = success.content;
+        this.observableTickets.next(this.orderLines);
+      },
+      err => {}
+    );
   }
 
   add(product: Product) {
@@ -128,13 +148,13 @@ export class CartService {
     let orderTotal = 0;
     let auxilaryTotal = 0;
     this.orderLines.forEach(orderLine => {
-      if(orderLine.requiedAuxilaries !== undefined) {
+      if (orderLine.requiedAuxilaries !== undefined) {
         auxilaryTotal = 0;
         orderLine.requiedAuxilaries.forEach(auxilaryOrderLine => {
           auxilaryOrderLine.total = auxilaryOrderLine.quantity * auxilaryOrderLine.pricePerUnit;
           auxilaryTotal += auxilaryOrderLine.total;
         });
-      } 
+      }
       orderLine.total = (orderLine.quantity * orderLine.pricePerUnit) + auxilaryTotal;
       orderTotal += orderLine.total;
     });
@@ -173,12 +193,16 @@ export class CartService {
   }
 
   addShop(shop) {
-    this.currentShop = shop;
-    this.currentShopId = shop.id;
-    this.getStoreSettings();
+    if (this.currentShopId === 0) {
+      this.currentShop = shop;
+      this.currentShopId = shop.id;
+      this.storeId = this.currentShop.regNo;
+      this.getStoreSettings();
+    }
   }
 
   addOrder(order: OrderLine) {
+
     this.orderLines.push(order);
     console.log(this.orderLines.length);
     this.updateCart();
@@ -187,11 +211,11 @@ export class CartService {
   increase(o , p) {
     this.orderLines.forEach((ol , i) => {
       if (ol === o) {
-        if (this.orderLines[i].quantity < 5) {
+        if (this.orderLines[i].quantity < this.MAX_ORDERS) {
           this.orderLines[i].quantity++;
           this.updateCart();
         } else {
-          alert('Order is limited to 5 items');
+          alert('Order is limited to ' + this.MAX_ORDERS + ' items');
         }
       }
     });
@@ -208,7 +232,7 @@ export class CartService {
     this.updateCart();
   }
 
-  increaseAuxilary(auxilaryItem,orderLine) {
+  increaseAuxilary(auxilaryItem, orderLine) {
 
     this.orderLines.forEach( ol => {
       if (ol === orderLine) {
@@ -227,7 +251,7 @@ export class CartService {
       if (ol === orderLine) {
         ol.requiedAuxilaries.forEach( al => {
           if (auxilaryItem.id === al.productId) {
-            if(al.quantity > 1) {
+            if (al.quantity > 1) {
               al.quantity--;
             }
           }

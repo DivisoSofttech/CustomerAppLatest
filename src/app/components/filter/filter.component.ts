@@ -1,5 +1,5 @@
 import { FilterService , FILTER_TYPES } from './../../services/filter.service';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services';
 
 @Component({
@@ -7,7 +7,7 @@ import { QueryResourceService } from 'src/app/api/services';
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss'],
 })
-export class FilterComponent implements OnInit {
+export class FilterComponent implements OnInit , OnDestroy {
 
   @Input() showFilters = false;
 
@@ -19,22 +19,29 @@ export class FilterComponent implements OnInit {
 
   deliveryType = 'Both';
 
+  currentFilterType = FILTER_TYPES.NO_FILTER;
+
+  filterServiceSubscription;
+
   constructor(
     private filter: FilterService,
     private queryResource: QueryResourceService
   ) { }
 
   ngOnInit() {
-
+    this.filterServiceSubscription = this.filter.getSubscription()
+    .subscribe(data => {
+      this.currentFilterType = data;
+    });
   }
 
   closeEvent() {
-    this.closeFilter.emit();
+    this.closeFilter.emit('close');
   }
 
   setFilterType(type) {
-
-      this.filter.setFilter(type); 
+      this.filter.setFilter(type);
+      this.closeEvent();
   }
 
   // Api Does not Work
@@ -46,5 +53,10 @@ export class FilterComponent implements OnInit {
   //     }
   //   });
   // }
+
+  ngOnDestroy(): void {
+    this.filterServiceSubscription.unsubscribe();
+  }
+
 
 }

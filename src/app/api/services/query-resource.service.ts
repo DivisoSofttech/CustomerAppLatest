@@ -67,6 +67,8 @@ class QueryResourceService extends __BaseService {
   static readonly findAllProductByStoreIdUsingGETPath = '/api/query/findproducts/{storeId}';
   static readonly getOrderDocketUsingGETPath = '/api/query/getOrderDocket/{orderMasterId}';
   static readonly headerUsingGETPath = '/api/query/header/{searchTerm}';
+  static readonly findOrderByDatebetweenAndStoreIdUsingGETPath = '/api/query/order/{from}/{to}/{storeId}';
+  static readonly findOrderByStatusNameUsingGETPath = '/api/query/orderStatus/{statusName}';
   static readonly findOrdersByCustomerIdUsingGETPath = '/api/query/ordersByCustomerId/{customerId}';
   static readonly findAndSortProductByPriceUsingGETPath = '/api/query/productByPrice/{from}/{to}';
   static readonly findProductUsingGETPath = '/api/query/products/{id}';
@@ -1306,6 +1308,115 @@ class QueryResourceService extends __BaseService {
   headerUsingGET(params: QueryResourceService.HeaderUsingGETParams): __Observable<PageOfStore> {
     return this.headerUsingGETResponse(params).pipe(
       __map(_r => _r.body as PageOfStore)
+    );
+  }
+
+  /**
+   * @param params The `QueryResourceService.FindOrderByDatebetweenAndStoreIdUsingGETParams` containing the following parameters:
+   *
+   * - `to`: to
+   *
+   * - `storeId`: storeId
+   *
+   * - `from`: from
+   *
+   * @return OK
+   */
+  findOrderByDatebetweenAndStoreIdUsingGETResponse(params: QueryResourceService.FindOrderByDatebetweenAndStoreIdUsingGETParams): __Observable<__StrictHttpResponse<PageOfOrder>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/order/${params.from}/${params.to}/${params.storeId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PageOfOrder>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.FindOrderByDatebetweenAndStoreIdUsingGETParams` containing the following parameters:
+   *
+   * - `to`: to
+   *
+   * - `storeId`: storeId
+   *
+   * - `from`: from
+   *
+   * @return OK
+   */
+  findOrderByDatebetweenAndStoreIdUsingGET(params: QueryResourceService.FindOrderByDatebetweenAndStoreIdUsingGETParams): __Observable<PageOfOrder> {
+    return this.findOrderByDatebetweenAndStoreIdUsingGETResponse(params).pipe(
+      __map(_r => _r.body as PageOfOrder)
+    );
+  }
+
+  /**
+   * @param params The `QueryResourceService.FindOrderByStatusNameUsingGETParams` containing the following parameters:
+   *
+   * - `statusName`: statusName
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findOrderByStatusNameUsingGETResponse(params: QueryResourceService.FindOrderByStatusNameUsingGETParams): __Observable<__StrictHttpResponse<PageOfOrder>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
+    if (params.size != null) __params = __params.set('size', params.size.toString());
+    if (params.page != null) __params = __params.set('page', params.page.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/orderStatus/${params.statusName}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PageOfOrder>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.FindOrderByStatusNameUsingGETParams` containing the following parameters:
+   *
+   * - `statusName`: statusName
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findOrderByStatusNameUsingGET(params: QueryResourceService.FindOrderByStatusNameUsingGETParams): __Observable<PageOfOrder> {
+    return this.findOrderByStatusNameUsingGETResponse(params).pipe(
+      __map(_r => _r.body as PageOfOrder)
     );
   }
 
@@ -3048,6 +3159,53 @@ module QueryResourceService {
      * searchTerm
      */
     searchTerm: string;
+
+    /**
+     * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     */
+    sort?: Array<string>;
+
+    /**
+     * Size of a page
+     */
+    size?: number;
+
+    /**
+     * Page number of the requested page
+     */
+    page?: number;
+  }
+
+  /**
+   * Parameters for findOrderByDatebetweenAndStoreIdUsingGET
+   */
+  export interface FindOrderByDatebetweenAndStoreIdUsingGETParams {
+
+    /**
+     * to
+     */
+    to: string;
+
+    /**
+     * storeId
+     */
+    storeId: string;
+
+    /**
+     * from
+     */
+    from: string;
+  }
+
+  /**
+   * Parameters for findOrderByStatusNameUsingGET
+   */
+  export interface FindOrderByStatusNameUsingGETParams {
+
+    /**
+     * statusName
+     */
+    statusName: string;
 
     /**
      * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
