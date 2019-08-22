@@ -16,6 +16,7 @@ import { OrderCommandResourceService } from 'src/app/api/services';
   styleUrls: ['./cart.component.scss']
 })
 export class CartComponent implements OnInit {
+
   @Input() viewType = 'minimal';
 
   @Input() store: Store;
@@ -73,14 +74,24 @@ export class CartComponent implements OnInit {
 
   checkDeliveryTypeExists() {
   if(this.cart.currentDeliveryTypes !== undefined) {
-    this.cart.currentDeliveryTypes.forEach(element => {
-      if(element.name === 'delivery') {
+    if(this.cart.currentDeliveryTypes.length === 1) {
+      if(this.cart.currentDeliveryTypes[0].name === 'delivery') {
         this.deliveryOk = true;
-      } else if(element.name === 'collection') {
+        this.currentSegment = 'delivery';
+      } else if(this.cart.currentDeliveryTypes[0].name === 'collection') {
         this.collectionOk = true;
+        this.currentSegment = 'collection';
       }
-    }); 
+    } else {
+      this.cart.currentDeliveryTypes.forEach(element => {
+        if(element.name === 'delivery') {
+          this.deliveryOk = true;
+        } else if(element.name === 'collection') {
+          this.collectionOk = true;
+        }
+      });
     }
+  }
   }
 
   getCartDetails() {
@@ -112,6 +123,7 @@ export class CartComponent implements OnInit {
 
   continue(deliveryType) {
     let grandtotal = 0;
+    console.log('Store Id ' , this.cart.currentShopId);
     this.orderLines.forEach(orderLine => {
       grandtotal += orderLine.pricePerUnit * orderLine.quantity;
     });

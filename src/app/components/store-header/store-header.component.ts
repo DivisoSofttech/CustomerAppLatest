@@ -61,7 +61,7 @@ export class StoreHeaderComponent implements OnInit {
       })
       .subscribe(data => {
         if (data.content.length === 0) {
-          this.util.createToast('Sorry, couldn\'t find any match');
+          // this.util.createToast('Sorry, couldn\'t find any match');
           return;
         } else {
           ++i;

@@ -29,6 +29,8 @@ export class ReviewComponent implements OnInit {
 
   showReviewLoading = true;
 
+  customers = [];
+
   constructor(
     private queryResource: QueryResourceService,
     private commandResource: CommandResourceService,
@@ -65,6 +67,10 @@ export class ReviewComponent implements OnInit {
         }
         result.content.forEach(rr => {
           this.rateReviews.push(rr);
+          this.queryResource.findCustomerByReferenceUsingGET(rr.review.userName)
+          .subscribe(data => {
+            this.customers.push(data);
+          })
         });
       },
       err => {

@@ -6,9 +6,14 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class ArrayFormaterPipe implements PipeTransform {
 
   transform(value: any, args?: any): any {
+    let nameArray = [];
     let str = '';
     if (value !== undefined) {
-      str = Array.prototype.map.call(value, s => s.name.charAt(0).toUpperCase() + s.name.slice(1)).toString();
+      value.forEach(dt => {
+      nameArray.push(dt.name.charAt(0).toUpperCase() +  dt.name.slice(1));
+      })
+      str = nameArray.join(' , ');
+      console.log('Joined Array ' ,str);
       if (value.length === 1 && args !== undefined) {
         return str + ' ' + args;
       }

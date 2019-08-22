@@ -96,18 +96,25 @@ export class CartService {
   }
 
   getStoreDeliveryType() {
-    this.queryResource
-    .findAllDeliveryTypesByStoreIdUsingGET({
-      storeId: this.currentShopId
-    })
-    .subscribe(
-      success => {
-        console.error(success.content);
-        this.currentDeliveryTypes = success.content;
-        this.observableTickets.next(this.orderLines);
-      },
-      err => {}
-    );
+    this.util.createLoader()
+    .then(loader => {
+      loader.present();
+      this.queryResource
+      .findAllDeliveryTypesByStoreIdUsingGET({
+        storeId: this.currentShopId
+      })
+      .subscribe(
+        success => {
+          loader.dismiss();
+          this.logger.info('Got Store Delivery Types ' , success.content);
+          this.currentDeliveryTypes = success.content;
+          this.observableTickets.next(this.orderLines);
+        },
+        err => {
+          loader.dismiss();
+        }
+      );
+    });
   }
 
   add(product: Product) {
