@@ -1,6 +1,6 @@
-import { ModalController } from '@ionic/angular';
+import { ModalController, IonInfiniteScroll } from '@ionic/angular';
 import { MakePaymentComponent } from './../make-payment/make-payment.component';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services';
 import { Order, OpenTask, CommandResource } from 'src/app/api/models';
 import { NGXLogger } from 'ngx-logger';
@@ -19,6 +19,7 @@ export class HistoryListComponent implements OnInit {
   approvedOrders: OpenTask[] = [];
 
   @Input() keyCloakUser;
+  @ViewChild(IonInfiniteScroll,null) inifinitScroll: IonInfiniteScroll;
 
   pageNumber = 0;
 
@@ -26,7 +27,7 @@ export class HistoryListComponent implements OnInit {
     private queryResource: QueryResourceService,
     private logger: NGXLogger,
     private orderService: OrderService,
-    private modalController: ModalController
+    private modalController: ModalController,
       ) { }
 
   ngOnInit() {
@@ -64,6 +65,9 @@ export class HistoryListComponent implements OnInit {
       page: i,
     })
     .subscribe(porders => {
+      if (i === porders.totalPages) {
+        this.toggleInfiniteScroll();
+      }
       porders.content.forEach(o => {
         this.orders.push(o);
         if (this.stores[o.storeId] === undefined) {
@@ -71,9 +75,6 @@ export class HistoryListComponent implements OnInit {
         }
       });
       ++i;
-      if (i === porders.totalPages) {
-        this.toggleInfiniteScroll();
-      }
     });
   }
 
@@ -87,7 +88,7 @@ export class HistoryListComponent implements OnInit {
   }
 
   toggleInfiniteScroll() {
-
+    this.inifinitScroll.disabled = !this.inifinitScroll.disabled;
   }
 
   loadMoreData(event) {

@@ -25,12 +25,17 @@ export class OrderService {
     private cart: CartService,
     private logger: NGXLogger,
     private offerCommandService: OfferCommandResourceService
-  ) { }
+  ) { 
+    this.getCustomer();
+  }
 
    initiateOrder() {
       return this.orderCommandService.initiateOrderUsingPOST(this.order);
   }
 
+  getCustomer() {
+    this.customer = this.storage.get('user');
+  }
   collectDeliveryInfo() {
     console.log('DeliveryInfo is' + this.deliveryInfo);
     return this.orderCommandService.collectDeliveryDetailsUsingPOST(
@@ -60,12 +65,6 @@ export class OrderService {
 
   setOrder(order) {
     this.order = order;
-    this.storage.get('user')
-    .then(data => {
-      // Store RegNo or Id?
-      this.order.storeId = this.shop.regNo;
-      this.order.email = data.email;
-    });
   }
 
   setShop(shop) {

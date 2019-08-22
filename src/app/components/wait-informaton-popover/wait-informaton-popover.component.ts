@@ -1,4 +1,4 @@
-import { NavController } from '@ionic/angular';
+import { NavController, PopoverController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -9,12 +9,14 @@ import { Component, OnInit } from '@angular/core';
 export class WaitInformatonPopoverComponent implements OnInit {
 
   constructor(
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private popoverCtrl: PopoverController
   ) { }
 
   ngOnInit() {}
 
   navigateToHome() {
+    this.popoverCtrl.dismiss();
     this.navCtrl.navigateForward('restaurant');
   }
 }
