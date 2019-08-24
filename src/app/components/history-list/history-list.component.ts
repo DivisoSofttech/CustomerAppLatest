@@ -7,6 +7,7 @@ import { NGXLogger } from 'ngx-logger';
 import { OrderService } from 'src/app/services/order.service';
 import { Util } from 'src/app/services/util';
 
+
 @Component({
   selector: 'app-history-list',
   templateUrl: './history-list.component.html',

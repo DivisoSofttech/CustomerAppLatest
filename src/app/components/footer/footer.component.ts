@@ -19,6 +19,8 @@ export class FooterComponent implements OnInit , OnDestroy {
   showTabs = true;
   cartSubscription;
 
+  @Input() filterHide = false;
+
   constructor(
     private navController: NavController,
     private logger: NGXLogger,

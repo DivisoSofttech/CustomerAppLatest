@@ -18,7 +18,7 @@ export class ShowAuxilaryModalComponent implements OnInit {
 
   auxilaryOrderLines: AuxilaryOrderLine[] = [];
 
-  @Input() type = 'addAuxilary';
+  @Input() type = 'add';
 
   constructor(
     private popover: PopoverController,
@@ -26,32 +26,31 @@ export class ShowAuxilaryModalComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.orderLine = {
-      pricePerUnit: this.product.sellingPrice,
-      productId: this.product.id,
-      quantity: 1,
-      total: 0
-    };
+    if (this.type !== 'update') {
+      this.orderLine = {
+        pricePerUnit: this.product.sellingPrice,
+        productId: this.product.id,
+        quantity: 1,
+        total: 0
+      };
+    }
   }
 
   dismiss() {
     this.popover.dismiss();
   }
 
-  auxilaryUpated(event) {
-    const tempArray = this.auxilaryOrderLines.filter(al =>  al.productId === event.productId);
-    if(tempArray.length > 0) {
-      this.auxilaryOrderLines.map(
-        (m , i) => {
-          if (m.productId === event.productId) {
-            m[i] = event;
-          }
-        }
-      );
-    } else {
-      this.auxilaryOrderLines.push(event);
-    }
+  auxilaryUpated(event: AuxilaryOrderLine) {
 
+      const tempArray = this.auxilaryOrderLines.find(al => al.productId == event.productId);
+      if(tempArray !== undefined) {
+          const i = this.auxilaryOrderLines.indexOf(event);
+          this.auxilaryOrderLines[i] = event;
+          console.log('Updating Auxilary OrderLine' , this.auxilaryOrderLines);
+      } else {
+          console.log('Adding Auxilary OrderLine' , this.auxilaryOrderLines);
+          this.auxilaryOrderLines.push(event);
+      }
   }
 
   addToCart() {
@@ -62,8 +61,17 @@ export class ShowAuxilaryModalComponent implements OnInit {
     });
     this.orderLine.requiedAuxilaries = this.auxilaryOrderLines;
     this.orderLine.total = this.orderLine.pricePerUnit + total;
+    console.log('Adding Order Line ' , this.orderLine);
     this.cart.addOrder(this.orderLine);
     this.dismiss();
 
+  }
+
+  updateAuxilariesAndAddToCart() {
+    this.auxilaryOrderLines.forEach(auxLine => {
+      this.orderLine.requiedAuxilaries.push(auxLine);
+      this.cart.updateOrder(this.orderLine);
+    });
+    this.dismiss();
   }
 }

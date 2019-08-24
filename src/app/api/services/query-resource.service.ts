@@ -8,6 +8,7 @@ import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
 import { PageOfAuxilaryLineItem } from '../models/page-of-auxilary-line-item';
+import { PageOfComboLineItem } from '../models/page-of-combo-line-item';
 import { ContactDTO } from '../models/contact-dto';
 import { CustomerDTO } from '../models/customer-dto';
 import { PageOfType } from '../models/page-of-type';
@@ -22,6 +23,7 @@ import { StockCurrent } from '../models/stock-current';
 import { PageOfStore } from '../models/page-of-store';
 import { PdfDTO } from '../models/pdf-dto';
 import { PageOfOrder } from '../models/page-of-order';
+import { Order } from '../models/order';
 import { ProductDTO } from '../models/product-dto';
 import { UserRating } from '../models/user-rating';
 import { Review } from '../models/review';
@@ -44,6 +46,7 @@ import { PageOfUserRating } from '../models/page-of-user-rating';
 })
 class QueryResourceService extends __BaseService {
   static readonly findAuxilariesByProductIdUsingGETPath = '/api/query/auxilaries-productId/{productId}';
+  static readonly findComboByProductIdUsingGETPath = '/api/query/combos-productId/{productId}';
   static readonly findContactByIdUsingGETPath = '/api/query/contacts/{id}';
   static readonly findCustomerByReferenceUsingGETPath = '/api/query/customers/findByReference/{reference}';
   static readonly findCustomerByIdUsingGETPath = '/api/query/customers/{id}';
@@ -68,6 +71,7 @@ class QueryResourceService extends __BaseService {
   static readonly getOrderDocketUsingGETPath = '/api/query/getOrderDocket/{orderMasterId}';
   static readonly headerUsingGETPath = '/api/query/header/{searchTerm}';
   static readonly findOrderByDatebetweenAndStoreIdUsingGETPath = '/api/query/order/{from}/{to}/{storeId}';
+  static readonly findOrderByOrderIdUsingGETPath = '/api/query/orderByOrderId/{orderId}';
   static readonly findOrderByStatusNameUsingGETPath = '/api/query/orderStatus/{statusName}';
   static readonly findOrdersByCustomerIdUsingGETPath = '/api/query/ordersByCustomerId/{customerId}';
   static readonly findAndSortProductByPriceUsingGETPath = '/api/query/productByPrice/{from}/{to}';
@@ -139,6 +143,42 @@ class QueryResourceService extends __BaseService {
   findAuxilariesByProductIdUsingGET(productId: number): __Observable<PageOfAuxilaryLineItem> {
     return this.findAuxilariesByProductIdUsingGETResponse(productId).pipe(
       __map(_r => _r.body as PageOfAuxilaryLineItem)
+    );
+  }
+
+  /**
+   * @param productId productId
+   * @return OK
+   */
+  findComboByProductIdUsingGETResponse(productId: number): __Observable<__StrictHttpResponse<PageOfComboLineItem>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/combos-productId/${productId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PageOfComboLineItem>;
+      })
+    );
+  }
+  /**
+   * @param productId productId
+   * @return OK
+   */
+  findComboByProductIdUsingGET(productId: number): __Observable<PageOfComboLineItem> {
+    return this.findComboByProductIdUsingGETResponse(productId).pipe(
+      __map(_r => _r.body as PageOfComboLineItem)
     );
   }
 
@@ -1360,6 +1400,42 @@ class QueryResourceService extends __BaseService {
   findOrderByDatebetweenAndStoreIdUsingGET(params: QueryResourceService.FindOrderByDatebetweenAndStoreIdUsingGETParams): __Observable<PageOfOrder> {
     return this.findOrderByDatebetweenAndStoreIdUsingGETResponse(params).pipe(
       __map(_r => _r.body as PageOfOrder)
+    );
+  }
+
+  /**
+   * @param orderId orderId
+   * @return OK
+   */
+  findOrderByOrderIdUsingGETResponse(orderId: string): __Observable<__StrictHttpResponse<Order>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/orderByOrderId/${orderId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<Order>;
+      })
+    );
+  }
+  /**
+   * @param orderId orderId
+   * @return OK
+   */
+  findOrderByOrderIdUsingGET(orderId: string): __Observable<Order> {
+    return this.findOrderByOrderIdUsingGETResponse(orderId).pipe(
+      __map(_r => _r.body as Order)
     );
   }
 

@@ -1,3 +1,4 @@
+import { NotificationComponent } from './notification/notification.component';
 import { PaymentSuccessfullInfoComponent } from './payment-successfull-info/payment-successfull-info.component';
 import { ProcessPaymentComponent } from './process-payment/process-payment.component';
 import { MakePaymentComponent } from './make-payment/make-payment.component';
@@ -37,6 +38,7 @@ import { CategoryWiseProductsCardComponent } from './category-wise-products-card
 import { ShowAuxilaryModalComponent } from './show-auxilary-modal/show-auxilary-modal.component';
 import { AuxilaryProductCardComponent } from './auxilary-product-card/auxilary-product-card.component';
 import { WaitInformatonPopoverComponent } from './wait-informaton-popover/wait-informaton-popover.component';
+import { OrderCardComponent } from './order-card/order-card.component';
 
 
 
@@ -76,7 +78,9 @@ import { WaitInformatonPopoverComponent } from './wait-informaton-popover/wait-i
     ArrayFormaterPipe,
     ClosedPipe,
     DateDifferencePipe,
-    WaitInformatonPopoverComponent
+    WaitInformatonPopoverComponent,
+    NotificationComponent,
+    OrderCardComponent
 
   ],
 
@@ -118,7 +122,9 @@ import { WaitInformatonPopoverComponent } from './wait-informaton-popover/wait-i
     HotelMenuPopoverComponent,
     CategoryWiseProductsCardComponent,
     ShowAuxilaryModalComponent,
-    AuxilaryProductCardComponent
+    AuxilaryProductCardComponent,
+    NotificationComponent,
+    OrderCardComponent
 
   ],
 
@@ -139,7 +145,8 @@ import { WaitInformatonPopoverComponent } from './wait-informaton-popover/wait-i
     CheckoutComponent,
     ShowAuxilaryModalComponent,
     AuxilaryProductCardComponent,
-    WaitInformatonPopoverComponent
+    WaitInformatonPopoverComponent,
+    OrderCardComponent
 
   ]
 })

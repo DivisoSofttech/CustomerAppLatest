@@ -1,6 +1,6 @@
 import { CartService } from '../../services/cart.service';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { OrderLine, Store, Order, Offer } from 'src/app/api/models';
+import { OrderLine, Store, Order, AuxilaryLineItem, Offer } from 'src/app/api/models';
 import { QueryResourceService, OfferCommandResourceService } from 'src/app/api/services';
 import { NGXLogger } from 'ngx-logger';
 import { ShowAuxilaryModalComponent } from '../show-auxilary-modal/show-auxilary-modal.component';
@@ -44,6 +44,10 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
   productBaseAuxItemsArray = {};
   offer;
 
+  auxilaryItems;
+
+  currentDeliveryMode = 'collection';
+
   constructor(
     private cart: CartService,
     private queryResource: QueryResourceService,
@@ -66,13 +70,14 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
       this.orders = data;
       this.storeSetting = this.cart.currentShopSetting;
       this.store = this.cart.currentShop;
+      this.auxilaryItems = this.cart.auxilaryItems;
       this.getAllProductsFromOrders();
       this.getAuxilaryproductsFromOrders();
     });
   }
 
   increaseProductCount(product , orderLine) {
-    if (this.cart.auxilaryItems[product.id] !== undefined) {
+    if (this.cart.auxilaryItems[product.id].length !== 0) {
       this.showAddAuxilaryPopover(product);
     } else {
       this.cart.increase(orderLine , product);
@@ -156,7 +161,27 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
     return await popoverElement.present();
   }
 
-  async showUpdateAuxilaryPopover(p) {
+  async showUpdateAuxilaryPopover(ol: OrderLine) {
+    const tempAuxilaryItems = [];
+
+    this.cart.auxilaryItems[ol.productId]
+    .forEach((ai: AuxilaryLineItem) => {
+      // check if ai exists in any of auxilaryitems
+      const index = ol.requiedAuxilaries.findIndex(auxLine => auxLine.productId === ai.auxilaryItem.id);
+      if (index === -1) {
+        tempAuxilaryItems.push(ai);
+      }
+    });
+
+    const popoverElement = await this.popover.create({
+      component: ShowAuxilaryModalComponent,
+      componentProps: {
+          auxilaryItems: tempAuxilaryItems,
+          orderLine: ol,
+          type: 'update'
+        }
+    });
+    return await popoverElement.present();
   }
 
   ngOnDestroy() {

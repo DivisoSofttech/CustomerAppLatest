@@ -1,3 +1,4 @@
+import { KeycloakService } from './../../services/security/keycloak.service';
 import { ContactDTO } from 'src/app/api/models';
 import { CustomerDTO } from 'src/app/api/models';
 import { Storage } from '@ionic/storage';
@@ -30,7 +31,8 @@ export class ProfilePage implements OnInit {
   constructor(
     private storage: Storage,
     private queryResource: QueryResourceService,
-    private logger: NGXLogger
+    private logger: NGXLogger,
+    private keycloak: KeycloakService
   ) { }
 
   ngOnInit() {
@@ -80,6 +82,10 @@ export class ProfilePage implements OnInit {
   ionViewDidEnter() {
     this.logger.info('Ion View Did enter');
     this.footer.setcurrentRoute('profile');
+  }
+
+  logout() {
+    this.keycloak.logout();
   }
 
 }

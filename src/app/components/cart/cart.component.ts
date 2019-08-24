@@ -1,9 +1,9 @@
+import { DeliveryItemDetailsComponent } from './../delivery-item-details/delivery-item-details.component';
 import { Storage } from '@ionic/storage';
 import { Order } from './../../api/models/order';
-import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { AllergyComponent } from './../allergy/allergy.component';
 import { CartService } from './../../services/cart.service';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { OrderLine, Store, StoreSettings } from 'src/app/api/models';
 import { ModalController, NavController } from '@ionic/angular';
 import { Util } from 'src/app/services/util';
@@ -16,6 +16,7 @@ import { OrderCommandResourceService } from 'src/app/api/services';
   styleUrls: ['./cart.component.scss']
 })
 export class CartComponent implements OnInit {
+
   @Input() viewType = 'minimal';
 
   @Input() store: Store;
@@ -41,6 +42,9 @@ export class CartComponent implements OnInit {
   storeSetting: StoreSettings;
   deliveryOk = false;
   collectionOk = false;
+
+
+  @ViewChild(DeliveryItemDetailsComponent , null) delivery: DeliveryItemDetailsComponent;
 
 
   constructor(
@@ -75,14 +79,24 @@ export class CartComponent implements OnInit {
 
   checkDeliveryTypeExists() {
   if (this.cart.currentDeliveryTypes !== undefined) {
-    this.cart.currentDeliveryTypes.forEach(element => {
-      if (element.name === 'delivery') {
+    if (this.cart.currentDeliveryTypes.length === 1) {
+      if (this.cart.currentDeliveryTypes[0].name === 'delivery') {
         this.deliveryOk = true;
-      } else if (element.name === 'collection') {
+        this.currentSegment = 'delivery';
+      } else if (this.cart.currentDeliveryTypes[0].name === 'collection') {
         this.collectionOk = true;
+        this.currentSegment = 'collection';
       }
-    });
+    } else {
+      this.cart.currentDeliveryTypes.forEach(element => {
+        if (element.name === 'delivery') {
+          this.deliveryOk = true;
+        } else if (element.name === 'collection') {
+          this.collectionOk = true;
+        }
+      });
     }
+  }
   }
 
   getCartDetails() {
@@ -141,6 +155,7 @@ export class CartComponent implements OnInit {
   }
 
   segmenChanged(event) {
+    this.delivery.currentDeliveryMode = event.detail.value;
     this.currentSegment = event.detail.value;
   }
 }

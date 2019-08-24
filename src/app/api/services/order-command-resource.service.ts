@@ -7,10 +7,10 @@ import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-respo
 import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
+import { AddressDTO } from '../models/address-dto';
 import { NotificationDTO } from '../models/notification-dto';
 import { CommandResource } from '../models/command-resource';
 import { Order } from '../models/order';
-import { AddressDTO } from '../models/address-dto';
 import { PageOfAddress } from '../models/page-of-address';
 import { DeliveryInfo } from '../models/delivery-info';
 
@@ -21,6 +21,7 @@ import { DeliveryInfo } from '../models/delivery-info';
   providedIn: 'root',
 })
 class OrderCommandResourceService extends __BaseService {
+  static readonly updateAddressUsingPUTPath = '/api/command/addresses';
   static readonly updateNotificationUsingPUTPath = '/api/command/notifications';
   static readonly initiateOrderUsingPOSTPath = '/api/command/order/initiateOrder';
   static readonly createAddressUsingPOSTPath = '/api/command/orders/addresses';
@@ -33,6 +34,42 @@ class OrderCommandResourceService extends __BaseService {
     http: HttpClient
   ) {
     super(config, http);
+  }
+
+  /**
+   * @param addressDTO addressDTO
+   * @return OK
+   */
+  updateAddressUsingPUTResponse(addressDTO: AddressDTO): __Observable<__StrictHttpResponse<AddressDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = addressDTO;
+    let req = new HttpRequest<any>(
+      'PUT',
+      this.rootUrl + `/api/command/addresses`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<AddressDTO>;
+      })
+    );
+  }
+  /**
+   * @param addressDTO addressDTO
+   * @return OK
+   */
+  updateAddressUsingPUT(addressDTO: AddressDTO): __Observable<AddressDTO> {
+    return this.updateAddressUsingPUTResponse(addressDTO).pipe(
+      __map(_r => _r.body as AddressDTO)
+    );
   }
 
   /**

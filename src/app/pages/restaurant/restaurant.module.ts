@@ -1,3 +1,4 @@
+import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { FilterComponent } from './../../components/filter/filter.component';
 import { BannerComponent } from './../../components/banner/banner.component';
 import { HeaderComponent } from './../../components/header/header.component';
@@ -32,6 +33,6 @@ const routes: Routes = [
   ],
   declarations: [RestaurantPage],
   entryComponents: [HeaderComponent ,     FooterComponent, BannerComponent , RestaurantCardComponent , 
-    FilterComponent, LoadingComponent,   MapComponent]
+    FilterComponent, LoadingComponent,   MapComponent , NotificationComponent]
 })
 export class RestaurantPageModule {}

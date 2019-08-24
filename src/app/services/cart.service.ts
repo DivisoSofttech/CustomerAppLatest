@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { AlertController, NavController } from '@ionic/angular';
 import { QueryResourceService } from '../api/services';
 import { Util } from './util';
+import { NGXLogger } from 'ngx-logger';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,8 @@ export class CartService {
     private alertController: AlertController,
     private navController: NavController,
     private queryResource: QueryResourceService,
-    private util: Util
+    private util: Util,
+    private logger: NGXLogger
   ) {
     this.observableTickets = new BehaviorSubject<OrderLine[]>(this.orderLines);
     this.observablePrice = new BehaviorSubject<number>(this.totalPrice);
@@ -95,18 +97,25 @@ export class CartService {
   }
 
   getStoreDeliveryType() {
-    this.queryResource
-    .findAllDeliveryTypesByStoreIdUsingGET({
-      storeId: this.currentShopId
-    })
-    .subscribe(
-      success => {
-        console.error(success.content);
-        this.currentDeliveryTypes = success.content;
-        this.observableTickets.next(this.orderLines);
-      },
-      err => {}
-    );
+    this.util.createLoader()
+    .then(loader => {
+      loader.present();
+      this.queryResource
+      .findAllDeliveryTypesByStoreIdUsingGET({
+        storeId: this.currentShopId
+      })
+      .subscribe(
+        success => {
+          loader.dismiss();
+          this.logger.info('Got Store Delivery Types ' , success.content);
+          this.currentDeliveryTypes = success.content;
+          this.observableTickets.next(this.orderLines);
+        },
+        err => {
+          loader.dismiss();
+        }
+      );
+    });
   }
 
   add(product: Product) {
@@ -202,10 +211,18 @@ export class CartService {
   }
 
   addOrder(order: OrderLine) {
-
     this.orderLines.push(order);
     console.log(this.orderLines.length);
     this.updateCart();
+  }
+
+  updateOrder(order: OrderLine) {
+    this.orderLines.forEach(ol => {
+      if(ol === order) {
+        ol.requiedAuxilaries = order.requiedAuxilaries;
+        this.updateCart();
+      }
+    });
   }
 
   increase(o , p) {
@@ -232,13 +249,15 @@ export class CartService {
     this.updateCart();
   }
 
-  increaseAuxilary(auxilaryItem, orderLine) {
+  increaseAuxilary(auxilaryItem: AuxilaryLineItem, orderLine: OrderLine) {
 
     this.orderLines.forEach( ol => {
       if (ol === orderLine) {
+        console.log('Tytystytsytsytsyt ' , ol===orderLine);
         ol.requiedAuxilaries.forEach( al => {
           if (auxilaryItem.id === al.productId) {
             al.quantity++;
+            console.error('OrderLine ' , ol);
           }
         });
       }

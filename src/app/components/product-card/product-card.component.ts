@@ -1,9 +1,9 @@
 import { CartService } from './../../services/cart.service';
 import { Router } from '@angular/router';
 import { FavouriteService } from './../../services/favourite.service';
-import { Component, OnInit, Input } from '@angular/core';
-import { StockCurrent, AuxilaryLineItem } from 'src/app/api/models';
-import { ModalController, PopoverController } from '@ionic/angular';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { StockCurrent, AuxilaryLineItem, ComboLineItem } from 'src/app/api/models';
+import { ModalController, PopoverController, IonInput } from '@ionic/angular';
 import { QueryResourceService } from 'src/app/api/services';
 import { NGXLogger } from 'ngx-logger';
 import { ShowAuxilaryModalComponent } from '../show-auxilary-modal/show-auxilary-modal.component';
@@ -24,9 +24,14 @@ export class ProductCardComponent implements OnInit {
 
   auxilaries: AuxilaryLineItem[] = [];
 
+  comboLineItems: ComboLineItem[] = [];
+
   isFavourite = false;
 
   orderCount  = 0;
+  auxilaryLoadComplete = false;
+
+  @ViewChild('orderCountInput' , null) orderCountInput: IonInput;
 
   constructor(
     private favourite: FavouriteService,
@@ -42,8 +47,9 @@ export class ProductCardComponent implements OnInit {
   ngOnInit() {
     this.checkIfAlreadyFavourite();
     this.checkIfOrdered();
-    if(this.stockCurrent.product.isAuxilaryItem === false) {
-      this.getAuxilaries(0);
+    this.getAuxilaries(0);
+    if (this.stockCurrent.product.isAuxilaryItem === false) {
+      this.getComboItems(0);
     }
   }
 
@@ -60,6 +66,7 @@ export class ProductCardComponent implements OnInit {
   getAuxilaries(i) {
     this.queryResource.findAuxilariesByProductIdUsingGET(this.stockCurrent.product.id)
     .subscribe(data => {
+      i++;
       data.content.forEach(a => {
         this.auxilaries.push(a);
       });
@@ -67,6 +74,25 @@ export class ProductCardComponent implements OnInit {
       ++i;
       if (i < data.totalPages) {
         this.getAuxilaries(i);
+      } else {
+        this.auxilaryLoadComplete = true;
+        this.cartService.auxilaryItems[this.stockCurrent.product.id] = this.auxilaries;
+      }
+    });
+  }
+
+
+  getComboItems(i) {
+    this.queryResource.findComboByProductIdUsingGET(this.stockCurrent.product.id)
+    .subscribe(data => {
+      i++;
+      data.content.forEach(a => {
+        this.comboLineItems.push(a);
+      });
+      this.logger.info('Got ComboLineItem For Product ' , this.stockCurrent.product.name , data.content);
+      ++i;
+      if (i < data.totalPages) {
+        this.getComboItems(i);
       }
     });
   }
@@ -81,12 +107,16 @@ export class ProductCardComponent implements OnInit {
     });
   }
 
+  customAdd(stock) {
+    console.log(stock);
+  }
+
   add(i, stock: StockCurrent) {
     this.cartService.addShop(this.store);
-    if(this.auxilaries.length > 0 && this.stockCurrent.product.isAuxilaryItem === false) {
+    if (this.auxilaries.length > 0 && this.stockCurrent.product.isAuxilaryItem === false) {
       this.logger.info('Add Auxilary Items ' , this.auxilaries);
       this.cartService.addAuxilary(this.stockCurrent.product , this.auxilaries);
-      if(this.cartService.currentShopId === this.store.id) {
+      if (this.cartService.currentShopId === this.store.id) {
         this.showAddAuxilaryPopover();
       } else {
         this.cartService.presentAlert();

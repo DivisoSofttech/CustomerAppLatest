@@ -1,0 +1,24 @@
+<ion-card *ngIf="store !== undefined && order !== undefined">
+  <ion-item lines="none">
+    <ion-thumbnail slot="start">
+      <ion-img no-margin *ngIf="store !== undefined" [src]="'data:' + store.imageContentType + ';base64,' + store.image"
+        class="imageShow">
+      </ion-img>
+    </ion-thumbnail>
+    <ion-text>
+      <p class="b-fnt">{{store.name}}</p>
+      <p>{{order.orderId}}</p>
+      <p>{{order.date | date : 'shortDate'}}</p>
+      <p>{{order.date | date : 'shortTime'}}</p>
+      <address>
+        {{order.deliveryInfo.deliveryAddress.houseNoOrBuildingName}}
+        {{order.deliveryInfo.deliveryAddress.city}}
+      </address>
+    </ion-text>
+  </ion-item>
+  <ion-card-footer style="background: grey">
+    <ion-button expand="block">
+      Continue
+    </ion-button>
+  </ion-card-footer>
+</ion-card>

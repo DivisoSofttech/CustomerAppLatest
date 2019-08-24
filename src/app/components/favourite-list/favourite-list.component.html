@@ -9,7 +9,7 @@
                   >
                 </ion-img>
               </ion-avatar>
-              <ion-label>
+              <ion-label (click)="route(favourite)">
                 <p> {{favourite.data.name}}</p>
               </ion-label>
             </ion-item>
@@ -21,7 +21,7 @@
           </ion-item-sliding>
         </ion-list>
       </div>
-    
+
       <div class="vertical-align-center h30" *ngIf="favourites.length === 0">
         <ion-text text-center>
           <p>Nothng added to favourites</p>

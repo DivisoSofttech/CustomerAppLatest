@@ -1,69 +1,100 @@
 <ion-list *ngIf="!showAddressPanel">
-  <ion-list-header>Select  Address</ion-list-header>
+  <ion-item *ngIf="showAddressLists === false">
+    <ion-text (click)="toggleShowAddressList()" *ngIf="addresses.length > 0">
+      <p>
+        Selected Address :
+      </p>
+    </ion-text>
+    <ion-text *ngIf="selectedAddress !== undefined" (click)="toggleShowAddressList()">{{selectedAddress.name}}
+    </ion-text>
+    <ion-label *ngIf="selectedAddress === undefined && addresses.length === 0" (click)="addNewAddressModal()">Add
+      Address</ion-label>
+  </ion-item>
+  <ion-item lines="full" *ngIf="addresses.length > 0">
+    <ion-label (click)="addNewAddressModal()">Add Address</ion-label>
+  </ion-item>
+</ion-list>
+
+<div *ngIf="showAddressLists === true && showAddressPanel === false" class="addressListContainer">
+  <ion-item *ngFor="let address of addresses" value="{{address.id}}">
+    <ion-label (click)="addressChanged(address)">
+      <p>{{address.name}}</p>
+      <p>{{address.houseNoOrBuildingName}}</p>
+      <p>{{address.landmark}}</p>
+      <p>{{address.roadNameAreaOrStreet}}</p>
+      <p>{{address.postCode}}</p>
+    </ion-label>
+    <ion-icon name="create" (click)="updateAddressModal(address)"></ion-icon>
+  </ion-item>
+</div>
+
+
+
+
+<ion-scroll *ngIf="showAddressPanel">
+
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-buttons>
+        <ion-button (click)="dismiss(undefined)">
+          <ion-icon name="close"></ion-icon>
+        </ion-button>
+        <ion-title>Add New Address</ion-title>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
 
   <ion-item>
-    <ion-label>Addresses</ion-label>
-    <ion-select  cancelText="cancel" okText="ok"
-    (ionChange)="addressChanged($event)"
-    value="{{currentId}}">
-      <ion-select-option *ngFor="let address of addresses" value="{{address.id}}">{{address.name}}</ion-select-option>
-    </ion-select>
+    <ion-label position="floating">Name</ion-label>
+    <ion-input type="text" [(ngModel)]="address.name"></ion-input>
   </ion-item>
-  <ion-item lines="full"> 
-    <ion-label (click)="addNewAddress()">Add new Address</ion-label>
+  <ion-item>
+    <ion-label position="floating">Phone</ion-label>
+    <ion-input type="number" [(ngModel)]="address.phone"></ion-input>
   </ion-item>
-  
+  <ion-item>
+    <ion-label position="floating">Alternate Phone</ion-label>
+    <ion-input type="number" [(ngModel)]="address.alternatePhone"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">House Number / Building Name</ion-label>
+    <ion-input type="text" [(ngModel)]="address.houseNoOrBuildingName"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Road Name Area Or Street</ion-label>
+    <ion-input type="text" [(ngModel)]="address.roadNameAreaOrStreet"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">City</ion-label>
+    <ion-input type="text" [(ngModel)]="address.city"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Landmark</ion-label>
+    <ion-input type="text" [(ngModel)]="address.landmark"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Pincode</ion-label>
+    <ion-input type="number" [(ngModel)]="address.pincode"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">State</ion-label>
+    <ion-input type="text" [(ngModel)]="address.state"></ion-input>
+  </ion-item>
+  <ion-radio-group [(ngModel)]="address.addressType">
+    <ion-item>
+      <ion-label>Home</ion-label>
+      <ion-radio value="home"></ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-label>Work</ion-label>
+      <ion-radio value="work"></ion-radio>
+    </ion-item>
+  </ion-radio-group>
 
-  </ion-list>
 
-  <ion-scroll *ngIf="showAddressPanel">
+  <ion-footer>
+    <ion-button *ngIf="type==='add'" margin expand="block" (click)="saveAddress()">Add</ion-button>
+    <ion-button *ngIf="type==='update'" margin expand="block" (click)="updateAddress()">Update</ion-button>
+  </ion-footer>
 
-    <ion-header>
-      <ion-toolbar color="primary">
-        <ion-buttons>
-          <ion-button (click)="dismiss(undefined)">
-            <ion-icon name="close"></ion-icon>
-          </ion-button>
-          <ion-title>Add New Address</ion-title>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-
-    <ion-item>
-      <ion-label position="floating">Name</ion-label>
-      <ion-input type="text" [(ngModel)]="address.name"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Phone</ion-label>
-      <ion-input type="text" [(ngModel)]="address.phone"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Alternate Phone</ion-label>
-      <ion-input type="number" [(ngModel)]="address.alternatePhone"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">House Number / Building Name</ion-label>
-      <ion-input type="text" [(ngModel)]="address.houseNoOrBuildingName"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">City</ion-label>
-      <ion-input type="text" [(ngModel)]="address.city"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating" >Landmark</ion-label>
-      <ion-input type="text" [(ngModel)]="address.landmark"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating" >Pincode</ion-label>
-      <ion-input type="number" [(ngModel)]="address.pincode"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating" [(ngModel)]="address.state">State</ion-label>
-      <ion-input type="text"></ion-input>
-    </ion-item>
- 
-    <ion-footer>
-        <ion-button margin expand="block" (click)="saveAddress()">Add</ion-button>
-    </ion-footer>
-
-  </ion-scroll>
+</ion-scroll>

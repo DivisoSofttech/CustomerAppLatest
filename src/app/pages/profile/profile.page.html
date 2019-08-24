@@ -5,21 +5,26 @@
       <ion-back-button></ion-back-button>
       <ion-title>Profile</ion-title>
     </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon name="power"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <app-loading 
+  <app-loading
     *ngIf="customer === undefined"
     [type]="'profile'">
   </app-loading>
-  <app-profile-info *ngIf="customer != undefined" 
+  <app-profile-info *ngIf="customer != undefined"
   [customer]="customer"
   [keyCloakUser]="keyCloakUser"
   [contact]="contact"
   ></app-profile-info>
 
-  <ion-segment 
+  <ion-segment
   (ionChange)="segmentChanged($event)"
   [(ngModel)]="currentSegment"
   >
@@ -55,5 +60,5 @@
   </ion-slides>
 </ion-content>
 <ion-footer>
-  <app-footer></app-footer>
+  <app-footer [filterHide]="'true'"></app-footer>
 </ion-footer>

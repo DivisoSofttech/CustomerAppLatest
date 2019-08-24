@@ -41,6 +41,7 @@ export { OrderResponse } from './models/order-response';
 export { PageOfAddress } from './models/page-of-address';
 export { PageOfAuxilaryLineItem } from './models/page-of-auxilary-line-item';
 export { PageOfCategory } from './models/page-of-category';
+export { PageOfComboLineItem } from './models/page-of-combo-line-item';
 export { PageOfCustomer } from './models/page-of-customer';
 export { PageOfDeliveryInfo } from './models/page-of-delivery-info';
 export { PageOfOrder } from './models/page-of-order';
