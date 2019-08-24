@@ -3,6 +3,7 @@
     <domain-config cleartextTrafficPermitted="true">
     	<domain includeSubdomains="true">localhost</domain>
     	<domain includeSubdomains="true">35.239.128.233</domain>
+<domain includeSubdomains="true">dev.ci2.divisosofttech.com</domain>
  		<domain includeSubdomains="true">dev.servers.divisosofttech.com</domain>
     </domain-config>
 </network-security-config>

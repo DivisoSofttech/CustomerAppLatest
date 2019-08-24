@@ -5,6 +5,7 @@ import { QueryResourceService } from 'src/app/api/services';
 import { Order, OpenTask, CommandResource } from 'src/app/api/models';
 import { NGXLogger } from 'ngx-logger';
 import { OrderService } from 'src/app/services/order.service';
+import { Util } from 'src/app/services/util';
 
 @Component({
   selector: 'app-history-list',
@@ -16,10 +17,9 @@ export class HistoryListComponent implements OnInit {
   orders: Order[] = [];
 
   stores = {};
-  approvedOrders: OpenTask[] = [];
 
   @Input() keyCloakUser;
-  @ViewChild(IonInfiniteScroll,null) inifinitScroll: IonInfiniteScroll;
+  @ViewChild(IonInfiniteScroll, null) inifinitScroll: IonInfiniteScroll;
 
   pageNumber = 0;
 
@@ -28,28 +28,37 @@ export class HistoryListComponent implements OnInit {
     private logger: NGXLogger,
     private orderService: OrderService,
     private modalController: ModalController,
+    private util: Util
       ) { }
 
   ngOnInit() {
-    this.getOrders(0);
-    this.queryResource.getTasksUsingGET({name: 'Process Payment', assignee: this.orderService.customer.preferred_username})
-      .subscribe(result => {
-        this.approvedOrders = result;
-      });
+    this.getOrders(0, 'event');
   }
 
   confirmOrder(order: Order) {
+    console.log('Confirm order User is ' + this.orderService.customer.preferred_username );
+    console.log('Confirm the order ', order);
     this.orderService.setOrder(order);
     this.orderService.deliveryInfo = order.deliveryInfo;
-    this.approvedOrders.forEach( opentask => {
-     if (opentask.orderId === order.orderId) {
-       const resource: CommandResource = {
-          nextTaskId: opentask.taskId,
-          nextTaskName: opentask.taskName
-       };
-       this.orderService.resource = resource;
-     }
-       });
+    this.util.createLoader().then( loader => {
+      loader.present();
+      this.queryResource.getTasksUsingGET({name: 'Process Payment', assignee: this.orderService.customer.preferred_username})
+    .subscribe(result => {
+      console.log('Approved Orders opentasks ', result);
+      result.forEach( opentask => {
+        if (opentask.orderId === order.orderId) {
+          const resource: CommandResource = {
+             nextTaskId: opentask.taskId,
+             nextTaskName: opentask.taskName
+          };
+          this.orderService.resource = resource;
+          console.log('Confirm order resource ', resource);
+          loader.dismiss();
+          this.presentmakePayment();
+        }
+          });
+    });
+  });
   }
 
   async presentmakePayment() {
@@ -59,10 +68,12 @@ export class HistoryListComponent implements OnInit {
     return await modal.present();
   }
 
-  getOrders(i) {
+  getOrders(i, event) {
+    console.log('Page ' , i);
     this.queryResource.findOrdersByCustomerIdUsingGET({
       customerId: this.keyCloakUser.preferred_username,
       page: i,
+      size: 20
     })
     .subscribe(porders => {
       porders.content.forEach(o => {
@@ -70,11 +81,19 @@ export class HistoryListComponent implements OnInit {
         if (this.stores[o.storeId] === undefined) {
           this.getStores(o.storeId);
         }
+        if ( i !== 0) {
+          event.target.complete();
+        }
       });
       ++i;
       if (i === porders.totalPages) {
+        console.log('Toggle disabled');
         this.toggleInfiniteScroll();
       }
+      console.log('Total numbers of page ', porders.totalPages);
+    },
+    err => {
+      console.log('Error Getting Order Page ' + i , err);
     });
   }
 
@@ -82,7 +101,6 @@ export class HistoryListComponent implements OnInit {
     this.stores[id] = {};
     this.queryResource.findStoreByRegisterNumberUsingGET(id)
     .subscribe(store => {
-      this.logger.info('Store ' , store);
       this.stores[id] = store;
     });
   }
@@ -93,7 +111,8 @@ export class HistoryListComponent implements OnInit {
 
   loadMoreData(event) {
     ++this.pageNumber;
-    this.getOrders(this.pageNumber);
+    console.log('Loading More Orders Page ' , this.pageNumber);
+    this.getOrders(this.pageNumber, event);
   }
 
   refresh(event) {

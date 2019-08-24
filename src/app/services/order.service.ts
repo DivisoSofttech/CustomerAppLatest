@@ -2,7 +2,7 @@ import { CartService } from 'src/app/services/cart.service';
 import { Injectable } from '@angular/core';
 import { OrderCommandResourceService, OfferCommandResourceService } from '../api/services';
 
-import { CommandResource, Order, DeliveryInfo, Address } from '../api/models';
+import { CommandResource, Order, DeliveryInfo, Address, Offer } from '../api/models';
 
 import { Storage } from '@ionic/storage';
 import { NGXLogger } from 'ngx-logger';
@@ -18,23 +18,27 @@ export class OrderService {
   customer;
   paymentMethod;
   shop;
-
+  offer: Offer;
   constructor(
     private orderCommandService: OrderCommandResourceService,
     private storage: Storage,
     private cart: CartService,
     private logger: NGXLogger,
     private offerCommandService: OfferCommandResourceService
-  ) { 
+  ) {
     this.getCustomer();
   }
 
    initiateOrder() {
-      return this.orderCommandService.initiateOrderUsingPOST(this.order);
+     if ( this.offer !== undefined) {
+       this.order.appliedOffers.push(this.offer);
+     }
+     return this.orderCommandService.initiateOrderUsingPOST(this.order);
   }
 
   getCustomer() {
     this.customer = this.storage.get('user');
+    console.log('User from storage is ', this.customer);
   }
   collectDeliveryInfo() {
     console.log('DeliveryInfo is' + this.deliveryInfo);
@@ -54,6 +58,10 @@ export class OrderService {
 
   setDeliveryType(deliveryType) {
     this.deliveryInfo.deliveryType = deliveryType;
+  }
+
+  setOffer(offer: Offer) {
+    this.offer = offer;
   }
 
   setDeliveryCharge(deliveryCharge) {

@@ -1,11 +1,12 @@
 import { CartService } from '../../services/cart.service';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { OrderLine, Store, Order } from 'src/app/api/models';
+import { OrderLine, Store, Order, Offer } from 'src/app/api/models';
 import { QueryResourceService, OfferCommandResourceService } from 'src/app/api/services';
 import { NGXLogger } from 'ngx-logger';
 import { ShowAuxilaryModalComponent } from '../show-auxilary-modal/show-auxilary-modal.component';
 import { PopoverController } from '@ionic/angular';
 import { OrderService } from 'src/app/services/order.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-delivery-item-details',
@@ -41,7 +42,7 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
   productsGot = false;
 
   productBaseAuxItemsArray = {};
-
+  offer;
 
   constructor(
     private cart: CartService,
@@ -55,9 +56,7 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getCartDetails();
     this.productBaseAuxItemsArray = this.cart.auxilaryItems;
-    // this.orderService.claimMyOffer(this.totalPrice).subscribe(response => {
-    //   console.log('response for cliam offer ' + response);
-    // });
+    this.getOffers();
   }
 
   getCartDetails() {
@@ -94,7 +93,7 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
   }
 
   decreaseAuxilaryProductCount(product , orderLine) {
-    this.cart.decreaseAuxilary(product,orderLine);
+    this.cart.decreaseAuxilary(product, orderLine);
   }
 
   removeAuxilaryOrder(product , orderLine) {
@@ -129,14 +128,20 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
   }
 
   getOffers() {
-    let grandtotal = 0;
-    this.orders.forEach(orderLine => {
-      grandtotal += orderLine.pricePerUnit * orderLine.quantity;
-    });
-    this.offerCommandResource.checkOfferEligibilityUsingPOST({
-      orderModel: {orderTotal: grandtotal}, customerId: this.orderService.customer.reference
-    }).subscribe(data => {
-      console.log(data);
+    console.log('Checking offer eligibility using price ', this.totalPrice);
+    this.orderService.claimMyOffer(this.totalPrice).subscribe(response => {
+      console.log('response for cliam offer ' , response);
+      if (response.orderDiscountAmount === null) {
+        console.log('No offers available');
+      } else {
+        console.log('One offer available ', response.promoCode);
+        this.offer = response;
+        this.totalPrice = response.orderDiscountTotal;
+        const myOffer: Offer = {
+          offerRef : response.promoCode
+        };
+        this.orderService.setOffer(myOffer);
+      }
     });
   }
 

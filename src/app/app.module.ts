@@ -1,3 +1,4 @@
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { CartService } from './services/cart.service';
 import { FavouriteService } from './services/favourite.service';
 import { FilterService } from './services/filter.service';
@@ -63,6 +64,7 @@ import { LocationStrategy, HashLocationStrategy, Location } from '@angular/commo
     Util,
     SplashScreen,
     PayPal,
+    InAppBrowser,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
 
     // Extra Services

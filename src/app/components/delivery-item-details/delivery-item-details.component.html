@@ -96,17 +96,16 @@
     <ion-label text-center> </ion-label>
     <ion-label text-end>{{ storeSetting.deliveryCharge }}</ion-label>
   </ion-item>
-  <ion-item lines="full" *ngIf="orders.length > 0">
+  <ion-item *ngIf="offer" lines="full">
     <ion-avatar slot="start">
       <ion-img src="/assets/svg/discount.svg"></ion-img>
     </ion-avatar>
     <ion-text word-wrap text-left no-margin>
       <p>
-        <strong> 50% </strong>discount on gfsggsfgafsgfasfgas
-        ssgshsghgshgshghsghgh
+        <strong> 20% </strong>discount on <ion-badge>{{offer.promocode}}</ion-badge>
       </p>
     </ion-text>
-    <ion-text text-end>50 </ion-text>
+     <ion-text text-end>-{{offer.orderDiscountAmount}}</ion-text> 
   </ion-item>
   <ion-item *ngIf="storeSetting !== undefined" lines="full">
     <ion-label text-start>

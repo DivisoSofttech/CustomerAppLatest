@@ -13,7 +13,7 @@ import {
   PayPalConfiguration
 } from '@ionic-native/paypal/ngx';
 import { PaymentSuccessfullInfoComponent } from '../payment-successfull-info/payment-successfull-info.component';
-
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 declare var RazorpayCheckout;
 
 @Component({
@@ -32,7 +32,7 @@ export class ProcessPaymentComponent implements OnInit {
     private orderService: OrderService,
     private util: Util,
     private platform: Platform,
-    private navCtrl: NavController  ) {}
+    private iab: InAppBrowser  ) {}
 
 
   processPayment(ref: string, status: string) {
@@ -43,7 +43,7 @@ export class ProcessPaymentComponent implements OnInit {
       {taskId: this.orderService.resource.nextTaskId,
       status, paymentDTO: {
         amount: this.orderService.order.grandTotal,
-        payee: this.orderService.shop.regNo,
+        payee: this.orderService.order.storeId,
         payer: this.orderService.customer.preferred_username,
         paymentType: this.orderService.paymentMethod,
         provider: this.provider,
@@ -55,7 +55,7 @@ export class ProcessPaymentComponent implements OnInit {
     ).subscribe( () => {
       loader.dismiss();
       this.presentModal();
-    }, (error) => console.log('An error occured during processing payment ' + error));
+    });
   });
   }
 
@@ -74,7 +74,7 @@ export class ProcessPaymentComponent implements OnInit {
       })
       .subscribe(response => {
         loader.dismiss();
-        console.log('Response is orde id ' + response.id);
+        console.log('Response is order id ' + response.id);
         const options = {
           description: 'Graeshoppe Payment',
           currency: 'INR',
@@ -205,7 +205,7 @@ export class ProcessPaymentComponent implements OnInit {
       transactions: [
         {
           amount: {
-            total: this.orderService.order.grandTotal + '',
+            total: Math.round(this.orderService.order.grandTotal) + '',
             currency: 'EUR',
             details: {}
           }
@@ -213,13 +213,13 @@ export class ProcessPaymentComponent implements OnInit {
       ],
       note_to_payer: 'Contact us for any queries',
       redirect_urls: {
-        return_url: '',
-        cancel_url: ''
+        return_url: 'www.divisosofttech.com',
+        cancel_url: 'www.divisosofttech.com'
       }
     }).subscribe( paymentResponse => {
       paymentResponse.links.forEach( link => {
-        if (link.rel === 'approvalUrl') {
-          this.navCtrl.navigateForward(link.href);
+        if (link.rel === 'approval_url') {
+         this.iab.create(link.href);
         }
       });
     });
@@ -254,7 +254,7 @@ export class ProcessPaymentComponent implements OnInit {
     } else if (this.orderService.paymentMethod === 'cod') {
       console.log('Cash on elivery option ');
       this.processPayment('pay-cod', 'success');
-    } else {
+    } else if (this.orderService.paymentMethod === 'card') {
       console.log('Razorpay payment ');
       this.payWithRazorPay();
     }
