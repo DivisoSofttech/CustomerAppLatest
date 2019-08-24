@@ -1,5 +1,5 @@
 
-<app-loading 
+<app-loading
 *ngIf="orders.length > 0 && productsGot === false"
 [type]="'delivery'"></app-loading>
 
@@ -44,13 +44,14 @@
 
     <!--Auxilary Product Start-->
     <ion-list
-      *ngIf="
-        orderLine.requiedAuxilaries !== undefined &&
-        orderLine.requiedAuxilaries.length > 0">
-        <ion-list-header>
-          <ion-label>Extras</ion-label>
-          <ion-icon name="add" class="addAuxilaryButton"></ion-icon>
-        </ion-list-header>
+    *ngIf="auxilaryItems[orderLine.productId].length !== 0">
+      <ion-list-header>
+        <ion-label>Extras</ion-label>
+        <ion-icon name="add" class="addAuxilaryButton" (click)="showUpdateAuxilaryPopover(orderLine)"></ion-icon>
+      </ion-list-header>
+    </ion-list>
+    <ion-list
+      *ngIf="orderLine.requiedAuxilaries !== undefined && orderLine.requiedAuxilaries.length > 0">
         <ion-item-sliding  *ngFor="let aux of orderLine.requiedAuxilaries">
           <ion-item-options side="start">
             <ion-item-option
@@ -65,7 +66,7 @@
             <ion-icon name="remove"></ion-icon>
           </ion-item-option>
           </ion-item-options>
-          <ion-item *ngIf="auxilaryProducts[aux.productId] !== undefined"> 
+          <ion-item *ngIf="auxilaryProducts[aux.productId] !== undefined">
             <ion-label text-start class="wrap">{{
               auxilaryProducts[aux.productId].name
             }}</ion-label>
@@ -85,13 +86,13 @@
     </ion-list>
     <!--Auxilary Product End-->
 
-    
+
   </ion-card>
 
   <ion-card>
     <ion-item color="medium"
     lines="full"
-    *ngIf="storeSetting !== undefined && orders.length > 0">
+    *ngIf="storeSetting !== undefined && orders.length > 0 && currentDeliveryMode !== 'collection'">
     <ion-label text-start>Delivery charge</ion-label>
     <ion-label text-center> </ion-label>
     <ion-label text-end>{{ storeSetting.deliveryCharge }}</ion-label>
@@ -102,22 +103,24 @@
     </ion-avatar>
     <ion-text word-wrap text-left no-margin>
       <p>
-        <strong> 50% </strong>discount on gfsggsfgafsgfasfgas
-        ssgshsghgshgshghsghgh
+        <strong>20% discount on your every 10th order</strong>
       </p>
     </ion-text>
-    <ion-text text-end>50 </ion-text>
   </ion-item>
   <ion-item *ngIf="storeSetting !== undefined" lines="full">
+
     <ion-label text-start>
-      <h3></h3>
+      <h3> <strong>Subtotal</strong></h3>
     </ion-label>
-    <ion-label text-center> </ion-label>
     <ion-label text-end>
-      <h3>
-        <strong>Subtotal</strong>
+      <h3 *ngIf="currentDeliveryMode === 'delivery'">
         <strong>
           {{ totalPrice + storeSetting.deliveryCharge }}
+        </strong>
+      </h3>
+      <h3 *ngIf="currentDeliveryMode === 'collection'">
+        <strong>
+          {{ totalPrice }}
         </strong>
       </h3>
     </ion-label>

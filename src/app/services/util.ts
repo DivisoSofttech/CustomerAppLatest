@@ -16,7 +16,8 @@ export class Util {
 
   async createLoader() {
     return await this.loadingController.create({
-      spinner: 'bubbles'
+      spinner: 'bubbles',
+      duration: 5000
     });
   }
 

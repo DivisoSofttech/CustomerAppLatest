@@ -1,4 +1,5 @@
-import { IonInfiniteScroll } from '@ionic/angular';
+import { NotificationComponent } from 'src/app/components/notification/notification.component';
+import { IonInfiniteScroll , IonSearchbar, ModalController } from '@ionic/angular';
 import { Store } from './../../api/models/store';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { LocationService } from './../../services/location-service';
@@ -38,12 +39,16 @@ export class HeaderComponent implements OnInit {
   pageCount = 0;
 
   @ViewChild(IonInfiniteScroll, null) infiniteScroll: IonInfiniteScroll;
+  @ViewChild('restaurantSearch' , null)  restaurantSearch: IonSearchbar;
+  @ViewChild('placeSearch' , null)  placeSearch: IonSearchbar;
+
 
   constructor(
     private locationService: LocationService,
     private queryResource: QueryResourceService,
     private util: Util,
-    private logger: NGXLogger
+    private logger: NGXLogger,
+    private modalController: ModalController
   ) {}
 
   ngOnInit() {
@@ -56,13 +61,18 @@ export class HeaderComponent implements OnInit {
     this.showPlaceSearch = false;
     this.showSearchBar = !this.showSearchBar;
     this.showSearchPane = !this.showSearchPane;
-
+    if(this.showSearchBar === true) {
+      this.restaurantSearch.setFocus();
+    }
   }
 
   togglePlaceSearch() {
     this.logger.info('PlaceSearch Toggled - View' , this.showPlaceSearch);
     this.showSearchBar = false;
     this.showPlaceSearch = !this.showPlaceSearch;
+    if(this.showPlaceSearch === true) {
+      this.placeSearch.setFocus();
+    }
   }
 
   toggleInfiniteScroll() {
@@ -138,9 +148,18 @@ export class HeaderComponent implements OnInit {
     this.getSearchResults(0);
   }
 
-  loadMoreData() {
+  loadMoreData(event) {
     this.logger.info('Loading More Data');
     this.pageCount++;
     this.getSearchResults(this.pageCount);
   }
+
+  async showNotification() {
+    const modal = await this.modalController.create({
+      component: NotificationComponent,
+      componentProps: {type: 'full'}
+    });
+    modal.present();
+  }
+
 }

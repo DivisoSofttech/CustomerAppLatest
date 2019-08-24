@@ -1,7 +1,9 @@
 import { CartService } from 'src/app/services/cart.service';
 import { Injectable } from '@angular/core';
-import { OrderCommandResourceService } from '../api/services';
-import { CommandResource } from '../api/models';
+import { OrderCommandResourceService, OfferCommandResourceService } from '../api/services';
+
+import { CommandResource, Order, DeliveryInfo, Address } from '../api/models';
+
 import { Storage } from '@ionic/storage';
 import { NGXLogger } from 'ngx-logger';
 
@@ -10,15 +12,9 @@ import { NGXLogger } from 'ngx-logger';
 })
 export class OrderService {
 
-  address = '';
-  nextTaskId: string;
-  nextTaskName: string;
-  orderId: string;
-  order;
+  order: Order;
   resource: CommandResource;
-
-  deliveryType;
-
+  deliveryInfo: DeliveryInfo = {};
   customer;
 
   shop;
@@ -27,12 +23,24 @@ export class OrderService {
     private orderCommandService: OrderCommandResourceService,
     private storage: Storage,
     private cart: CartService,
-    private logger: NGXLogger
+    private logger: NGXLogger,
+    private offerCommandService: OfferCommandResourceService
   ) { }
 
    initiateOrder() {
-     console.log('Order is' + this.order);
-     return this.orderCommandService.initiateOrderUsingPOST(this.order);
+      return this.orderCommandService.initiateOrderUsingPOST(this.order);
+  }
+
+  collectDeliveryInfo() {
+    console.log('DeliveryInfo is' + this.deliveryInfo);
+    return this.orderCommandService.collectDeliveryDetailsUsingPOST(
+      {taskId: this.resource.nextTaskId, orderId: this.resource.selfId, deliveryInfo: this.deliveryInfo});
+  }
+
+  claimMyOffer(totalPrice) {
+    return this.offerCommandService.checkOfferEligibilityUsingPOST({orderModel: {
+      orderTotal: totalPrice
+    }, customerId: this.customer.preferred_username});
   }
 
   setResource(resource: CommandResource) {
@@ -40,18 +48,21 @@ export class OrderService {
   }
 
   setDeliveryType(deliveryType) {
-    this.deliveryType = deliveryType;
+    this.deliveryInfo.deliveryType = deliveryType;
   }
 
+  setDeliveryCharge(deliveryCharge) {
+    this.deliveryInfo.deliveryCharge = deliveryCharge;
+  }
   setAddress(address)  {
-    this.address = address;
+    this.deliveryInfo.deliveryAddress = address;
   }
 
   setOrder(order) {
     this.order = order;
     this.storage.get('user')
     .then(data => {
-      //Store RegNo or Id?
+      // Store RegNo or Id?
       this.order.storeId = this.shop.regNo;
       this.order.email = data.email;
     });
@@ -67,6 +78,6 @@ export class OrderService {
   }
 
   setNote(note) {
-    this.order.note = note;
+    this.deliveryInfo.deliveryNotes = note;
   }
 }

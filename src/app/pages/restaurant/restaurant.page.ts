@@ -2,10 +2,11 @@ import { StoreDTO } from './../../api/models/store-dto';
 import { FilterService } from './../../services/filter.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Util } from 'src/app/services/util';
-import { IonInfiniteScroll, IonRefresher } from '@ionic/angular';
+import { IonInfiniteScroll, IonRefresher, ModalController } from '@ionic/angular';
 import { NGXLogger } from 'ngx-logger';
 import { MapComponent } from 'src/app/components/map/map.component';
 import { FooterComponent } from 'src/app/components/footer/footer.component';
+import { NotificationComponent } from 'src/app/components/notification/notification.component';
 
 @Component({
   selector: 'app-restaurant',
@@ -33,6 +34,7 @@ export class RestaurantPage implements OnInit {
     private filter: FilterService,
     private util: Util,
     private logger: NGXLogger,
+    private modalController: ModalController
   ) {}
 
   ngOnInit() {

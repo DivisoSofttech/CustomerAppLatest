@@ -111,7 +111,8 @@ export class LoginSignupPage implements OnInit {
               this.commandResourceService
                 .createCustomerUsingPOST({
                   reference: this.username,
-                  name: this.username
+                  name: this.username,
+                  email: this.email
                 })
                 .subscribe(
                   customer => {

@@ -1,10 +1,11 @@
 import { CartService } from '../../services/cart.service';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { OrderLine, Store, Order } from 'src/app/api/models';
+import { OrderLine, Store, Order, AuxilaryLineItem } from 'src/app/api/models';
 import { QueryResourceService, OfferCommandResourceService } from 'src/app/api/services';
 import { NGXLogger } from 'ngx-logger';
 import { ShowAuxilaryModalComponent } from '../show-auxilary-modal/show-auxilary-modal.component';
 import { PopoverController } from '@ionic/angular';
+import { OrderService } from 'src/app/services/order.service';
 
 @Component({
   selector: 'app-delivery-item-details',
@@ -41,18 +42,25 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
 
   productBaseAuxItemsArray = {};
 
+  auxilaryItems;
+
+  currentDeliveryMode = 'collection';
 
   constructor(
     private cart: CartService,
     private queryResource: QueryResourceService,
     private offerCommandResource: OfferCommandResourceService,
     private logger: NGXLogger,
-    private popover: PopoverController
+    private popover: PopoverController,
+    private orderService: OrderService
   ) {}
 
   ngOnInit() {
     this.getCartDetails();
     this.productBaseAuxItemsArray = this.cart.auxilaryItems;
+    // this.orderService.claimMyOffer(this.totalPrice).subscribe(response => {
+    //   console.log('response for cliam offer ' + response);
+    // });
   }
 
   getCartDetails() {
@@ -62,13 +70,14 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
       this.orders = data;
       this.storeSetting = this.cart.currentShopSetting;
       this.store = this.cart.currentShop;
+      this.auxilaryItems = this.cart.auxilaryItems;
       this.getAllProductsFromOrders();
       this.getAuxilaryproductsFromOrders();
     });
   }
 
   increaseProductCount(product , orderLine) {
-    if (this.cart.auxilaryItems[product.id] !== undefined) {
+    if (this.cart.auxilaryItems[product.id].length !== 0) {
       this.showAddAuxilaryPopover(product);
     } else {
       this.cart.increase(orderLine , product);
@@ -89,7 +98,7 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
   }
 
   decreaseAuxilaryProductCount(product , orderLine) {
-    this.cart.decreaseAuxilary(product,orderLine);
+    this.cart.decreaseAuxilary(product, orderLine);
   }
 
   removeAuxilaryOrder(product , orderLine) {
@@ -129,9 +138,8 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
       grandtotal += orderLine.pricePerUnit * orderLine.quantity;
     });
     this.offerCommandResource.checkOfferEligibilityUsingPOST({
-      orderTotal: grandtotal
-    })
-    .subscribe(data => {
+      orderModel: {orderTotal: grandtotal}, customerId: this.orderService.customer.reference
+    }).subscribe(data => {
       console.log(data);
     });
   }
@@ -147,7 +155,27 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
     return await popoverElement.present();
   }
 
-  async showUpdateAuxilaryPopover(p) {
+  async showUpdateAuxilaryPopover(ol: OrderLine) {
+    const tempAuxilaryItems = [];
+
+    this.cart.auxilaryItems[ol.productId]
+    .forEach((ai: AuxilaryLineItem) => {
+      // check if ai exists in any of auxilaryitems
+      const index = ol.requiedAuxilaries.findIndex(auxLine => auxLine.productId === ai.auxilaryItem.id);
+      if (index === -1) {
+        tempAuxilaryItems.push(ai);
+      }
+    });
+
+    const popoverElement = await this.popover.create({
+      component: ShowAuxilaryModalComponent,
+      componentProps: {
+          auxilaryItems: tempAuxilaryItems,
+          orderLine: ol,
+          type: 'update'
+        }
+    });
+    return await popoverElement.present();
   }
 
   ngOnDestroy() {

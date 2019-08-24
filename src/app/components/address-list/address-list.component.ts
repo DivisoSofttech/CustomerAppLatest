@@ -3,6 +3,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Address } from 'src/app/api/models';
 import { ModalController } from '@ionic/angular';
 import { OrderCommandResourceService } from 'src/app/api/services';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-address-list',
@@ -10,12 +11,18 @@ import { OrderCommandResourceService } from 'src/app/api/services';
   styleUrls: ['./address-list.component.scss']
 })
 export class AddressListComponent implements OnInit {
-  
+
   @Output() addressSelected = new EventEmitter();
+
+  selectedAddress;
 
   @Input() showAddressPanel = false;
 
+  showAddressLists = false;
+
   @Input() customer;
+
+  @Input() type = 'add';
 
   addresses: Address[] = [];
 
@@ -24,7 +31,7 @@ export class AddressListComponent implements OnInit {
   currentId = 1;
 
   ngOnInit() {
-    console.log('Address List' , this.customer);
+    this.logger.info('Address List' , this.customer);
     if (this.showAddressPanel === false) {
       this.getAllAdress(0);
     }
@@ -32,19 +39,23 @@ export class AddressListComponent implements OnInit {
 
   constructor(
     private modalController: ModalController,
+    private logger: NGXLogger,
     private orderCommandResource: OrderCommandResourceService,
     private util: Util
   ) {}
 
   getAllAdress(i) {
     this.orderCommandResource.getAllSavedAddressUsingGET({
-      customerId: this.customer.reference,
+      customerId: this.customer.preferred_username,
       page: i
     })
     .subscribe(paddress => {
       if(paddress.content.length > 0) {
-        this.currentId = paddress.content[0].id;
-        this.addressSelected.emit(paddress.content[0]);
+        if(i === 0) {
+          this.currentId = paddress.content[0].id;
+          this.selectedAddress = paddress.content[0];
+          this.addressSelected.emit(paddress.content[0]);
+        }
       }
       paddress.content.forEach(a => {
         this.addresses.push(a);
@@ -53,7 +64,7 @@ export class AddressListComponent implements OnInit {
       if(i < paddress.totalPages) {
         this.getAllAdress(i);
       } else {
-        console.log('All Address Fetched');
+        this.logger.info('All Address Fetched');
       }
     });
   }
@@ -62,30 +73,74 @@ export class AddressListComponent implements OnInit {
     this.util.createLoader()
     .then(loader => {
       loader.present();
-      this.address.customerId = this.customer.reference;
+      this.address.customerId = this.customer.preferred_username;
+      this.logger.info('Address To Be Saved', this.address);
       this.orderCommandResource
       .createAddressUsingPOST(this.address)
       .subscribe(address => {
-        console.log(address);
+        this.logger.info('Address Saved', address);
         this.address = address;
         loader.dismiss();
         this.dismiss(this.address);
-      },err => {
+      }, err => {
         loader.dismiss();
       });
     });
-
   }
 
-  async addNewAddress() {
+  updateAddress() {
+    this.util.createLoader()
+    .then(loader => {
+      loader.present();
+      this.logger.info('Address To Be Updated', this.address);
+      this.orderCommandResource.updateAddressUsingPUT(this.address)
+      .subscribe(data => {
+        this.logger.info('Address Updated ' , this.address);
+        loader.dismiss();
+        this.dismiss(this.address);
+      },
+      err => {
+        loader.dismiss();
+      });
+    });
+  }
+
+  async addNewAddressModal() {
     const modal = await this.modalController.create({
       component: AddressListComponent,
       componentProps: { showAddressPanel: true , customer: this.customer}
     });
     modal.onDidDismiss().then((data: any) => {
       if (data.data !== undefined) {
-        console.log(data.data.name);
+        this.logger.info(data.data.name);
         this.addresses.push(data.data);
+        this.selectedAddress = data.data;
+        this.addressSelected.emit(data.data);
+        this.currentId = data.data.id;
+      }
+    });
+
+    modal.present();
+  }
+
+  async updateAddressModal(paddress: Address) {
+    const modal = await this.modalController.create({
+      component: AddressListComponent,
+      componentProps: {
+        showAddressPanel: true ,
+        address: paddress,
+        type: 'update'
+      }
+    });
+    modal.onDidDismiss().then((data: any) => {
+      if (data.data !== undefined) {
+        this.logger.info(data.data.name);
+        this.addresses.forEach((add,i) => {
+          if(add.id === data.data.id) {
+            this.address[i] = data.data;
+          }
+        })
+        this.selectedAddress = data.data;
         this.addressSelected.emit(data.data);
         this.currentId = data.data.id;
       }
@@ -95,9 +150,11 @@ export class AddressListComponent implements OnInit {
   }
 
   addressChanged(event) {
-    console.log('Address Changed');
+    this.logger.info('Address Changed');
     this.addresses.forEach(a => {
-      if(a.id == event.detail.value) {
+      if (a.id === event.id) {
+        this.selectedAddress = event;
+        this.toggleShowAddressList();
         this.addressSelected.emit(a);
       }
     });
@@ -111,5 +168,9 @@ export class AddressListComponent implements OnInit {
     }
   }
 
-  
+  toggleShowAddressList() {
+    this.showAddressLists = !this.showAddressLists;
+  }
+
+
 }

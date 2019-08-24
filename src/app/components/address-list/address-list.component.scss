@@ -6,3 +6,11 @@ ion-footer {
     position:fixed;
     bottom: 0px;
 }
+
+.addressListContainer {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  z-index: 999;
+  background: white;
+}

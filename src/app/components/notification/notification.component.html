@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-title>
+        <ion-label>Notifications</ion-label>
+      </ion-title>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+          <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-list-header>Accepted Orders</ion-list-header>
+    <app-order-card
+    *ngFor="let t of openTasks"
+    [task]="t"
+    ></app-order-card>
+  </ion-list>
+
+</ion-content>

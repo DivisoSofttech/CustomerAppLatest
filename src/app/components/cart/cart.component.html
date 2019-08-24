@@ -67,8 +67,8 @@
     </ion-row>
     <ion-row *ngIf="totalPrice < store.minAmount">
       <ion-col size="12" text-center>
-        <ion-text text-center
-          >Spend {{ neededCheckOutAmount }} More for delivery</ion-text
+        <ion-text class="cl-red" text-center *ngIf="currentSegment === 'delivery'" 
+          >Spend {{ neededCheckOutAmount  | number: "1.1-2" }} More for delivery</ion-text
         >
       </ion-col>
     </ion-row>
@@ -80,7 +80,6 @@
           >Continue</ion-button
         >
         <ion-button *ngIf="currentSegment==='collection' && collectionOk"
-        [disabled]="neededCheckOutAmount !== 0"
          color="primary" expand="full" (click)="continue('collection')"
         >Continue</ion-button
       >
@@ -116,8 +115,8 @@
     (ionChange)="segmenChanged($event)"
     *ngIf="orderLines.length !== 0"
   >
-    <ion-segment-button *ngIf="collectionOk" value="collection">Collection</ion-segment-button>
-    <ion-segment-button *ngIf="deliveryOk" value="delivery" checked>Delivery</ion-segment-button>
+    <ion-segment-button *ngIf="collectionOk" value="collection" [checked]="collectionOk">Collection</ion-segment-button>
+    <ion-segment-button *ngIf="deliveryOk" value="delivery" [checked]="deliveryOk">Delivery</ion-segment-button>
   </ion-segment>
 
   <div>

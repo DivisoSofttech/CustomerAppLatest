@@ -28,13 +28,13 @@
           </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col size="10">
+          <ion-col size="10" *ngIf="auxilaryLoadComplete" >
             <ion-buttons>
-              <ion-button (click)="remove(i, stockCurrent)" color="medium">
+              <ion-button (click)="remove(0, stockCurrent)" color="medium">
                 <ion-icon name="remove"></ion-icon>
               </ion-button>
-              <ion-button fill="none" disabled>{{ orderCount }}</ion-button>
-              <ion-button (click)="add(i, stockCurrent)" color="medium">
+              <ion-input #orderCountInput class="orderCount" (ionChange)="add(0,stockCurrent)" [placeholder]="orderCount"></ion-input>
+              <ion-button (click)="add(0, stockCurrent)" color="medium">
                 <ion-icon name="add"></ion-icon>
               </ion-button>
             </ion-buttons>
@@ -65,8 +65,29 @@
       </ion-grid>
     </ion-card-content>
   </ion-item>
-  <div *ngIf="showDescription === true && stockCurrent !== null">
-    <!--Change to stockCurrent.product.description-->
-    <p>{{ stockCurrent.product.name }}</p>
+  <div *ngIf="showDescription === true && stockCurrent !== null && comboLineItems.length > 0">
+    <ion-list text-left>
+      <ion-item lines="full" color="light">
+        <ion-list-label margin>Combo's</ion-list-label>
+      </ion-item>
+      <ion-item lines="none" *ngFor="let combo of comboLineItems">
+        <ion-thumbnail class="comboPhoto">
+          <ion-img
+            [src]="
+              'data:' +
+              combo.comboItem.imageContentType +
+              ';base64,' +
+              combo.comboItem.image
+            "
+            class="imageShow"
+          >
+          </ion-img>
+          </ion-thumbnail>
+        <ion-text>
+          <p>{{combo.comboItem.name}}</p>
+          <p *ngIf="combo.quantity !== null">{{combo.quantity}}</p>
+        </ion-text>
+      </ion-item>
+    </ion-list>
   </div>
 </ion-card>

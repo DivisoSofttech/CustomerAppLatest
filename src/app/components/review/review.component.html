@@ -25,7 +25,8 @@
 
   <ion-card *ngFor="let rr of rateReviews;let i = index">
       <ion-item lines="full">
-          <ion-avatar slot="start">
+          <ion-avatar slot="start"
+          *ngIf="customers[i] !== undefined">
             <ion-img
               *ngIf="customers[i].photo === null"
               src="assets/images/user.png"

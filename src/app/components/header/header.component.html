@@ -8,7 +8,7 @@
 
   <!--Set Current Location Button-->
   <ion-buttons
-    slot="end"
+    slot="start"
     *ngIf="showSearchBar === false && showPlaceSearch === false"
   >
     <ion-item lines="none" no-margin>
@@ -21,7 +21,7 @@
 
   <!--SearchBar Toggle Button-->
   <ion-buttons
-    slot="end"
+    slot="start"
     *ngIf="showSearchBar === false && showPlaceSearch === false"
   >
     <ion-button (click)="toggleSearchBar()">
@@ -32,6 +32,8 @@
   <!--SearchBar Restaurant-->
   <ion-buttons *ngIf="showSearchBar === true && showPlaceSearch === false">
     <ion-searchbar
+      #restaurantSearch
+
       showCancelButton
       debounce="1500"
       placeholder="Search"
@@ -40,12 +42,22 @@
     ></ion-searchbar>
   </ion-buttons>
 
+  <ion-buttons slot="end"
+  *ngIf="showSearchBar === false && showPlaceSearch === false"
+  >
+    <ion-button (click)="showNotification()">
+        <ion-icon name="notifications-outline"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+
   <!--SearchBar Restaurant-->
   <ion-buttons *ngIf="showPlaceSearch === true && showSearchBar === false">
     <ion-searchbar
+      #placeSearch
+
       showCancelButton
       debounce="1500"
-      placeholder="Enter Loaction Name"
+      placeholder="Enter Location Name"
       (ionCancel)="togglePlaceSearch()"
       (ionChange)="getPlacePredictions($event)"
     ></ion-searchbar>
@@ -70,7 +82,7 @@
       [store]="store"
     ></app-restaurant-card>
     </ion-row>
-    <ion-row 
+    <ion-row
       *ngIf="storeSearchResults.length === 0"
       class="vertical-align-center"
     >
@@ -81,7 +93,7 @@
 
   </ion-grid>
 
-  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreData($event)">
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
       loadingText="Loading more data..."

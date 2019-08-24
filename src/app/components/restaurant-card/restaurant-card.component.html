@@ -14,6 +14,10 @@
             {{deliveryTypes | arrayFormater:'only'}}</h4>
           <p class="small fnt-sserif cl-grey" *ngIf="deliveryInfos.length > 0">Delivering From
             {{ deliveryInfos[0].startingTime | date:'shortTime' }}</p>
+          <p class="small fnt-sserif cl-grey" *ngIf="store.storeSettings.deliveryCharge !== undefined &&
+          deliveryOk">
+            Delivery Charge {{store.storeSettings.deliveryCharge}}           
+          </p>
           <h5 class="medium fnt-sserif cl-grey" class="no-wrap"
             *ngIf="store.openingTime != undefined && store.closingTime != undefined">
             {{store.openingTime | date: 'shortTime' }} to {{ store.closingTime |  date: 'shortTime'}}</h5>

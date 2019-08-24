@@ -1,10 +1,10 @@
-import { NGXLogger } from 'ngx-logger';
 import { Injectable } from '@angular/core';
 import { Product, StockCurrent, OrderLine, Store, AuxilaryLineItem } from '../api/models';
 import { BehaviorSubject } from 'rxjs';
 import { AlertController, NavController } from '@ionic/angular';
 import { QueryResourceService } from '../api/services';
 import { Util } from './util';
+import { NGXLogger } from 'ngx-logger';
 
 @Injectable({
   providedIn: 'root'
@@ -56,6 +56,7 @@ export class CartService {
     if (this.currentShopId === 0) {
       this.currentShop = shop;
       this.currentShopId = shop.id;
+      this.storeId = this.currentShop.regNo;
       this.getStoreSettings();
       this.getStoreDeliveryType();
     }
@@ -156,8 +157,8 @@ export class CartService {
     let orderTotal = 0;
     let auxilaryTotal = 0;
     this.orderLines.forEach(orderLine => {
-      auxilaryTotal = 0;
       if (orderLine.requiedAuxilaries !== undefined) {
+        auxilaryTotal = 0;
         orderLine.requiedAuxilaries.forEach(auxilaryOrderLine => {
           auxilaryOrderLine.total = auxilaryOrderLine.quantity * auxilaryOrderLine.pricePerUnit;
           auxilaryTotal += auxilaryOrderLine.total;
@@ -167,7 +168,6 @@ export class CartService {
       orderTotal += orderLine.total;
     });
     this.totalPrice = orderTotal;
-    this.logger.info('OrderLines ', this.orderLines);
   }
 
   updateCart() {
@@ -205,15 +205,24 @@ export class CartService {
     if (this.currentShopId === 0) {
       this.currentShop = shop;
       this.currentShopId = shop.id;
+      this.storeId = this.currentShop.regNo;
       this.getStoreSettings();
     }
   }
 
   addOrder(order: OrderLine) {
-
     this.orderLines.push(order);
     console.log(this.orderLines.length);
     this.updateCart();
+  }
+
+  updateOrder(order: OrderLine) {
+    this.orderLines.forEach(ol => {
+      if(ol === order) {
+        ol.requiedAuxilaries = order.requiedAuxilaries;
+        this.updateCart();
+      }
+    });
   }
 
   increase(o , p) {
@@ -240,13 +249,15 @@ export class CartService {
     this.updateCart();
   }
 
-  increaseAuxilary(auxilaryItem, orderLine) {
+  increaseAuxilary(auxilaryItem: AuxilaryLineItem, orderLine: OrderLine) {
 
     this.orderLines.forEach( ol => {
       if (ol === orderLine) {
+        console.log('Tytystytsytsytsyt ' , ol===orderLine);
         ol.requiedAuxilaries.forEach( al => {
           if (auxilaryItem.id === al.productId) {
             al.quantity++;
+            console.error('OrderLine ' , ol);
           }
         });
       }

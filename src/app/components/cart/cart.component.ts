@@ -1,9 +1,9 @@
+import { DeliveryItemDetailsComponent } from './../delivery-item-details/delivery-item-details.component';
 import { Storage } from '@ionic/storage';
 import { Order } from './../../api/models/order';
-import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { AllergyComponent } from './../allergy/allergy.component';
 import { CartService } from './../../services/cart.service';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { OrderLine, Store, StoreSettings } from 'src/app/api/models';
 import { ModalController, NavController } from '@ionic/angular';
 import { Util } from 'src/app/services/util';
@@ -40,8 +40,11 @@ export class CartComponent implements OnInit {
   neededCheckOutAmount = 0;
 
   storeSetting: StoreSettings;
-  deliveryOk: boolean = false;
-  collectionOk: boolean = false;
+  deliveryOk = false;
+  collectionOk = false;
+
+
+  @ViewChild(DeliveryItemDetailsComponent , null) delivery: DeliveryItemDetailsComponent;
 
 
   constructor(
@@ -62,8 +65,10 @@ export class CartComponent implements OnInit {
   getCustomer() {
     this.util.createLoader().then(loader => {
       loader.present();
-      this.storage.get('customer').then(user => {
+      this.storage.get('user').then(user => {
+        console.log('User from storage ' + user);
         this.customer = user;
+        this.orderService.setCustomer(user);
         loader.dismiss();
       })
       .catch(err => {
@@ -73,20 +78,20 @@ export class CartComponent implements OnInit {
   }
 
   checkDeliveryTypeExists() {
-  if(this.cart.currentDeliveryTypes !== undefined) {
-    if(this.cart.currentDeliveryTypes.length === 1) {
-      if(this.cart.currentDeliveryTypes[0].name === 'delivery') {
+  if (this.cart.currentDeliveryTypes !== undefined) {
+    if (this.cart.currentDeliveryTypes.length === 1) {
+      if (this.cart.currentDeliveryTypes[0].name === 'delivery') {
         this.deliveryOk = true;
         this.currentSegment = 'delivery';
-      } else if(this.cart.currentDeliveryTypes[0].name === 'collection') {
+      } else if (this.cart.currentDeliveryTypes[0].name === 'collection') {
         this.collectionOk = true;
         this.currentSegment = 'collection';
       }
     } else {
       this.cart.currentDeliveryTypes.forEach(element => {
-        if(element.name === 'delivery') {
+        if (element.name === 'delivery') {
           this.deliveryOk = true;
-        } else if(element.name === 'collection') {
+        } else if (element.name === 'collection') {
           this.collectionOk = true;
         }
       });
@@ -103,7 +108,7 @@ export class CartComponent implements OnInit {
       this.store = this.cart.currentShop;
 
       this.checkDeliveryTypeExists();
-      if(this.store !== undefined && this.store.minAmount > this.totalPrice) {
+      if (this.store !== undefined && this.store.minAmount > this.totalPrice) {
         this.neededCheckOutAmount = this.store.minAmount - this.totalPrice;
       } else {
         this.neededCheckOutAmount = 0;
@@ -123,29 +128,33 @@ export class CartComponent implements OnInit {
 
   continue(deliveryType) {
     let grandtotal = 0;
-    console.log('Store Id ' , this.cart.currentShopId);
-    this.orderLines.forEach(orderLine => {
-      grandtotal += orderLine.pricePerUnit * orderLine.quantity;
-    });
-    grandtotal = grandtotal + this.storeSetting.deliveryCharge;
+    grandtotal = grandtotal + this.storeSetting.deliveryCharge + this.cart.totalPrice;
     const order: Order = {
       orderLines: this.orderLines,
       grandTotal: grandtotal,
+      email: this.customer.email,
       storeId: this.cart.storeId,
+      customerId: this.customer.preferred_username
     };
 
     this.orderService.setShop(this.store);
-    this.orderService.setCustomer(this.customer);
     this.orderService.setOrder(order);
     this.orderService.setDeliveryType(deliveryType);
-    this.orderService.initiateOrder().subscribe((resource) => {
+    this.orderService.setDeliveryCharge(this.storeSetting.deliveryCharge);
+    this.util.createLoader().then(loader => {
+      loader.present();
+      this.orderService.initiateOrder().subscribe((resource) => {
       this.orderService.setResource(resource);
+      loader.dismiss();
+      console.log('Next task name is ' + resource.nextTaskId + ' Next task name '
+       + resource.nextTaskName + ' selfid ' + resource.selfId + ' order id is ' + resource.orderId);
       this.navController.navigateForward('/checkout');
-    },
-    (err) => {console.log('oops something went wrong'); });
+    });
+    });
   }
 
   segmenChanged(event) {
+    this.delivery.currentDeliveryMode = event.detail.value;
     this.currentSegment = event.detail.value;
   }
 }
