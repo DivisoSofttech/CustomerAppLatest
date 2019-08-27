@@ -17,8 +17,7 @@ export class PaymentSuccessfullInfoComponent implements OnInit {
   constructor(private modalController: ModalController,
               private cartService: CartService,
               private navController: NavController,
-              private orderService: OrderService
-  ) { }
+              private orderService: OrderService  ) { }
 
   dismiss() {
     this.cartService.emptyCart();
