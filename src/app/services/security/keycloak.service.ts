@@ -34,7 +34,24 @@ export class KeycloakService {
       user.enabled = true;
 
       this.keycloakAdmin.users.create(user)
-        .then(res => {
+        .then(async res => {
+          console.log('Create use id sub is ', res);
+          await this.keycloakAdmin.roles.findOneByName({
+             name: 'customer',
+             realm: 'graeshoppe'
+           }).then(async role => {
+             console.log('Role findonebyname ', role);
+             await this.keycloakAdmin.users.addRealmRoleMappings({
+              id: res.id,
+              realm: 'graeshoppe',
+              roles: [
+                {
+                  id: role.id,
+                  name: role.name
+                }
+              ]
+            });
+           });
           success(res);
         })
         .catch(e => {

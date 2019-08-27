@@ -4,28 +4,31 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { OpenTask } from 'src/app/api/models';
 import { ModalController } from '@ionic/angular';
+import { Util } from 'src/app/services/util';
 
 @Component({
   selector: 'app-notification',
   templateUrl: './notification.component.html',
   styleUrls: ['./notification.component.scss'],
 })
-export class NotificationComponent implements OnInit  , OnDestroy{
+export class NotificationComponent implements OnInit  , OnDestroy {
 
   user;
 
   openTasks: OpenTask[] = [];
-
+  showLoading;
   taskSubscription;
 
   constructor(
     private modalController: ModalController,
     private queryResource: QueryResourceService,
     private logger: NGXLogger,
-    private storage: Storage
+    private storage: Storage,
+    private util: Util
   ) { }
 
   ngOnInit() {
+    this.showLoading = true;
     this.getUser();
   }
 
@@ -37,16 +40,22 @@ export class NotificationComponent implements OnInit  , OnDestroy{
     });
   }
 
+  async doRefresh(event) {
+    console.log('Dorefresh is working');
+    await this.getUser();
+    event.target.complete();
+  }
   getTasks() {
-    this.taskSubscription = this.queryResource.getTasksUsingGET({
-      assignee: this.user.preferred_username,
-      name: 'Process Payment'
-    }).subscribe(data => {
-      this.logger.info('Got Tasks ' , data);
-      this.openTasks = data;
-    },
-    err => {
-    });
+      this.taskSubscription = this.queryResource.getTasksUsingGET({
+        assignee: this.user.preferred_username,
+        name: 'Process Payment'
+      }).subscribe(data => {
+        //this.showLoading = false;
+        this.logger.info('Got Tasks ' , data);
+        this.openTasks = data;
+      },
+      err => {
+      });
   }
 
   dismiss() {

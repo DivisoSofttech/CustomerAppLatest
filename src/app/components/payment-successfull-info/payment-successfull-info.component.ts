@@ -12,7 +12,7 @@ export class PaymentSuccessfullInfoComponent implements OnInit {
 
   total;
   method;
-
+  ref;
 
   constructor(private modalController: ModalController,
               private cartService: CartService,
@@ -29,5 +29,6 @@ export class PaymentSuccessfullInfoComponent implements OnInit {
   ngOnInit() {
     this.total = this.orderService.order.grandTotal;
     this.method = this.orderService.paymentMethod;
+    this.ref = this.orderService.order.orderId;
   }
 }
