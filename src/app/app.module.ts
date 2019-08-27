@@ -41,7 +41,6 @@ import { LocationStrategy, HashLocationStrategy, Location } from '@angular/commo
     HttpClientModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-
     // Extra Modules
     ImageCropperModule,
     ConfigsModule,

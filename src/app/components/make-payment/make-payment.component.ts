@@ -3,7 +3,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { OrderLine } from 'src/app/api/models';
 import { ModalController, NavController, ToastController, Platform } from '@ionic/angular';
 import { ProcessPaymentComponent } from '../process-payment/process-payment.component';
-
+import { PaymentCommandResourceService } from 'src/app/api/services';
 
 @Component({
   selector: 'app-make-payment',
@@ -24,13 +24,16 @@ constructor(
     private modalController: ModalController,
     private navController: NavController,
     private orderService: OrderService,
-    private platform: Platform
+    private platform: Platform,
+    private paymentService: PaymentCommandResourceService
       ) { }
 
 dismiss() {
     this.orderService.paymentMethod = this.paymentMethod;
     this.modalController.dismiss();
   }
+
+
 
   async presentModal() {
     this.dismiss();
