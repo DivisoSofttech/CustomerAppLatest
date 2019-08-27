@@ -105,7 +105,8 @@
       "cordova-plugin-geolocation": {},
       "cordova-plugin-googlemaps": {},
       "com.paypal.cordova.mobilesdk": {},
-      "com.razorpay.cordova": {}
+      "com.razorpay.cordova": {},
+      "cordova-plugin-inappbrowser": {}
     },
     "platforms": [
       "browser"
