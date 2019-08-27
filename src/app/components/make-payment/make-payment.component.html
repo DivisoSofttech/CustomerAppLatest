@@ -7,7 +7,6 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
   <ion-grid>
     <ion-row class="ion-margin-vertical">
@@ -18,48 +17,21 @@
         </ion-text>
       </ion-col>
     </ion-row>
+    <ion-row>
+    </ion-row>
   </ion-grid>
-
 
   <ion-list lines="none">
   <ion-radio-group [(ngModel)]="paymentMethod">
     <ion-list-header>
       <ion-label>Choose A Payment Method</ion-label>
     </ion-list-header>
-
-    <ion-item>
-      <ion-label>Pay with Paypal</ion-label>
-      <ion-radio slot="start" value="paypal"></ion-radio>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>Card</ion-label>
-      <ion-radio slot="start" value="card"></ion-radio>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>Netbanking</ion-label>
-      <ion-radio slot="start" value="netbanking"></ion-radio>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>Wallet</ion-label>
-      <ion-radio slot="start" value="wallet"></ion-radio>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>UPI</ion-label>
-      <ion-radio slot="start" value="upi"></ion-radio>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>Cash On Delivery</ion-label>
-      <ion-radio slot="start" value="cod"></ion-radio>
+    <ion-item *ngFor="let paymentOption of paymentOptions" >
+      <ion-label>{{paymentOption.name}}</ion-label>
+      <ion-radio slot="start" value="{{paymentOption.value}}"></ion-radio>
     </ion-item>
   </ion-radio-group>
-
 </ion-list>
-
 <ion-row>
   <ion-col>
     <ion-button expand="block" 
@@ -70,21 +42,5 @@
 <ion-footer>
   <app-footer></app-footer>
 </ion-footer>
-  <!-- <ion-button expand="block" margin-bottom text-center color="light"
-    class="ion-padding-vertical" (click)="payViaCashOnDelivery()">
-    <ion-icon name="cash" slot="icon-only" margin ></ion-icon>
-    <p>COD</p>
-  </ion-button>
-  <ion-button expand="block" margin-bottom text-center color="light"
-    class="ion-padding-vertical" (click)="payWithPaypal()">
-    <ion-icon name="globe" slot="icon-only" margin></ion-icon>
-    <p>Pay With Paypal</p>
-  </ion-button>
-
-   <ion-button expand="full" margin-top text-center color="light"
-    class="ion-padding-vertical" (click)="payWithRazorPay()">
-    <ion-icon name="card" slot="icon-only" margin></ion-icon>
-    <p>Pay With Razorpay</p>
-  </ion-button>  -->
 
 </ion-content>

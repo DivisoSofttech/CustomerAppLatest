@@ -2,7 +2,7 @@ import { CartService } from 'src/app/services/cart.service';
 import { Injectable } from '@angular/core';
 import { OrderCommandResourceService, OfferCommandResourceService } from '../api/services';
 
-import { CommandResource, Order, DeliveryInfo, Address } from '../api/models';
+import { CommandResource, Order, DeliveryInfo, Address, Offer } from '../api/models';
 
 import { Storage } from '@ionic/storage';
 import { NGXLogger } from 'ngx-logger';
@@ -16,21 +16,30 @@ export class OrderService {
   resource: CommandResource;
   deliveryInfo: DeliveryInfo = {};
   customer;
-
+  paymentMethod;
   shop;
-
+  offer: Offer;
   constructor(
     private orderCommandService: OrderCommandResourceService,
     private storage: Storage,
     private cart: CartService,
     private logger: NGXLogger,
     private offerCommandService: OfferCommandResourceService
-  ) { }
-
-   initiateOrder() {
-      return this.orderCommandService.initiateOrderUsingPOST(this.order);
+  ) {
+    this.getCustomer();
   }
 
+   initiateOrder() {
+     if ( this.offer !== undefined) {
+       this.order.appliedOffers.push(this.offer);
+     }
+     return this.orderCommandService.initiateOrderUsingPOST(this.order);
+  }
+
+  getCustomer() {
+    this.customer = this.storage.get('user');
+    console.log('User from storage is ', this.customer);
+  }
   collectDeliveryInfo() {
     console.log('DeliveryInfo is' + this.deliveryInfo);
     return this.orderCommandService.collectDeliveryDetailsUsingPOST(
@@ -51,6 +60,10 @@ export class OrderService {
     this.deliveryInfo.deliveryType = deliveryType;
   }
 
+  setOffer(offer: Offer) {
+    this.offer = offer;
+  }
+
   setDeliveryCharge(deliveryCharge) {
     this.deliveryInfo.deliveryCharge = deliveryCharge;
   }
@@ -60,12 +73,6 @@ export class OrderService {
 
   setOrder(order) {
     this.order = order;
-    this.storage.get('user')
-    .then(data => {
-      // Store RegNo or Id?
-      this.order.storeId = this.shop.regNo;
-      this.order.email = data.email;
-    });
   }
 
   setShop(shop) {

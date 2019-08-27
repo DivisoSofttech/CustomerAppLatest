@@ -28,7 +28,7 @@
           <b>Store Name : </b>{{ stores[order.storeId].name }}
         </p>
         <h3><b>Order id :</b> {{ order.orderId }}</h3>
-      </ion-label>
+      </ion-label><br>
       <ion-button *ngIf="order.status.name == 'approved'" (click)="confirmOrder(order)">Confirm</ion-button>
     </ion-item>
   </ion-list>
@@ -41,6 +41,7 @@
   >
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
+
   <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
     <ion-refresher-content
       pullingIcon="arrow-dropdown"

@@ -132,8 +132,8 @@ import { OrderCardComponent } from './order-card/order-card.component';
 
   entryComponents: [
     ImageSelectorComponent,
-    MakePaymentComponent,
     ProcessPaymentComponent,
+    MakePaymentComponent,
     PaymentSuccessfullInfoComponent,
     RestaurantCardComponent,
     RatingComponent,

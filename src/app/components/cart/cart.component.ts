@@ -136,20 +136,21 @@ export class CartComponent implements OnInit {
       storeId: this.cart.storeId,
       customerId: this.customer.preferred_username
     };
-
+    console.log('Order is in continue ', order);
     this.orderService.setShop(this.store);
     this.orderService.setOrder(order);
     this.orderService.setDeliveryType(deliveryType);
     this.orderService.setDeliveryCharge(this.storeSetting.deliveryCharge);
     this.util.createLoader().then(loader => {
       loader.present();
-      this.orderService.initiateOrder().subscribe((resource) => {
+      this.orderService.initiateOrder().subscribe(resource => {
       this.orderService.setResource(resource);
       loader.dismiss();
+      this.orderService.order.orderId = resource.orderId;
       console.log('Next task name is ' + resource.nextTaskId + ' Next task name '
        + resource.nextTaskName + ' selfid ' + resource.selfId + ' order id is ' + resource.orderId);
       this.navController.navigateForward('/checkout');
-    });
+    }, (error) => {console.log('An error has occured while initiating the order ', error); loader.dismiss(); } );
     });
   }
 

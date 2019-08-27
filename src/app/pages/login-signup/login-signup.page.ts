@@ -44,8 +44,11 @@ export class LoginSignupPage implements OnInit {
         this.keycloakService.authenticate({ username: this.username, password: this.password },
           () => {
             loader.dismiss();
-            console.log('slsklkslkks');
+            this.util.createToast('Logged in successfully');
             this.createUserIfNotExists(this.username);
+          }, () => {
+            loader.dismiss();
+            this.util.createToast('You are not authorized / Please signup');
           },
           () => {
             loader.dismiss();

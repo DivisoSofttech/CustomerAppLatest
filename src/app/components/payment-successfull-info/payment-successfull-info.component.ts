@@ -1,3 +1,4 @@
+import { OrderService } from './../../services/order.service';
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
 import { CartService } from 'src/app/services/cart.service';
@@ -16,13 +17,17 @@ export class PaymentSuccessfullInfoComponent implements OnInit {
   constructor(private modalController: ModalController,
               private cartService: CartService,
               private navController: NavController,
+              private orderService: OrderService
   ) { }
 
   dismiss() {
     this.cartService.emptyCart();
-    this.navController.navigateBack('/tabs/home');
+    this.navController.navigateBack('/restaurant');
     this.modalController.dismiss();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.total = this.orderService.order.grandTotal;
+    this.method = this.orderService.paymentMethod;
+  }
 }

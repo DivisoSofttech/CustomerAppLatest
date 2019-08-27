@@ -7,6 +7,7 @@ import { NGXLogger } from 'ngx-logger';
 import { MapComponent } from 'src/app/components/map/map.component';
 import { FooterComponent } from 'src/app/components/footer/footer.component';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
+import { MakePaymentComponent } from 'src/app/components/make-payment/make-payment.component';
 
 @Component({
   selector: 'app-restaurant',
@@ -20,6 +21,8 @@ export class RestaurantPage implements OnInit {
   showFilters = false;
 
   page = 0;
+
+  
 
   stores: StoreDTO[] = [];
 
@@ -37,6 +40,12 @@ export class RestaurantPage implements OnInit {
     private modalController: ModalController
   ) {}
 
+  async presentmakePayment() {
+    const modal = await this.modalController.create({
+      component: MakePaymentComponent
+    });
+    return await modal.present();
+  }
   ngOnInit() {
     this.getStores();
   }

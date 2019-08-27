@@ -97,15 +97,16 @@
     <ion-label text-center> </ion-label>
     <ion-label text-end>{{ storeSetting.deliveryCharge | number: "1.1-2" }}</ion-label>
   </ion-item>
-  <ion-item lines="full" *ngIf="orders.length > 0">
+  <ion-item *ngIf="offer" lines="full">
     <ion-avatar slot="start">
       <ion-img src="/assets/svg/discount.svg"></ion-img>
     </ion-avatar>
     <ion-text word-wrap text-left no-margin>
       <p>
-        <strong>20% discount on your every 10th order</strong>
+        <strong> 20% </strong>discount on <ion-badge>{{offer.promocode}}</ion-badge>
       </p>
     </ion-text>
+     <ion-text text-end>-{{offer.orderDiscountAmount}}</ion-text> 
   </ion-item>
   <ion-item *ngIf="storeSetting !== undefined" lines="full">
 

@@ -21,6 +21,7 @@ import { OrderRequest } from '../models/order-request';
   providedIn: 'root',
 })
 class PaymentCommandResourceService extends __BaseService {
+  static readonly createClientAuthTokenUsingGETPath = '/api/command/clientToken';
   static readonly executePaymentUsingPOSTPath = '/api/command/paypal/execute/{paymentId}';
   static readonly initiatePaymentUsingPOSTPath = '/api/command/paypal/initiate';
   static readonly processPaymentUsingPOSTPath = '/api/command/processPayment/{status}/{taskId}';
@@ -31,6 +32,39 @@ class PaymentCommandResourceService extends __BaseService {
     http: HttpClient
   ) {
     super(config, http);
+  }
+
+  /**
+   * @return OK
+   */
+  createClientAuthTokenUsingGETResponse(): __Observable<__StrictHttpResponse<string>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/command/clientToken`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'text'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<string>;
+      })
+    );
+  }
+  /**
+   * @return OK
+   */
+  createClientAuthTokenUsingGET(): __Observable<string> {
+    return this.createClientAuthTokenUsingGETResponse().pipe(
+      __map(_r => _r.body as string)
+    );
   }
 
   /**

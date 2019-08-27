@@ -77,7 +77,7 @@ export class CheckoutComponent implements OnInit {
         } else {
           this.presentmakePayment();
         }
-      }, (err) => { console.log('oops something went wrong while collecting deliveryinfo'); });
+      }, (err) => { console.log('oops something went wrong while collecting deliveryinfo'); loader.dismiss(); });
     });
   }
 
