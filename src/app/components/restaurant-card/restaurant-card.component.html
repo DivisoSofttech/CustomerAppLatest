@@ -16,7 +16,8 @@
             {{ deliveryInfos[0].startingTime | date:'shortTime' }}</p>
           <p class="small fnt-sserif cl-grey" *ngIf="store.storeSettings.deliveryCharge !== undefined &&
           deliveryOk">
-            Delivery Charge {{store.storeSettings.deliveryCharge}}           
+            <span *ngIf="store.storeSettings.deliveryCharge > 0"> Delivery Charge {{store.storeSettings.deliveryCharge}}</span>   
+            <span *ngIf="store.storeSettings.deliveryCharge === 0"> Free delivery</span>   
           </p>
           <h5 class="medium fnt-sserif cl-grey" class="no-wrap"
             *ngIf="store.openingTime != undefined && store.closingTime != undefined">

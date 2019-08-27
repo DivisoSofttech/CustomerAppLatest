@@ -50,8 +50,8 @@ export class AddressListComponent implements OnInit {
       page: i
     })
     .subscribe(paddress => {
-      if(paddress.content.length > 0) {
-        if(i === 0) {
+      if (paddress.content.length > 0) {
+        if (i === 0) {
           this.currentId = paddress.content[0].id;
           this.selectedAddress = paddress.content[0];
           this.addressSelected.emit(paddress.content[0]);
@@ -135,11 +135,11 @@ export class AddressListComponent implements OnInit {
     modal.onDidDismiss().then((data: any) => {
       if (data.data !== undefined) {
         this.logger.info(data.data.name);
-        this.addresses.forEach((add,i) => {
+        this.addresses.forEach((add , i) => {
           if(add.id === data.data.id) {
             this.address[i] = data.data;
           }
-        })
+        });
         this.selectedAddress = data.data;
         this.addressSelected.emit(data.data);
         this.currentId = data.data.id;

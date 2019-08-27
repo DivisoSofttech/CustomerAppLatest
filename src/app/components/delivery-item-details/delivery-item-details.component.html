@@ -95,7 +95,7 @@
     *ngIf="storeSetting !== undefined && orders.length > 0 && currentDeliveryMode !== 'collection'">
     <ion-label text-start>Delivery charge</ion-label>
     <ion-label text-center> </ion-label>
-    <ion-label text-end>{{ storeSetting.deliveryCharge }}</ion-label>
+    <ion-label text-end>{{ storeSetting.deliveryCharge | number: "1.1-2" }}</ion-label>
   </ion-item>
   <ion-item lines="full" *ngIf="orders.length > 0">
     <ion-avatar slot="start">
@@ -115,12 +115,12 @@
     <ion-label text-end>
       <h3 *ngIf="currentDeliveryMode === 'delivery'">
         <strong>
-          {{ totalPrice + storeSetting.deliveryCharge }}
+          {{ totalPrice + storeSetting.deliveryCharge | number: "1.1-2" }}
         </strong>
       </h3>
       <h3 *ngIf="currentDeliveryMode === 'collection'">
         <strong>
-          {{ totalPrice }}
+          {{ totalPrice | number: "1.1-2" }}
         </strong>
       </h3>
     </ion-label>

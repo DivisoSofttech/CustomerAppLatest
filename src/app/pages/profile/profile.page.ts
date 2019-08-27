@@ -3,7 +3,7 @@ import { ContactDTO } from 'src/app/api/models';
 import { CustomerDTO } from 'src/app/api/models';
 import { Storage } from '@ionic/storage';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonSlides } from '@ionic/angular';
+import { IonSlides, AlertController } from '@ionic/angular';
 import { QueryResourceService } from 'src/app/api/services';
 import { NGXLogger } from 'ngx-logger';
 import { FooterComponent } from 'src/app/components/footer/footer.component';
@@ -32,7 +32,8 @@ export class ProfilePage implements OnInit {
     private storage: Storage,
     private queryResource: QueryResourceService,
     private logger: NGXLogger,
-    private keycloak: KeycloakService
+    private keycloak: KeycloakService,
+    private alertController: AlertController
   ) { }
 
   ngOnInit() {
@@ -84,8 +85,27 @@ export class ProfilePage implements OnInit {
     this.footer.setcurrentRoute('profile');
   }
 
-  logout() {
-    this.keycloak.logout();
+  async logout() {
+    const alert = await this.alertController.create({
+      header: 'Alert',
+      message: 'Logout ',
+      buttons: [ {
+        text: 'Cancel',
+        role: 'cancel',
+        cssClass: 'secondary',
+        handler: (blah) => {
+          console.log('Confirm Cancel: blah');
+          this.alertController.dismiss();
+        }
+      }, {
+        text: 'Okay',
+        handler: () => {
+          this.keycloak.logout();
+        }
+      }]
+    });
+
+    await alert.present();
   }
 
 }
