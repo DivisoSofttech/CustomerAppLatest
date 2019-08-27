@@ -1,44 +1,51 @@
 <div *ngIf="type === 'restaurant'">
-  <ion-card no-padding *ngFor="let store of [1, 2, 3, 4, 5]">
-    <ion-card-header>
-      <ion-item lines="full">
-        <ion-thumbnail slot="start">
-          <ion-skeleton-text animated></ion-skeleton-text>
-        </ion-thumbnail>
-        <ion-label>
-          <ion-text word-wrap text-wrap class="category">
-            <ion-skeleton-text animated></ion-skeleton-text>
-            <ion-skeleton-text animated></ion-skeleton-text>
-            <ion-skeleton-text animated></ion-skeleton-text>
-            <ion-skeleton-text animated></ion-skeleton-text>
-          </ion-text>
-        </ion-label>
-      </ion-item>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-grid no-padding>
-        <ion-row>
-          <ion-col size="7" text-center no-padding>
-            <rating [rate]="'5'" [readonly]="true"></rating>
-          </ion-col>
-          <ion-col size="3" text-center no-padding>
-            <ion-buttons>
-              <ion-button fill="none" disabled>
-                <ion-skeleton-text animated></ion-skeleton-text>
-              </ion-button>
-            </ion-buttons>
-          </ion-col>
-          <ion-col size="2" text-center no-padding>
-            <ion-buttons justify-content-center>
-              <ion-button fill="none">
-                <ion-skeleton-text animated></ion-skeleton-text>
-              </ion-button>
-            </ion-buttons>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-card-content>
-  </ion-card>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="6" size-lg="6" *ngFor="let store of [1, 2, 3, 4, 5]">
+          <ion-card no-padding >
+              <ion-card-header>
+                <ion-item lines="full">
+                  <ion-thumbnail slot="start">
+                    <ion-skeleton-text animated></ion-skeleton-text>
+                  </ion-thumbnail>
+                  <ion-label>
+                    <ion-text word-wrap text-wrap class="category">
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                    </ion-text>
+                  </ion-label>
+                </ion-item>
+              </ion-card-header>
+              <ion-card-content>
+                <ion-grid no-padding>
+                  <ion-row>
+                    <ion-col size="7" text-center no-padding>
+                      <rating [rate]="'5'" [readonly]="true"></rating>
+                    </ion-col>
+                    <ion-col size="3" text-center no-padding>
+                      <ion-buttons>
+                        <ion-button fill="none" disabled>
+                          <ion-skeleton-text animated></ion-skeleton-text>
+                        </ion-button>
+                      </ion-buttons>
+                    </ion-col>
+                    <ion-col size="2" text-center no-padding>
+                      <ion-buttons justify-content-center>
+                        <ion-button fill="none">
+                          <ion-skeleton-text animated></ion-skeleton-text>
+                        </ion-button>
+                      </ion-buttons>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-card-content>
+            </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
 </div>
 
 <div *ngIf="type === 'product'">

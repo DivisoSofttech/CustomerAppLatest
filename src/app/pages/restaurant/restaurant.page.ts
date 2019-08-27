@@ -87,6 +87,7 @@ export class RestaurantPage implements OnInit {
     this.logger.info('Load More Stores if exists');
     ++this.page;
     this.filter.getStores(this.page, (totalElements, totalPages, stores) => {
+      event.target.complete();
       this.logger.info('Got Stores ' , stores);
       if (this.page === totalPages) {
         this.toggleInfiniteScroll();

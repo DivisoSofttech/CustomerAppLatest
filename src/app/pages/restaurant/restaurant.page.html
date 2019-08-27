@@ -2,23 +2,33 @@
   <app-header (placeChanged)="updatedLocation($event)"></app-header>
 </ion-header>
 <ion-content>
+
+    <app-map></app-map>
+    <app-banner></app-banner>
+
+  <ion-grid no-padding no-margin>
+    <ion-row no-padding no-margin>
+      <ion-col size="12">
+              <div class="highlightText">
+                <ion-label>
+                  <h2>What's Nearby!</h2>
+                </ion-label>
+              </div>
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="12" size-md="6" size-lg="6" *ngFor="let store of stores"
+                  >
+                      <app-restaurant-card
+                      [store]="store"
+                    ></app-restaurant-card>      
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+              <app-loading *ngIf="showLoading === true" [type]="'restaurant'"></app-loading>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
   
-  <app-map></app-map>
-  <app-banner></app-banner>
-
-  <ion-list>
-    <div class="highlightText">
-      <ion-label>
-        <h2>What's Nearby!</h2>
-      </ion-label>
-    </div>
-    <app-restaurant-card
-      *ngFor="let store of stores"
-      [store]="store"
-    ></app-restaurant-card>
-  </ion-list>
-
-  <app-loading *ngIf="showLoading === true" [type]="'restaurant'"></app-loading>
 
   <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreStores($event)">
     <ion-infinite-scroll-content
