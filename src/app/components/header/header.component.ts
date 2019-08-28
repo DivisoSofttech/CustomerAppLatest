@@ -38,6 +38,8 @@ export class HeaderComponent implements OnInit {
 
   pageCount = 0;
 
+  loader: HTMLIonLoadingElement;
+
   @ViewChild(IonInfiniteScroll, null) infiniteScroll: IonInfiniteScroll;
   @ViewChild('restaurantSearch' , null)  restaurantSearch: IonSearchbar;
   @ViewChild('placeSearch' , null)  placeSearch: IonSearchbar;
@@ -120,6 +122,10 @@ export class HeaderComponent implements OnInit {
   }
 
   getSearchResults(i) {
+    this.util.createLoader()
+    .then(loader => {
+      this.loader = loader;
+      this.loader.present();
     this.queryResource
       .headerUsingGET({
         searchTerm: this.searchTerm,
@@ -138,7 +144,9 @@ export class HeaderComponent implements OnInit {
             this.storeSearchResults.push(s);
           });
         }
+        this.loader.dismiss();
       });
+    });
   }
 
   search(event) {

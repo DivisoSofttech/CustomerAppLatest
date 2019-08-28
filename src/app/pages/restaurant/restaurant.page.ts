@@ -70,7 +70,7 @@ export class RestaurantPage implements OnInit {
           this.logger.info('Enabling Infinite Scroll');
           this.toggleInfiniteScroll();
         }
-
+        this.stores = [];
         stores.forEach(s => {
           this.stores.push(s);
         });
