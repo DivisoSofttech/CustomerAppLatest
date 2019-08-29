@@ -156,3 +156,10 @@ ion-menu-button {
     //CSS
     
   }
+
+
+  .split-pane-ios.split-pane-visible>.split-pane-side,
+  .split-pane-md.split-pane-visible>.split-pane-side{
+    max-width: 325px;
+    min-width: 325px;
+  }
