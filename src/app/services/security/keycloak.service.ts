@@ -91,8 +91,8 @@ export class KeycloakService {
     });
   }
 
-  authenticate(credentials: any, success: any, failure: any, err: any) {
-    this.oauthService.fetchTokenUsingPasswordFlowAndLoadUserProfile(
+  async authenticate(credentials: any, success: any, failure: any, err: any) {
+    await this.oauthService.fetchTokenUsingPasswordFlowAndLoadUserProfile(
       credentials.username,
       credentials.password,
       new HttpHeaders()
