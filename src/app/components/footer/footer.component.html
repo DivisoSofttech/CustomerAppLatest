@@ -3,9 +3,9 @@
         <ion-icon name="list"></ion-icon>
     </ion-segment-button>
   <ion-segment-button value="basket" (click)="goTo('/basket')">
-    <span color="primary"  style="vertical-align:top;" item-right>
-      <ion-badge> <strong>{{orderCount}}</strong></ion-badge>
+    <span color="primary"  item-right>
       <ion-icon name="basket"></ion-icon>
+      <ion-badge> <strong>{{orderCount}}</strong></ion-badge>
     </span>
   </ion-segment-button>
   <ion-segment-button value="profile" (click)="goTo('/profile')">

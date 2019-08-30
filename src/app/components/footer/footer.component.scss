@@ -1,15 +1,23 @@
 ion-badge {
-    position: absolute;
-    left: 55px;
+    display: inline-grid;
     border-radius: 50%;
     width: 25px;
     height: 25px;
     text-align: center;
+    -webkit-box-pack: center;
     justify-content: center;
-    display: flex;
+    -webkit-box-align: center;
     align-items: center;
+    position: relative;
+    left: -10px;
 }
 ion-icon[name='basket'] {
     width: 25px;
-height: 25px;
+    height: 25px;
+}
+
+span {
+    vertical-align: top;
+text-align: center;
+display: flex;
 }

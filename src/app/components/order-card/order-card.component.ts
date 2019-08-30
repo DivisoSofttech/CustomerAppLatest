@@ -1,6 +1,9 @@
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { OpenTask } from 'src/app/api/models';
+import { OpenTask, CommandResource } from 'src/app/api/models';
+import { MakePaymentComponent } from '../make-payment/make-payment.component';
+import { ModalController } from '@ionic/angular';
+import { OrderService } from 'src/app/services/order.service';
 
 @Component({
   selector: 'app-order-card',
@@ -18,11 +21,32 @@ export class OrderCardComponent implements OnInit , OnDestroy {
   storesSubscription;
 
   constructor(
-    private queryResource: QueryResourceService
+    private queryResource: QueryResourceService,
+    private modalController: ModalController,
+    private orderService: OrderService
   ) {}
 
   ngOnInit() {
     this.getOrder();
+  }
+
+  continue() {
+    if (this.task.taskName === 'Process Payment') {
+      this.orderService.order = this.order;
+      const resource: CommandResource = {
+        nextTaskId: this.task.taskId,
+        nextTaskName: this.task.taskName
+      };
+      this.orderService.resource = resource;
+      this.presentmakePayment();
+    } 
+  }
+
+  async presentmakePayment() {
+    const modal = await this.modalController.create({
+      component: MakePaymentComponent
+    });
+    return await modal.present();
   }
 
   getOrder() {

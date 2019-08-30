@@ -1,7 +1,7 @@
 <ion-card no-padding id="{{ stockCurrent.product.id }}">
   <div class="ribbon">
-    <span class="ribbon1">
-      <span>50% off</span>
+    <span *ngIf="discount!=null" class="ribbon1">
+      <span>{{discount.rate}}% off</span>
     </span>
   </div>
   <ion-item lines="none">

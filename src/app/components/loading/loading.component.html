@@ -150,6 +150,24 @@
   </ion-item>
 </div>
 
+<div *ngIf="type==='notification'">
+    <ion-card padding *ngFor="let notifi of [1, 2, 3, 4, 5]">
+        <ion-item lines="none">
+          <ion-thumbnail slot="start">
+                <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-thumbnail>
+          <ion-text class="notificaton-iontext">
+            <ion-skeleton-text animated></ion-skeleton-text>
+            <ion-skeleton-text animated></ion-skeleton-text>
+            <ion-skeleton-text animated></ion-skeleton-text>
+                <ion-skeleton-text animated></ion-skeleton-text>
+                <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-text>
+        </ion-item>
+        <ion-card-footer style="background: grey">
+        </ion-card-footer>
+      </ion-card>
+</div>
 
 <div *ngIf="type === 'profile'">
   <ion-card>

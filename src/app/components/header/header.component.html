@@ -21,7 +21,7 @@
 
   <!--SearchBar Toggle Button-->
   <ion-buttons
-    slot="start"
+    slot="end"
     *ngIf="showSearchBar === false && showPlaceSearch === false"
   >
     <ion-button (click)="toggleSearchBar()">
@@ -30,7 +30,7 @@
   </ion-buttons>
 
   <!--SearchBar Restaurant-->
-  <ion-buttons *ngIf="showSearchBar === true && showPlaceSearch === false">
+  <ion-buttons [ngClass]="(showSearchBar === true && showPlaceSearch === false)?'':'hidden'">
     <ion-searchbar
       #restaurantSearch
 
@@ -51,7 +51,7 @@
   </ion-buttons>
 
   <!--SearchBar Restaurant-->
-  <ion-buttons *ngIf="showPlaceSearch === true && showSearchBar === false">
+  <ion-buttons [ngClass]="(showPlaceSearch === true && showSearchBar === false)?'':'hidden'">
     <ion-searchbar
       #placeSearch
 

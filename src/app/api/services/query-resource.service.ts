@@ -13,6 +13,7 @@ import { ContactDTO } from '../models/contact-dto';
 import { CustomerDTO } from '../models/customer-dto';
 import { PageOfType } from '../models/page-of-type';
 import { PageOfDeliveryInfo } from '../models/page-of-delivery-info';
+import { Discount } from '../models/discount';
 import { PageOfCategory } from '../models/page-of-category';
 import { PageOfCustomer } from '../models/page-of-customer';
 import { Entry } from '../models/entry';
@@ -52,6 +53,7 @@ class QueryResourceService extends __BaseService {
   static readonly findCustomerByIdUsingGETPath = '/api/query/customers/{id}';
   static readonly findAllDeliveryTypesByStoreIdUsingGETPath = '/api/query/deliveryTypes/{storeId}';
   static readonly findDeliveryInfoByStoreIdUsingGETPath = '/api/query/deliveryinfoByStoreId/{storeId}';
+  static readonly findDiscountByProductIdUsingGETPath = '/api/query/discount-productId/{productId}';
   static readonly exportOrderDocketUsingGETPath = '/api/query/exportDocket/{orderMasterId}';
   static readonly findAllCategoriesUsingGETPath = '/api/query/findAllCategories/{iDPcode}';
   static readonly findAllCustomersWithoutSearchUsingGETPath = '/api/query/findAllCustomers';
@@ -380,6 +382,42 @@ class QueryResourceService extends __BaseService {
   findDeliveryInfoByStoreIdUsingGET(storeId: string): __Observable<PageOfDeliveryInfo> {
     return this.findDeliveryInfoByStoreIdUsingGETResponse(storeId).pipe(
       __map(_r => _r.body as PageOfDeliveryInfo)
+    );
+  }
+
+  /**
+   * @param productId productId
+   * @return OK
+   */
+  findDiscountByProductIdUsingGETResponse(productId: number): __Observable<__StrictHttpResponse<Discount>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/discount-productId/${productId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<Discount>;
+      })
+    );
+  }
+  /**
+   * @param productId productId
+   * @return OK
+   */
+  findDiscountByProductIdUsingGET(productId: number): __Observable<Discount> {
+    return this.findDiscountByProductIdUsingGETResponse(productId).pipe(
+      __map(_r => _r.body as Discount)
     );
   }
 

@@ -8,9 +8,9 @@ ion-card {
   margin: 0px;
 }
 ion-card-header {
-  padding: 2vw 0vw;
-  min-height: 180px;
-  max-height: 180px;
+  padding: 5px;
+  min-height: 160px;
+  max-height: 160px;
 }
 
 .overlay {
@@ -54,6 +54,43 @@ h2 {
   color: grey;
 }
 
-h4 {
+h4 , p{
   margin: 0px;
 }
+
+
+.ribbon6 {
+  width: 130px;
+  height: 20px;
+  line-height: 18px;
+  position: absolute;
+  top: 11px;
+  right: -44px;
+  z-index: 2;
+  overflow: hidden;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+  color: beige;
+  border: 1px dashed;
+  box-shadow: 0 0 0 7px #f04141, 0px 21px 5px -18px rgba(0, 0, 0, 0.6);
+  background: #f04141;
+  text-align: center;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  ion-card-header {
+    padding: 2vw 0vw;
+    min-height: 140px;
+    max-height: 140px;
+  }
+} 
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  ion-card-header {
+    padding: 2vw 0vw;
+    min-height: 140px;
+    max-height: 140px;
+  }
+} 

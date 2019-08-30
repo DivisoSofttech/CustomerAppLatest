@@ -1,6 +1,7 @@
 <!--Normal View-->
 
 <ion-card no-padding *ngIf="viewType === 'normal'">
+  <span class="ribbon6">Closed</span>
   <ion-card-header (click)="showHotelMenu(store.regNo)">
     <ion-item lines="none">
       <ion-img no-margin slot="start" *ngIf="store.image" slot="start"
@@ -75,7 +76,7 @@
     <ion-buttons>
       <rating [rate]="store.totalRating" [readonly]="true"></rating>
       <ion-button *ngIf="rateReview" disabled>{{
-          "(" + rateReview.length + ")"
+          "(" + rateReview + ")"
         }}</ion-button>
       <ion-button *ngIf="!rateReview" disabled>(0)</ion-button>
     </ion-buttons>

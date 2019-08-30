@@ -13,6 +13,8 @@ import { PaymentInitiateRequest } from '../models/payment-initiate-request';
 import { PaymentDTO } from '../models/payment-dto';
 import { OrderResponse } from '../models/order-response';
 import { OrderRequest } from '../models/order-request';
+import { PaymentTransactionResponse } from '../models/payment-transaction-response';
+import { PaymentTransaction } from '../models/payment-transaction';
 
 /**
  * Payment Command Resource
@@ -26,6 +28,7 @@ class PaymentCommandResourceService extends __BaseService {
   static readonly initiatePaymentUsingPOSTPath = '/api/command/paypal/initiate';
   static readonly processPaymentUsingPOSTPath = '/api/command/processPayment/{status}/{taskId}';
   static readonly createOrderUsingPOSTPath = '/api/command/razorpay/order';
+  static readonly createTransactionUsingPOSTPath = '/api/command/transaction';
 
   constructor(
     config: __Configuration,
@@ -231,6 +234,42 @@ class PaymentCommandResourceService extends __BaseService {
   createOrderUsingPOST(orderRequest: OrderRequest): __Observable<OrderResponse> {
     return this.createOrderUsingPOSTResponse(orderRequest).pipe(
       __map(_r => _r.body as OrderResponse)
+    );
+  }
+
+  /**
+   * @param paymentTransaction paymentTransaction
+   * @return OK
+   */
+  createTransactionUsingPOSTResponse(paymentTransaction: PaymentTransaction): __Observable<__StrictHttpResponse<PaymentTransactionResponse>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = paymentTransaction;
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/command/transaction`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PaymentTransactionResponse>;
+      })
+    );
+  }
+  /**
+   * @param paymentTransaction paymentTransaction
+   * @return OK
+   */
+  createTransactionUsingPOST(paymentTransaction: PaymentTransaction): __Observable<PaymentTransactionResponse> {
+    return this.createTransactionUsingPOSTResponse(paymentTransaction).pipe(
+      __map(_r => _r.body as PaymentTransactionResponse)
     );
   }
 }
