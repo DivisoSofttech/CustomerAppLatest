@@ -1,7 +1,7 @@
 <!--Normal View-->
 
 <ion-card no-padding *ngIf="viewType === 'normal'">
-  <span class="ribbon6">Closed</span>
+  <span class="ribbon6" *ngIf="!(timeNow | closed: store.openingTime:store.closingTime)">Closed</span>
   <ion-card-header (click)="showHotelMenu(store.regNo)">
     <ion-item lines="none">
       <ion-img no-margin slot="start" *ngIf="store.image" slot="start"
