@@ -1,11 +1,13 @@
 <ion-scroll>
-  <div class="vertical-align-center h30" *ngIf="orders.length === 0">
+  <div class="vertical-align-center h30" *ngIf="orders.length === 0 && showHistoryLoading === false">
     <ion-text text-center>
       <p>No Orders</p>
     </ion-text>
   </div>
 
-  <ion-list *ngIf="orders.length > 0 && stores !== undefined">
+  <app-loading *ngIf="showHistoryLoading === true" [type]="'history'"></app-loading>
+
+  <ion-list *ngIf="orders.length > 0 && stores !== undefined && showHistoryLoading === false">
     <ion-item lines="full" class="order" *ngFor="let order of orders" margin>
       <ion-thumbnail slot="start" *ngIf="stores[order.storeId] != null">
         <ion-img
@@ -21,7 +23,7 @@
       <ion-label>
         <ion-text color="primary">
           <h2><b>Date :</b> {{ order.date | date: "short" }}</h2>
-          <h3 class="fnt-big">Grand Total {{ order.grandTotal }}</h3>
+          <h3 class="fnt-big">Grand Total {{ order.grandTotal | number: "1.1-2" }}</h3>
           <h3 class="fnt-medium">Order status: {{ order.status.name }}</h3>
         </ion-text>
         <p *ngIf="stores[order.storeId] != null">

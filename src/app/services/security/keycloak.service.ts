@@ -6,11 +6,14 @@ import { Injectable } from '@angular/core';
 import { map, first } from 'rxjs/operators';
 import { HttpHeaders } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class KeycloakService {
+
+  private userChangedBehaviour: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   keycloakAdmin: KeycloakAdminClient;
   customer;
@@ -24,6 +27,9 @@ export class KeycloakService {
 
   }
 
+  public getUserChangedSubscription() {
+    return this.userChangedBehaviour;
+  }
 
   createAccount(user: any, password: string, success: any, err: any) {
     this.keycloakConfig.refreshClient().then(() => {
@@ -99,6 +105,7 @@ export class KeycloakService {
     ).then(data => {
       console.log('Data after authenticate ', data);
       this.storage.set('user' , data);
+      this.userChangedBehaviour.next(data);
       this.customer = data;
       this.checkUserInRole(this.customer.sub).then(hasRoleCustomer => {
         if (hasRoleCustomer) {
@@ -174,6 +181,7 @@ export class KeycloakService {
   logout() {
     this.oauthService.logOut();
     this.storage.clear();
-    this.util.navigateToLogin();
+    this.userChangedBehaviour.next(null);
+    this.util.navigateHome();
   }
 }

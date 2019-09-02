@@ -4,6 +4,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { QueryResourceService, CommandResourceService } from 'src/app/api/services';
 import { UserRatingDTO, ReviewDTO } from 'src/app/api/models';
 import { Storage } from '@ionic/storage';
+import { KeycloakService } from 'src/app/services/security/keycloak.service';
 
 @Component({
   selector: 'app-review',
@@ -31,19 +32,38 @@ export class ReviewComponent implements OnInit {
 
   customers = [];
 
+  notGuest = false;
+
   constructor(
     private queryResource: QueryResourceService,
     private commandResource: CommandResourceService,
     private storage: Storage,
-    private util: Util
+    private util: Util,
+    private keycloak: KeycloakService
   ) { }
 
   ngOnInit() {
     this.getRatingReview(0);
+    this.getUser();
   }
 
   toggleInfiniteScroll() {
 
+  }
+
+  getUser() {
+    this.keycloak.getUserChangedSubscription()
+    .subscribe(user => {
+      if(user !== null) {
+        if (user.preferred_username === 'guest') {
+          this.notGuest = false;
+        } else {
+          this.notGuest = true;
+        }
+      } else {
+        this.notGuest = false;
+      }
+    });
   }
 
   updateRating(event) {

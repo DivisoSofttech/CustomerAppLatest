@@ -20,6 +20,8 @@ export class HistoryListComponent implements OnInit {
 
   stores = {};
 
+  showHistoryLoading = true;
+
   @Input() keyCloakUser;
   @ViewChild(IonInfiniteScroll, null) inifinitScroll: IonInfiniteScroll;
 
@@ -79,6 +81,7 @@ export class HistoryListComponent implements OnInit {
     })
     .subscribe(porders => {
       porders.content.forEach(o => {
+        this.showHistoryLoading = false;
         this.orders.push(o);
         if (this.stores[o.storeId] === undefined) {
           this.getStores(o.storeId);
@@ -95,6 +98,7 @@ export class HistoryListComponent implements OnInit {
       console.log('Total numbers of page ', porders.totalPages);
     },
     err => {
+      this.showHistoryLoading = false;
       console.log('Error Getting Order Page ' + i , err);
     });
   }

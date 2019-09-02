@@ -115,8 +115,8 @@
     (ionChange)="segmenChanged($event)"
     *ngIf="orderLines.length !== 0"
   >
+  <ion-segment-button *ngIf="deliveryOk" value="delivery" [checked]="deliveryOk">Delivery</ion-segment-button>
     <ion-segment-button *ngIf="collectionOk" value="collection" [checked]="collectionOk">Collection</ion-segment-button>
-    <ion-segment-button *ngIf="deliveryOk" value="delivery" [checked]="deliveryOk">Delivery</ion-segment-button>
   </ion-segment>
 
   <div>
