@@ -4,10 +4,9 @@ import { Util } from 'src/app/services/util';
 import { Component, OnInit } from '@angular/core';
 import { OrderService } from 'src/app/services/order.service';
 import { Order } from 'src/app/api/models';
-import { CartService } from 'src/app/services/cart.service';
 import { NGXLogger } from 'ngx-logger';
-import { load } from 'google-maps';
 import { ModalController, PopoverController } from '@ionic/angular';
+import { ModalDisplayUtilService } from 'src/app/services/modal-display-util.service';
 
 @Component({
   selector: 'app-checkout',
@@ -28,8 +27,9 @@ export class CheckoutComponent implements OnInit {
     private logger: NGXLogger,
     private util: Util,
     private modalController: ModalController,
-    private popoverController: PopoverController
-  ) { }
+    private popoverController: PopoverController,
+    private displayModalService: ModalDisplayUtilService
+      ) { }
 
   ngOnInit() {
     this.deliveryType = this.orderService.deliveryInfo.deliveryType;
@@ -73,26 +73,17 @@ export class CheckoutComponent implements OnInit {
         console.log('Next task name is ' + resource.nextTaskId + ' Next task name '
         + resource.nextTaskName + ' selfid ' + resource.selfId + ' order id is ' + resource.orderId);
         if ( resource.nextTaskName === 'Accept Order') {
-          this.presentWaitInfoPopover();
+          this.displayModalService.presentWaitInfoPopover();
         } else {
-          this.presentmakePayment();
+          this.displayModalService.presentMakePayment();
         }
-      }, (err) => { console.log('oops something went wrong while collecting deliveryinfo'); loader.dismiss(); });
+      }, (err) => {
+      console.log('oops something went wrong while collecting deliveryinfo');
+      loader.dismiss();
+      this.util.createToast('Something went wrong try again', 'information-circle-outline');
+      this.displayModalService.navigateToBasket();
     });
-  }
-
-  async presentmakePayment() {
-    const modal = await this.modalController.create({
-      component: MakePaymentComponent
     });
-    return await modal.present();
-  }
-
-  async presentWaitInfoPopover() {
-    const popover = await this.popoverController.create({
-      component: WaitInformatonPopoverComponent
-    });
-    return await popover.present();
   }
 
 }

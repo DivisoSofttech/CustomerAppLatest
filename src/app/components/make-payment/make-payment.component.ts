@@ -1,9 +1,7 @@
 import { OrderService } from 'src/app/services/order.service';
 import { Component, OnInit, Input } from '@angular/core';
-import { OrderLine } from 'src/app/api/models';
 import { ModalController, NavController, ToastController, Platform } from '@ionic/angular';
 import { ProcessPaymentComponent } from '../process-payment/process-payment.component';
-import { PaymentCommandResourceService } from 'src/app/api/services';
 
 @Component({
   selector: 'app-make-payment',
@@ -17,16 +15,16 @@ export class MakePaymentComponent implements OnInit {
 
  paymentOptions = [
    {name: 'Cash On Delivery', value: 'cod'},
-   {name: 'Debit/Credit Cards', value: 'card'}
+   {name: 'Debit/Credit Cards', value: 'card'},
+   {name: 'Braintree', value: 'braintree'}
  ];
 
 constructor(
     private modalController: ModalController,
     private navController: NavController,
     private orderService: OrderService,
-    private platform: Platform,
-    private paymentService: PaymentCommandResourceService
-      ) { }
+    private platform: Platform
+          ) { }
 
 dismiss() {
     this.orderService.paymentMethod = this.paymentMethod;

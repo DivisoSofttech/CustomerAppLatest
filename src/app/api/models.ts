@@ -60,6 +60,8 @@ export { PaymentDTO } from './models/payment-dto';
 export { PaymentExecutionRequest } from './models/payment-execution-request';
 export { PaymentInitiateRequest } from './models/payment-initiate-request';
 export { PaymentInitiateResponse } from './models/payment-initiate-response';
+export { PaymentTransaction } from './models/payment-transaction';
+export { PaymentTransactionResponse } from './models/payment-transaction-response';
 export { PdfDTO } from './models/pdf-dto';
 export { Product } from './models/product';
 export { ProductDTO } from './models/product-dto';
