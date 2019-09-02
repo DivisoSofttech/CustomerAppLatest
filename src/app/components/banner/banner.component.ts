@@ -11,6 +11,8 @@ import { NGXLogger } from 'ngx-logger';
 })
 export class BannerComponent implements OnInit {
 
+  showLoading = true;
+  
   slideOpts = {
     slidesPerView: this.platform.width() >= 640 ? 3 : 2,
     loop: true,

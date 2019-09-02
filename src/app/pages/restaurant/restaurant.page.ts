@@ -6,7 +6,6 @@ import { IonInfiniteScroll, IonRefresher, ModalController } from '@ionic/angular
 import { NGXLogger } from 'ngx-logger';
 import { MapComponent } from 'src/app/components/map/map.component';
 import { FooterComponent } from 'src/app/components/footer/footer.component';
-import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { MakePaymentComponent } from 'src/app/components/make-payment/make-payment.component';
 
 @Component({
@@ -21,8 +20,6 @@ export class RestaurantPage implements OnInit {
   showFilters = false;
 
   page = 0;
-
-  
 
   stores: StoreDTO[] = [];
 
@@ -70,7 +67,7 @@ export class RestaurantPage implements OnInit {
           this.logger.info('Enabling Infinite Scroll');
           this.toggleInfiniteScroll();
         }
-
+        this.stores = [];
         stores.forEach(s => {
           this.stores.push(s);
         });

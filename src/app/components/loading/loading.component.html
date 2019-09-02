@@ -193,6 +193,28 @@
       </ion-item>
     </ion-card-footer>
   </ion-card>  
+</div>
 
+<div *ngIf="type === 'history'">
+  <ion-list>
+    <ion-item lines="full" margin *ngFor="let r of [1,2,3,4,5]">
+      <ion-thumbnail slot="start">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-thumbnail>
+      <ion-label>
+        <ion-text color="primary">
+          <ion-skeleton-text animated></ion-skeleton-text>
+          <ion-skeleton-text animated></ion-skeleton-text>
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-text>
+        <ion-skeleton-text animated></ion-skeleton-text>
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-label><br>
+    </ion-item>
+  </ion-list>
+</div>
+
+<div *ngIf="type === 'banner'">
+  Banner Loading
 </div>
 

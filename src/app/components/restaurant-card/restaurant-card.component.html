@@ -1,6 +1,7 @@
 <!--Normal View-->
 
 <ion-card no-padding *ngIf="viewType === 'normal'">
+  <span class="ribbon6" *ngIf="!(timeNow | closed: store.openingTime:store.closingTime)">Closed</span>
   <ion-card-header (click)="showHotelMenu(store.regNo)">
     <ion-item lines="none">
       <ion-img no-margin slot="start" *ngIf="store.image" slot="start"
@@ -17,8 +18,8 @@
           <p class="small fnt-sserif cl-grey" *ngIf="store.storeSettings.deliveryCharge !== undefined &&
           deliveryOk">
             <span *ngIf="store.storeSettings.deliveryCharge > 0"> Delivery Charge {{store.storeSettings.deliveryCharge}}</span>   
-            <span *ngIf="store.storeSettings.deliveryCharge === 0"> Free delivery</span>   
           </p>
+          <ion-badge color="warning" *ngIf="store.storeSettings.deliveryCharge === 0"> Free delivery</ion-badge>   
           <h5 class="medium fnt-sserif cl-grey" class="no-wrap"
             *ngIf="store.openingTime != undefined && store.closingTime != undefined">
             {{store.openingTime | date: 'shortTime' }} to {{ store.closingTime |  date: 'shortTime'}}</h5>
@@ -75,7 +76,7 @@
     <ion-buttons>
       <rating [rate]="store.totalRating" [readonly]="true"></rating>
       <ion-button *ngIf="rateReview" disabled>{{
-          "(" + rateReview.length + ")"
+          "(" + rateReview + ")"
         }}</ion-button>
       <ion-button *ngIf="!rateReview" disabled>(0)</ion-button>
     </ion-buttons>

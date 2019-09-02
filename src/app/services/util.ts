@@ -65,4 +65,8 @@ export class Util {
   navigateToLogin() {
     this.navController.navigateRoot('login');
   }
+
+  navigateHome() {
+    this.navController.navigateForward('restaurant');
+  }
 }

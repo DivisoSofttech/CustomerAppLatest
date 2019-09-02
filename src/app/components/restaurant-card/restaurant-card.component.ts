@@ -18,6 +18,8 @@ export class RestaurantCardComponent implements OnInit {
 
   categories;
 
+  rateReview =  0;
+
   deliveryTypes = [];
 
   deliveryInfos = [];

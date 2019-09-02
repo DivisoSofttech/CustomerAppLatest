@@ -32,7 +32,7 @@ export class LoginSignupPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.isLoggedIn();
+    // this.isLoggedIn();
   }
 
   // Login and Register Methods

@@ -2,7 +2,7 @@ import { CartService } from './../../services/cart.service';
 import { Router } from '@angular/router';
 import { FavouriteService } from './../../services/favourite.service';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { StockCurrent, AuxilaryLineItem, ComboLineItem } from 'src/app/api/models';
+import { StockCurrent, AuxilaryLineItem, ComboLineItem, Discount } from 'src/app/api/models';
 import { ModalController, PopoverController, IonInput } from '@ionic/angular';
 import { QueryResourceService } from 'src/app/api/services';
 import { NGXLogger } from 'ngx-logger';
@@ -30,6 +30,7 @@ export class ProductCardComponent implements OnInit {
 
   orderCount  = 0;
   auxilaryLoadComplete = false;
+  discount: Discount;
 
   @ViewChild('orderCountInput' , null) orderCountInput: IonInput;
 
@@ -48,6 +49,7 @@ export class ProductCardComponent implements OnInit {
     this.checkIfAlreadyFavourite();
     this.checkIfOrdered();
     this.getAuxilaries(0);
+    this.getProductDiscount();
     if (this.stockCurrent.product.isAuxilaryItem === false) {
       this.getComboItems(0);
     }
@@ -159,6 +161,11 @@ export class ProductCardComponent implements OnInit {
 
   toggleDescription() {
     this.showDescription = !this.showDescription;
+  }
+
+  getProductDiscount(){
+    this.queryResource.findDiscountByProductIdUsingGET(this.stockCurrent.product.id)
+      .subscribe(discount => this.discount = discount);
   }
 
 }

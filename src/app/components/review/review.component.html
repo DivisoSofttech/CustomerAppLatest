@@ -1,4 +1,11 @@
-<ion-card no-padding>
+
+<ion-card *ngIf="!notGuest">
+  <ion-card-content>
+    Login To Post Reviews
+  </ion-card-content>  
+</ion-card>
+
+<ion-card no-padding *ngIf="notGuest">
   <ion-card-content>
     <ion-textarea text-left no-padding [(ngModel)]="review.review" rows="1" type="text"
       placeholder="Type in your thoughts..."></ion-textarea>
@@ -23,6 +30,12 @@
 
 <ion-list>
 
+  <ion-card *ngIf="rateReviews.length === 0">
+    <ion-card-content class="mfont">
+      Reviews (0)
+    </ion-card-content>
+  </ion-card>
+
   <ion-card *ngFor="let rr of rateReviews;let i = index">
       <ion-item lines="full">
           <ion-avatar slot="start"
@@ -33,15 +46,14 @@
               class="profileImage"
             ></ion-img>
             <ion-img *ngIf="customers[i] !== null"
-              [src]="
-                'data:' +
-                customers[i].photo +
-                ';base64,' +
-                customers[i].photoContentType
-              "
-              class="imageShow"
-            >
-            </ion-img>
+              [src]=" 'data:' +
+              customers[i].photoContentType +
+              ';base64,' +
+              customers[i].photo
+            "
+            class="imageShow"
+          >
+          </ion-img>
           </ion-avatar>
 
           <ion-text >
