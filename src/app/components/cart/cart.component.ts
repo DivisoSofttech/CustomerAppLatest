@@ -10,6 +10,7 @@ import { Util } from 'src/app/services/util';
 import { OrderService } from 'src/app/services/order.service';
 import { OrderCommandResourceService } from 'src/app/api/services';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
+import { LoginSignupComponent } from '../login-signup/login-signup.component';
 
 @Component({
   selector: 'app-cart',
@@ -66,6 +67,15 @@ export class CartComponent implements OnInit {
     this.getCustomer();
   }
 
+  async loginModal() {
+    const modal = await this.modalController.create({
+      component: LoginSignupComponent
+    });
+
+    modal.present();
+}
+
+
   getCustomer() {
     this.util.createLoader().then(loader => {
       loader.present();
@@ -75,7 +85,6 @@ export class CartComponent implements OnInit {
         if (user === null || user.preferred_username === 'guest') {
           this.guest = true;
           if (this.viewType === 'full') {
-            this.util.createToast('Please Login');
           }
         } else {
           this.guest = false;
@@ -140,6 +149,9 @@ export class CartComponent implements OnInit {
   }
 
   continue(deliveryType) {
+    if (this.guest === true) {
+      this.loginModal();
+    }
     let grandtotal = 0;
     grandtotal = grandtotal + this.storeSetting.deliveryCharge + this.cart.totalPrice;
     const order: Order = {

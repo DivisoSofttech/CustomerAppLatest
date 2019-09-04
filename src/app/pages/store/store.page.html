@@ -54,7 +54,22 @@
         </ion-row>
         <ion-row *ngIf="showCategoryWiseProducts === true">
           <ion-col size-lg="6" size-md="6" *ngFor="let category of categories" no-margin no-padding>
-          <ion-list>
+          <ion-list class="full-width-vw">
+              <ion-item color="light" lines="none">
+                  <ion-avatar>
+                      <ion-img
+                      [src]="
+                        'data:' +
+                        category.imageContentType +
+                        ';base64,' +
+                        category.image
+                      "
+                      class="imageShow"
+                    >
+                    </ion-img>
+                  </ion-avatar>
+                <ion-label margin>{{category.name}}</ion-label>
+                </ion-item>
               <app-category-wise-products-card *ngIf="store !== undefined"
               [category]="category"
               [store]="store">

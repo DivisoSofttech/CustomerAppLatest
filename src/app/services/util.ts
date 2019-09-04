@@ -2,16 +2,17 @@ import { Injectable } from '@angular/core';
 import {
   LoadingController,
   ToastController,
-  NavController
+  NavController,
+  ModalController
 } from '@ionic/angular';
-import { Router } from '@angular/router';
 
 @Injectable()
 export class Util {
   constructor(
     private loadingController: LoadingController,
     private toastController: ToastController,
-    private navController: NavController
+    private navController: NavController,
+    private modalController: ModalController
   ) {}
 
   async createLoader() {

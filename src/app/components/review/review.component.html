@@ -1,11 +1,8 @@
 
 <ion-card *ngIf="guest">
-  <ion-card-content text-center>
+  <ion-card-content text-center (click)="loginModal()">
     Login To Post Reviews
   </ion-card-content>  
-  <ion-card-footer padding>
-    <ion-button>Login</ion-button>
-  </ion-card-footer>
 </ion-card>
 
 <ion-card no-padding *ngIf="!guest">
