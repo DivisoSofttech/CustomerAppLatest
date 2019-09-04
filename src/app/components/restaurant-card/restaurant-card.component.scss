@@ -9,8 +9,7 @@ ion-card {
 }
 ion-card-header {
   padding: 5px;
-  min-height: 150px;
-  max-height: 150px;
+  height: 150px;
 }
 
 .overlay {
@@ -81,8 +80,7 @@ h4 , p{
 @media only screen and (max-width: 600px) {
   ion-card-header {
     padding: 2vw 0vw;
-    min-height: 140px;
-    max-height: 140px;
+    height: 150px;
   }
 } 
 

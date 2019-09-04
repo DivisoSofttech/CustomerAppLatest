@@ -12,7 +12,7 @@ import { NGXLogger } from 'ngx-logger';
 })
 export class RestaurantCardComponent implements OnInit {
 
-  @Input() store : Store= {};
+  @Input() store: Store = {};
 
   @Input() viewType = 'normal';
 
@@ -39,7 +39,7 @@ export class RestaurantCardComponent implements OnInit {
   ngOnInit() {
     this.timeNow = new Date();
     this.getStoreCategory();
-    if(this.viewType === 'normal') {
+    if (this.viewType === 'normal') {
       this.checkIfAlreadyFavourite();
       this.getStoreDeliveryInfo();
       this.getStoreDeliveryType();
@@ -110,7 +110,7 @@ export class RestaurantCardComponent implements OnInit {
   checkIfAlreadyFavourite() {
     this.favourite.getFavourites()
     .subscribe(data => {
-      if(this.favourite.getFavouriteStoresID()
+      if (this.favourite.getFavouriteStoresID()
       .includes(this.store.id)) {
         this.isFavourite = true;
       }
