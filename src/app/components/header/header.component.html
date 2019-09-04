@@ -1,17 +1,7 @@
 <ion-toolbar>
-  <ion-buttons
-    slot="start"
-    *ngIf="showSearchBar === false && showPlaceSearch === false"
-  >
-    <ion-menu-button slot="start" auto-hide="true"></ion-menu-button>
-  </ion-buttons>
-
-  <!--Set Current Location Button-->
-  <ion-buttons
-    slot="start"
-    *ngIf="showSearchBar === false && showPlaceSearch === false"
-  >
-    <ion-item lines="none" no-margin>
+  <ion-buttons slot="start" *ngIf="!showSearchBar && !showPlaceSearch">
+    <ion-menu-button></ion-menu-button>
+      <ion-item lines="none" no-margin>
       <ion-label (click)="togglePlaceSearch()">{{
         currentPlaceName
       }}</ion-label>

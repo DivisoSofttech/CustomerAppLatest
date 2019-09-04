@@ -13,12 +13,14 @@
           <h3 class="medium overflow-text-wrap fnt-sserif cl-grey">{{categories | arrayFormater}} </h3>
           <h4 class="medium overflow-text-wrap fnt-sserif cl-grey" style="color:#56a232">
             {{deliveryTypes | arrayFormater:'only'}}</h4>
-          <p class="small fnt-sserif cl-grey" *ngIf="deliveryInfos.length > 0">Delivering From
-            {{ deliveryInfos[0].startingTime | date:'shortTime' }}</p>
-          <p class="small fnt-sserif cl-grey" *ngIf="store.storeSettings.deliveryCharge !== undefined &&
+          <h3 class="small fnt-sserif cl-grey" *ngIf="deliveryInfos.length > 0">Delivering From
+            {{ deliveryInfos[0].startingTime | date:'shortTime' }}</h3>
+          <h3 class="small fnt-sserif cl-grey" *ngIf="store.minAmount">
+            {{'Minimum order amount: ' + store.minAmount}}</h3>
+          <h3 class="small fnt-sserif cl-grey" *ngIf="store.storeSettings.deliveryCharge !== undefined &&
           deliveryOk">
-            <span *ngIf="store.storeSettings.deliveryCharge > 0"> Delivery Charge &#8364;{{store.storeSettings.deliveryCharge}}</span>   
-          </p>
+            <span *ngIf="store.storeSettings.deliveryCharge > 0"> Delivery Charge &#8364;{{store.storeSettings.deliveryCharge}}</span> 
+          </h3>
           <ion-badge color="warning" *ngIf="store.storeSettings.deliveryCharge === 0"> Free delivery</ion-badge>   
           <h5 class="medium fnt-sserif cl-grey" class="no-wrap"
             *ngIf="store.openingTime != undefined && store.closingTime != undefined">
