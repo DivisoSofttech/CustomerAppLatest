@@ -17,7 +17,7 @@
             {{ deliveryInfos[0].startingTime | date:'shortTime' }}</p>
           <p class="small fnt-sserif cl-grey" *ngIf="store.storeSettings.deliveryCharge !== undefined &&
           deliveryOk">
-            <span *ngIf="store.storeSettings.deliveryCharge > 0"> Delivery Charge {{store.storeSettings.deliveryCharge}}</span>   
+            <span *ngIf="store.storeSettings.deliveryCharge > 0"> Delivery Charge &#8364;{{store.storeSettings.deliveryCharge}}</span>   
           </p>
           <ion-badge color="warning" *ngIf="store.storeSettings.deliveryCharge === 0"> Free delivery</ion-badge>   
           <h5 class="medium fnt-sserif cl-grey" class="no-wrap"

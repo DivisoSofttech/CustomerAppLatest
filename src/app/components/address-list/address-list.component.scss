@@ -1,16 +1,22 @@
-ion-scroll {
-    height: 100vh;
-}
-
-ion-footer {
-    position:fixed;
-    bottom: 0px;
-}
 
 .addressListContainer {
-  height: 100vh;
+  height: 85vh;
   width: 100vw;
+  overflow-x:scroll;
   position: fixed;
   z-index: 999;
   background: white;
+}
+
+.addressListFooter {
+  position: fixed;
+  bottom: -11vh;
+  height: 18vh;
+  z-index: 10000;
+  width: 100%;
+  background: white;
+}
+
+.modificationIcon {
+ margin: 10px;
 }

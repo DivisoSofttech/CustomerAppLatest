@@ -17,7 +17,8 @@ export class ProfilePage implements OnInit {
 
   @ViewChild(IonSlides , null) ionSlides: IonSlides;
 
-  currentSegment = 'frequently';
+  // Change this to frequently
+  currentSegment = 'favourite';
 
   customer: CustomerDTO;
 
@@ -42,11 +43,11 @@ export class ProfilePage implements OnInit {
 
   segmentChanged(event) {
     if (event.detail.value === 'frequently') {
-      this.ionSlides.slideTo(0);
+      // this.ionSlides.slideTo(9);
     } else if (event.detail.value === 'favourite') {
-      this.ionSlides.slideTo(1);
+      this.ionSlides.slideTo(0);
     } else {
-      this.ionSlides.slideTo(2);
+      this.ionSlides.slideTo(1);
     }
   }
 
@@ -54,9 +55,11 @@ export class ProfilePage implements OnInit {
     let index: any;
     this.ionSlides.getActiveIndex().then(num => {
       index = num;
-      if (index === 0) {
+      // Change this to 0
+      // Temp Fix Since Frequently Page is
+      if (index === 99) {
         this.currentSegment = 'frequently';
-      } else if (index === 1) {
+      } else if (index === 0) {
         this.currentSegment = 'favourite';
       } else {
         this.currentSegment = 'history';

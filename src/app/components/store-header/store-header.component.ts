@@ -2,7 +2,7 @@ import { Util } from './../../services/util';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { StockCurrent } from 'src/app/api/models';
-import { IonInfiniteScroll } from '@ionic/angular';
+import { IonInfiniteScroll, IonSearchbar } from '@ionic/angular';
 import { NGXLogger } from 'ngx-logger';
 import { Storage } from '@ionic/storage';
 
@@ -19,6 +19,8 @@ export class StoreHeaderComponent implements OnInit {
 
   showSearchBar = false;
 
+  showLoading = false;
+
   showSearchPane = false;
 
   stockCurrents: StockCurrent[] = [];
@@ -32,6 +34,7 @@ export class StoreHeaderComponent implements OnInit {
   @Input() store;
 
   @ViewChild(IonInfiniteScroll, null) infiniteScroll: IonInfiniteScroll;
+  @ViewChild(IonSearchbar , null) searchBar: IonSearchbar;
 
   constructor(
     private queryResource: QueryResourceService,
@@ -43,9 +46,12 @@ export class StoreHeaderComponent implements OnInit {
 
   toggleSearchBar() {
     this.logger.info('Hiding SearchBar and Emitting Event');
-    this.searchEnable.emit({});
     this.showSearchBar = !this.showSearchBar;
     this.showSearchPane = !this.showSearchPane;
+    this.searchEnable.emit(!this.showSearchBar);
+    if(this.showSearchBar) {
+      this.searchBar.setFocus();
+    }
   }
 
   toggleInfiniteScroll() {
@@ -60,6 +66,7 @@ export class StoreHeaderComponent implements OnInit {
         page: i
       })
       .subscribe(data => {
+        this.showLoading = false;
         if (data.content.length === 0) {
           // this.util.createToast('Sorry, couldn\'t find any match');
           return;
@@ -73,12 +80,15 @@ export class StoreHeaderComponent implements OnInit {
             this.stockCurrents.push(s);
           });
         }
+      }, err=> {
+        this.showLoading = false;
       });
   }
 
   searchProducts(event) {
     this.searchTerm = event.detail.value;
     this.stockCurrents = [];
+    this.showLoading = true;
     this.getProductsByName(0);
   }
 

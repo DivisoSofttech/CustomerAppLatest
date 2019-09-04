@@ -75,7 +75,9 @@
   class="container"
   [style.display]="(showSearchPane === true && showSearchBar === true) ? 'block' : 'none'"
 >
-  <ion-grid >
+  <app-loading [type]="'restaurant'" *ngIf="showLoading"></app-loading>
+
+  <ion-grid *ngIf="!showLoading">
     <ion-row *ngIf="storeSearchResults.length > 0">
       <app-restaurant-card
       *ngFor="let store of storeSearchResults"

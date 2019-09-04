@@ -1,9 +1,9 @@
-<ion-slides #slides [options]="slideOpts" autoplayDisableOnInteraction="false"
+<app-loading [type]="'banner'" *ngIf="showLoading"></app-loading>
+<ion-slides #slides [options]="slideOpts" autoplayDisableOnInteraction="false" 
 (ionSlideDidChange)="slides.startAutoplay();">
-
-
 <ion-slide *ngFor="let banner of banners">
   <ion-card>
       <ion-img slot="start" *ngIf="banner.file" [src]="'data:' + banner.fileContentType + ';base64,' + banner.file"></ion-img>   
   </ion-card>
 </ion-slide>
+</ion-slides>

@@ -1,6 +1,6 @@
 <ion-card no-padding id="{{ stockCurrent.product.id }}">
   <div class="ribbon">
-    <span *ngIf="discount!=null" class="ribbon1">
+    <span *ngIf="discount!=null && discount.rate !== null && discount.rate > 0" class="ribbon1">
       <span>{{discount.rate}}% off</span>
     </span>
   </div>
@@ -65,8 +65,11 @@
       </ion-grid>
     </ion-card-content>
   </ion-item>
-  <div *ngIf="showDescription === true && stockCurrent !== null && comboLineItems.length > 0">
-    <ion-list text-left>
+  <div *ngIf="showDescription === true && stockCurrent !== null">
+    <ion-text>
+     <p>{{stockCurrent.product.reference}}</p>
+    </ion-text>
+    <ion-list text-left *ngIf=" comboLineItems.length > 0">
       <ion-item lines="full" color="light">
         <ion-list-label margin>Combo's</ion-list-label>
       </ion-item>

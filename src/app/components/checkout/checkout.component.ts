@@ -16,6 +16,8 @@ import { ModalController, PopoverController } from '@ionic/angular';
 })
 export class CheckoutComponent implements OnInit {
 
+  showAddressBack = false;
+
   customer;
   selectedAddress;
   note: string;
@@ -93,6 +95,10 @@ export class CheckoutComponent implements OnInit {
       component: WaitInformatonPopoverComponent
     });
     return await popover.present();
+  }
+
+  toggleBackButtonType(value) {
+    this.showAddressBack = value;
   }
 
 }

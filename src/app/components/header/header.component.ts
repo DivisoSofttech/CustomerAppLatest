@@ -19,6 +19,7 @@ import { NGXLogger } from 'ngx-logger';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+
   // Emitted When Place is Changed
   @Output() placeChanged = new EventEmitter();
 
@@ -33,6 +34,8 @@ export class HeaderComponent implements OnInit {
   showPlaceSearch = false;
 
   showSearchPane =  false;
+
+  showLoading = false;
 
   searchTerm = '';
 
@@ -122,17 +125,13 @@ export class HeaderComponent implements OnInit {
   }
 
   getSearchResults(i) {
-    this.util.createLoader()
-    .then(loader => {
-      this.loader = loader;
-      this.loader.present();
     this.queryResource
       .headerUsingGET({
         searchTerm: this.searchTerm,
         page: 0
       })
       .subscribe(result => {
-        console.log(result.content);
+        this.showLoading = false;
         if (result.content.length === 0) {
           return;
         } else {
@@ -144,12 +143,14 @@ export class HeaderComponent implements OnInit {
             this.storeSearchResults.push(s);
           });
         }
-        this.loader.dismiss();
+      },
+      err => {
+        this.showLoading = false;
       });
-    });
   }
 
   search(event) {
+    this.showLoading = true;
     this.logger.info('Getting Restaurants By Name');
     this.searchTerm = event.detail.value;
     this.storeSearchResults = [];
