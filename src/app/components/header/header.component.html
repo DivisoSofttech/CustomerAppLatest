@@ -41,8 +41,13 @@
     {{ place.description }}</ion-item>
 </ion-list>
 
-<ion-content class="container" [style.display]="(showSearchPane === true && showSearchBar === true) ? 'block' : 'none'">
-  <ion-grid>
+<ion-content
+  class="container"
+  [style.display]="(showSearchPane === true && showSearchBar === true) ? 'block' : 'none'"
+>
+  <app-loading [type]="'restaurant'" *ngIf="showLoading"></app-loading>
+
+  <ion-grid *ngIf="!showLoading">
     <ion-row *ngIf="storeSearchResults.length > 0">
       <ion-item color="light" class="full-width">
         <ion-label slot="start">{{storeSearchResults.length + ' Matches'}}</ion-label>

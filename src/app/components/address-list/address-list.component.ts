@@ -20,6 +20,8 @@ export class AddressListComponent implements OnInit {
 
   showAddressLists = false;
 
+  @Output() addressListShow = new EventEmitter(this.showAddressLists);
+
   @Input() customer;
 
   @Input() type = 'add';
@@ -105,6 +107,11 @@ export class AddressListComponent implements OnInit {
     });
   }
 
+
+  deleteAddress(id) {
+    //
+  }
+
   async addNewAddressModal() {
     const modal = await this.modalController.create({
       component: AddressListComponent,
@@ -170,6 +177,7 @@ export class AddressListComponent implements OnInit {
 
   toggleShowAddressList() {
     this.showAddressLists = !this.showAddressLists;
+    this.addressListShow.emit(this.showAddressLists);
   }
 
 

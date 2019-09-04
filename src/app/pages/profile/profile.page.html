@@ -28,12 +28,12 @@
   (ionChange)="segmentChanged($event)"
   [(ngModel)]="currentSegment"
   >
-    <ion-segment-button value="frequently" checked>
+    <!-- <ion-segment-button value="frequently" checked>
       <ion-label>
         Frequent
       </ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="favourite">
+    </ion-segment-button> -->
+    <ion-segment-button value="favourite" checked>
       <ion-label>
         Favourites
       </ion-label>
@@ -43,10 +43,10 @@
     </ion-segment-button>
   </ion-segment>
 
-  <ion-slides>
-    <ion-slide>
+  <ion-slides (ionSlideDidChange)="slideChanged($event)">
+    <!-- <ion-slide>
       <app-frequently-ordered-list></app-frequently-ordered-list>
-    </ion-slide>
+    </ion-slide> -->
     <ion-slide>
       <app-favourite-list>
       </app-favourite-list>

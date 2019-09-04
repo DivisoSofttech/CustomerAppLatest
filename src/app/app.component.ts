@@ -14,9 +14,7 @@ import { Storage } from '@ionic/storage';
 })
 export class AppComponent {
 
-  showLogin = false;
-
-  showLogout = false;
+  guest = true;
 
   public appPages = [
     {
@@ -62,16 +60,13 @@ export class AppComponent {
       if(user !== null) {
         if (user.preferred_username === 'guest') {
           console.log('Show Login');
-          this.showLogin = true;
-          this.showLogout = false;
+          this.guest = true;
         } else {
           console.log('Show Logout');
-          this.showLogin = false;
-          this.showLogout = true;
+          this.guest = false;
         }
       } else {
-        this.showLogin = true;
-        this.showLogout = false;
+        this.guest = true;
       }
     });
   }

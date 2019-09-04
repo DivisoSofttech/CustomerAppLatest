@@ -38,9 +38,11 @@ export class BannerComponent implements OnInit {
     .subscribe(data => {
       this.logger.info('Banners got', data);
       this.banners = data;
+      this.showLoading = false;
       this.slides.startAutoplay();
     },
     err => {
+      this.showLoading = false;
       this.logger.warn('Unable to get Banners', err);
     });
   }

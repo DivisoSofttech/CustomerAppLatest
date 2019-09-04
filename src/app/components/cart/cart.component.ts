@@ -9,6 +9,7 @@ import { ModalController, NavController } from '@ionic/angular';
 import { Util } from 'src/app/services/util';
 import { OrderService } from 'src/app/services/order.service';
 import { OrderCommandResourceService } from 'src/app/api/services';
+import { KeycloakService } from 'src/app/services/security/keycloak.service';
 
 @Component({
   selector: 'app-cart',
@@ -22,6 +23,8 @@ export class CartComponent implements OnInit {
   @Input() store: Store;
 
   shopRegNo: string;
+
+  guest = true;
 
   currentSegment = 'delivery';
 
@@ -50,6 +53,7 @@ export class CartComponent implements OnInit {
   constructor(
     private cart: CartService,
     private orderService: OrderService,
+    private keycloakService: KeycloakService,
     private modalController: ModalController,
     private navController: NavController,
     private storage: Storage,
@@ -65,13 +69,22 @@ export class CartComponent implements OnInit {
   getCustomer() {
     this.util.createLoader().then(loader => {
       loader.present();
-      this.storage.get('user').then(user => {
-        console.log('User from storage ' + user);
+      this.keycloakService.getUserChangedSubscription()
+      .subscribe(user => {
+
+        if (user === null || user.preferred_username === 'guest') {
+          this.guest = true;
+          if (this.viewType === 'full') {
+            this.util.createToast('Please Login');
+          }
+        } else {
+          this.guest = false;
+        }
+
         this.customer = user;
         this.orderService.setCustomer(user);
         loader.dismiss();
-      })
-      .catch(err => {
+      }, err => {
         loader.dismiss();
       });
     });

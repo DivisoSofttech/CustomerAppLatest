@@ -32,7 +32,7 @@ export class ReviewComponent implements OnInit {
 
   customers = [];
 
-  notGuest = false;
+  guest = false;
 
   constructor(
     private queryResource: QueryResourceService,
@@ -56,12 +56,12 @@ export class ReviewComponent implements OnInit {
     .subscribe(user => {
       if(user !== null) {
         if (user.preferred_username === 'guest') {
-          this.notGuest = false;
+          this.guest = true;
         } else {
-          this.notGuest = true;
+          this.guest = false;
         }
       } else {
-        this.notGuest = false;
+        this.guest = true;
       }
     });
   }

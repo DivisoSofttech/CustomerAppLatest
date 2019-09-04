@@ -1,5 +1,20 @@
+<ion-item color="light" lines="none">
+  <ion-avatar>
+      <ion-img
+      [src]="
+        'data:' +
+        category.imageContentType +
+        ';base64,' +
+        category.image
+      "
+      class="imageShow"
+    >
+    </ion-img>
+  </ion-avatar>
+<ion-label margin>{{category.name}}</ion-label>
+</ion-item>
 <app-loading
-*ngIf="showLoading === true"
+*ngIf="showLoading === true && stockCurrents.length > 0"
 [type]="'product'"
 ></app-loading>
 <ion-list *ngIf="stockCurrents.length > 0">
@@ -12,4 +27,3 @@
 <div *ngIf="stockCurrents.length === 0 && showLoading === false">
     <h3 style="font-family:monospace">Found 0 Products</h3>
   </div>
-  

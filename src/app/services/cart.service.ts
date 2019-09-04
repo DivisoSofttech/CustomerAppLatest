@@ -218,7 +218,7 @@ export class CartService {
 
   updateOrder(order: OrderLine) {
     this.orderLines.forEach(ol => {
-      if(ol === order) {
+      if (ol === order) {
         ol.requiedAuxilaries = order.requiedAuxilaries;
         this.updateCart();
       }
@@ -253,7 +253,7 @@ export class CartService {
 
     this.orderLines.forEach( ol => {
       if (ol === orderLine) {
-        console.log('Tytystytsytsytsyt ' , ol===orderLine);
+        console.log('Tytystytsytsytsyt ' , ol === orderLine);
         ol.requiedAuxilaries.forEach( al => {
           if (auxilaryItem.id === al.productId) {
             al.quantity++;

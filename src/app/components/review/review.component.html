@@ -1,11 +1,14 @@
 
-<ion-card *ngIf="!notGuest">
-  <ion-card-content>
+<ion-card *ngIf="guest">
+  <ion-card-content text-center>
     Login To Post Reviews
   </ion-card-content>  
+  <ion-card-footer padding>
+    <ion-button>Login</ion-button>
+  </ion-card-footer>
 </ion-card>
 
-<ion-card no-padding *ngIf="notGuest">
+<ion-card no-padding *ngIf="!guest">
   <ion-card-content>
     <ion-textarea text-left no-padding [(ngModel)]="review.review" rows="1" type="text"
       placeholder="Type in your thoughts..."></ion-textarea>

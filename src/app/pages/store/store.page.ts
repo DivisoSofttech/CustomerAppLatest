@@ -182,8 +182,9 @@ export class StorePage implements OnInit {
     this.IonRefresher.complete();
   }
 
-  toggleFabButton() {
+  toggleFabButton(val) {
+    console.log(val , "----");
     this.logger.info('Hiding Fab Button');
-    this.showCatgeoryFilterFab = !this.showCatgeoryFilterFab;
+    this.showCatgeoryFilterFab = val;
   }
 }

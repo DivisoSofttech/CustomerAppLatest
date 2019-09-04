@@ -1,8 +1,9 @@
-<ion-header>
+<ion-header *ngIf="!showAddressBack">
   <ion-toolbar color="primary">
     <ion-buttons>
         <ion-back-button></ion-back-button>
         <ion-title>Checkout</ion-title>
+
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -10,7 +11,9 @@
 <app-address-list 
 *ngIf="customer !== undefined && deliveryType==='delivery'"
 [customer]="customer" 
-(addressSelected)="addressSelectedEvent($event)">
+(addressSelected)="addressSelectedEvent($event)"
+(addressListShow)="toggleBackButtonType($event)"
+>
 </app-address-list>
 <ion-grid>
 <ion-row>

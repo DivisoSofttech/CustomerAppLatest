@@ -62,8 +62,11 @@
         </ion-row>
       </ion-grid>
   </ion-item>
-  <div *ngIf="showDescription === true && stockCurrent !== null && comboLineItems.length > 0">
-    <ion-list text-left>
+  <div *ngIf="showDescription === true && stockCurrent !== null">
+    <ion-text>
+     <p>{{stockCurrent.product.reference}}</p>
+    </ion-text>
+    <ion-list text-left *ngIf=" comboLineItems.length > 0">
       <ion-item lines="full" color="light">
         <ion-list-label margin>Combo's</ion-list-label>
       </ion-item>
