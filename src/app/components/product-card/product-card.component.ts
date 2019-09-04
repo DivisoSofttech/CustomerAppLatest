@@ -45,7 +45,7 @@ export class ProductCardComponent implements OnInit {
     private util: Util
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.checkIfAlreadyFavourite();
     this.checkIfOrdered();
     this.getAuxilaries(0);
@@ -163,9 +163,14 @@ export class ProductCardComponent implements OnInit {
     this.showDescription = !this.showDescription;
   }
 
-  getProductDiscount(){
+  getProductDiscount() {
     this.queryResource.findDiscountByProductIdUsingGET(this.stockCurrent.product.id)
-      .subscribe(discount => this.discount = discount);
+      .subscribe(discount => {
+        this.discount = discount;
+        if (this.discount && this.discount.rate) {
+          this.stockCurrent.sellPrice -= Math.round(this.stockCurrent.product.sellingPrice * this.discount.rate) / 100;
+        }
+      });
   }
 
 }
