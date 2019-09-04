@@ -52,6 +52,6 @@ export class Util {
   }
 
   navigateHome() {
-    this.navController.navigateForward('restaurant');
+    this.navController.navigateRoot('restaurant');
   }
 }

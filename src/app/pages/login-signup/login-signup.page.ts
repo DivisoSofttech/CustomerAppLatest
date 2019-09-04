@@ -181,5 +181,9 @@ export class LoginSignupPage implements OnInit {
     this.slideChange();
     return 1;
   }
+
+  navigateRoot() {
+    this.util.navigateHome();
+  }
 }
 
