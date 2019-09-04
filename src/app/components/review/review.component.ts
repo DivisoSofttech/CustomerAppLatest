@@ -5,6 +5,8 @@ import { QueryResourceService, CommandResourceService } from 'src/app/api/servic
 import { UserRatingDTO, ReviewDTO } from 'src/app/api/models';
 import { Storage } from '@ionic/storage';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
+import { ModalController } from '@ionic/angular';
+import { LoginSignupComponent } from '../login-signup/login-signup.component';
 
 @Component({
   selector: 'app-review',
@@ -39,7 +41,8 @@ export class ReviewComponent implements OnInit {
     private commandResource: CommandResourceService,
     private storage: Storage,
     private util: Util,
-    private keycloak: KeycloakService
+    private keycloak: KeycloakService,
+    private modalController: ModalController
   ) { }
 
   ngOnInit() {
@@ -49,6 +52,14 @@ export class ReviewComponent implements OnInit {
 
   toggleInfiniteScroll() {
 
+  }
+
+  async loginModal() {
+      const modal = await this.modalController.create({
+        component: LoginSignupComponent
+      });
+
+      modal.present();
   }
 
   getUser() {
