@@ -67,13 +67,26 @@ export class CartComponent implements OnInit {
     this.getCustomer();
   }
 
-  async loginModal() {
-    const modal = await this.modalController.create({
-      component: LoginSignupComponent
-    });
+  async loginModal(continueMethod) {
+    if (this.guest === true) {
+      const modal = await this.modalController.create({
+        component: LoginSignupComponent
+      });
 
-    modal.present();
-}
+      modal.present();
+      modal.onDidDismiss()
+      .then(data => {
+        console.error(data);
+        if (data.data) {
+          continueMethod();
+        }
+      });
+
+    } else {
+
+      continueMethod();
+    }
+  }
 
 
   getCustomer() {
@@ -149,34 +162,36 @@ export class CartComponent implements OnInit {
   }
 
   continue(deliveryType) {
-    if (this.guest === true) {
-      this.loginModal();
-    }
-    let grandtotal = 0;
-    grandtotal = grandtotal + this.storeSetting.deliveryCharge + this.cart.totalPrice;
-    const order: Order = {
-      orderLines: this.orderLines,
-      grandTotal: grandtotal,
-      email: this.customer.email,
-      storeId: this.cart.storeId,
-      customerId: this.customer.preferred_username
-    };
-    console.log('Order is in continue ', order);
-    this.orderService.setShop(this.store);
-    this.orderService.setOrder(order);
-    this.orderService.setDeliveryType(deliveryType);
-    this.orderService.setDeliveryCharge(this.storeSetting.deliveryCharge);
-    this.util.createLoader().then(loader => {
-      loader.present();
-      this.orderService.initiateOrder().subscribe(resource => {
-      this.orderService.setResource(resource);
-      loader.dismiss();
-      this.orderService.order.orderId = resource.orderId;
-      console.log('Next task name is ' + resource.nextTaskId + ' Next task name '
-       + resource.nextTaskName + ' selfid ' + resource.selfId + ' order id is ' + resource.orderId);
-      this.navController.navigateForward('/checkout');
-    }, (error) => {console.log('An error has occured while initiating the order ', error); loader.dismiss(); } );
+
+    this.loginModal(() => {
+      let grandtotal = 0;
+      grandtotal = grandtotal + this.storeSetting.deliveryCharge + this.cart.totalPrice;
+      const order: Order = {
+        orderLines: this.orderLines,
+        grandTotal: grandtotal,
+        email: this.customer.email,
+        storeId: this.cart.storeId,
+        customerId: this.customer.preferred_username
+      };
+      console.log('Order is in continue ', order);
+      this.orderService.setShop(this.store);
+      this.orderService.setOrder(order);
+      this.orderService.setDeliveryType(deliveryType);
+      this.orderService.setDeliveryCharge(this.storeSetting.deliveryCharge);
+      this.util.createLoader().then(loader => {
+        loader.present();
+        this.orderService.initiateOrder().subscribe(resource => {
+        this.orderService.setResource(resource);
+        loader.dismiss();
+        this.orderService.order.orderId = resource.orderId;
+        console.log('Next task name is ' + resource.nextTaskId + ' Next task name '
+         + resource.nextTaskName + ' selfid ' + resource.selfId + ' order id is ' + resource.orderId);
+        this.navController.navigateForward('/checkout');
+      }, (error) => {console.log('An error has occured while initiating the order ', error); loader.dismiss(); } );
+      });
     });
+
+
   }
 
   segmenChanged(event) {

@@ -102,7 +102,7 @@ export class LoginSignupComponent implements OnInit {
             console.log('Got Customer', customer);
             this.storage.set('customer' , customer);
             loader.dismiss();
-            this.modalController.dismiss();
+            this.dismissTrue();
           },
           err => {
             if (err.status === 500) {
@@ -122,7 +122,7 @@ export class LoginSignupComponent implements OnInit {
                     console.log('Customer Created', customer);
                     this.storage.set('customer' , customer);
                     loader.dismiss();
-                    this.modalController.dismiss();
+                    this.dismissTrue();
                   },
                   eror => {
                     console.log(eror);
@@ -186,8 +186,12 @@ export class LoginSignupComponent implements OnInit {
     this.util.navigateHome();
   }
 
+  dismissTrue() {
+    this.modalController.dismiss(true);
+  }
+
   dismiss() {
-    this.modalController.dismiss();
+    this.modalController.dismiss(false);
   }
 }
 
