@@ -10,7 +10,7 @@ import { AuthInterceptor } from './services/security/auth-interceptor';
 import { ConfigsModule } from './configs/configs.module';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouteReuseStrategy } from '@angular/router';
+import { RouteReuseStrategy, UrlHandlingStrategy } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -28,7 +28,7 @@ import { OrderService } from './services/order.service';
 import { LoggerModule } from 'ngx-logger';
 import {environment} from '../environments/environment';
 import { PayPal } from '@ionic-native/paypal/ngx';
-import { LocationStrategy, HashLocationStrategy, Location } from '@angular/common';
+import { LocationStrategy, HashLocationStrategy, Location, PathLocationStrategy } from '@angular/common';
 
 @NgModule({
 
