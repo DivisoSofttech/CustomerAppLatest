@@ -40,15 +40,15 @@ export class HistoryListComponent implements OnInit {
   }
 
   confirmOrder(order: Order) {
-    console.log('Confirm order User is ' + this.orderService.customer.preferred_username );
-    console.log('Confirm the order ', order);
+    this.logger.info('Confirm order User is ' + this.orderService.customer.preferred_username );
+    this.logger.info('Confirm the order ', order);
     this.orderService.setOrder(order);
     this.orderService.deliveryInfo = order.deliveryInfo;
     this.util.createLoader().then( loader => {
       loader.present();
       this.queryResource.getTasksUsingGET({name: 'Process Payment', assignee: this.orderService.customer.preferred_username})
     .subscribe(result => {
-      console.log('Approved Orders opentasks ', result);
+      this.logger.info('Approved Orders opentasks ', result);
       result.forEach( opentask => {
         if (opentask.orderId === order.orderId) {
           const resource: CommandResource = {
@@ -56,7 +56,7 @@ export class HistoryListComponent implements OnInit {
              nextTaskName: opentask.taskName
           };
           this.orderService.resource = resource;
-          console.log('Confirm order resource ', resource);
+          this.logger.info('Confirm order resource ', resource);
           loader.dismiss();
           this.presentmakePayment();
         }
@@ -73,7 +73,7 @@ export class HistoryListComponent implements OnInit {
   }
 
   getOrders(i, event) {
-    console.log('Page ' , i);
+    this.logger.info('Page ' , i);
     this.queryResource.findOrdersByCustomerIdUsingGET({
       customerId: this.keyCloakUser.preferred_username,
       page: i,
@@ -92,14 +92,14 @@ export class HistoryListComponent implements OnInit {
       });
       ++i;
       if (i === porders.totalPages) {
-        console.log('Toggle disabled');
+        this.logger.info('Toggle disabled');
         this.toggleInfiniteScroll();
       }
-      console.log('Total numbers of page ', porders.totalPages);
+      this.logger.info('Total numbers of page ', porders.totalPages);
     },
     err => {
       this.showHistoryLoading = false;
-      console.log('Error Getting Order Page ' + i , err);
+      this.logger.info('Error Getting Order Page ' + i , err);
     });
   }
 
@@ -117,7 +117,7 @@ export class HistoryListComponent implements OnInit {
 
   loadMoreData(event) {
     ++this.pageNumber;
-    console.log('Loading More Orders Page ' , this.pageNumber);
+    this.logger.info('Loading More Orders Page ' , this.pageNumber);
     this.getOrders(this.pageNumber, event);
   }
 

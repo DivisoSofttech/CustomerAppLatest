@@ -27,7 +27,7 @@ export class PaymentSuccessfullInfoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.total = this.orderService.order.grandTotal;
+    this.total = Math.round(this.orderService.order.grandTotal);
     this.method = this.orderService.paymentMethod;
     this.ref = this.orderService.order.orderId;
   }

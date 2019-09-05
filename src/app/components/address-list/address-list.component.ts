@@ -20,6 +20,8 @@ export class AddressListComponent implements OnInit {
 
   showAddressLists = false;
 
+  @Output() addressListShow = new EventEmitter(this.showAddressLists);
+
   @Input() customer;
 
   @Input() type = 'add';
@@ -105,6 +107,23 @@ export class AddressListComponent implements OnInit {
     });
   }
 
+
+  deleteAddress(id) {
+    this.util.createLoader()
+    .then(loader => {
+      loader.present();
+      this.orderCommandResource.deleteAddressUsingDELETE(id)
+      .subscribe(data => {
+        this.util.createToast('Address Deleted');
+        this.addresses = this.addresses.filter(ad => ad.id !== id);
+        loader.dismiss();
+      },
+      err => {
+        loader.dismiss();
+      });
+    });
+  }
+
   async addNewAddressModal() {
     const modal = await this.modalController.create({
       component: AddressListComponent,
@@ -170,6 +189,7 @@ export class AddressListComponent implements OnInit {
 
   toggleShowAddressList() {
     this.showAddressLists = !this.showAddressLists;
+    this.addressListShow.emit(this.showAddressLists);
   }
 
 

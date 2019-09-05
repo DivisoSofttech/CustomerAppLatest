@@ -43,11 +43,15 @@ export class OrderService {
   }
 
   getCustomer() {
-    this.customer = this.storage.get('user');
-    console.log('User from storage is ', this.customer);
+    this.storage.get('user')
+    .then(data => {
+      this.customer = data;
+      this.logger.info('Got Customer ' , data);
+    });
   }
+
   collectDeliveryInfo() {
-    console.log('DeliveryInfo is' + this.deliveryInfo);
+    this.logger.info('DeliveryInfo is' + this.deliveryInfo);
     return this.orderCommandService.collectDeliveryDetailsUsingPOST(
       {taskId: this.resource.nextTaskId, orderId: this.resource.selfId, deliveryInfo: this.deliveryInfo});
   }

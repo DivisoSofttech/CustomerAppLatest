@@ -1,3 +1,4 @@
+import { NGXLogger } from 'ngx-logger';
 import { ProfileEditComponent } from './../profile-edit/profile-edit.component';
 import { ModalController } from '@ionic/angular';
 import { CustomerDTO } from 'src/app/api/models';
@@ -17,7 +18,8 @@ export class ProfileInfoComponent implements OnInit {
   @Input() contact;
 
   constructor(
-    private modalController: ModalController
+    private modalController: ModalController,
+    private logger: NGXLogger,
   ) { }
 
   ngOnInit() {}
@@ -34,7 +36,7 @@ export class ProfileInfoComponent implements OnInit {
     modal.onDidDismiss()
       .then((data: any) => {
         try {
-          console.log(data);
+          this.logger.info(data);
           this.customer = data.data.customer;
           this.keyCloakUser = data.data.keyCloakUser;
           this.contact = data.data.contact;

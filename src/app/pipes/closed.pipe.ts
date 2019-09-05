@@ -5,29 +5,26 @@ import * as moment from 'moment';
   name: 'closed'
 })
 export class ClosedPipe implements PipeTransform {
+  transform(value: any, arg1?: any, arg2?: any): any {
+    const date = new Date();
 
-  transform(value: any, arg1?: any , arg2?:any): any {
-
-    let date = new Date();
-
-    let st = {
+    const st = {
       month: date.getMonth(),
-      year: date.getFullYear(),
+      year: date.getFullYear()
     };
 
-    let now = moment(value)
-    let openingTime = moment(new Date(arg1).setDate(date.getDate()));
-    let closingTime = moment(new Date(arg2).setDate(date.getDate()));
+    const now = moment(value);
+    const openingTime = moment(new Date(arg1).setDate(date.getDate()));
+    const closingTime = moment(new Date(arg2).setDate(date.getDate()));
     openingTime.set(st);
     closingTime.set(st);
 
-    if(closingTime.isBefore(openingTime)) {
-      closingTime.add(1,'days');
+    if (closingTime.isBefore(openingTime)) {
+      closingTime.add(1, 'days');
     }
 
-    // console.log(now.toString() , '\n' , openingTime.toString() , '\n', closingTime.toString() , '\n\n');
+    // this.logger.info(now.toString() , '\n' , openingTime.toString() , '\n', closingTime.toString() , '\n\n');
 
-    return now.isBetween(openingTime , closingTime);
+    return now.isBetween(openingTime, closingTime);
   }
-
 }

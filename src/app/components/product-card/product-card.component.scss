@@ -140,23 +140,20 @@
 
 .ribbon1 {
   position: absolute;
-  top: -0.1px;
-  right: -5%;
-}
-
-.ribbon1 span {
-  position: relative;
-  display: block;
-  text-align: center;
   background: #f8463f;
-  font-size: 92%;
+  font-size: 12px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   line-height: 1;
   font-weight: bold;
   color: #edf0f2;
-  padding: 12px 8px 10px;
-  width: 75%;
+  height: 8vh;
+  width: 8vh;
   z-index: 200;
+  padding: 5px 5px 5px 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  right: 0px;
 }
 
 .closeCard {
@@ -176,4 +173,17 @@ ion-thumbnail {
 .comboPhoto {
   width: 50px;
   height: 50px;
+}
+
+.margin-75 {
+  margin-left: 75%;
+}
+
+.strike-through {
+  text-decoration: line-through;
+  color: grey;
+}
+
+.margin-left-25 {
+  margin-left: 25px;
 }

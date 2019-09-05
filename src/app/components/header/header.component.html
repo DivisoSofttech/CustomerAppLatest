@@ -1,18 +1,8 @@
 <ion-toolbar>
-  <ion-buttons
-    slot="start"
-    *ngIf="showSearchBar === false && showPlaceSearch === false"
-  >
-    <ion-menu-button slot="start" auto-hide="true"></ion-menu-button>
-  </ion-buttons>
-
-  <!--Set Current Location Button-->
-  <ion-buttons
-    slot="start"
-    *ngIf="showSearchBar === false && showPlaceSearch === false"
-  >
+  <ion-buttons slot="start" *ngIf="!showSearchBar && !showPlaceSearch">
+    <ion-menu-button></ion-menu-button>
     <ion-item lines="none" no-margin>
-      <ion-label (click)="togglePlaceSearch()">{{
+      <ion-label (click)="togglePlaceSearch()" class="text-overflow-hidden">{{
         currentPlaceName
       }}</ion-label>
       <ion-icon name="locate" (click)="getCurrentLocation()"></ion-icon>
@@ -22,70 +12,50 @@
   <!--SearchBar Toggle Button-->
   <ion-buttons
     slot="end"
-    *ngIf="showSearchBar === false && showPlaceSearch === false"
   >
-    <ion-button (click)="toggleSearchBar()">
+    <ion-button (click)="toggleSearchBar()"     *ngIf="showSearchBar === false && showPlaceSearch === false"    >
       <ion-icon name="search" slot="icon-only"></ion-icon>
     </ion-button>
+    <ion-button (click)="showNotification()"   *ngIf="showSearchBar === false && showPlaceSearch === false"    >
+      <ion-icon name="notifications-outline" slot="icon-only"></ion-icon>
+  </ion-button>
+
   </ion-buttons>
 
   <!--SearchBar Restaurant-->
   <ion-buttons [ngClass]="(showSearchBar === true && showPlaceSearch === false)?'':'hidden'">
-    <ion-searchbar
-      #restaurantSearch
-
-      showCancelButton
-      debounce="1500"
-      placeholder="Search"
-      (ionCancel)="toggleSearchBar()"
-      (ionChange)="search($event)"
-    ></ion-searchbar>
+    <ion-searchbar #restaurantSearch showCancelButton debounce="1500" placeholder="Search"
+      (ionCancel)="toggleSearchBar()" (ionChange)="search($event)"></ion-searchbar>
   </ion-buttons>
 
-  <ion-buttons slot="end"
-  *ngIf="showSearchBar === false && showPlaceSearch === false"
-  >
-    <ion-button (click)="showNotification()">
-        <ion-icon name="notifications-outline"></ion-icon>
-    </ion-button>
-  </ion-buttons>
-
+ 
   <!--SearchBar Restaurant-->
   <ion-buttons [ngClass]="(showPlaceSearch === true && showSearchBar === false)?'':'hidden'">
-    <ion-searchbar
-      #placeSearch
-
-      showCancelButton
-      debounce="1500"
-      placeholder="Enter Location Name"
-      (ionCancel)="togglePlaceSearch()"
-      (ionChange)="getPlacePredictions($event)"
-    ></ion-searchbar>
+    <ion-searchbar #placeSearch showCancelButton debounce="1500" placeholder="Enter Location Name"
+      (ionCancel)="togglePlaceSearch()" (ionChange)="getPlacePredictions($event)"></ion-searchbar>
   </ion-buttons>
 </ion-toolbar>
 
 <!--List Of Available place Suggestions-->
 <ion-list *ngIf="places.length > 0 && showPlaceSearch === true">
   <ion-item *ngFor="let place of places" (click)="selectPlace(place)">
-    {{ place.description }}</ion-item
-  >
+    {{ place.description }}</ion-item>
 </ion-list>
 
 <ion-content
   class="container"
   [style.display]="(showSearchPane === true && showSearchBar === true) ? 'block' : 'none'"
 >
-  <ion-grid >
+  <app-loading [type]="'restaurant'" *ngIf="showLoading"></app-loading>
+
+  <ion-grid *ngIf="!showLoading">
     <ion-row *ngIf="storeSearchResults.length > 0">
-      <app-restaurant-card
-      *ngFor="let store of storeSearchResults"
-      [store]="store"
-    ></app-restaurant-card>
+      <ion-item color="light" class="full-width">
+        <ion-label slot="start">{{storeSearchResults.length + ' Matches'}}</ion-label>
+      </ion-item>
+      <app-restaurant-card *ngFor="let store of storeSearchResults" [store]="store"></app-restaurant-card>
     </ion-row>
-    <ion-row
-      *ngIf="storeSearchResults.length === 0"
-      class="vertical-align-center"
-    >
+    <ion-row *ngIf="storeSearchResults.length === 0" class="vertical-align-center">
       <ion-col text-center>
         <p>No Results Found(0)</p>
       </ion-col>
@@ -94,10 +64,7 @@
   </ion-grid>
 
   <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreData($event)">
-    <ion-infinite-scroll-content
-      loadingSpinner="bubbles"
-      loadingText="Loading more data..."
-    >
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>

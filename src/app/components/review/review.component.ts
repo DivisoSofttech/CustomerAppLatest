@@ -1,3 +1,4 @@
+import { NGXLogger } from 'ngx-logger';
 import { Util } from './../../services/util';
 import { RatingReview } from './../../api/models/rating-review';
 import { Component, OnInit, Input } from '@angular/core';
@@ -5,6 +6,8 @@ import { QueryResourceService, CommandResourceService } from 'src/app/api/servic
 import { UserRatingDTO, ReviewDTO } from 'src/app/api/models';
 import { Storage } from '@ionic/storage';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
+import { ModalController } from '@ionic/angular';
+import { LoginSignupComponent } from '../login-signup/login-signup.component';
 
 @Component({
   selector: 'app-review',
@@ -32,14 +35,16 @@ export class ReviewComponent implements OnInit {
 
   customers = [];
 
-  notGuest = false;
+  guest = false;
 
   constructor(
     private queryResource: QueryResourceService,
     private commandResource: CommandResourceService,
     private storage: Storage,
     private util: Util,
-    private keycloak: KeycloakService
+    private logger: NGXLogger,
+    private keycloak: KeycloakService,
+    private modalController: ModalController
   ) { }
 
   ngOnInit() {
@@ -51,24 +56,33 @@ export class ReviewComponent implements OnInit {
 
   }
 
+  async loginModal() {
+      const modal = await this.modalController.create({
+        component: LoginSignupComponent,
+        componentProps: {type: 'modal'}
+      });
+
+      modal.present();
+  }
+
   getUser() {
     this.keycloak.getUserChangedSubscription()
     .subscribe(user => {
-      if(user !== null) {
+      if (user !== null) {
         if (user.preferred_username === 'guest') {
-          this.notGuest = false;
+          this.guest = true;
         } else {
-          this.notGuest = true;
+          this.guest = false;
         }
       } else {
-        this.notGuest = false;
+        this.guest = true;
       }
     });
   }
 
   updateRating(event) {
     this.rate.rating = event;
-    console.log(this.rate.rating);
+    this.logger.info(this.rate.rating);
   }
 
   getRatingReview(i) {
@@ -80,7 +94,7 @@ export class ReviewComponent implements OnInit {
     .subscribe(
       result => {
         this.showReviewLoading = false;
-        console.log('Got rating' , result.content);
+        this.logger.info('Got rating' , result.content);
         ++i;
         if (result.totalPages === i) {
           this.toggleInfiniteScroll();
@@ -90,12 +104,12 @@ export class ReviewComponent implements OnInit {
           this.queryResource.findCustomerByReferenceUsingGET(rr.review.userName)
           .subscribe(data => {
             this.customers.push(data);
-          })
+          });
         });
       },
       err => {
         this.showReviewLoading = false;
-        console.log('Error fetching review data', err);
+        this.logger.info('Error fetching review data', err);
       }
     );
   }
@@ -113,7 +127,7 @@ export class ReviewComponent implements OnInit {
           .createRatingAndReviewUsingPOST({ ratingReview: raterev })
           .subscribe(
             result => {
-              console.log(result);
+              this.logger.info(result);
               this.getRatingReview(0);
               this.rateReviews = [];
               this.review.review = '';

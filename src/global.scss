@@ -30,6 +30,12 @@
     cursor: pointer;
 }
 
+.text-overflow-hidden {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 125px;
+}
+
 .hidden {
     display: none;
 }
@@ -44,6 +50,13 @@
 
 .half-width {
     width: 50%;
+}
+
+.full-width {
+  width: 100%;
+}
+.full-width-vw {
+  width: 100vw;
 }
 
 ion-modal.modal-popover {
@@ -83,11 +96,6 @@ ion-popover{
         }
     }
 }
-
-ion-menu-button {
-    display: none;
-}
-
 
 /* 
   ##Device = Desktops

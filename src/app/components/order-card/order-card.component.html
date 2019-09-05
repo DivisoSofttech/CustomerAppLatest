@@ -11,8 +11,8 @@
       <p>{{order.date | date : 'shortDate'}}</p>
       <p>{{order.date | date : 'shortTime'}}</p>
       <address>
-        {{order.deliveryInfo.deliveryAddress?.houseNoOrBuildingName}}
-        {{order.deliveryInfo.deliveryAddress?.city}}
+        {{order.deliveryInfo?.deliveryAddress?.houseNoOrBuildingName}}
+        {{order.deliveryInfo?.deliveryAddress?.city}}
       </address>
     </ion-text>
   </ion-item>

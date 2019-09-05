@@ -10,9 +10,8 @@ import { NGXLogger } from 'ngx-logger';
   styleUrls: ['./banner.component.scss']
 })
 export class BannerComponent implements OnInit {
-
   showLoading = true;
-  
+
   slideOpts = {
     slidesPerView: this.platform.width() >= 640 ? 3 : 2,
     loop: true,
@@ -34,15 +33,17 @@ export class BannerComponent implements OnInit {
   }
 
   getBanners() {
-    this.queryResource.findStoreBannersUsingGET({})
-    .subscribe(data => {
-      this.logger.info('Banners got', data);
-      this.banners = data;
-      this.slides.startAutoplay();
-    },
-    err => {
-      this.logger.warn('Unable to get Banners', err);
-    });
+    this.queryResource.findStoreBannersUsingGET({}).subscribe(
+      data => {
+        this.logger.info('Banners got', data);
+        this.banners = data;
+        this.showLoading = false;
+        this.slides.startAutoplay();
+      },
+      err => {
+        this.showLoading = false;
+        this.logger.warn('Unable to get Banners', err);
+      }
+    );
   }
-
 }

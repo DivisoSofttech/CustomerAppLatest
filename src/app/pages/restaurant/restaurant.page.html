@@ -19,6 +19,7 @@
                   <ion-col size="12" size-md="6" size-lg="6" *ngFor="let store of stores"
                   >
                       <app-restaurant-card
+                      *ngIf="store.name !== null"
                       [store]="store"
                     ></app-restaurant-card>      
                   </ion-col>

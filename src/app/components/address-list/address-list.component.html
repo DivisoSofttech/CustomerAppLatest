@@ -1,3 +1,15 @@
+
+<ion-header *ngIf="showAddressLists === true && showAddressPanel === false">
+    <ion-toolbar color="primary">
+      <ion-buttons>
+          <ion-button (click)="toggleShowAddressList()">
+              <ion-icon name="arrow-back"></ion-icon>
+            </ion-button>
+            <ion-title>Select Address</ion-title>      
+      </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
 <ion-list *ngIf="!showAddressPanel">
   <ion-item *ngIf="showAddressLists === false">
     <ion-text (click)="toggleShowAddressList()" *ngIf="addresses.length > 0">
@@ -15,6 +27,7 @@
   </ion-item>
 </ion-list>
 
+
 <div *ngIf="showAddressLists === true && showAddressPanel === false" class="addressListContainer">
   <ion-item *ngFor="let address of addresses" value="{{address.id}}">
     <ion-label (click)="addressChanged(address)">
@@ -24,16 +37,12 @@
       <p>{{address.roadNameAreaOrStreet}}</p>
       <p>{{address.postCode}}</p>
     </ion-label>
-    <ion-icon name="create" (click)="updateAddressModal(address)"></ion-icon>
+    <ion-icon class="modificationIcon" name="create" (click)="updateAddressModal(address)"></ion-icon>
+    <!-- <ion-icon class="modificationIcon" name="trash" (click)="deleteAddress(address.id)"></ion-icon> -->
   </ion-item>
 </div>
 
-
-
-
-<ion-scroll *ngIf="showAddressPanel">
-
-  <ion-header>
+<ion-header *ngIf="showAddressPanel">
     <ion-toolbar color="primary">
       <ion-buttons>
         <ion-button (click)="dismiss(undefined)">
@@ -43,6 +52,8 @@
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
+
+<ion-content *ngIf="showAddressPanel">
 
   <ion-item>
     <ion-label position="floating">Name</ion-label>
@@ -91,10 +102,9 @@
     </ion-item>
   </ion-radio-group>
 
+</ion-content>
 
-  <ion-footer>
+  <ion-footer *ngIf="showAddressPanel">
     <ion-button *ngIf="type==='add'" margin expand="block" (click)="saveAddress()">Add</ion-button>
     <ion-button *ngIf="type==='update'" margin expand="block" (click)="updateAddress()">Update</ion-button>
   </ion-footer>
-
-</ion-scroll>

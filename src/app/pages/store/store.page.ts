@@ -1,3 +1,4 @@
+import { OrderService } from 'src/app/services/order.service';
 import { IonSlides, IonRefresher, PopoverController } from '@ionic/angular';
 import { ViewChild } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
@@ -46,7 +47,8 @@ export class StorePage implements OnInit {
     private route: ActivatedRoute,
     private popover: PopoverController,
     private logger: NGXLogger,
-    private util: Util
+    private util: Util,
+    private orderService: OrderService
   ) {}
 
   ngOnInit() {
@@ -182,8 +184,9 @@ export class StorePage implements OnInit {
     this.IonRefresher.complete();
   }
 
-  toggleFabButton() {
+  toggleFabButton(val) {
+    this.logger.info(val, '----');
     this.logger.info('Hiding Fab Button');
-    this.showCatgeoryFilterFab = !this.showCatgeoryFilterFab;
+    this.showCatgeoryFilterFab = val;
   }
 }

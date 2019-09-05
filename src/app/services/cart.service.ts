@@ -212,13 +212,13 @@ export class CartService {
 
   addOrder(order: OrderLine) {
     this.orderLines.push(order);
-    console.log(this.orderLines.length);
+    this.logger.info(this.orderLines.length);
     this.updateCart();
   }
 
   updateOrder(order: OrderLine) {
     this.orderLines.forEach(ol => {
-      if(ol === order) {
+      if (ol === order) {
         ol.requiedAuxilaries = order.requiedAuxilaries;
         this.updateCart();
       }
@@ -253,7 +253,7 @@ export class CartService {
 
     this.orderLines.forEach( ol => {
       if (ol === orderLine) {
-        console.log('Tytystytsytsytsyt ' , ol===orderLine);
+        this.logger.info('Tytystytsytsytsyt ' , ol === orderLine);
         ol.requiedAuxilaries.forEach( al => {
           if (auxilaryItem.id === al.productId) {
             al.quantity++;

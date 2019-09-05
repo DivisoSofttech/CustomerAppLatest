@@ -28,7 +28,8 @@ import { OrderService } from './services/order.service';
 import { LoggerModule } from 'ngx-logger';
 import {environment} from '../environments/environment';
 import { PayPal } from '@ionic-native/paypal/ngx';
-import { LocationStrategy, HashLocationStrategy, Location, PathLocationStrategy } from '@angular/common';
+import { LocationStrategy, HashLocationStrategy, Location } from '@angular/common';
+import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 
 @NgModule({
 
@@ -60,6 +61,7 @@ import { LocationStrategy, HashLocationStrategy, Location, PathLocationStrategy 
   providers: [
     Camera,
     StatusBar,
+    ScreenOrientation,
     Util,
     SplashScreen,
     PayPal,

@@ -1,3 +1,4 @@
+import { NGXLogger } from 'ngx-logger';
 import { DeliveryItemDetailsComponent } from './../delivery-item-details/delivery-item-details.component';
 import { Storage } from '@ionic/storage';
 import { Order } from './../../api/models/order';
@@ -9,6 +10,8 @@ import { ModalController, NavController } from '@ionic/angular';
 import { Util } from 'src/app/services/util';
 import { OrderService } from 'src/app/services/order.service';
 import { OrderCommandResourceService } from 'src/app/api/services';
+import { KeycloakService } from 'src/app/services/security/keycloak.service';
+import { LoginSignupComponent } from '../login-signup/login-signup.component';
 
 @Component({
   selector: 'app-cart',
@@ -22,6 +25,8 @@ export class CartComponent implements OnInit {
   @Input() store: Store;
 
   shopRegNo: string;
+
+  guest = true;
 
   currentSegment = 'delivery';
 
@@ -50,8 +55,10 @@ export class CartComponent implements OnInit {
   constructor(
     private cart: CartService,
     private orderService: OrderService,
+    private keycloakService: KeycloakService,
     private modalController: ModalController,
     private navController: NavController,
+    private logger: NGXLogger,
     private storage: Storage,
     private util: Util,
     private orderCommandResource: OrderCommandResourceService
@@ -62,16 +69,44 @@ export class CartComponent implements OnInit {
     this.getCustomer();
   }
 
+  async loginModal(continueMethod) {
+    if (this.guest === true) {
+      const modal = await this.modalController.create({
+        component: LoginSignupComponent,
+        componentProps: {type:'modal'}
+      });
+
+      modal.present();
+      modal.onDidDismiss()
+      .then(data => {
+        if (data.data) {
+          continueMethod();
+        }
+      });
+
+    } else {
+
+      continueMethod();
+    }
+  }
+
+
   getCustomer() {
     this.util.createLoader().then(loader => {
       loader.present();
-      this.storage.get('user').then(user => {
-        console.log('User from storage ' + user);
+      this.keycloakService.getUserChangedSubscription()
+      .subscribe(user => {
+
+        if (user === null || user.preferred_username === 'guest') {
+          this.guest = true;
+          if (this.viewType === 'full') {
+          }
+        } else {
+          this.guest = false;
+        }
         this.customer = user;
-        this.orderService.setCustomer(user);
         loader.dismiss();
-      })
-      .catch(err => {
+      }, err => {
         loader.dismiss();
       });
     });
@@ -127,31 +162,36 @@ export class CartComponent implements OnInit {
   }
 
   continue(deliveryType) {
-    let grandtotal = 0;
-    grandtotal = grandtotal + this.storeSetting.deliveryCharge + this.cart.totalPrice;
-    const order: Order = {
-      orderLines: this.orderLines,
-      grandTotal: grandtotal,
-      email: this.customer.email,
-      storeId: this.cart.storeId,
-      customerId: this.customer.preferred_username
-    };
-    console.log('Order is in continue ', order);
-    this.orderService.setShop(this.store);
-    this.orderService.setOrder(order);
-    this.orderService.setDeliveryType(deliveryType);
-    this.orderService.setDeliveryCharge(this.storeSetting.deliveryCharge);
-    this.util.createLoader().then(loader => {
-      loader.present();
-      this.orderService.initiateOrder().subscribe(resource => {
-      this.orderService.setResource(resource);
-      loader.dismiss();
-      this.orderService.order.orderId = resource.orderId;
-      console.log('Next task name is ' + resource.nextTaskId + ' Next task name '
-       + resource.nextTaskName + ' selfid ' + resource.selfId + ' order id is ' + resource.orderId);
-      this.navController.navigateForward('/checkout');
-    }, (error) => {console.log('An error has occured while initiating the order ', error); loader.dismiss(); } );
+
+    this.loginModal(() => {
+      let grandtotal = 0;
+      grandtotal = grandtotal + this.storeSetting.deliveryCharge + this.cart.totalPrice;
+      const order: Order = {
+        orderLines: this.orderLines,
+        grandTotal: grandtotal,
+        email: this.customer.email,
+        storeId: this.cart.storeId,
+        customerId: this.customer.preferred_username
+      };
+      this.logger.info('Order is in continue ', order);
+      this.orderService.setShop(this.store);
+      this.orderService.setOrder(order);
+      this.orderService.setDeliveryType(deliveryType);
+      this.orderService.setDeliveryCharge(this.storeSetting.deliveryCharge);
+      this.util.createLoader().then(loader => {
+        loader.present();
+        this.orderService.initiateOrder().subscribe(resource => {
+        this.orderService.setResource(resource);
+        loader.dismiss();
+        this.orderService.order.orderId = resource.orderId;
+        this.logger.info('Next task name is ' + resource.nextTaskId + ' Next task name '
+         + resource.nextTaskName + ' selfid ' + resource.selfId + ' order id is ' + resource.orderId);
+        this.navController.navigateForward('/checkout');
+      }, (error) => {this.logger.info('An error has occured while initiating the order ', error); loader.dismiss(); } );
+      });
     });
+
+
   }
 
   segmenChanged(event) {

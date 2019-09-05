@@ -42,6 +42,9 @@ import { AuxilaryProductCardComponent } from './auxilary-product-card/auxilary-p
 import { WaitInformatonPopoverComponent } from './wait-informaton-popover/wait-informaton-popover.component';
 import { OrderCardComponent } from './order-card/order-card.component';
 import { PaypalPaymentComponent } from './paypal-payment/paypal-payment.component';
+import { LoginSignupComponent } from './login-signup/login-signup.component';
+import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
+
 
 
 
@@ -86,7 +89,8 @@ import { PaypalPaymentComponent } from './paypal-payment/paypal-payment.componen
     OrderCardComponent,
     BraintreeCardPaymentComponent,
     RazorpayPaymentComponent,
-    PaypalPaymentComponent
+    PaypalPaymentComponent,
+    LoginSignupComponent
 
   ],
 
@@ -95,7 +99,9 @@ import { PaypalPaymentComponent } from './paypal-payment/paypal-payment.componen
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule
+    RouterModule,
+    InternationalPhoneNumberModule
+
   ],
 
   exports: [
@@ -133,7 +139,8 @@ import { PaypalPaymentComponent } from './paypal-payment/paypal-payment.componen
     OrderCardComponent,
     BraintreeCardPaymentComponent,
     RazorpayPaymentComponent,
-    PaypalPaymentComponent
+    PaypalPaymentComponent,
+    LoginSignupComponent
 
   ],
 
@@ -158,8 +165,8 @@ import { PaypalPaymentComponent } from './paypal-payment/paypal-payment.componen
     OrderCardComponent,
     BraintreeCardPaymentComponent,
     RazorpayPaymentComponent,
-    PaypalPaymentComponent
-
+    PaypalPaymentComponent,
+    LoginSignupComponent
   ]
 })
 export class ComponentsModule { }

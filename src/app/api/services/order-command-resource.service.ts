@@ -22,6 +22,7 @@ import { DeliveryInfo } from '../models/delivery-info';
 })
 class OrderCommandResourceService extends __BaseService {
   static readonly updateAddressUsingPUTPath = '/api/command/addresses';
+  static readonly deleteAddressUsingDELETEPath = '/api/command/addresses/{id}';
   static readonly updateNotificationUsingPUTPath = '/api/command/notifications';
   static readonly initiateOrderUsingPOSTPath = '/api/command/order/initiateOrder';
   static readonly createAddressUsingPOSTPath = '/api/command/orders/addresses';
@@ -69,6 +70,40 @@ class OrderCommandResourceService extends __BaseService {
   updateAddressUsingPUT(addressDTO: AddressDTO): __Observable<AddressDTO> {
     return this.updateAddressUsingPUTResponse(addressDTO).pipe(
       __map(_r => _r.body as AddressDTO)
+    );
+  }
+
+  /**
+   * @param id id
+   */
+  deleteAddressUsingDELETEResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/api/command/addresses/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param id id
+   */
+  deleteAddressUsingDELETE(id: number): __Observable<null> {
+    return this.deleteAddressUsingDELETEResponse(id).pipe(
+      __map(_r => _r.body as null)
     );
   }
 
