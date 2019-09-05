@@ -1,3 +1,4 @@
+import { NGXLogger } from 'ngx-logger';
 import { Util } from './../../services/util';
 import { RatingReview } from './../../api/models/rating-review';
 import { Component, OnInit, Input } from '@angular/core';
@@ -41,6 +42,7 @@ export class ReviewComponent implements OnInit {
     private commandResource: CommandResourceService,
     private storage: Storage,
     private util: Util,
+    private logger: NGXLogger,
     private keycloak: KeycloakService,
     private modalController: ModalController
   ) { }
@@ -65,7 +67,7 @@ export class ReviewComponent implements OnInit {
   getUser() {
     this.keycloak.getUserChangedSubscription()
     .subscribe(user => {
-      if(user !== null) {
+      if (user !== null) {
         if (user.preferred_username === 'guest') {
           this.guest = true;
         } else {
@@ -79,7 +81,7 @@ export class ReviewComponent implements OnInit {
 
   updateRating(event) {
     this.rate.rating = event;
-    console.log(this.rate.rating);
+    this.logger.info(this.rate.rating);
   }
 
   getRatingReview(i) {
@@ -91,7 +93,7 @@ export class ReviewComponent implements OnInit {
     .subscribe(
       result => {
         this.showReviewLoading = false;
-        console.log('Got rating' , result.content);
+        this.logger.info('Got rating' , result.content);
         ++i;
         if (result.totalPages === i) {
           this.toggleInfiniteScroll();
@@ -101,12 +103,12 @@ export class ReviewComponent implements OnInit {
           this.queryResource.findCustomerByReferenceUsingGET(rr.review.userName)
           .subscribe(data => {
             this.customers.push(data);
-          })
+          });
         });
       },
       err => {
         this.showReviewLoading = false;
-        console.log('Error fetching review data', err);
+        this.logger.info('Error fetching review data', err);
       }
     );
   }
@@ -124,7 +126,7 @@ export class ReviewComponent implements OnInit {
           .createRatingAndReviewUsingPOST({ ratingReview: raterev })
           .subscribe(
             result => {
-              console.log(result);
+              this.logger.info(result);
               this.getRatingReview(0);
               this.rateReviews = [];
               this.review.review = '';

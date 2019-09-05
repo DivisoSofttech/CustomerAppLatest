@@ -1,3 +1,4 @@
+import { NGXLogger } from 'ngx-logger';
 import { DeliveryItemDetailsComponent } from './../delivery-item-details/delivery-item-details.component';
 import { Storage } from '@ionic/storage';
 import { Order } from './../../api/models/order';
@@ -57,6 +58,7 @@ export class CartComponent implements OnInit {
     private keycloakService: KeycloakService,
     private modalController: ModalController,
     private navController: NavController,
+    private logger: NGXLogger,
     private storage: Storage,
     private util: Util,
     private orderCommandResource: OrderCommandResourceService
@@ -173,7 +175,7 @@ export class CartComponent implements OnInit {
         storeId: this.cart.storeId,
         customerId: this.customer.preferred_username
       };
-      console.log('Order is in continue ', order);
+      this.logger.info('Order is in continue ', order);
       this.orderService.setShop(this.store);
       this.orderService.setOrder(order);
       this.orderService.setDeliveryType(deliveryType);
@@ -184,10 +186,10 @@ export class CartComponent implements OnInit {
         this.orderService.setResource(resource);
         loader.dismiss();
         this.orderService.order.orderId = resource.orderId;
-        console.log('Next task name is ' + resource.nextTaskId + ' Next task name '
+        this.logger.info('Next task name is ' + resource.nextTaskId + ' Next task name '
          + resource.nextTaskName + ' selfid ' + resource.selfId + ' order id is ' + resource.orderId);
         this.navController.navigateForward('/checkout');
-      }, (error) => {console.log('An error has occured while initiating the order ', error); loader.dismiss(); } );
+      }, (error) => {this.logger.info('An error has occured while initiating the order ', error); loader.dismiss(); } );
       });
     });
 

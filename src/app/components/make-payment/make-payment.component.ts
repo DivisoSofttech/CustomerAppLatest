@@ -1,3 +1,4 @@
+import { NGXLogger } from 'ngx-logger';
 import { OrderService } from 'src/app/services/order.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { OrderLine } from 'src/app/api/models';
@@ -23,6 +24,7 @@ export class MakePaymentComponent implements OnInit {
 constructor(
     private modalController: ModalController,
     private navController: NavController,
+    private logger: NGXLogger,
     private orderService: OrderService,
     private platform: Platform,
     private paymentService: PaymentCommandResourceService
@@ -45,10 +47,10 @@ dismiss() {
 ngOnInit() {
     this.toBePaid = this.orderService.order.grandTotal;
     if (this.platform.is('android') || this.platform.is('ios')) {
-      console.log(' android ios platform');
+      this.logger.info(' android ios platform');
       this.paymentOptions.push({name: 'Paypal Wallet/Card', value: 'paypal'});
     } else if (this.platform.is('desktop') || this.platform.is('pwa')) {
-      console.log('This is a browser platform ');
+      this.logger.info('This is a browser platform ');
       this.paymentOptions.push({name: 'Paypal Wallet', value: 'paypal'});
     }
   }

@@ -1,3 +1,4 @@
+import { NGXLogger } from 'ngx-logger';
 import { Util } from './services/util';
 import { KeycloakService } from './services/security/keycloak.service';
 import { Component } from '@angular/core';
@@ -39,6 +40,7 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private util: Util,
+    private logger: NGXLogger,
     private storage: Storage,
     private keycloakService: KeycloakService,
     private menuController: MenuController
@@ -57,12 +59,12 @@ export class AppComponent {
   getUser() {
     this.keycloakService.getUserChangedSubscription()
     .subscribe(user => {
-      if(user !== null) {
+      if (user !== null) {
         if (user.preferred_username === 'guest') {
-          console.log('Show Login');
+          this.logger.info('Show Login');
           this.guest = true;
         } else {
-          console.log('Show Logout');
+          this.logger.info('Show Logout');
           this.guest = false;
         }
       } else {

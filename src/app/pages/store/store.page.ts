@@ -183,7 +183,7 @@ export class StorePage implements OnInit {
   }
 
   toggleFabButton(val) {
-    console.log(val , "----");
+    this.logger.info(val, '----');
     this.logger.info('Hiding Fab Button');
     this.showCatgeoryFilterFab = val;
   }

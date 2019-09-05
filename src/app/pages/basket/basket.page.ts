@@ -1,3 +1,4 @@
+import { NGXLogger } from 'ngx-logger';
 import { Store } from './../../api/models/store';
 import { QueryResourceService } from 'src/app/api/services';
 import { Storage } from '@ionic/storage';
@@ -15,17 +16,18 @@ export class BasketPage implements OnInit {
 
   constructor(
     private cart: CartService,
-    private  queryResource: QueryResourceService
+    private  queryResource: QueryResourceService,
+    private logger: NGXLogger,
   ) { }
 
   ngOnInit() {
-    if(this.cart.currentShop !== undefined) {
+    if (this.cart.currentShop !== undefined) {
       this.getStore();
     }
   }
 
   getStore() {
-    console.log('Basket Page Getting Store' ,     this.cart.currentShop.regNo);
+    this.logger.info('Basket Page Getting Store' ,     this.cart.currentShop.regNo);
     this.queryResource.findStoreByRegisterNumberUsingGET(this.cart.currentShop.regNo)
     .subscribe(store => {
       this.store = store;

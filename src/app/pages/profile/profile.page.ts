@@ -97,7 +97,7 @@ export class ProfilePage implements OnInit {
         role: 'cancel',
         cssClass: 'secondary',
         handler: (blah) => {
-          console.log('Confirm Cancel: blah');
+          this.logger.info('Confirm Cancel: blah');
           this.alertController.dismiss();
         }
       }, {

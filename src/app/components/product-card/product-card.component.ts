@@ -110,7 +110,7 @@ export class ProductCardComponent implements OnInit {
   }
 
   customAdd(stock) {
-    console.log(stock);
+    this.logger.info(stock);
   }
 
   add(i, stock: StockCurrent) {

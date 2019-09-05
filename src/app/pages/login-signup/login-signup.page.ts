@@ -1,3 +1,4 @@
+import { NGXLogger } from 'ngx-logger';
 
 import { KeycloakService } from './../../services/security/keycloak.service';
 import { IonSlides, MenuController } from '@ionic/angular';
@@ -28,6 +29,7 @@ export class LoginSignupPage implements OnInit {
     private commandResourceService: CommandResourceService,
     private util: Util,
     private apiConfiguration: ApiConfiguration,
+    private logger: NGXLogger,
     private storage: Storage
   ) {}
 
@@ -87,19 +89,19 @@ export class LoginSignupPage implements OnInit {
         this.util.navigateRoot();
       })
       .catch(() => {
-        console.log('Not Logged In');
+        this.logger.info('Not Logged In');
       });
   }
 
   createUserIfNotExists(reference) {
     this.util.createLoader().then(loader => {
       loader.present();
-      console.log('Checking if User Exists in MicroService Else Create');
+      this.logger.info('Checking if User Exists in MicroService Else Create');
       this.queryResourceService
         .findCustomerByReferenceUsingGET(reference)
         .subscribe(
           customer => {
-            console.log('Got Customer', customer);
+            this.logger.info('Got Customer', customer);
             this.storage.set('customer' , customer);
             loader.dismiss();
             this.util.navigateRoot();
@@ -119,13 +121,13 @@ export class LoginSignupPage implements OnInit {
                 })
                 .subscribe(
                   customer => {
-                    console.log('Customer Created', customer);
+                    this.logger.info('Customer Created', customer);
                     this.storage.set('customer' , customer);
                     loader.dismiss();
                     this.util.navigateRoot();
                   },
                   eror => {
-                    console.log(eror);
+                    this.logger.info(eror);
                     loader.dismiss();
                     this.util.createToast('Server is Unreachable');
                   }
@@ -186,4 +188,3 @@ export class LoginSignupPage implements OnInit {
     this.util.navigateHome();
   }
 }
-

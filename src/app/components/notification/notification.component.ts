@@ -41,7 +41,7 @@ export class NotificationComponent implements OnInit  , OnDestroy {
   }
 
   async doRefresh(event) {
-    console.log('Dorefresh is working');
+    this.logger.info('Dorefresh is working');
     await this.getUser();
     event.target.complete();
   }

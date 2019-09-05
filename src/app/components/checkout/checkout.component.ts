@@ -35,15 +35,15 @@ export class CheckoutComponent implements OnInit {
 
   ngOnInit() {
     this.deliveryType = this.orderService.deliveryInfo.deliveryType;
-    console.log(this.orderService.deliveryInfo);
-    console.log(this.orderService.order);
-    console.log(this.orderService.customer);
+    this.logger.info(this.orderService.deliveryInfo);
+    this.logger.info(this.orderService.order);
+    this.logger.info(this.orderService.customer);
     this.getCustomer();
     this.getOrderDetails();
   }
 
   getCustomer() {
-    console.log(this.orderService.customer);
+    this.logger.info(this.orderService.customer);
     this.customer = this.orderService.customer;
   }
 
@@ -61,7 +61,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   addressSelectedEvent(event) {
-    console.log(event);
+    this.logger.info(event);
     this.setAddress(event);
   }
 
@@ -72,14 +72,14 @@ export class CheckoutComponent implements OnInit {
       this.orderService.collectDeliveryInfo().subscribe((resource) => {
         loader.dismiss();
         this.orderService.resource = resource;
-        console.log('Next task name is ' + resource.nextTaskId + ' Next task name '
+        this.logger.info('Next task name is ' + resource.nextTaskId + ' Next task name '
         + resource.nextTaskName + ' selfid ' + resource.selfId + ' order id is ' + resource.orderId);
         if ( resource.nextTaskName === 'Accept Order') {
           this.presentWaitInfoPopover();
         } else {
           this.presentmakePayment();
         }
-      }, (err) => { console.log('oops something went wrong while collecting deliveryinfo'); loader.dismiss(); });
+      }, (err) => { this.logger.info('oops something went wrong while collecting deliveryinfo'); loader.dismiss(); });
     });
   }
 

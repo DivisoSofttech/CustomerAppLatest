@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ModalController, PopoverController } from '@ionic/angular';
 import { OrderLine, Product, AuxilaryOrderLine } from 'src/app/api/models';
 import { CartService } from 'src/app/services/cart.service';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-show-auxilary-modal',
@@ -22,7 +23,8 @@ export class ShowAuxilaryModalComponent implements OnInit {
 
   constructor(
     private popover: PopoverController,
-    private cart: CartService
+    private cart: CartService,
+    private logger: NGXLogger,
   ) { }
 
   ngOnInit() {
@@ -42,13 +44,13 @@ export class ShowAuxilaryModalComponent implements OnInit {
 
   auxilaryUpated(event: AuxilaryOrderLine) {
 
-      const tempArray = this.auxilaryOrderLines.find(al => al.productId == event.productId);
-      if(tempArray !== undefined) {
+      const tempArray = this.auxilaryOrderLines.find(al => al.productId === event.productId);
+      if (tempArray !== undefined) {
           const i = this.auxilaryOrderLines.indexOf(event);
           this.auxilaryOrderLines[i] = event;
-          console.log('Updating Auxilary OrderLine' , this.auxilaryOrderLines);
+          this.logger.info('Updating Auxilary OrderLine' , this.auxilaryOrderLines);
       } else {
-          console.log('Adding Auxilary OrderLine' , this.auxilaryOrderLines);
+          this.logger.info('Adding Auxilary OrderLine' , this.auxilaryOrderLines);
           this.auxilaryOrderLines.push(event);
       }
   }
@@ -61,7 +63,7 @@ export class ShowAuxilaryModalComponent implements OnInit {
     });
     this.orderLine.requiedAuxilaries = this.auxilaryOrderLines;
     this.orderLine.total = this.orderLine.pricePerUnit + total;
-    console.log('Adding Order Line ' , this.orderLine);
+    this.logger.info('Adding Order Line ' , this.orderLine);
     this.cart.addOrder(this.orderLine);
     this.dismiss();
 

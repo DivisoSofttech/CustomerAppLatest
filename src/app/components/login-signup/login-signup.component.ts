@@ -1,3 +1,4 @@
+import { NGXLogger } from 'ngx-logger';
 import { KeycloakService } from './../../services/security/keycloak.service';
 import { IonSlides, MenuController, ModalController } from '@ionic/angular';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -26,6 +27,7 @@ export class LoginSignupComponent implements OnInit {
     private queryResourceService: QueryResourceService,
     private commandResourceService: CommandResourceService,
     private util: Util,
+    private logger: NGXLogger,
     private apiConfiguration: ApiConfiguration,
     private storage: Storage,
     private modalController: ModalController
@@ -87,19 +89,19 @@ export class LoginSignupComponent implements OnInit {
         this.util.navigateRoot();
       })
       .catch(() => {
-        console.log('Not Logged In');
+        this.logger.info('Not Logged In');
       });
   }
 
   createUserIfNotExists(reference) {
     this.util.createLoader().then(loader => {
       loader.present();
-      console.log('Checking if User Exists in MicroService Else Create');
+      this.logger.info('Checking if User Exists in MicroService Else Create');
       this.queryResourceService
         .findCustomerByReferenceUsingGET(reference)
         .subscribe(
           customer => {
-            console.log('Got Customer', customer);
+            this.logger.info('Got Customer', customer);
             this.storage.set('customer' , customer);
             loader.dismiss();
             this.dismissTrue();
@@ -119,13 +121,13 @@ export class LoginSignupComponent implements OnInit {
                 })
                 .subscribe(
                   customer => {
-                    console.log('Customer Created', customer);
+                    this.logger.info('Customer Created', customer);
                     this.storage.set('customer' , customer);
                     loader.dismiss();
                     this.dismissTrue();
                   },
                   eror => {
-                    console.log(eror);
+                    this.logger.info(eror);
                     loader.dismiss();
                     this.util.createToast('Server is Unreachable');
                   }
