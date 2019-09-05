@@ -106,9 +106,9 @@ export class BraintreeCardPaymentComponent implements OnInit {
         console.log('Response is ', response);
         await this.orderService.processPayment(response.transactionId, 'success', 'braintree')
         .subscribe(resource => {
-          loader.dismiss();
           this.orderService.resource = resource;
           this.displayModalService.presentPaymentSuccessfullInfo();
+          loader.dismiss();
         }, (err) => {
           loader.dismiss();
           this.util.createToast('Something went wrong try again', 'information-circle-outline');

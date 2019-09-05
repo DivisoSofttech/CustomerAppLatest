@@ -85,9 +85,9 @@ export class PaypalPaymentComponent implements OnInit {
                     loader.present();
                     this.orderService.processPayment(res.response.id, 'success', 'paypal')
                     .subscribe(resource => {
-                      loader.dismiss();
                       this.orderService.resource = resource;
                       this.displayModalService.presentPaymentSuccessfullInfo();
+                      loader.dismiss();
                     }, (err) => {
                       loader.dismiss();
                       this.util.createToast('Something went wrong try again', 'information-circle-outline');

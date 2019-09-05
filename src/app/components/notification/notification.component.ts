@@ -50,7 +50,7 @@ export class NotificationComponent implements OnInit  , OnDestroy {
         assignee: this.user.preferred_username,
         name: 'Process Payment'
       }).subscribe(data => {
-        //this.showLoading = false;
+        this.showLoading = false;
         this.logger.info('Got Tasks ' , data);
         this.openTasks = data;
       },

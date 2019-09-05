@@ -37,9 +37,9 @@ export class ProcessPaymentComponent implements OnInit {
       loader.present();
       this.orderService.processPayment('pay-cod', 'success', 'cod')
         .subscribe(resource => {
-          loader.dismiss();
           this.orderService.resource = resource;
           this.presentPaymentSuccessfullInfo();
+          loader.dismiss();
         }, (err) => {
           console.log('Error occured cod payment');
           loader.dismiss();

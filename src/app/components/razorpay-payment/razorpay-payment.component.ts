@@ -51,9 +51,9 @@ export class RazorpayPaymentComponent implements OnInit {
           loader.present();
           that.processPayment(success.razorpay_payment_id, 'success', 'razorpay')
           .subscribe(resource => {
-            loader.dismiss();
             that.resource = resource;
             displayService.presentPaymentSuccessfullInfo();
+            loader.dismiss();
           }, (err) => {loader.dismiss(); displayService.navigateToBasket(); });
           console.log(
             'Payment id in callback function ' +

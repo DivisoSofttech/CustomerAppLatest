@@ -15,8 +15,8 @@ export class MakePaymentComponent implements OnInit {
 
  paymentOptions = [
    {name: 'Cash On Delivery', value: 'cod'},
-   {name: 'Debit/Credit Cards', value: 'card'},
-   {name: 'Braintree', value: 'braintree'}
+  // {name: 'Debit/Credit Cards', value: 'card'},
+   {name: 'Credit/Debit Card', value: 'braintree'}
  ];
 
 constructor(
@@ -47,7 +47,7 @@ ngOnInit() {
       this.paymentOptions.push({name: 'Paypal Wallet/Card', value: 'paypal'});
     } else if (this.platform.is('desktop') || this.platform.is('pwa')) {
       console.log('This is a browser platform ');
-      this.paymentOptions.push({name: 'Paypal Wallet', value: 'paypal'});
+      // this.paymentOptions.push({name: 'Paypal Wallet', value: 'paypal'});
     }
   }
 
