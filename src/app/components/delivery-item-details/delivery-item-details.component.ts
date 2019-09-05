@@ -133,13 +133,13 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
   }
 
   getOffers() {
-    console.log('Checking offer eligibility using price ', this.totalPrice);
+    this.logger.info('Checking offer eligibility using price ', this.totalPrice);
     this.orderService.claimMyOffer(this.totalPrice).subscribe(response => {
-      console.log('response for cliam offer ' , response);
+      this.logger.info('response for cliam offer ' , response);
       if (response.orderDiscountAmount === null) {
-        console.log('No offers available');
+        this.logger.info('No offers available');
       } else {
-        console.log('One offer available ', response.promoCode);
+        this.logger.info('One offer available ', response.promoCode);
         this.offer = response;
         this.totalPrice = response.orderDiscountTotal;
         const myOffer: Offer = {

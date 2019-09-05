@@ -1,3 +1,4 @@
+import { NGXLogger } from 'ngx-logger';
 import { Component, OnInit, Input } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services';
 import { PopoverController} from '@ionic/angular';
@@ -19,6 +20,7 @@ export class HotelMenuPopoverComponent implements OnInit {
   constructor(
     private popoverController: PopoverController,
     private queryResourceService: QueryResourceService,
+    private logger: NGXLogger,
     private util: Util
   ) {}
 
@@ -46,7 +48,7 @@ export class HotelMenuPopoverComponent implements OnInit {
     })
       .subscribe(data => {
         loader.dismiss();
-        console.log('Category ' , this.selectedCategory , ' Produts ' , data);
+        this.logger.info('Category ' , this.selectedCategory , ' Produts ' , data);
         data.content.forEach(p => {
           this.products.push(p);
         });

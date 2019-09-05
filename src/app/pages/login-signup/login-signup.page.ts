@@ -1,3 +1,4 @@
+import { NGXLogger } from 'ngx-logger';
 
 import { KeycloakService } from './../../services/security/keycloak.service';
 import { IonSlides, MenuController } from '@ionic/angular';
@@ -19,4 +20,3 @@ export class LoginSignupPage implements OnInit {
   
   ngOnInit() {}
 }
-
