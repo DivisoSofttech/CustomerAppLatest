@@ -30,6 +30,12 @@
     cursor: pointer;
 }
 
+.text-overflow-hidden {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 125px;
+}
+
 .hidden {
     display: none;
 }

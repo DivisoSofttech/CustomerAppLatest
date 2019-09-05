@@ -2,7 +2,7 @@
   <ion-buttons slot="start" *ngIf="!showSearchBar && !showPlaceSearch">
     <ion-menu-button></ion-menu-button>
     <ion-item lines="none" no-margin>
-      <ion-label (click)="togglePlaceSearch()">{{
+      <ion-label (click)="togglePlaceSearch()" class="text-overflow-hidden">{{
         currentPlaceName
       }}</ion-label>
       <ion-icon name="locate" (click)="getCurrentLocation()"></ion-icon>
