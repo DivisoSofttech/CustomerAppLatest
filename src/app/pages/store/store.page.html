@@ -84,8 +84,8 @@
     </ion-slide>
     <ion-slide>
       <ion-grid>
-        <ion-row>
-          <ion-col size="12">
+        <ion-row *ngIf="store !== undefined">
+          <ion-col size="12" *ngIf="store.location !== null">
           <app-map
           [showActiveLocation]="'false'"></app-map>
           </ion-col>

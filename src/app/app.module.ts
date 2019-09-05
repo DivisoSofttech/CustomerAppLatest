@@ -29,6 +29,7 @@ import { LoggerModule } from 'ngx-logger';
 import {environment} from '../environments/environment';
 import { PayPal } from '@ionic-native/paypal/ngx';
 import { LocationStrategy, HashLocationStrategy, Location } from '@angular/common';
+import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 
 @NgModule({
 
@@ -60,6 +61,7 @@ import { LocationStrategy, HashLocationStrategy, Location } from '@angular/commo
   providers: [
     Camera,
     StatusBar,
+    ScreenOrientation,
     Util,
     SplashScreen,
     PayPal,

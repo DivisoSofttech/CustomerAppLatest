@@ -1,6 +1,6 @@
 import { KeycloakService } from './../../services/security/keycloak.service';
 import { IonSlides, MenuController, ModalController } from '@ionic/angular';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { CommandResourceService } from 'src/app/api/services';
 import { Util } from 'src/app/services/util';
@@ -16,19 +16,22 @@ export class LoginSignupComponent implements OnInit {
   username = '';
   password = '';
   email = '';
+  phone = '';
   loginTab = true;
   value = 'login';
-  phone: number;
+
   @ViewChild('slides', null) slides: IonSlides;
+
+  @Input() type = 'page';
 
   constructor(
     private keycloakService: KeycloakService,
     private queryResourceService: QueryResourceService,
     private commandResourceService: CommandResourceService,
     private util: Util,
+    private modalController: ModalController,
     private apiConfiguration: ApiConfiguration,
-    private storage: Storage,
-    private modalController: ModalController
+    private storage: Storage
   ) {}
 
   ngOnInit() {
@@ -102,8 +105,12 @@ export class LoginSignupComponent implements OnInit {
             console.log('Got Customer', customer);
             this.storage.set('customer' , customer);
             loader.dismiss();
-            this.dismissTrue();
-          },
+            if(this.type === 'page') {
+              this.util.navigateRoot();
+            } else {
+              this.dismissTrue();
+            }
+  },
           err => {
             if (err.status === 500) {
               // Check if server is reachable
@@ -122,7 +129,11 @@ export class LoginSignupComponent implements OnInit {
                     console.log('Customer Created', customer);
                     this.storage.set('customer' , customer);
                     loader.dismiss();
-                    this.dismissTrue();
+                    if(this.type === 'page') {
+                      this.util.navigateRoot();
+                    } else {
+                      this.dismissTrue();
+                    }
                   },
                   eror => {
                     console.log(eror);

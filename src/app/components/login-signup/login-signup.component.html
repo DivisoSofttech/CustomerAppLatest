@@ -1,10 +1,13 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Login</ion-title>
-    <ion-buttons slot="end">
+    <ion-buttons slot="end" *ngIf="type!=='page'">
       <ion-button color="primary" (click)="dismiss()" >
         <ion-icon name="close"></ion-icon>
       </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end" *ngIf="type==='page'">
+      <ion-button color="primary" (click)="navigateRoot()" >SKIP</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -64,6 +67,9 @@
               <ion-label color="medium" position="floating">Email</ion-label>
               <ion-input [(ngModel)]="email" background="light"></ion-input>
             </ion-item>
+                <!-- <form name="sample-form"  #f="ngForm">
+                    <international-phone-number [(ngModel)]="phone" placeholder="Enter phone number" [maxlength]="20" [defaultCountry]="'sg'" [required]="true" #phoneNumber="ngModel" name="phone_number" [allowedCountries]="['sg','in','ir']"></international-phone-number>
+                </form> -->
             <ion-item class="item-inner">
               <ion-label color="medium" position="floating">Password</ion-label>
               <ion-input [(ngModel)]="password" type="password"></ion-input>

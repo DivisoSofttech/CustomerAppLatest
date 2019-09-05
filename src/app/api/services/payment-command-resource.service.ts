@@ -10,6 +10,7 @@ import { map as __map, filter as __filter } from 'rxjs/operators';
 import { PaymentExecutionRequest } from '../models/payment-execution-request';
 import { PaymentInitiateResponse } from '../models/payment-initiate-response';
 import { PaymentInitiateRequest } from '../models/payment-initiate-request';
+import { CommandResource } from '../models/command-resource';
 import { PaymentDTO } from '../models/payment-dto';
 import { OrderResponse } from '../models/order-response';
 import { OrderRequest } from '../models/order-request';
@@ -160,7 +161,7 @@ class PaymentCommandResourceService extends __BaseService {
    *
    * @return OK
    */
-  processPaymentUsingPOSTResponse(params: PaymentCommandResourceService.ProcessPaymentUsingPOSTParams): __Observable<__StrictHttpResponse<PaymentDTO>> {
+  processPaymentUsingPOSTResponse(params: PaymentCommandResourceService.ProcessPaymentUsingPOSTParams): __Observable<__StrictHttpResponse<CommandResource>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -180,7 +181,7 @@ class PaymentCommandResourceService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<PaymentDTO>;
+        return _r as __StrictHttpResponse<CommandResource>;
       })
     );
   }
@@ -195,9 +196,9 @@ class PaymentCommandResourceService extends __BaseService {
    *
    * @return OK
    */
-  processPaymentUsingPOST(params: PaymentCommandResourceService.ProcessPaymentUsingPOSTParams): __Observable<PaymentDTO> {
+  processPaymentUsingPOST(params: PaymentCommandResourceService.ProcessPaymentUsingPOSTParams): __Observable<CommandResource> {
     return this.processPaymentUsingPOSTResponse(params).pipe(
-      __map(_r => _r.body as PaymentDTO)
+      __map(_r => _r.body as CommandResource)
     );
   }
 

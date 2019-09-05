@@ -56,7 +56,8 @@ export class ReviewComponent implements OnInit {
 
   async loginModal() {
       const modal = await this.modalController.create({
-        component: LoginSignupComponent
+        component: LoginSignupComponent,
+        componentProps: {type: 'modal'}
       });
 
       modal.present();

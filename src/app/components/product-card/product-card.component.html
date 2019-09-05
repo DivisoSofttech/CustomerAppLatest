@@ -21,7 +21,10 @@
         <ion-row (click)="toggleDescription()">
           <ion-col class="title-card" margin-top padding-top>
             <ion-card-title>{{ stockCurrent.product.name }}</ion-card-title>
-            <ion-text [ngClass]="discount!=null && discount.rate !== null && discount.rate > 0?'strike-through':''"><strong>&#8364;{{ stockCurrent.product.sellingPrice }}</strong></ion-text>
+
+            <ion-text *ngIf="!(discount!=null && discount.rate !== null && discount.rate > 0)"><strong>&#8364;{{ stockCurrent.product.sellingPrice }}</strong></ion-text>
+            <ion-text class="strike-through" *ngIf="discount!=null && discount.rate !== null && discount.rate > 0"><strong><s>&#8364;{{ stockCurrent.product.sellingPrice }}</s></strong></ion-text>
+
             <ion-text class="margin-left-25" *ngIf="(discount!=null && discount.rate !== null && discount.rate > 0)"><strong>&#8364;{{ stockCurrent.sellPrice }}</strong></ion-text>
           </ion-col>
         </ion-row>

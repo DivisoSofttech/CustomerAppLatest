@@ -39,8 +39,9 @@ import { ShowAuxilaryModalComponent } from './show-auxilary-modal/show-auxilary-
 import { AuxilaryProductCardComponent } from './auxilary-product-card/auxilary-product-card.component';
 import { WaitInformatonPopoverComponent } from './wait-informaton-popover/wait-informaton-popover.component';
 import { OrderCardComponent } from './order-card/order-card.component';
-import { LoginSignupPage } from '../pages/login-signup/login-signup.page';
 import { LoginSignupComponent } from './login-signup/login-signup.component';
+import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
+
 
 
 
@@ -92,7 +93,9 @@ import { LoginSignupComponent } from './login-signup/login-signup.component';
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule
+    RouterModule,
+    InternationalPhoneNumberModule
+
   ],
 
   exports: [

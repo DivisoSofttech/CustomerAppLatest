@@ -78,10 +78,10 @@ class QueryResourceService extends __BaseService {
   static readonly findOrdersByCustomerIdUsingGETPath = '/api/query/ordersByCustomerId/{customerId}';
   static readonly findAndSortProductByPriceUsingGETPath = '/api/query/productByPrice/{from}/{to}';
   static readonly findProductUsingGETPath = '/api/query/products/{id}';
-  static readonly findRatingCountUsingGETPath = '/api/query/rating-count';
   static readonly findRatingByStoreIdUsingGETPath = '/api/query/rating/{storeId}';
   static readonly findRatingByStoreIdAndCustomerNameUsingGETPath = '/api/query/rating/{storeId}/{name}';
   static readonly findRatingByCustomerNameUsingGETPath = '/api/query/ratingByName/{name}';
+  static readonly findReviewCountByStoreIdUsingGETPath = '/api/query/review-count';
   static readonly findReviewByStoreIdAndCustomerNameUsingGETPath = '/api/query/review/{storeId}/{name}';
   static readonly findReviewsByStoreIdUsingGETPath = '/api/query/review/{userName}';
   static readonly findAllReviewsUsingGETPath = '/api/query/reviews';
@@ -1675,58 +1675,6 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
-   * @param params The `QueryResourceService.FindRatingCountUsingGETParams` containing the following parameters:
-   *
-   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-   *
-   * - `size`: Size of a page
-   *
-   * - `page`: Page number of the requested page
-   *
-   * @return OK
-   */
-  findRatingCountUsingGETResponse(params: QueryResourceService.FindRatingCountUsingGETParams): __Observable<__StrictHttpResponse<Array<Entry>>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
-    if (params.size != null) __params = __params.set('size', params.size.toString());
-    if (params.page != null) __params = __params.set('page', params.page.toString());
-    let req = new HttpRequest<any>(
-      'GET',
-      this.rootUrl + `/api/query/rating-count`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<Array<Entry>>;
-      })
-    );
-  }
-  /**
-   * @param params The `QueryResourceService.FindRatingCountUsingGETParams` containing the following parameters:
-   *
-   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-   *
-   * - `size`: Size of a page
-   *
-   * - `page`: Page number of the requested page
-   *
-   * @return OK
-   */
-  findRatingCountUsingGET(params: QueryResourceService.FindRatingCountUsingGETParams): __Observable<Array<Entry>> {
-    return this.findRatingCountUsingGETResponse(params).pipe(
-      __map(_r => _r.body as Array<Entry>)
-    );
-  }
-
-  /**
    * @param storeId storeId
    * @return OK
    */
@@ -1842,6 +1790,42 @@ class QueryResourceService extends __BaseService {
   findRatingByCustomerNameUsingGET(name: string): __Observable<UserRating> {
     return this.findRatingByCustomerNameUsingGETResponse(name).pipe(
       __map(_r => _r.body as UserRating)
+    );
+  }
+
+  /**
+   * @param storeId storeId
+   * @return OK
+   */
+  findReviewCountByStoreIdUsingGETResponse(storeId?: string): __Observable<__StrictHttpResponse<number>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    if (storeId != null) __params = __params.set('storeId', storeId.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/review-count`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'text'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return (_r as HttpResponse<any>).clone({ body: parseFloat((_r as HttpResponse<any>).body as string) }) as __StrictHttpResponse<number>
+      })
+    );
+  }
+  /**
+   * @param storeId storeId
+   * @return OK
+   */
+  findReviewCountByStoreIdUsingGET(storeId?: string): __Observable<number> {
+    return this.findReviewCountByStoreIdUsingGETResponse(storeId).pipe(
+      __map(_r => _r.body as number)
     );
   }
 
@@ -3377,27 +3361,6 @@ module QueryResourceService {
      * from
      */
     from: number;
-  }
-
-  /**
-   * Parameters for findRatingCountUsingGET
-   */
-  export interface FindRatingCountUsingGETParams {
-
-    /**
-     * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-     */
-    sort?: Array<string>;
-
-    /**
-     * Size of a page
-     */
-    size?: number;
-
-    /**
-     * Page number of the requested page
-     */
-    page?: number;
   }
 
   /**

@@ -109,7 +109,19 @@ export class AddressListComponent implements OnInit {
 
 
   deleteAddress(id) {
-    //
+    this.util.createLoader()
+    .then(loader => {
+      loader.present();
+      this.orderCommandResource.deleteAddressUsingDELETE(id)
+      .subscribe(data => {
+        this.util.createToast('Address Deleted');
+        this.addresses = this.addresses.filter(ad => ad.id !== id);
+        loader.dismiss();
+      },
+      err => {
+        loader.dismiss();
+      });
+    });
   }
 
   async addNewAddressModal() {
