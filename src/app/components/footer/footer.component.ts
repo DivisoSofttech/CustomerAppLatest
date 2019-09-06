@@ -46,21 +46,26 @@ export class FooterComponent implements OnInit , OnDestroy {
     .subscribe(data => {
       this.orderCount = data.length;
     });
-    this.getUser();
   }
 
-  getUser() {
+  getUser(success) {
     this.storage.get('user')
     .then(user =>  {
+      
       if (user !== null) {
         if (user.preferred_username === 'guest') {
           this.guest = true;
         } else {
+          
           this.guest = false;
         }
       } else {
         this.guest = true;
       }
+      if(success !== null) {
+        success();
+      }
+      
     });
   }
 
@@ -84,12 +89,15 @@ export class FooterComponent implements OnInit , OnDestroy {
 }
 
   goTo(url) {
+
     if (url === '/profile') {
-      if (this.guest) {
-        this.loginModal();
-      } else {
-        this.navController.navigateForward('/profile');
-      }
+      this.getUser(()=>{
+        if (this.guest) {
+          this.loginModal();
+        } else {
+          this.navController.navigateForward('/profile');
+        }
+      });
     } else {
       this.navController.navigateForward(url);
     }
