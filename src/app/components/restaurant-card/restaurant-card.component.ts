@@ -20,6 +20,8 @@ export class RestaurantCardComponent implements OnInit {
 
   rateReview =  0;
 
+  reviewCount = 0;
+
   deliveryTypes = [];
 
   deliveryInfos = [];
@@ -38,6 +40,11 @@ export class RestaurantCardComponent implements OnInit {
 
   ngOnInit() {
     this.timeNow = new Date();
+    this.queryResource.findReviewCountByStoreIdUsingGET(this.store.regNo).subscribe(
+      res => {
+        this.reviewCount = res;
+      }
+    );
     this.getStoreCategory();
     if (this.viewType === 'normal') {
       this.checkIfAlreadyFavourite();

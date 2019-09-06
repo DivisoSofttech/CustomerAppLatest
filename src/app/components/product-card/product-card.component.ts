@@ -168,7 +168,8 @@ export class ProductCardComponent implements OnInit {
       .subscribe(discount => {
         this.discount = discount;
         if (this.discount && this.discount.rate) {
-          this.stockCurrent.sellPrice -= Math.round(this.stockCurrent.product.sellingPrice * this.discount.rate) / 100;
+          this.stockCurrent.sellPrice =
+           Math.round((this.stockCurrent.sellPrice - (this.stockCurrent.product.sellingPrice * this.discount.rate / 100)) * 100) / 100;
         }
       });
   }
