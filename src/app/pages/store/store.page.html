@@ -1,115 +1,91 @@
 <ion-header>
-  <app-store-header
-    *ngIf="store != undefined"
-    [name]="store.name"
-    [storeId]="store.regNo"
-    [store]="store"
-    (searchEnable)="toggleFabButton($event)"
-  ></app-store-header>
+  <app-store-header *ngIf="store != undefined" [name]="store.name" [storeId]="store.regNo" [store]="store"
+    (searchEnable)="toggleFabButton($event)"></app-store-header>
 </ion-header>
 
 <ion-content>
-  <ion-fab class="animated animation-duration" [ngClass]="(currentSegment === 'menu' && showCatgeoryFilterFab) ? 'rotateIn' : 'rotateOut'" vertical="top" horizontal="end" slot="fixed">
+  <ion-fab class="animated animation-duration"
+    [ngClass]="(currentSegment === 'menu' && showCatgeoryFilterFab) ? 'rotateIn' : 'rotateOut'" vertical="top"
+    horizontal="end" slot="fixed">
     <ion-fab-button (click)="categoryListPopOver($event)">
       <ion-icon name="pizza"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
-  <app-loading
-              *ngIf="showRestaurantLoading === true"
-              [type]="'restaurant-detail'"
-  ></app-loading>
-  <app-restaurant-card
-    *ngIf="store != undefined"
-    [store]="store"
-    [viewType]="'detailedCard'"
-  ></app-restaurant-card>
+  <app-loading *ngIf="showRestaurantLoading === true" [type]="'restaurant-detail'"></app-loading>
+  <app-restaurant-card *ngIf="store != undefined" [store]="store" [viewType]="'detailedCard'"></app-restaurant-card>
+  <div class="bg-white">
 
-  <ion-segment
-    (ionChange)="segmentChanged($event)"
-    [(ngModel)]="currentSegment"
-  >
-    <ion-segment-button value="menu" checked>
-      <ion-label>Menu</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="reviews">
-      <ion-label>Reviews</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="info">
-      <ion-label>Info</ion-label>
-    </ion-segment-button>
-  </ion-segment>
+    <ion-segment (ionChange)="segmentChanged($event)" [(ngModel)]="currentSegment">
+      <ion-segment-button value="menu" checked>
+        <ion-label>Menu</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="reviews">
+        <ion-label>Reviews</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="info">
+        <ion-label>Info</ion-label>
+      </ion-segment-button>
+    </ion-segment>
 
-  <ion-slides (ionSlideDidChange)="slideChanged($event)">
-    <ion-slide>
-      <ion-grid no-padding>
-        <ion-row>
-          <ion-list *ngIf="store != undefined && showCategoryWiseProducts === false">
-            <app-product-card
-              *ngFor="let stockCurrent of stockCurrents"
-              [store]="store"
-              [stockCurrent]="stockCurrent"
-            ></app-product-card>
-          </ion-list>
-        </ion-row>
-        <ion-row *ngIf="showCategoryWiseProducts === true">
-          <ion-col size-lg="6" size-md="6" size="12" *ngFor="let category of categories" no-margin no-padding>
-          <ion-list>
-              <ion-item color="light" lines="none">
+    <ion-slides (ionSlideDidChange)="slideChanged($event)">
+      <ion-slide>
+        <ion-grid no-padding>
+          <ion-row>
+            <ion-list *ngIf="store != undefined && showCategoryWiseProducts === false">
+              <app-product-card *ngFor="let stockCurrent of stockCurrents" [store]="store"
+                [stockCurrent]="stockCurrent"></app-product-card>
+            </ion-list>
+          </ion-row>
+          <ion-row *ngIf="showCategoryWiseProducts === true">
+            <ion-col size-lg="6" size-md="6" size="12" *ngFor="let category of categories" no-margin no-padding>
+              <ion-list>
+                <ion-item color="light" lines="none">
                   <ion-avatar>
-                      <ion-img
-                      [src]="
-                        'data:' +
-                        category.imageContentType +
-                        ';base64,' +
-                        category.image
-                      "
-                      class="imageShow"
-                    >
+                    <ion-img [src]="
+                  'data:' +
+                  category.imageContentType +
+                  ';base64,' +
+                  category.image
+                  " class="imageShow">
                     </ion-img>
                   </ion-avatar>
-                <ion-label margin>{{category.name}}</ion-label>
+                  <ion-label margin>{{category.name}}</ion-label>
                 </ion-item>
-              <app-category-wise-products-card *ngIf="store !== undefined"
-              [category]="category"
-              [store]="store">
-              </app-category-wise-products-card>
-          </ion-list>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-slide>
-    <ion-slide>
-      <app-review *ngIf="store != undefined" [store]="store"></app-review>
-    </ion-slide>
-    <ion-slide>
-      <ion-grid>
-        <ion-row *ngIf="store !== undefined">
-          <ion-col size="12" *ngIf="store.location !== null">
-          <app-map
-          [showActiveLocation]="'false'"></app-map>
-          </ion-col>
-          <ion-col size="12" *ngIf="store !== undefined">
-            <ion-text *ngIf="store.info">
-              <p>{{ store.info }}</p>
-            </ion-text>
-          </ion-col>
-        </ion-row>
-     
-      </ion-grid>
-    </ion-slide>
-  </ion-slides>
+                <app-category-wise-products-card *ngIf="store !== undefined" [category]="category" [store]="store">
+                </app-category-wise-products-card>
+              </ion-list>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-slide>
+      <ion-slide>
+        <app-review *ngIf="store != undefined" [store]="store"></app-review>
+      </ion-slide>
+      <ion-slide>
+        <ion-grid>
+          <ion-row *ngIf="store !== undefined">
+            <ion-col size="12" *ngIf="store.location !== null">
+              <app-map [showActiveLocation]="'false'"></app-map>
+            </ion-col>
+            <ion-col size="12" *ngIf="store !== undefined">
+              <ion-text *ngIf="store.info">
+                <p>{{ store.info }}</p>
+              </ion-text>
+            </ion-col>
+          </ion-row>
 
-  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
-    <ion-refresher-content
-      pullingIcon="arrow-dropdown"
-      pullingText="Pull to refresh"
-      refreshingSpinner="circles"
-    >
-    </ion-refresher-content>
-  </ion-refresher>
+        </ion-grid>
+      </ion-slide>
+    </ion-slides>
+
+    <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+      <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles">
+      </ion-refresher-content>
+    </ion-refresher>
+  </div>
 </ion-content>
 
-<ion-footer class="animated animation-duration" [ngClass]="currentSegment === 'menu' ? 'slideInUp': 'slideOutDown'" >
+<ion-footer class="animated animation-duration" [ngClass]="currentSegment === 'menu' ? 'slideInUp': 'slideOutDown'">
   <app-cart></app-cart>
 </ion-footer>
