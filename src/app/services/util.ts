@@ -4,7 +4,7 @@ import {
   ToastController,
   NavController,
   ModalController,
-  PopoverController
+  PopoverController,
   AlertController
 } from '@ionic/angular';
 import { Router } from '@angular/router';
@@ -19,7 +19,7 @@ export class Util {
     private toastController: ToastController,
     private navController: NavController,
     private modalController: ModalController,
-    private popoverController: PopoverController
+    private popoverController: PopoverController,
     private alertCtrl: AlertController
   ) {}
 
