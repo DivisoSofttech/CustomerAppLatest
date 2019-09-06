@@ -106,15 +106,21 @@ export class HeaderComponent implements OnInit {
 
   // Get Current Location
   getCurrentLocation() {
-    this.logger.info('Getting Current Location');
-    this.locationService.getCurrentLoactionAddress((data, coords) => {
-      this.currentPlaceName = data[0].address_components[0].short_name;
-      this.logger.info('Current Place Name ', this.currentPlaceName);
-      this.logger.info('Getting LatLon for current Location', coords);
-      this.placeChanged.emit({
-        latLon: coords.coords.latitude + ',' + coords.coords.longitude
+    this.util.createLoader()
+    .then(loader => {
+      loader.present();
+      this.logger.info('Getting Current Location');
+      this.locationService.getCurrentLoactionAddress((data, coords) => {
+        loader.dismiss();
+        this.currentPlaceName = data[0].address_components[0].short_name;
+        this.logger.info('Current Place Name ', this.currentPlaceName);
+        this.logger.info('Getting LatLon for current Location', coords);
+        this.placeChanged.emit({
+          latLon: coords.coords.latitude + ',' + coords.coords.longitude
+        });
       });
     });
+
   }
 
   getPlacePredictions(event) {
