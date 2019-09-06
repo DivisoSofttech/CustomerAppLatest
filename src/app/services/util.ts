@@ -5,6 +5,7 @@ import {
   NavController,
   ModalController,
   PopoverController
+  AlertController
 } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { MakePaymentComponent } from '../components/make-payment/make-payment.component';
@@ -19,6 +20,7 @@ export class Util {
     private navController: NavController,
     private modalController: ModalController,
     private popoverController: PopoverController
+    private alertCtrl: AlertController
   ) {}
 
   async createLoader() {
@@ -69,4 +71,30 @@ export class Util {
   navigateHome() {
     this.navController.navigateRoot('restaurant');
   }
+
+  async createAlert(header: string, message: string, onConfirm?: any, onDeny?: any) {
+    const alert = await this.alertCtrl.create({
+        header,
+        message,
+        buttons : [
+            {
+                text: 'Cancel',
+                handler: () => {
+                    if (onDeny) {
+                        onDeny();
+                    }
+                }
+            },
+            {
+                text: 'Okay',
+                handler: () => {
+                    if (onConfirm) {
+                        onConfirm();
+                    }
+                }
+            }
+        ]
+    });
+    await alert.present();
+}
 }

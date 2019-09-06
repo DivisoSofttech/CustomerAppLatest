@@ -35,8 +35,7 @@
         <ion-col size="10" text-center no-padding *ngIf="store != undefined">
           <ion-buttons>
             <rating [rate]="store.totalRating" [readonly]="true"></rating>
-            <ion-button *ngIf="store.userRatings" disabled>{{'(' + store.userRatings.length + ')'}}</ion-button>
-            <ion-button *ngIf="!store.userRatings" disabled>(0)</ion-button>
+            <ion-button *ngIf="reviewCount" disabled>{{'(' + reviewCount + ')'}}</ion-button>
           </ion-buttons>
         </ion-col>
         <ion-col size="2" justify-content-center text-center no-padding>
@@ -66,21 +65,22 @@
       </ion-card-subtitle>
     </ion-card-content>
   </ion-card>
-  <ion-img [src]="'data:' + store.imageContentType + ';base64,' + store.image" class="mainImg"></ion-img>
-  <div class="overlay">
-    <h2>
-      <strong>{{ store.name | uppercase }}</strong>
-    </h2>
-    <p>
-      {{ store.openingTime | date: "shortTime" }} to
-      {{ store.closingTime | date: "shortTime" }}
-    </p>
-    <ion-buttons>
-      <rating [rate]="store.totalRating" [readonly]="true"></rating>
-      <ion-button *ngIf="rateReview" disabled>{{
-          "(" + rateReview + ")"
+  <div class="overlay-container">
+    <ion-img [src]="'data:' + store.imageContentType + ';base64,' + store.image" class="mainImg"></ion-img>
+    <div class="overlay">
+      <h2>
+        <strong>{{ store.name | uppercase }}</strong>
+      </h2>
+      <p>
+        {{ store.openingTime | date: "shortTime" }} to
+        {{ store.closingTime | date: "shortTime" }}
+      </p>
+      <ion-buttons>
+        <rating [rate]="store.totalRating" [readonly]="true"></rating>
+        <ion-button *ngIf="reviewCount" disabled>{{
+          "(" + reviewCount + ")"
         }}</ion-button>
-      <ion-button *ngIf="!rateReview" disabled>(0)</ion-button>
-    </ion-buttons>
+      </ion-buttons>
+    </div>
   </div>
 </div>

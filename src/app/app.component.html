@@ -27,7 +27,7 @@
                 Login
               </ion-label>  
             </ion-item>
-            <ion-item>
+            <ion-item (click)="exitApp()" *ngIf="!browser">
                 <ion-icon slot="start" name="exit"></ion-icon>
               <ion-label>Exit</ion-label>
             </ion-item>

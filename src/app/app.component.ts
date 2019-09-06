@@ -35,6 +35,8 @@ export class AppComponent {
     }
   ];
 
+  browser = false;
+
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -51,14 +53,30 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
+      if(this.platform.is('pwa')) {
+        console.log('Browser');
+        this.browser = true;
+      }
       this.statusBar.styleDefault();
       this.statusBar.backgroundColorByHexString('#e6e6e6');
       // Set orientation to portrait
-      this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+      if (this.platform.is('cordova')) {
+        this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+      }
       this.splashScreen.hide();
       this.getUser();
     });
   }
+
+  exitApp() {
+    this.util.createAlert('Exit App', 'Are you sure?',
+    (confirm) => {
+      // tslint:disable-next-line: no-string-literal
+      navigator['app'].exitApp();
+    }, (deny) => {
+    });
+  }
+
 
   getUser() {
     this.keycloakService.getUserChangedSubscription()
