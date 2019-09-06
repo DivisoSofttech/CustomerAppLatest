@@ -54,6 +54,7 @@ export class AppComponent {
   initializeApp() {
     this.platform.ready().then(() => {
       if(this.platform.is('pwa')) {
+        console.log('Browser');
         this.browser = true;
       }
       this.statusBar.styleDefault();
