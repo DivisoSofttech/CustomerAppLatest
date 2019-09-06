@@ -55,6 +55,7 @@ export class NotificationComponent implements OnInit  , OnDestroy {
         this.openTasks = data;
       },
       err => {
+        console.log('Error occured getting accepted orders', err);
         this.showLoading = false;
       });
   }

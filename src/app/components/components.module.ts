@@ -1,3 +1,5 @@
+import { RazorpayPaymentComponent } from './razorpay-payment/razorpay-payment.component';
+import { BraintreeCardPaymentComponent } from './braintree-card-payment/braintree-card-payment.component';
 import { NotificationComponent } from './notification/notification.component';
 import { PaymentSuccessfullInfoComponent } from './payment-successfull-info/payment-successfull-info.component';
 import { ProcessPaymentComponent } from './process-payment/process-payment.component';
@@ -39,6 +41,7 @@ import { ShowAuxilaryModalComponent } from './show-auxilary-modal/show-auxilary-
 import { AuxilaryProductCardComponent } from './auxilary-product-card/auxilary-product-card.component';
 import { WaitInformatonPopoverComponent } from './wait-informaton-popover/wait-informaton-popover.component';
 import { OrderCardComponent } from './order-card/order-card.component';
+import { PaypalPaymentComponent } from './paypal-payment/paypal-payment.component';
 import { LoginSignupComponent } from './login-signup/login-signup.component';
 import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
 
@@ -84,6 +87,9 @@ import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
     WaitInformatonPopoverComponent,
     NotificationComponent,
     OrderCardComponent,
+    BraintreeCardPaymentComponent,
+    RazorpayPaymentComponent,
+    PaypalPaymentComponent,
     LoginSignupComponent
 
   ],
@@ -131,6 +137,9 @@ import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
     AuxilaryProductCardComponent,
     NotificationComponent,
     OrderCardComponent,
+    BraintreeCardPaymentComponent,
+    RazorpayPaymentComponent,
+    PaypalPaymentComponent,
     LoginSignupComponent
 
   ],
@@ -154,6 +163,9 @@ import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
     AuxilaryProductCardComponent,
     WaitInformatonPopoverComponent,
     OrderCardComponent,
+    BraintreeCardPaymentComponent,
+    RazorpayPaymentComponent,
+    PaypalPaymentComponent,
     LoginSignupComponent
   ]
 })

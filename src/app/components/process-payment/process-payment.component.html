@@ -6,3 +6,9 @@
             </ion-button>
         </ion-buttons>
     </ion-toolbar>
+   </ion-header>
+   <ion-content>
+        <app-braintree-card-payment *ngIf="provider==='braintree'" ></app-braintree-card-payment>
+        <app-paypal-payment *ngIf="provider==='paypal'" ></app-paypal-payment>
+        <app-razorpay-payment *ngIf="provider==='razorpay'" ></app-razorpay-payment>
+   </ion-content>

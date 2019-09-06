@@ -10,7 +10,7 @@ declare var google: any;
   providedIn: 'root'
 })
 export class LocationService {
-  
+
   autoCompleteService: any;
 
   private currentLat: number;

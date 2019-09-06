@@ -1,10 +1,8 @@
 import { NGXLogger } from 'ngx-logger';
 import { OrderService } from 'src/app/services/order.service';
 import { Component, OnInit, Input } from '@angular/core';
-import { OrderLine } from 'src/app/api/models';
 import { ModalController, NavController, ToastController, Platform } from '@ionic/angular';
 import { ProcessPaymentComponent } from '../process-payment/process-payment.component';
-import { PaymentCommandResourceService } from 'src/app/api/services';
 
 @Component({
   selector: 'app-make-payment',
@@ -18,7 +16,8 @@ export class MakePaymentComponent implements OnInit {
 
  paymentOptions = [
    {name: 'Cash On Delivery', value: 'cod'},
-   {name: 'Debit/Credit Cards', value: 'card'}
+  // {name: 'Debit/Credit Cards', value: 'card'},
+   {name: 'Credit/Debit Card', value: 'braintree'}
  ];
 
 constructor(
@@ -26,9 +25,8 @@ constructor(
     private navController: NavController,
     private logger: NGXLogger,
     private orderService: OrderService,
-    private platform: Platform,
-    private paymentService: PaymentCommandResourceService
-      ) { }
+    private platform: Platform
+          ) { }
 
 dismiss() {
     this.orderService.paymentMethod = this.paymentMethod;
@@ -50,8 +48,8 @@ ngOnInit() {
       this.logger.info(' android ios platform');
       this.paymentOptions.push({name: 'Paypal Wallet/Card', value: 'paypal'});
     } else if (this.platform.is('desktop') || this.platform.is('pwa')) {
-      this.logger.info('This is a browser platform ');
-      this.paymentOptions.push({name: 'Paypal Wallet', value: 'paypal'});
+      console.log('This is a browser platform ');
+      // this.paymentOptions.push({name: 'Paypal Wallet', value: 'paypal'});
     }
   }
 

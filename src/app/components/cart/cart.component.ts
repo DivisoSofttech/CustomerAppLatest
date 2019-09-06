@@ -79,7 +79,6 @@ export class CartComponent implements OnInit {
       modal.present();
       modal.onDidDismiss()
       .then(data => {
-        console.error(data);
         if (data.data) {
           continueMethod();
         }
@@ -105,9 +104,7 @@ export class CartComponent implements OnInit {
         } else {
           this.guest = false;
         }
-
         this.customer = user;
-        this.orderService.setCustomer(user);
         loader.dismiss();
       }, err => {
         loader.dismiss();

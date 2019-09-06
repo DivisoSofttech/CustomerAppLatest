@@ -1,11 +1,15 @@
 import { CartService } from 'src/app/services/cart.service';
 import { Injectable } from '@angular/core';
-import { OrderCommandResourceService, OfferCommandResourceService } from '../api/services';
+import { OrderCommandResourceService, OfferCommandResourceService, PaymentCommandResourceService } from '../api/services';
 
 import { CommandResource, Order, DeliveryInfo, Address, Offer } from '../api/models';
 
 import { Storage } from '@ionic/storage';
 import { NGXLogger } from 'ngx-logger';
+import { Util } from './util';
+import { PaymentSuccessfullInfoComponent } from '../components/payment-successfull-info/payment-successfull-info.component';
+import { ModalController } from '@ionic/angular';
+import { MakePaymentComponent } from '../components/make-payment/make-payment.component';
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +28,10 @@ export class OrderService {
     private storage: Storage,
     private cart: CartService,
     private logger: NGXLogger,
-    private offerCommandService: OfferCommandResourceService
-  ) {
+    private offerCommandService: OfferCommandResourceService,
+    private paymentCommandService: PaymentCommandResourceService,
+    private util: Util
+      ) {
     this.getCustomer();
   }
 
@@ -37,9 +43,13 @@ export class OrderService {
   }
 
   getCustomer() {
-    this.customer = this.storage.get('user');
-    this.logger.info('User from storage is ', this.customer);
+    this.storage.get('user')
+    .then(data => {
+      this.customer = data;
+      this.logger.info('Got Customer ' , data);
+    });
   }
+
   collectDeliveryInfo() {
     this.logger.info('DeliveryInfo is' + this.deliveryInfo);
     return this.orderCommandService.collectDeliveryDetailsUsingPOST(
@@ -50,6 +60,67 @@ export class OrderService {
     return this.offerCommandService.checkOfferEligibilityUsingPOST({orderModel: {
       orderTotal: totalPrice
     }, customerId: this.customer.preferred_username});
+  }
+
+  processPayment(ref: string, status: string, provider) {
+    console.log('Payment reference is ' + ref);
+    return  this.paymentCommandService.processPaymentUsingPOST(
+      {taskId: this.resource.nextTaskId,
+      status, paymentDTO: {
+        amount: this.order.grandTotal,
+        payee: this.order.storeId,
+        payer: this.customer.preferred_username,
+        paymentType: this.paymentMethod,
+        provider,
+        status,
+        targetId: this.order.orderId,
+        total: this.order.grandTotal,
+        ref
+      }}
+    );
+
+  }
+
+  createOrderRazorPay() {
+    return this.paymentCommandService
+      .createOrderUsingPOST({
+        amount: this.order.grandTotal,
+        currency: 'INR',
+        payment_capture: 1,
+        receipt: 'receipt12340'
+      });
+  }
+  initiatePaypalPayment() {
+    return this.paymentCommandService.initiatePaymentUsingPOST({
+      intent: 'sale',
+      payer: { payment_method: 'paypal'},
+      transactions: [
+        {
+          amount: {
+            total: Math.round(this.order.grandTotal) + '',
+            currency: 'EUR',
+            details: {}
+          }
+        }
+      ],
+      note_to_payer: 'Contact us for any queries',
+      redirect_urls: {
+        return_url: 'www.divisosofttech.com',
+        cancel_url: 'www.divisosofttech.com'
+      }
+    });
+  }
+
+  createBraintreeClientAuthToken() {
+    return this.paymentCommandService.createClientAuthTokenUsingGET();
+  }
+
+  createBraintreeTransaction(payload) {
+    return this.paymentCommandService.createTransactionUsingPOST({
+      nounce: payload.nonce,
+      customerId: payload.customerId,
+      amount: Math.round(this.order.grandTotal)
+    });
   }
 
   setResource(resource: CommandResource) {
