@@ -1,8 +1,13 @@
 import { Component, OnInit, EventEmitter, Output, OnDestroy, Input, ViewChild } from '@angular/core';
-import { NavController, IonSegment, Platform } from '@ionic/angular';
+import { NavController, IonSegment, Platform, ModalController } from '@ionic/angular';
 import { CartService } from 'src/app/services/cart.service';
 import { NGXLogger } from 'ngx-logger';
-
+import { LoginSignupComponent } from '../login-signup/login-signup.component';
+import { KeycloakService } from 'src/app/services/security/keycloak.service';
+import { Route } from '@angular/compiler/src/core';
+import { ActivatedRoute } from '@angular/router';
+import { Storage } from '@ionic/storage';
+import { Util } from 'src/app/services/util';
 
 @Component({
   selector: 'app-footer',
@@ -21,11 +26,18 @@ export class FooterComponent implements OnInit , OnDestroy {
 
   @Input() filterHide = false;
 
+  guest = true;
+
   constructor(
+    private storage: Storage,
     private navController: NavController,
     private logger: NGXLogger,
     private cart: CartService,
-    private platform: Platform
+    private platform: Platform,
+    private router: ActivatedRoute,
+    private modalController: ModalController,
+    private keycloak: KeycloakService,
+    private util: Util
   ) {
   }
 
@@ -34,10 +46,53 @@ export class FooterComponent implements OnInit , OnDestroy {
     .subscribe(data => {
       this.orderCount = data.length;
     });
+    this.getUser();
   }
 
+  getUser() {
+    this.storage.get('user')
+    .then(user =>  {
+      if (user !== null) {
+        if (user.preferred_username === 'guest') {
+          this.guest = true;
+        } else {
+          this.guest = false;
+        }
+      } else {
+        this.guest = true;
+      }
+    });
+  }
+
+
+  async loginModal() {
+    const modal = await this.modalController.create({
+      component: LoginSignupComponent,
+      componentProps: {type: 'modal'}
+    });
+
+    modal.present();
+    modal.onDidDismiss()
+    .then(data => {
+      if(data.data) {
+        this.navController.navigateForward('/profile');
+      } else {
+        console.log(this.router.url);
+        this.setcurrentRoute(this.router.url);
+      }
+    });
+}
+
   goTo(url) {
-    this.navController.navigateForward(url);
+    if (url === '/profile') {
+      if (this.guest) {
+        this.loginModal();
+      } else {
+        this.navController.navigateForward('/profile');
+      }
+    } else {
+      this.navController.navigateForward(url);
+    }
   }
 
   setcurrentRoute(url) {

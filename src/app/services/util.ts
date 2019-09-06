@@ -3,7 +3,8 @@ import {
   LoadingController,
   ToastController,
   NavController,
-  ModalController
+  ModalController,
+  AlertController
 } from '@ionic/angular';
 
 @Injectable()
@@ -12,7 +13,8 @@ export class Util {
     private loadingController: LoadingController,
     private toastController: ToastController,
     private navController: NavController,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private alertCtrl: AlertController
   ) {}
 
   async createLoader() {
@@ -55,4 +57,30 @@ export class Util {
   navigateHome() {
     this.navController.navigateRoot('restaurant');
   }
+
+  async createAlert(header: string, message: string, onConfirm?: any, onDeny?: any) {
+    const alert = await this.alertCtrl.create({
+        header,
+        message,
+        buttons : [
+            {
+                text: 'Cancel',
+                handler: () => {
+                    if (onDeny) {
+                        onDeny();
+                    }
+                }
+            },
+            {
+                text: 'Okay',
+                handler: () => {
+                    if (onConfirm) {
+                        onConfirm();
+                    }
+                }
+            }
+        ]
+    });
+    await alert.present();
+}
 }
