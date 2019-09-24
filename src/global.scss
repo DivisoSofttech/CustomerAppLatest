@@ -97,6 +97,31 @@ ion-popover{
     }
 }
 
+.ios ion-segment {
+  border-radius: 0;
+  height: 50px;
+  border-top: 1px solid grey;
+}
+
+.ios ion-segment-button {
+  border-radius:0;
+}
+
+.ios .footer-tabs {
+  border-top: 1px solid grey;
+}
+
+.ios .footer-tabs ion-segment-button ,
+.ios .slider-tabs ion-segment-button 
+{
+  border:none;
+}
+
+.ios .slider-tabs {
+  border-top: 1px solid grey;
+  border-bottom: 1px solid grey;
+
+}
 /* 
   ##Device = Desktops
   ##Screen = 1281px to higher resolution desktops

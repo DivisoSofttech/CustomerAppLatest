@@ -12,7 +12,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-segment (ionChange)="slide($event)" [value]="value" class="mobile">
+<ion-segment (ionChange)="slide($event)" [value]="value" class="mobile slider-tabs" >
   <ion-segment-button value="login">
     <ion-label>Login</ion-label>
   </ion-segment-button>
@@ -67,9 +67,8 @@
               <ion-label color="medium" position="floating">Email</ion-label>
               <ion-input [(ngModel)]="email" background="light"></ion-input>
             </ion-item>
-                <!-- <form name="sample-form"  #f="ngForm">
-                    <international-phone-number [(ngModel)]="phone" placeholder="Enter phone number" [maxlength]="20" [defaultCountry]="'sg'" [required]="true" #phoneNumber="ngModel" name="phone_number" [allowedCountries]="['sg','in','ir']"></international-phone-number>
-                </form> -->
+            <app-intl-number-input (validEvent)="checkNumber($event)">
+            </app-intl-number-input>
             <ion-item class="item-inner">
               <ion-label color="medium" position="floating">Password</ion-label>
               <ion-input [(ngModel)]="password" type="password"></ion-input>
@@ -82,4 +81,3 @@
     </ion-slide>
   </ion-slides>
 </ion-content>
-

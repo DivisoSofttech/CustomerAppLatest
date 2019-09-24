@@ -11,15 +11,15 @@ import { CategoryDTO } from '../models/category-dto';
 import { ContactDTO } from '../models/contact-dto';
 import { CustomerDTO } from '../models/customer-dto';
 import { CustomerAggregator } from '../models/customer-aggregator';
+import { FavouriteProductDTO } from '../models/favourite-product-dto';
+import { FavouriteStoreDTO } from '../models/favourite-store-dto';
 import { ProductDTO } from '../models/product-dto';
 import { PageOfRatingReview } from '../models/page-of-rating-review';
 import { RatingReview } from '../models/rating-review';
 import { ReplyDTO } from '../models/reply-dto';
 import { ReviewDTO } from '../models/review-dto';
-import { SaleDTO } from '../models/sale-dto';
 import { StockCurrentDTO } from '../models/stock-current-dto';
 import { StoreDTO } from '../models/store-dto';
-import { TicketLineDTO } from '../models/ticket-line-dto';
 import { UOMDTO } from '../models/uomdto';
 import { UserRatingDTO } from '../models/user-rating-dto';
 
@@ -37,6 +37,10 @@ class CommandResourceService extends __BaseService {
   static readonly updateCustomerUsingPUTPath = '/api/command/customers';
   static readonly createCustomerUsingPOSTPath = '/api/command/customers/register-customer';
   static readonly deleteCustomerUsingDELETEPath = '/api/command/customers/{id}';
+  static readonly createFavouriteProductUsingPOSTPath = '/api/command/favouriteproduct';
+  static readonly deleteFavouriteProductUsingDELETEPath = '/api/command/favouriteproduct/{id}';
+  static readonly createFavouriteStoreUsingPOSTPath = '/api/command/favouritestore';
+  static readonly deleteFavouriteStoreUsingDELETEPath = '/api/command/favouritestore/{id}';
   static readonly createProductCategoryUsingPOSTPath = '/api/command/productCategory';
   static readonly createProductUsingPOSTPath = '/api/command/products';
   static readonly updateProductUsingPUTPath = '/api/command/products';
@@ -48,17 +52,11 @@ class CommandResourceService extends __BaseService {
   static readonly createUserReviewUsingPOSTPath = '/api/command/reviews';
   static readonly updateReviewUsingPUTPath = '/api/command/reviews';
   static readonly deleteReviewUsingDELETEPath = '/api/command/reviews/{id}';
-  static readonly createSaleUsingPOSTPath = '/api/command/sales';
-  static readonly updateSaleUsingPUTPath = '/api/command/sales';
-  static readonly deleteSaleUsingDELETEPath = '/api/command/sales/{id}';
   static readonly createStockCurrentUsingPOSTPath = '/api/command/stock-currents';
   static readonly updateStockCurrentUsingPUTPath = '/api/command/stock-currents';
   static readonly createStoreUsingPOSTPath = '/api/command/stores';
   static readonly updateStoreUsingPUTPath = '/api/command/stores';
   static readonly deleteStoreUsingDELETEPath = '/api/command/stores/{id}';
-  static readonly createTickerLineUsingPOSTPath = '/api/command/ticket-lines';
-  static readonly updateTicketLineUsingPUTPath = '/api/command/ticket-lines';
-  static readonly deleteTicketlineUsingDELETEPath = '/api/command/ticket-lines/{id}';
   static readonly createUOMUsingPOSTPath = '/api/command/unit-of-meassurement';
   static readonly updateUOMUsingPUTPath = '/api/command/uoms';
   static readonly deleteUOMUsingDELETEPath = '/api/command/uoms/{id}';
@@ -315,6 +313,146 @@ class CommandResourceService extends __BaseService {
    */
   deleteCustomerUsingDELETE(id: number): __Observable<null> {
     return this.deleteCustomerUsingDELETEResponse(id).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param favouriteProductDTO favouriteProductDTO
+   * @return OK
+   */
+  createFavouriteProductUsingPOSTResponse(favouriteProductDTO: FavouriteProductDTO): __Observable<__StrictHttpResponse<FavouriteProductDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = favouriteProductDTO;
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/command/favouriteproduct`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<FavouriteProductDTO>;
+      })
+    );
+  }
+  /**
+   * @param favouriteProductDTO favouriteProductDTO
+   * @return OK
+   */
+  createFavouriteProductUsingPOST(favouriteProductDTO: FavouriteProductDTO): __Observable<FavouriteProductDTO> {
+    return this.createFavouriteProductUsingPOSTResponse(favouriteProductDTO).pipe(
+      __map(_r => _r.body as FavouriteProductDTO)
+    );
+  }
+
+  /**
+   * @param id id
+   */
+  deleteFavouriteProductUsingDELETEResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/api/command/favouriteproduct/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param id id
+   */
+  deleteFavouriteProductUsingDELETE(id: number): __Observable<null> {
+    return this.deleteFavouriteProductUsingDELETEResponse(id).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param favouriteStoreDTO favouriteStoreDTO
+   * @return OK
+   */
+  createFavouriteStoreUsingPOSTResponse(favouriteStoreDTO: FavouriteStoreDTO): __Observable<__StrictHttpResponse<FavouriteStoreDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = favouriteStoreDTO;
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/command/favouritestore`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<FavouriteStoreDTO>;
+      })
+    );
+  }
+  /**
+   * @param favouriteStoreDTO favouriteStoreDTO
+   * @return OK
+   */
+  createFavouriteStoreUsingPOST(favouriteStoreDTO: FavouriteStoreDTO): __Observable<FavouriteStoreDTO> {
+    return this.createFavouriteStoreUsingPOSTResponse(favouriteStoreDTO).pipe(
+      __map(_r => _r.body as FavouriteStoreDTO)
+    );
+  }
+
+  /**
+   * @param id id
+   */
+  deleteFavouriteStoreUsingDELETEResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/api/command/favouritestore/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param id id
+   */
+  deleteFavouriteStoreUsingDELETE(id: number): __Observable<null> {
+    return this.deleteFavouriteStoreUsingDELETEResponse(id).pipe(
       __map(_r => _r.body as null)
     );
   }
@@ -731,112 +869,6 @@ class CommandResourceService extends __BaseService {
   }
 
   /**
-   * @param saleDTO saleDTO
-   * @return OK
-   */
-  createSaleUsingPOSTResponse(saleDTO: SaleDTO): __Observable<__StrictHttpResponse<SaleDTO>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-    __body = saleDTO;
-    let req = new HttpRequest<any>(
-      'POST',
-      this.rootUrl + `/api/command/sales`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<SaleDTO>;
-      })
-    );
-  }
-  /**
-   * @param saleDTO saleDTO
-   * @return OK
-   */
-  createSaleUsingPOST(saleDTO: SaleDTO): __Observable<SaleDTO> {
-    return this.createSaleUsingPOSTResponse(saleDTO).pipe(
-      __map(_r => _r.body as SaleDTO)
-    );
-  }
-
-  /**
-   * @param saleDTO saleDTO
-   * @return OK
-   */
-  updateSaleUsingPUTResponse(saleDTO: SaleDTO): __Observable<__StrictHttpResponse<SaleDTO>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-    __body = saleDTO;
-    let req = new HttpRequest<any>(
-      'PUT',
-      this.rootUrl + `/api/command/sales`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<SaleDTO>;
-      })
-    );
-  }
-  /**
-   * @param saleDTO saleDTO
-   * @return OK
-   */
-  updateSaleUsingPUT(saleDTO: SaleDTO): __Observable<SaleDTO> {
-    return this.updateSaleUsingPUTResponse(saleDTO).pipe(
-      __map(_r => _r.body as SaleDTO)
-    );
-  }
-
-  /**
-   * @param id id
-   */
-  deleteSaleUsingDELETEResponse(id: number): __Observable<__StrictHttpResponse<null>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-    let req = new HttpRequest<any>(
-      'DELETE',
-      this.rootUrl + `/api/command/sales/${id}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
-      })
-    );
-  }
-  /**
-   * @param id id
-   */
-  deleteSaleUsingDELETE(id: number): __Observable<null> {
-    return this.deleteSaleUsingDELETEResponse(id).pipe(
-      __map(_r => _r.body as null)
-    );
-  }
-
-  /**
    * @param stockCurrent stockCurrent
    * @return OK
    */
@@ -1010,112 +1042,6 @@ class CommandResourceService extends __BaseService {
    */
   deleteStoreUsingDELETE(id: number): __Observable<null> {
     return this.deleteStoreUsingDELETEResponse(id).pipe(
-      __map(_r => _r.body as null)
-    );
-  }
-
-  /**
-   * @param ticketLineDTO ticketLineDTO
-   * @return OK
-   */
-  createTickerLineUsingPOSTResponse(ticketLineDTO: TicketLineDTO): __Observable<__StrictHttpResponse<TicketLineDTO>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-    __body = ticketLineDTO;
-    let req = new HttpRequest<any>(
-      'POST',
-      this.rootUrl + `/api/command/ticket-lines`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<TicketLineDTO>;
-      })
-    );
-  }
-  /**
-   * @param ticketLineDTO ticketLineDTO
-   * @return OK
-   */
-  createTickerLineUsingPOST(ticketLineDTO: TicketLineDTO): __Observable<TicketLineDTO> {
-    return this.createTickerLineUsingPOSTResponse(ticketLineDTO).pipe(
-      __map(_r => _r.body as TicketLineDTO)
-    );
-  }
-
-  /**
-   * @param ticketLineDTO ticketLineDTO
-   * @return OK
-   */
-  updateTicketLineUsingPUTResponse(ticketLineDTO: TicketLineDTO): __Observable<__StrictHttpResponse<TicketLineDTO>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-    __body = ticketLineDTO;
-    let req = new HttpRequest<any>(
-      'PUT',
-      this.rootUrl + `/api/command/ticket-lines`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<TicketLineDTO>;
-      })
-    );
-  }
-  /**
-   * @param ticketLineDTO ticketLineDTO
-   * @return OK
-   */
-  updateTicketLineUsingPUT(ticketLineDTO: TicketLineDTO): __Observable<TicketLineDTO> {
-    return this.updateTicketLineUsingPUTResponse(ticketLineDTO).pipe(
-      __map(_r => _r.body as TicketLineDTO)
-    );
-  }
-
-  /**
-   * @param id id
-   */
-  deleteTicketlineUsingDELETEResponse(id: number): __Observable<__StrictHttpResponse<null>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-    let req = new HttpRequest<any>(
-      'DELETE',
-      this.rootUrl + `/api/command/ticket-lines/${id}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
-      })
-    );
-  }
-  /**
-   * @param id id
-   */
-  deleteTicketlineUsingDELETE(id: number): __Observable<null> {
-    return this.deleteTicketlineUsingDELETEResponse(id).pipe(
       __map(_r => _r.body as null)
     );
   }

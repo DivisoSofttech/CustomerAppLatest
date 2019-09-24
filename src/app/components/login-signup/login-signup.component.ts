@@ -7,6 +7,7 @@ import { CommandResourceService } from 'src/app/api/services';
 import { Util } from 'src/app/services/util';
 import { ApiConfiguration } from 'src/app/api/api-configuration';
 import { Storage } from '@ionic/storage';
+import { PhoneNumberVerficationComponent } from '../phone-number-verfication/phone-number-verfication.component';
 
 @Component({
   selector: 'app-login-signup',
@@ -18,6 +19,7 @@ export class LoginSignupComponent implements OnInit {
   password = '';
   email = '';
   phone = '';
+  numberValid = false;
   loginTab = true;
   value = 'login';
 
@@ -37,7 +39,6 @@ export class LoginSignupComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // this.isLoggedIn();
   }
 
   // Login and Register Methods
@@ -62,27 +63,35 @@ export class LoginSignupComponent implements OnInit {
       });
   }
 
-  signup() {
-    this.util.createLoader()
-      .then(loader => {
-        loader.present();
-        const user = { username: this.username, email: this.email };
-        this.keycloakService.createAccount(user, this.password,
-          (res) => {
-            loader.dismiss();
-            this.login();
-          },
-          (err) => {
-            loader.dismiss();
-            if (err.response.status === 409) {
-              this.util.createToast('User Already Exists');
-              this.slideChange();
-            } else {
-              this.util.createToast('Cannot Register User. Please Try Later');
-            }
-          });
-          // Remove this later
-        });
+  async signup() {
+
+    const modal = await this.modalController.create({
+      component: PhoneNumberVerficationComponent,
+      componentProps: {number: this.phone}
+    });
+
+    modal.present();
+
+    // this.util.createLoader()
+    //   .then(loader => {
+    //     loader.present();
+    //     const user = { username: this.username, email: this.email };
+    //     this.keycloakService.createAccount(user, this.password,
+    //       (res) => {
+    //         loader.dismiss();
+    //         this.login();
+    //       },
+    //       (err) => {
+    //         loader.dismiss();
+    //         if (err.response.status === 409) {
+    //           this.util.createToast('User Already Exists');
+    //           this.slideChange();
+    //         } else {
+    //           this.util.createToast('Cannot Register User. Please Try Later');
+    //         }
+    //       });
+    //       // Remove this later
+    //     });
   }
 
   isLoggedIn() {
@@ -107,7 +116,7 @@ export class LoginSignupComponent implements OnInit {
             this.logger.info('Got Customer', customer);
             this.storage.set('customer' , customer);
             loader.dismiss();
-            if(this.type === 'page') {
+            if (this.type === 'page') {
               this.util.navigateRoot();
             } else {
               this.dismissTrue();
@@ -124,7 +133,8 @@ export class LoginSignupComponent implements OnInit {
                 .createCustomerUsingPOST({
                   reference: this.username,
                   name: this.username,
-                  email: this.email
+                  email: this.email,
+                  mobileNumber: this.phone
                 })
                 .subscribe(
                   customer => {
@@ -162,7 +172,7 @@ export class LoginSignupComponent implements OnInit {
   }
 
   registerDisabled(): boolean {
-    if (this.username === '' || this.password === '' || this.email === '') {
+    if (this.username === '' || this.password === '' || this.email === '' || this.numberValid === false) {
       return true;
     } else {
       return false;
@@ -188,6 +198,12 @@ export class LoginSignupComponent implements OnInit {
         this.value = 'login';
       }
     });
+  }
+
+  checkNumber(event) {
+    console.log(event);
+    this.numberValid = event.valid;
+    this.phone = event.value;
   }
 
   setSlideValue(): number {

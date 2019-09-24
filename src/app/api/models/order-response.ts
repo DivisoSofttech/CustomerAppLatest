@@ -1,12 +1,12 @@
 /* tslint:disable */
 export interface OrderResponse {
+  entity?: string;
   amount?: number;
-  amount_due?: number;
   amount_paid?: number;
   attempts?: number;
   created_at?: string;
   currency?: string;
-  entity?: string;
+  amount_due?: number;
   id?: string;
   notes?: Array<string>;
   offer_id?: string;

@@ -72,7 +72,9 @@ export class StorePage implements OnInit {
           this.showRestaurantLoading = false;
 
           // Show the Store In Map
-          this.map.loadMap(this.store.location);
+          if(this.map !== undefined) {
+            this.map.loadMap(this.store.location);
+          }
         },
         err => {
           this.showRestaurantLoading = false;

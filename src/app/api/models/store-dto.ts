@@ -1,7 +1,7 @@
 /* tslint:disable */
 export interface StoreDTO {
+  maxDeliveryTime?: string;
   closingTime?: string;
-  contactNo?: number;
   email?: string;
   id?: number;
   image?: string;
@@ -9,7 +9,7 @@ export interface StoreDTO {
   info?: string;
   location?: string;
   locationName?: string;
-  maxDeliveryTime?: string;
+  contactNo?: number;
   minAmount?: number;
   name?: string;
   openingTime?: string;

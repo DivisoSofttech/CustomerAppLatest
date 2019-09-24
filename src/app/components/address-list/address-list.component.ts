@@ -1,6 +1,6 @@
 import { Util } from './../../services/util';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Address } from 'src/app/api/models';
+import { Address, AddressDTO } from 'src/app/api/models';
 import { ModalController } from '@ionic/angular';
 import { OrderCommandResourceService } from 'src/app/api/services';
 import { NGXLogger } from 'ngx-logger';
@@ -28,7 +28,7 @@ export class AddressListComponent implements OnInit {
 
   addresses: Address[] = [];
 
-  address: Address = {};
+  address: AddressDTO = {};
 
   currentId = 1;
 

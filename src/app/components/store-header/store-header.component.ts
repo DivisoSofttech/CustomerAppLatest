@@ -80,7 +80,7 @@ export class StoreHeaderComponent implements OnInit {
             this.stockCurrents.push(s);
           });
         }
-      }, err=> {
+      }, err => {
         this.showLoading = false;
       });
   }

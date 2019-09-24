@@ -160,6 +160,7 @@ export class ProductCardComponent implements OnInit {
   }
 
   toggleDescription() {
+    console.log('sjhsjhsjhjs');
     this.showDescription = !this.showDescription;
   }
 

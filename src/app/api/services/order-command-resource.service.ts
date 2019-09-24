@@ -402,7 +402,7 @@ module OrderCommandResourceService {
     /**
      * orderId
      */
-    orderId: number;
+    orderId: string;
 
     /**
      * deliveryInfo

@@ -16,7 +16,7 @@
   <app-restaurant-card *ngIf="store != undefined" [store]="store" [viewType]="'detailedCard'"></app-restaurant-card>
   <div class="bg-white">
 
-    <ion-segment (ionChange)="segmentChanged($event)" [(ngModel)]="currentSegment">
+    <ion-segment (ionChange)="segmentChanged($event)" [(ngModel)]="currentSegment" class="slider-tabs">
       <ion-segment-button value="menu" checked>
         <ion-label>Menu</ion-label>
       </ion-segment-button>
@@ -32,10 +32,12 @@
       <ion-slide>
         <ion-grid no-padding>
           <ion-row>
+          <ion-col size-lg="6" size-md="6" size="12" *ngFor="let category of categories" no-margin no-padding>          
             <ion-list *ngIf="store != undefined && showCategoryWiseProducts === false">
               <app-product-card *ngFor="let stockCurrent of stockCurrents" [store]="store"
                 [stockCurrent]="stockCurrent"></app-product-card>
             </ion-list>
+            </ion-col>
           </ion-row>
           <ion-row *ngIf="showCategoryWiseProducts === true">
             <ion-col size-lg="6" size-md="6" size="12" *ngFor="let category of categories" no-margin no-padding>

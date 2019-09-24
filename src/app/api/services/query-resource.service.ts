@@ -22,7 +22,6 @@ import { PageOfRatingReview } from '../models/page-of-rating-review';
 import { PageOfStockCurrent } from '../models/page-of-stock-current';
 import { StockCurrent } from '../models/stock-current';
 import { PageOfStore } from '../models/page-of-store';
-import { PdfDTO } from '../models/pdf-dto';
 import { PageOfOrder } from '../models/page-of-order';
 import { Order } from '../models/order';
 import { ProductDTO } from '../models/product-dto';
@@ -54,7 +53,6 @@ class QueryResourceService extends __BaseService {
   static readonly findAllDeliveryTypesByStoreIdUsingGETPath = '/api/query/deliveryTypes/{storeId}';
   static readonly findDeliveryInfoByStoreIdUsingGETPath = '/api/query/deliveryinfoByStoreId/{storeId}';
   static readonly findDiscountByProductIdUsingGETPath = '/api/query/discount-productId/{productId}';
-  static readonly exportOrderDocketUsingGETPath = '/api/query/exportDocket/{orderMasterId}';
   static readonly findAllCategoriesUsingGETPath = '/api/query/findAllCategories/{iDPcode}';
   static readonly findAllCustomersWithoutSearchUsingGETPath = '/api/query/findAllCustomers';
   static readonly findCategoryAndCountUsingGETPath = '/api/query/findCategoryAndCount';
@@ -70,7 +68,6 @@ class QueryResourceService extends __BaseService {
   static readonly findStoreByTypeNameUsingGETPath = '/api/query/findStoreByTypeName/{name}';
   static readonly findStoreAndCountUsingGETPath = '/api/query/findStoreTypeAndCount';
   static readonly findAllProductByStoreIdUsingGETPath = '/api/query/findproducts/{storeId}';
-  static readonly getOrderDocketUsingGETPath = '/api/query/getOrderDocket/{orderMasterId}';
   static readonly headerUsingGETPath = '/api/query/header/{searchTerm}';
   static readonly findOrderByDatebetweenAndStoreIdUsingGETPath = '/api/query/order/{from}/{to}/{storeId}';
   static readonly findOrderByOrderIdUsingGETPath = '/api/query/orderByOrderId/{orderId}';
@@ -418,42 +415,6 @@ class QueryResourceService extends __BaseService {
   findDiscountByProductIdUsingGET(productId: number): __Observable<Discount> {
     return this.findDiscountByProductIdUsingGETResponse(productId).pipe(
       __map(_r => _r.body as Discount)
-    );
-  }
-
-  /**
-   * @param orderMasterId orderMasterId
-   * @return OK
-   */
-  exportOrderDocketUsingGETResponse(orderMasterId: number): __Observable<__StrictHttpResponse<string>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-    let req = new HttpRequest<any>(
-      'GET',
-      this.rootUrl + `/api/query/exportDocket/${orderMasterId}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'text'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<string>;
-      })
-    );
-  }
-  /**
-   * @param orderMasterId orderMasterId
-   * @return OK
-   */
-  exportOrderDocketUsingGET(orderMasterId: number): __Observable<string> {
-    return this.exportOrderDocketUsingGETResponse(orderMasterId).pipe(
-      __map(_r => _r.body as string)
     );
   }
 
@@ -1293,42 +1254,6 @@ class QueryResourceService extends __BaseService {
   findAllProductByStoreIdUsingGET(storeId: string): __Observable<PageOfProduct> {
     return this.findAllProductByStoreIdUsingGETResponse(storeId).pipe(
       __map(_r => _r.body as PageOfProduct)
-    );
-  }
-
-  /**
-   * @param orderMasterId orderMasterId
-   * @return OK
-   */
-  getOrderDocketUsingGETResponse(orderMasterId: number): __Observable<__StrictHttpResponse<PdfDTO>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-    let req = new HttpRequest<any>(
-      'GET',
-      this.rootUrl + `/api/query/getOrderDocket/${orderMasterId}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<PdfDTO>;
-      })
-    );
-  }
-  /**
-   * @param orderMasterId orderMasterId
-   * @return OK
-   */
-  getOrderDocketUsingGET(orderMasterId: number): __Observable<PdfDTO> {
-    return this.getOrderDocketUsingGETResponse(orderMasterId).pipe(
-      __map(_r => _r.body as PdfDTO)
     );
   }
 
