@@ -1,0 +1,1 @@
+ng-swagger-gen -i http://dev.ci2.divisosofttech.com:8070/v2/api-docs

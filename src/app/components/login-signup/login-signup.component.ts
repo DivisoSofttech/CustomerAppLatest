@@ -18,7 +18,7 @@ export class LoginSignupComponent implements OnInit {
   username = '';
   password = '';
   email = '';
-  phone = '';
+  phone = 0;
   numberValid = false;
   loginTab = true;
   value = 'login';
@@ -63,35 +63,45 @@ export class LoginSignupComponent implements OnInit {
       });
   }
 
-  async signup() {
+  async signupModal() {
 
     const modal = await this.modalController.create({
       component: PhoneNumberVerficationComponent,
       componentProps: {number: this.phone}
     });
 
-    modal.present();
+    modal.onDidDismiss()
+    .then((data: any) => {
+      console.log('---------' , data.data.numberVerified);
+        if (data.data.numberVerified === true) {
+          this.signup();
+        }
+    });
 
-    // this.util.createLoader()
-    //   .then(loader => {
-    //     loader.present();
-    //     const user = { username: this.username, email: this.email };
-    //     this.keycloakService.createAccount(user, this.password,
-    //       (res) => {
-    //         loader.dismiss();
-    //         this.login();
-    //       },
-    //       (err) => {
-    //         loader.dismiss();
-    //         if (err.response.status === 409) {
-    //           this.util.createToast('User Already Exists');
-    //           this.slideChange();
-    //         } else {
-    //           this.util.createToast('Cannot Register User. Please Try Later');
-    //         }
-    //       });
-    //       // Remove this later
-    //     });
+    modal.present();
+  }
+
+  signup() {
+        this.util.createLoader()
+      .then(loader => {
+        loader.present();
+        const user = { username: this.username, email: this.email };
+        this.keycloakService.createAccount(user, this.password,
+          (res) => {
+            loader.dismiss();
+            this.login();
+          },
+          (err) => {
+            loader.dismiss();
+            if (err.response.status === 409) {
+              this.util.createToast('User Already Exists');
+              this.slideChange();
+            } else {
+              this.util.createToast('Cannot Register User. Please Try Later');
+            }
+          });
+          // Remove this later
+        });
   }
 
   isLoggedIn() {
@@ -141,7 +151,7 @@ export class LoginSignupComponent implements OnInit {
                     this.logger.info('Customer Created', customer);
                     this.storage.set('customer' , customer);
                     loader.dismiss();
-                    if(this.type === 'page') {
+                    if (this.type === 'page') {
                       this.util.navigateRoot();
                     } else {
                       this.dismissTrue();

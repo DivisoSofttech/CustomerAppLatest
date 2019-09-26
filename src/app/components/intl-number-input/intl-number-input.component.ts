@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import * as googleLibphonenumber from 'google-libphonenumber';
 import * as countryList from 'country-list';
-// import * as emojiFlags from 'emoji-flags';
 import { ModalController, LoadingController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
+import { Sim } from '@ionic-native/sim/ngx';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-intl-number-input',
@@ -31,7 +32,9 @@ export class IntlNumberInputComponent implements OnInit {
   constructor(
     private modalController: ModalController,
     private storage: Storage,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private sim: Sim,
+    private logger: NGXLogger
   ) { }
 
   ngOnInit() {
@@ -39,7 +42,10 @@ export class IntlNumberInputComponent implements OnInit {
      this.createLoader()
      .then(loader => {
        loader.present();
-       this.getCountryList(() =>{ loader.dismiss();});
+       this.getCountryList(() => {
+         loader.dismiss();
+         this.getSimInfo();
+       });
      });
    }
   }
@@ -49,6 +55,25 @@ export class IntlNumberInputComponent implements OnInit {
       spinner: 'bubbles',
       duration: 5000
     });
+  }
+
+  getSimInfo() {
+    this.sim.requestReadPermission().then(
+      () => {
+        this.sim.getSimInfo().then(
+          (info) => {
+            this.phoneNumber = info.mcc + info.phoneNumber;
+            this.selectedCountry = this.countryList.find(c => {
+              return c.code === info.countryCode;
+            });
+          },
+          (err) => {
+            this.logger.error('Unable to get sim details');
+          }
+        );
+      },
+      () => this.logger.info('Persmission Denied')
+    );
   }
 
   getCountryList(success) {

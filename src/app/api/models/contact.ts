@@ -7,7 +7,8 @@ export interface Contact {
   id?: number;
   lastName?: string;
   facebook?: string;
-  mobileNumber?: string;
+  mobileNumber?: number;
+  phoneCode?: number;
   saluation?: string;
   telephone?: number;
   twitter?: string;

@@ -31,6 +31,7 @@ import { LocationStrategy, HashLocationStrategy, Location } from '@angular/commo
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { Sim } from '@ionic-native/sim/ngx';
 
 @NgModule({
 
@@ -52,7 +53,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     }),
     ComponentsModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyBdjkfcPlWTwnUq1W1YLIXMNJtMjdOXVXk',
+      apiKey: 'AIzaSyDgCo5uoS1ziWYwxC_urPwZBIP-pO2geRY',
       libraries: ['places', 'geometry']
     }),
     OAuthModule.forRoot(),
@@ -68,6 +69,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     Util,
     SplashScreen,
     PayPal,
+    Sim,
     InAppBrowser,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
 

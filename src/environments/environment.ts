@@ -20,7 +20,7 @@ import { NgxLoggerLevel } from 'ngx-logger';
 export const environment = {
   production: false,
   logging: {
-    level: NgxLoggerLevel.OFF,
-    enableSourceMaps: false
+    level: NgxLoggerLevel.INFO,
+    enableSourceMaps: true
   }
 };

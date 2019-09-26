@@ -9,6 +9,8 @@ import { map as __map, filter as __filter } from 'rxjs/operators';
 
 import { CategoryDTO } from '../models/category-dto';
 import { ContactDTO } from '../models/contact-dto';
+import { OTPChallenge } from '../models/otpchallenge';
+import { OTPResponse } from '../models/otpresponse';
 import { CustomerDTO } from '../models/customer-dto';
 import { CustomerAggregator } from '../models/customer-aggregator';
 import { FavouriteProductDTO } from '../models/favourite-product-dto';
@@ -34,6 +36,8 @@ class CommandResourceService extends __BaseService {
   static readonly deleteCategoryUsingDELETEPath = '/api/command/categories/{id}';
   static readonly updateContactUsingPUTPath = '/api/command/contacts';
   static readonly deleteContactUsingDELETEPath = '/api/command/contacts/{id}';
+  static readonly verifyOTPUsingPOSTPath = '/api/command/customer/otp_challenge';
+  static readonly sendSMSUsingPOSTPath = '/api/command/customer/otp_send';
   static readonly updateCustomerUsingPUTPath = '/api/command/customers';
   static readonly createCustomerUsingPOSTPath = '/api/command/customers/register-customer';
   static readonly deleteCustomerUsingDELETEPath = '/api/command/customers/{id}';
@@ -208,6 +212,89 @@ class CommandResourceService extends __BaseService {
   deleteContactUsingDELETE(id: number): __Observable<null> {
     return this.deleteContactUsingDELETEResponse(id).pipe(
       __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param params The `CommandResourceService.VerifyOTPUsingPOSTParams` containing the following parameters:
+   *
+   * - `numbers`: numbers
+   *
+   * - `code`: code
+   *
+   * @return OK
+   */
+  verifyOTPUsingPOSTResponse(params: CommandResourceService.VerifyOTPUsingPOSTParams): __Observable<__StrictHttpResponse<OTPChallenge>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    if (params.numbers != null) __params = __params.set('numbers', params.numbers.toString());
+    if (params.code != null) __params = __params.set('code', params.code.toString());
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/command/customer/otp_challenge`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<OTPChallenge>;
+      })
+    );
+  }
+  /**
+   * @param params The `CommandResourceService.VerifyOTPUsingPOSTParams` containing the following parameters:
+   *
+   * - `numbers`: numbers
+   *
+   * - `code`: code
+   *
+   * @return OK
+   */
+  verifyOTPUsingPOST(params: CommandResourceService.VerifyOTPUsingPOSTParams): __Observable<OTPChallenge> {
+    return this.verifyOTPUsingPOSTResponse(params).pipe(
+      __map(_r => _r.body as OTPChallenge)
+    );
+  }
+
+  /**
+   * @param numbers numbers
+   * @return OK
+   */
+  sendSMSUsingPOSTResponse(numbers: number): __Observable<__StrictHttpResponse<OTPResponse>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    if (numbers != null) __params = __params.set('numbers', numbers.toString());
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/command/customer/otp_send`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<OTPResponse>;
+      })
+    );
+  }
+  /**
+   * @param numbers numbers
+   * @return OK
+   */
+  sendSMSUsingPOST(numbers: number): __Observable<OTPResponse> {
+    return this.sendSMSUsingPOSTResponse(numbers).pipe(
+      __map(_r => _r.body as OTPResponse)
     );
   }
 
@@ -1260,6 +1347,22 @@ class CommandResourceService extends __BaseService {
 }
 
 module CommandResourceService {
+
+  /**
+   * Parameters for verifyOTPUsingPOST
+   */
+  export interface VerifyOTPUsingPOSTParams {
+
+    /**
+     * numbers
+     */
+    numbers: number;
+
+    /**
+     * code
+     */
+    code: string;
+  }
 
   /**
    * Parameters for createRatingAndReviewUsingPOST
