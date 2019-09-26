@@ -18,8 +18,8 @@
       </ion-img>
     </ion-thumbnail>
       <ion-grid>
-        <ion-row (click)="toggleDescription()">
-          <ion-col class="title-card" margin-top padding-top>
+        <ion-row>
+          <ion-col (click)="toggleDescription()" class="title-card" margin-top padding-top>
             <ion-card-title>{{ stockCurrent.product.name }}</ion-card-title>
 
             <ion-text *ngIf="!(discount!=null && discount.rate !== null && discount.rate > 0)"><strong>&#8364;{{ stockCurrent.product.sellingPrice }}</strong></ion-text>

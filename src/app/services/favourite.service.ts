@@ -4,14 +4,13 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { BehaviorSubject } from 'rxjs';
 import { NGXLogger } from 'ngx-logger';
+import { QueryResourceService, CommandResourceService } from '../api/services';
 
 export class Favourite {
-
     route: string;
     type: string;
     data: any;
 }
-
 @Injectable({
   providedIn: 'root'
 })
@@ -19,7 +18,10 @@ export class FavouriteService {
 
   username;
 
+  private customerId;
+
   private productsId = [];
+
   private storesId = [];
 
   private favourites: Favourite[] = [];
@@ -29,47 +31,78 @@ export class FavouriteService {
   constructor(
     private storage: Storage,
     private oauthService: OAuthService,
-    private logger: NGXLogger
+    private logger: NGXLogger,
+    private queryResource: QueryResourceService,
+    private commandResource: CommandResourceService,
   ) {
     this.logger.info('Favourites Service Created');
     this.oauthService.loadUserProfile()
     .then((data: any) => {
       this.username = data.preferred_username;
-      this.storage.get(this.username +  '_favourites')
-      .then(p => {
-        this.logger.info('Got Favourites From Storage ' , p);
-        if (p != undefined) {
-          this.favourites = p;
-        }
-        if (p === null) {this.storage.set(this.username +  '_favourites' , this.favourites); }
-        this.favouriteSubject.next(p);
-      })
-      .catch(err => {
-        this.storage.set(this.username +  '_favourites' , this.favourites);
+      this.queryResource.findCustomerByReferenceUsingGET(this.username)
+      .subscribe(customer => {
+        this.customerId = customer.id;
       });
     });
   }
 
-  refresh() {
-    this.favouriteSubject.next(this.favourites);
-    this.storage.set(this.username +  '_favourites' , this.favourites);
+  refresh(hard) {
+    if(hard === false) {
+      this.favouriteSubject.next(this.favourites);
+      this.storage.set(this.username +  '_favourites' , this.favourites);  
+    } else {
+
+      // Get From Server
+    }
   }
 
   addToFavouriteProduct(product: Product , route) {
-    this.favourites.push({data: product , route , type: 'product'});
-    this.refresh();
+    this.commandResource.createFavouriteProductUsingPOST({
+      productId:product.id,
+      customerId: this.customerId
+    })
+    .subscribe(fav => {
+      this.favourites.push({data: product , route , type: 'product'});
+      this.refresh(false);
+    });
   }
 
   addToFavouriteStore(store: Store , route) {
-    this.favourites.push({data: store , route , type: 'store'});
-    this.refresh();
+    this.commandResource.createFavouriteStoreUsingPOST({
+      storeId: store.id,
+      customerId: this.customerId
+    })
+    .subscribe(fav => {
+      this.favourites.push({data: store , route , type: 'store'});
+      this.refresh(false);
+    });
   }
 
   removeFromFavorite(data , type) {
-    const tmpArray = this.favourites.filter(favourite => !(favourite.data.id === data.id
-      && favourite.type === type));
-    this.favourites = tmpArray;
-    this.refresh();
+    switch (type) {
+
+      case 'product':
+        this.commandResource.deleteFavouriteProductUsingDELETE(data.id)
+        .subscribe(() => {
+          const tmpArray = this.favourites.filter(favourite => !(favourite.data.id === data.id
+            && favourite.type === type));
+          this.favourites = tmpArray;
+          this.refresh(false);
+        });
+        break;
+
+        case 'store':
+        this.commandResource.deleteFavouriteStoreUsingDELETE(data.id)
+        .subscribe(() => {
+          const tmpArray = this.favourites.filter(favourite => !(favourite.data.id === data.id
+            && favourite.type === type));
+          this.favourites = tmpArray;
+          this.refresh(false);
+        });
+        break;
+
+        default: this.logger.warn('Unknown Type Error');
+    }
   }
 
 

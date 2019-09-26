@@ -20,7 +20,7 @@ import { BannerComponent } from './banner/banner.component';
 import { HeaderComponent } from './header/header.component';
 import { IonicModule } from '@ionic/angular';
 import { ImageSelectorComponent } from './image-selector/image-selector.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ImageCropperModule } from 'ngx-img-cropper';
@@ -43,12 +43,12 @@ import { WaitInformatonPopoverComponent } from './wait-informaton-popover/wait-i
 import { OrderCardComponent } from './order-card/order-card.component';
 import { PaypalPaymentComponent } from './paypal-payment/paypal-payment.component';
 import { LoginSignupComponent } from './login-signup/login-signup.component';
-import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
-
-
-
-
-
+import { PhoneNumberVerficationComponent } from './phone-number-verfication/phone-number-verfication.component';
+import { IntlNumberInputComponent } from './intl-number-input/intl-number-input.component';
+import { CountdownComponent } from 'ngx-countdown';
+import { CountdownModule } from 'ngx-countdown';
+import { ErrorComponent } from './error/error.component';
+  
 @NgModule({
   declarations: [
 
@@ -90,8 +90,10 @@ import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
     BraintreeCardPaymentComponent,
     RazorpayPaymentComponent,
     PaypalPaymentComponent,
-    LoginSignupComponent
-
+    LoginSignupComponent,
+    PhoneNumberVerficationComponent,
+    IntlNumberInputComponent,
+    ErrorComponent
   ],
 
   imports: [
@@ -100,7 +102,8 @@ import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
     FormsModule,
     IonicModule,
     RouterModule,
-    InternationalPhoneNumberModule
+    CountdownModule
+
 
   ],
 
@@ -140,8 +143,10 @@ import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
     BraintreeCardPaymentComponent,
     RazorpayPaymentComponent,
     PaypalPaymentComponent,
-    LoginSignupComponent
-
+    LoginSignupComponent,
+    PhoneNumberVerficationComponent,
+    IntlNumberInputComponent,
+    ErrorComponent
   ],
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -166,7 +171,11 @@ import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
     BraintreeCardPaymentComponent,
     RazorpayPaymentComponent,
     PaypalPaymentComponent,
-    LoginSignupComponent
+    LoginSignupComponent,
+    PhoneNumberVerficationComponent,
+    IntlNumberInputComponent,
+    CountdownComponent,
+    ErrorComponent
   ]
 })
 export class ComponentsModule { }

@@ -1,15 +1,15 @@
 import { CartService } from 'src/app/services/cart.service';
 import { Injectable } from '@angular/core';
 import { OrderCommandResourceService, OfferCommandResourceService, PaymentCommandResourceService } from '../api/services';
-
 import { CommandResource, Order, DeliveryInfo, Address, Offer } from '../api/models';
-
 import { Storage } from '@ionic/storage';
 import { NGXLogger } from 'ngx-logger';
 import { Util } from './util';
 import { PaymentSuccessfullInfoComponent } from '../components/payment-successfull-info/payment-successfull-info.component';
 import { ModalController } from '@ionic/angular';
 import { MakePaymentComponent } from '../components/make-payment/make-payment.component';
+import { BehaviorSubject } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -53,7 +53,7 @@ export class OrderService {
   collectDeliveryInfo() {
     this.logger.info('DeliveryInfo is' + this.deliveryInfo);
     return this.orderCommandService.collectDeliveryDetailsUsingPOST(
-      {taskId: this.resource.nextTaskId, orderId: this.resource.selfId, deliveryInfo: this.deliveryInfo});
+      {taskId: this.resource.nextTaskId, orderId: this.resource.orderId, deliveryInfo: this.deliveryInfo});
   }
 
   claimMyOffer(totalPrice) {

@@ -1,0 +1,66 @@
+<ion-header no-border>
+  <ion-toolbar  color="primary">
+    <ion-buttons>
+      <ion-button (click)="dismiss()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" class="ion-text-center">
+          <img src="/assets/phone.png" />
+        </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" class="ion-text-center">
+        <ion-text>
+          <h1 class="bold">Verify Your Mobile Number</h1>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" class="ion-text-center">
+        <ion-text>
+          <p class="cl-grey">A 6 Digit Code has been sent to 
+          </p>
+        </ion-text>
+      </ion-col>
+      <ion-col size="12" class="ion-text-center">
+        <span class="bold">{{'+' + number}}</span>
+        <span class="cl-blue small-margin" (click)="dismiss()">Change</span>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" class="ion-text-center">
+        <ion-item>
+          <ion-input placeholder="Enter OTP">
+          </ion-input>
+        </ion-item>
+      </ion-col>  
+    </ion-row>
+    <ion-row>
+        <ion-col size="12" class="ion-text-left">
+            <ul class="small-padding">
+              <li class="cl-grey ion-margin">The OTP will Expire in <b>
+                <countdown #timer [config]="{leftTime: 360, notify: [ 2, 5 ]}" (event)="timerEvent($event)"></countdown>
+              </b></li>
+              <li class="cl-grey ion-margin">Didn't Recieve the code ? <span class="cl-blue"
+                (click)="resend()">Resend</span></li>
+            </ul>
+          </ion-col>    
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<ion-footer>
+  <ion-grid>
+      <ion-row>
+          <ion-col size="12">
+            <ion-button expand="full" size="large">Verify</ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row></ion-row>
+  </ion-grid>
+</ion-footer>

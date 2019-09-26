@@ -1,12 +1,12 @@
 /* tslint:disable */
 export interface Contact {
+  mobile?: number;
   email?: string;
-  facebook?: string;
   fax?: string;
   firstName?: string;
   id?: number;
   lastName?: string;
-  mobile?: number;
+  facebook?: string;
   mobileNumber?: string;
   saluation?: string;
   telephone?: number;

@@ -11,7 +11,6 @@ import { ConfigsModule } from './configs/configs.module';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy, UrlHandlingStrategy } from '@angular/router';
-
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
@@ -30,6 +29,8 @@ import {environment} from '../environments/environment';
 import { PayPal } from '@ionic-native/paypal/ngx';
 import { LocationStrategy, HashLocationStrategy, Location } from '@angular/common';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
 
@@ -56,6 +57,8 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
     }),
     OAuthModule.forRoot(),
     LoggerModule.forRoot(environment.logging),
+    BrowserAnimationsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
 
   providers: [
