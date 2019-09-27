@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import * as googleLibphonenumber from 'google-libphonenumber';
 import * as countryList from 'country-list';
-import { ModalController, LoadingController } from '@ionic/angular';
+import { ModalController, LoadingController, Platform } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { Sim } from '@ionic-native/sim/ngx';
 import { NGXLogger } from 'ngx-logger';
@@ -29,16 +29,22 @@ export class IntlNumberInputComponent implements OnInit {
 
   @Output() validEvent = new EventEmitter<any>();
 
+  sim: Sim;
+
   constructor(
     private modalController: ModalController,
     private storage: Storage,
     private loadingController: LoadingController,
-    private sim: Sim,
-    private logger: NGXLogger
-  ) { }
+    private logger: NGXLogger,
+    private platform: Platform
+  ) {
+    if (!this.platform.is('pwa')) {
+    this.sim = new Sim();
+    }
+   }
 
   ngOnInit() {
-   if(this.viewType === 'list') {
+   if (this.viewType === 'list') {
      this.createLoader()
      .then(loader => {
        loader.present();

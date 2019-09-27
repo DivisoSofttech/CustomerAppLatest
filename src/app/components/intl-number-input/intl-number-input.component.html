@@ -37,8 +37,10 @@
   </ion-toolbar>
 </ion-header>
 <ion-content  *ngIf="viewType === 'list'">
-    <ion-text>Select Country</ion-text>
     <ion-list>
+      <ion-list-header>
+          <ion-text>Select Country</ion-text>
+      </ion-list-header>
         <ion-item *ngFor="let c of countryList" (click)="selectCountry(c)">
           <span [class]="'flag-icon flag-icon-' + (c.code | lowercase )"></span>
           <ion-grid>
