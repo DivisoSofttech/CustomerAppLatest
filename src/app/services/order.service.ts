@@ -17,10 +17,12 @@ import { BehaviorSubject } from 'rxjs';
 export class OrderService {
 
   order: Order;
-  resource: CommandResource;
+  resource: CommandResource = {};
+  orderResourceBehaviour: BehaviorSubject<string> =  new BehaviorSubject(this.resource.nextTaskName);
   deliveryInfo: DeliveryInfo = {};
   customer;
   paymentMethod;
+  acceptType = 'manual';
   shop;
   offer: Offer;
   constructor(
@@ -33,6 +35,10 @@ export class OrderService {
     private util: Util
       ) {
     this.getCustomer();
+  }
+
+  isTask(taskName: string): boolean {
+    return this.resource.nextTaskName === taskName;
   }
 
    initiateOrder() {
