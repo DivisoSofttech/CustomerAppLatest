@@ -36,7 +36,7 @@
     <ion-row>
       <ion-col size="12" class="ion-text-center">
         <ion-item>
-          <ion-input placeholder="Enter OTP">
+          <ion-input [(ngModel)]="OTP" placeholder="Enter OTP">
           </ion-input>
         </ion-item>
       </ion-col>  
@@ -58,7 +58,7 @@
   <ion-grid>
       <ion-row>
           <ion-col size="12">
-            <ion-button expand="full" size="large">Verify</ion-button>
+            <ion-button expand="full" size="large" (click)="manualProcess()">Verify</ion-button>
           </ion-col>
         </ion-row>
         <ion-row></ion-row>

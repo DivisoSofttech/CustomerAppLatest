@@ -35,30 +35,22 @@ export class FavouriteService {
     private queryResource: QueryResourceService,
     private commandResource: CommandResourceService,
   ) {
-    this.logger.info('Favourites Service Created');
-    this.oauthService.loadUserProfile()
-    .then((data: any) => {
-      this.username = data.preferred_username;
-      this.queryResource.findCustomerByReferenceUsingGET(this.username)
-      .subscribe(customer => {
-        this.customerId = customer.id;
-      });
-    });
+    
   }
 
-  refresh(hard) {
-    if(hard === false) {
+  refresh(reset) {
+    if(reset === false) {
       this.favouriteSubject.next(this.favourites);
-      this.storage.set(this.username +  '_favourites' , this.favourites);  
+      this.storage.set(this.username +  '_favourites' , this.favourites);
     } else {
-
       // Get From Server
+    
     }
   }
 
   addToFavouriteProduct(product: Product , route) {
     this.commandResource.createFavouriteProductUsingPOST({
-      productId:product.id,
+      productId: product.id,
       customerId: this.customerId
     })
     .subscribe(fav => {
