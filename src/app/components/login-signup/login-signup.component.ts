@@ -73,7 +73,7 @@ export class LoginSignupComponent implements OnInit {
     modal.onDidDismiss()
     .then((data: any) => {
       console.log('---------' , data.data.numberVerified);
-        if (data.data.numberVerified === true) {
+      if (data.data.numberVerified === true) {
           this.signup();
         }
     });
@@ -144,7 +144,8 @@ export class LoginSignupComponent implements OnInit {
                   reference: this.username,
                   name: this.username,
                   email: this.email,
-                  mobileNumber: this.phone
+                  mobileNumber: this.phone,
+                  phoneCode: 91
                 })
                 .subscribe(
                   customer => {

@@ -22,7 +22,7 @@ export class OrderService {
   deliveryInfo: DeliveryInfo = {};
   customer;
   paymentMethod;
-  acceptType = 'manual';
+  acceptType = 'automatic';
   shop;
   offer: Offer;
   constructor(
