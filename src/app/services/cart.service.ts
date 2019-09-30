@@ -32,6 +32,7 @@ export class CartService {
   ) {
     this.observableTickets = new BehaviorSubject<OrderLine[]>(this.orderLines);
     this.observablePrice = new BehaviorSubject<number>(this.totalPrice);
+    this.logger.info('Cart Service Created');
   }
 
   async presentAlert() {

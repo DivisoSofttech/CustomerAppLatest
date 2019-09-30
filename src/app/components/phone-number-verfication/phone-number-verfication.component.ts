@@ -74,8 +74,8 @@ export class PhoneNumberVerficationComponent implements OnInit {
 
   autoProcessSMS(data) {
     const message = data.body;
-    if (message && message.indexOf('enappd_starters') !== -1) {
-      this.OTP = data.body.slice(0, 5);
+    if (message && message.indexOf('OTP') !== -1) {
+      this.OTP = data.body.slice((message.length - 6), message.length - 1);
 
       this.commandResource.verifyOTPUsingPOST({
         numbers: this.number,

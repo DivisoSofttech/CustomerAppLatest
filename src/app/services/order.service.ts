@@ -31,9 +31,10 @@ export class OrderService {
     private offerCommandService: OfferCommandResourceService,
     private paymentCommandService: PaymentCommandResourceService,
     private util: Util
-      ) {
-    this.getCustomer();
-  }
+    ) {
+      this.logger.info('Order Service Created');
+      this.getCustomer();
+    }
 
    initiateOrder() {
      if ( this.offer !== undefined) {

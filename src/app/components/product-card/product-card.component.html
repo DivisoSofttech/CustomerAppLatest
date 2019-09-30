@@ -20,7 +20,7 @@
       <ion-grid>
         <ion-row>
           <ion-col (click)="toggleDescription()" class="title-card" margin-top padding-top>
-            <ion-card-title>{{ stockCurrent.product.name }}</ion-card-title>
+            <ion-card-title>{{ stockCurrent.product.name | titlecase }}</ion-card-title>
 
             <ion-text *ngIf="!(discount!=null && discount.rate !== null && discount.rate > 0)"><strong>&#8364;{{ stockCurrent.product.sellingPrice }}</strong></ion-text>
             <ion-text class="strike-through" *ngIf="discount!=null && discount.rate !== null && discount.rate > 0"><strong><s>&#8364;{{ stockCurrent.product.sellingPrice }}</s></strong></ion-text>
@@ -45,14 +45,14 @@
               <ion-button
                 fill="none"
                 (click)="addToFavourite(stockCurrent.product)"
-                *ngIf="!isFavourite"
+                *ngIf="!isFavourite && showFavourite"
               >
                 <ion-icon slot="icon-only" name="heart-empty"></ion-icon>
               </ion-button>
               <ion-button
                 fill="none"
                 (click)="removeFromFavourite(stockCurrent.product)"
-                *ngIf="isFavourite"
+                *ngIf="isFavourite && showFavourite"
               >
                 <ion-icon
                   color="danger"

@@ -1,16 +1,17 @@
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { Store } from './../../api/models/store';
 import { FavouriteService } from './../../services/favourite.service';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { NGXLogger } from 'ngx-logger';
+import { KeycloakService } from 'src/app/services/security/keycloak.service';
 
 @Component({
   selector: 'app-restaurant-card',
   templateUrl: './restaurant-card.component.html',
   styleUrls: ['./restaurant-card.component.scss'],
 })
-export class RestaurantCardComponent implements OnInit {
+export class RestaurantCardComponent implements OnInit , OnDestroy {
 
   @Input() store: Store = {};
 
@@ -28,17 +29,39 @@ export class RestaurantCardComponent implements OnInit {
 
   isFavourite = false;
 
+  showFavourite = false;
+
   timeNow;
   deliveryOk: boolean;
+  keycloakSubscription: any;
 
   constructor(
     private favourite: FavouriteService,
     private queryResource: QueryResourceService,
     private nav: NavController,
-    private logger: NGXLogger
+    private logger: NGXLogger,
+    private keycloakService: KeycloakService
   ) { }
 
+  ngOnDestroy() {
+    this.keycloakSubscription.unsubscribe();
+  }
+
   ngOnInit() {
+
+    this.keycloakSubscription = this.keycloakService.getUserChangedSubscription()
+    .subscribe((data: any) => {
+      this.logger.info('Checking If guest : RestaurantCardComponet');
+      if(data !== null) {
+        if(data.preferred_username === 'guest') {
+          this.showFavourite = false;
+        } else {
+          this.showFavourite = true;
+        }  
+      } else {
+        this.showFavourite = false;
+      }
+    });
     this.timeNow = new Date();
     this.queryResource.findReviewCountByStoreIdUsingGET(this.store.regNo).subscribe(
       res => {

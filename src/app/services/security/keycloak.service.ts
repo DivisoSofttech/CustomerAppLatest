@@ -25,7 +25,13 @@ export class KeycloakService {
     private storage: Storage,
     private logger: NGXLogger,
     private util: Util
-  ) {}
+  ) {
+    this.logger.info('Created Keycloak Service');
+    this.getCurrentUserDetails()
+    .then(data => {
+      this.getUserChangedSubscription().next(data);
+    });
+  }
 
   public getUserChangedSubscription() {
     return this.userChangedBehaviour;

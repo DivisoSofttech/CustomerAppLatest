@@ -47,7 +47,7 @@ export class HistoryListComponent implements OnInit {
     this.util.createLoader().then( loader => {
       loader.present();
       this.queryResource.getTasksUsingGET({name: 'Process Payment', assignee: this.orderService.customer.preferred_username})
-    .subscribe(result => {
+      .subscribe(result => {
       this.logger.info('Approved Orders opentasks ', result);
       result.forEach( opentask => {
         if (opentask.orderId === order.orderId) {
@@ -77,7 +77,8 @@ export class HistoryListComponent implements OnInit {
     this.queryResource.findOrdersByCustomerIdUsingGET({
       customerId: this.keyCloakUser.preferred_username,
       page: i,
-      size: 20
+      size: 20,
+      sort: ['desc']
     })
     .subscribe(porders => {
       porders.content.forEach(o => {
