@@ -66,9 +66,13 @@ export class PhoneNumberVerficationComponent implements OnInit {
       numbers: this.number,
       code: this.OTP
     }).subscribe(d => {
-      this.dismissData(true);
+      if(d.status === 'success') {
+        this.dismissData(true);
+      } else {
+        this.util.createToast('Invalid OTP');
+      }
     } , err => {
-      this.util.createToast('Invalid API Key');
+      this.util.createToast('Error Validating OTP ');
     });
   }
 
@@ -81,9 +85,13 @@ export class PhoneNumberVerficationComponent implements OnInit {
         numbers: this.number,
         code: this.OTP
       }).subscribe(d => {
-        this.dismissData(true);
+        if(d.status === 'success') {
+          this.dismissData(true);
+        } else {
+          this.util.createToast('Invalid OTP');
+        }
       } , err => {
-        this.util.createToast('Invalid API Key');
+        this.util.createToast('Error Validating OTP ');
       });
 
       this.OTPmessage = 'OTP received. Proceed to register';
