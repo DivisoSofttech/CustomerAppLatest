@@ -11,7 +11,7 @@ export class KeycloakAdminConfig {
     constructor() {
       this.kcAdminClient = new KeycloakAdminClient();
       this.kcAdminClient.setConfig({
-        baseUrl: 'http://dev.servers.divisosofttech.com:8888/auth'
+        baseUrl: 'https://dev.servers.divisosofttech.com/auth'
       });
     }
 
