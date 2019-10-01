@@ -1,0 +1,20 @@
+
+  <ion-item *ngIf="store">
+
+      <ion-thumbnail>
+          <ion-img
+          [src]="
+            'data:' +
+            store.imageContentType +
+            ';base64,' +
+            store.image
+          "
+        ></ion-img>
+      </ion-thumbnail>
+      <ion-text>
+        <h1>Order Accepted</h1>
+        <h2>{{store.name}}</h2>
+        <h3>{{'Order Id: ' + order.orderId}}</h3>
+      </ion-text>
+  
+    </ion-item>

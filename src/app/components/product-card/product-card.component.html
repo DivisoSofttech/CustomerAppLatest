@@ -1,4 +1,4 @@
-<ion-card no-padding id="{{ stockCurrent.product.id }}">
+<ion-card no-padding id="{{ stockCurrent.product.id }}" *ngIf="type === 'full'">
   <div class="ribbon1" *ngIf="discount!=null && discount.rate !== null && discount.rate > 0">
     <span>
       {{discount.rate}}% off
@@ -94,3 +94,23 @@
     </ion-list>
   </div>
 </ion-card>
+
+  <ion-item  *ngIf="product !== undefined && type === 'minimal'">
+      <ion-thumbnail class="img-small">
+          <ion-img
+            [src]="
+              'data:' +
+              product.imageContentType +
+              ';base64,' +
+              product.image
+            "
+            class="imageShow"
+          >
+          </ion-img>
+        </ion-thumbnail>
+        <ion-label class="ion-margin" *ngIf="orderLine !== undefined">
+          <h1>{{product.name}}</h1>
+          <span>{{orderLine.quantity + ' x &#8364;' + orderLine.pricePerUnit + ' '}}</span>
+          <span>{{'Total: &#8364;' + orderLine.total}}</span>
+        </ion-label>
+  </ion-item>

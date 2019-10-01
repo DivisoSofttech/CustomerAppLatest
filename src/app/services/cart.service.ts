@@ -41,6 +41,13 @@ export class CartService {
       message: 'Checkout From ' + this.currentShop.name,
       buttons: [
         {
+          text: 'Cancel',
+          cssClass: 'secondary',
+          handler: ()=> {
+            this.alertController.dismiss();
+          }
+        },
+        {
           text: 'Go To Cart',
           cssClass: 'secondary',
           handler: (blah) => {

@@ -5,4 +5,5 @@ export interface CustomerAggregator {
   name?: string;
   phoneCode?: number;
   reference?: string;
+  searchKey?: string;
 }

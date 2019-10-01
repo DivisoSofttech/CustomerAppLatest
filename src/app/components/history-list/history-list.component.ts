@@ -6,6 +6,7 @@ import { Order, OpenTask, CommandResource } from 'src/app/api/models';
 import { NGXLogger } from 'ngx-logger';
 import { OrderService } from 'src/app/services/order.service';
 import { Util } from 'src/app/services/util';
+import { OrderDetailComponent } from '../order-detail/order-detail.component';
 
 
 
@@ -102,6 +103,15 @@ export class HistoryListComponent implements OnInit {
       this.showHistoryLoading = false;
       this.logger.info('Error Getting Order Page ' + i , err);
     });
+  }
+
+  async showOrderDetails(porder) {
+    const modal = await this.modalController.create({
+      component: OrderDetailComponent,
+      componentProps: {order: porder , store: this.stores[porder.storeId]}
+    });
+
+    modal.present();
   }
 
   getStores(id) {

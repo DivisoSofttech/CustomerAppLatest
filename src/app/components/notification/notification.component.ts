@@ -1,9 +1,9 @@
 import { NGXLogger } from 'ngx-logger';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ViewChild } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { OpenTask } from 'src/app/api/models';
-import { ModalController } from '@ionic/angular';
+import { OpenTask, Notification } from 'src/app/api/models';
+import { ModalController, IonInfiniteScroll } from '@ionic/angular';
 import { Util } from 'src/app/services/util';
 
 @Component({
@@ -14,10 +14,11 @@ import { Util } from 'src/app/services/util';
 export class NotificationComponent implements OnInit  , OnDestroy {
 
   user;
-
-  openTasks: OpenTask[] = [];
+  notifications: Notification[] = [];
   showLoading;
-  taskSubscription;
+  notificationSubscription;
+  pageNumber = 0;
+  @ViewChild(IonInfiniteScroll, null) inifinitScroll: IonInfiniteScroll;
 
   constructor(
     private modalController: ModalController,
@@ -36,36 +37,59 @@ export class NotificationComponent implements OnInit  , OnDestroy {
     this.storage.get('user')
     .then(data => {
       this.user = data;
-      this.getTasks();
+      this.getNotifications(this.pageNumber , null);
     });
   }
 
-  async doRefresh(event) {
-    this.logger.info('Dorefresh is working');
-    await this.getUser();
-    event.target.complete();
-  }
-  getTasks() {
-      this.taskSubscription = this.queryResource.getTasksUsingGET({
-        assignee: this.user.preferred_username,
-        name: 'Process Payment'
-      }).subscribe(data => {
-        this.showLoading = false;
-        this.logger.info('Got Tasks ' , data);
-        this.openTasks = data;
-      },
-      err => {
-        console.log('Error occured getting accepted orders', err);
-        this.showLoading = false;
+  getNotifications(i , event) {
+    this.queryResource.findNotificationByReceiverIdUsingGETResponse(
+      {
+        receiverId: this.user.preferred_username,
+        page: i
+      }
+    ).subscribe(notifcatons => {
+      notifcatons.body.content.forEach(n => {
+        this.notifications.push(n);
       });
+      this.showLoading = false;
+      if(i !== 0) {
+        event.target.complete();
+      }
+      if (i ===notifcatons.body.totalPages) {
+        this.logger.info('Toggle disabled');
+        this.toggleInfiniteScroll();
+      }
+    } ,
+    err => {
+      this.logger.info(err);
+      this.util.createToast('Unable to get Notifications');
+      this.showLoading = false;
+    });
   }
 
+  
   dismiss() {
     this.modalController.dismiss();
   }
 
+  loadMoreData(event) {
+    ++this.pageNumber;
+    this.logger.info('Loading More Orders Page ' , this.pageNumber);
+    this.getNotifications(this.pageNumber, event);
+  }
+
+  async refresh(event) {
+    this.logger.info('Dorefresh is working');
+    await this.getUser();
+    event.target.complete();
+  }
+
+  toggleInfiniteScroll() {
+    this.inifinitScroll.disabled = !this.inifinitScroll.disabled;
+  }
+
   ngOnDestroy() {
-    this.taskSubscription.unsubscribe();
+    this.notificationSubscription.unsubscribe();
   }
 
 }
