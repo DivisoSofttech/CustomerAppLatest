@@ -1,3 +1,4 @@
+import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { RazorpayPaymentComponent } from './razorpay-payment/razorpay-payment.component';
 import { BraintreeCardPaymentComponent } from './braintree-card-payment/braintree-card-payment.component';
 import { NotificationComponent } from './notification/notification.component';
@@ -93,7 +94,8 @@ import { ErrorComponent } from './error/error.component';
     LoginSignupComponent,
     PhoneNumberVerficationComponent,
     IntlNumberInputComponent,
-    ErrorComponent
+    ErrorComponent,
+    ForgetPasswordComponent
   ],
 
   imports: [
@@ -146,7 +148,8 @@ import { ErrorComponent } from './error/error.component';
     LoginSignupComponent,
     PhoneNumberVerficationComponent,
     IntlNumberInputComponent,
-    ErrorComponent
+    ErrorComponent,
+    ForgetPasswordComponent
   ],
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -175,7 +178,8 @@ import { ErrorComponent } from './error/error.component';
     PhoneNumberVerficationComponent,
     IntlNumberInputComponent,
     CountdownComponent,
-    ErrorComponent
+    ErrorComponent,
+    ForgetPasswordComponent
   ]
 })
 export class ComponentsModule { }

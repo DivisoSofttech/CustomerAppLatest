@@ -14,6 +14,8 @@ import { CustomerDTO } from '../models/customer-dto';
 import { PageOfType } from '../models/page-of-type';
 import { PageOfDeliveryInfo } from '../models/page-of-delivery-info';
 import { Discount } from '../models/discount';
+import { PageOfFavouriteProduct } from '../models/page-of-favourite-product';
+import { PageOfFavouriteStore } from '../models/page-of-favourite-store';
 import { PageOfCategory } from '../models/page-of-category';
 import { PageOfCustomer } from '../models/page-of-customer';
 import { Entry } from '../models/entry';
@@ -22,6 +24,7 @@ import { PageOfRatingReview } from '../models/page-of-rating-review';
 import { PageOfStockCurrent } from '../models/page-of-stock-current';
 import { StockCurrent } from '../models/stock-current';
 import { PageOfStore } from '../models/page-of-store';
+import { Store } from '../models/store';
 import { PageOfOrder } from '../models/page-of-order';
 import { Order } from '../models/order';
 import { ProductDTO } from '../models/product-dto';
@@ -30,7 +33,6 @@ import { Review } from '../models/review';
 import { PageOfReview } from '../models/page-of-review';
 import { StockCurrentDTO } from '../models/stock-current-dto';
 import { PageOfStoreType } from '../models/page-of-store-type';
-import { Store } from '../models/store';
 import { StoreAddress } from '../models/store-address';
 import { StoreSettings } from '../models/store-settings';
 import { BannerDTO } from '../models/banner-dto';
@@ -53,10 +55,13 @@ class QueryResourceService extends __BaseService {
   static readonly findAllDeliveryTypesByStoreIdUsingGETPath = '/api/query/deliveryTypes/{storeId}';
   static readonly findDeliveryInfoByStoreIdUsingGETPath = '/api/query/deliveryinfoByStoreId/{storeId}';
   static readonly findDiscountByProductIdUsingGETPath = '/api/query/discount-productId/{productId}';
+  static readonly findFavouriteProductsByCustomerReferenceUsingGETPath = '/api/query/favouriteproductsbycustomerreference/{reference}';
+  static readonly findFavouriteStoresByCustomerReferenceUsingGETPath = '/api/query/favouritestoresbycustomerreference/{reference}';
   static readonly findAllCategoriesUsingGETPath = '/api/query/findAllCategories/{iDPcode}';
   static readonly findAllCustomersWithoutSearchUsingGETPath = '/api/query/findAllCustomers';
   static readonly findCategoryAndCountUsingGETPath = '/api/query/findCategoryAndCount';
   static readonly findCategoryAndCountBystoreIdUsingGETPath = '/api/query/findCategoryAndCountBystoreId/{storeId}';
+  static readonly findByMobileNumberUsingGETPath = '/api/query/findCustomerByMobileNumber/{mobileNumber}';
   static readonly findProductByCategoryIdAndUserIdUsingGETPath = '/api/query/findProductByCategoryIdAndUserId/{categoryId}/{userId}';
   static readonly findAllProductBySearchTermUsingGETPath = '/api/query/findProductBySearchTerm/{searchTerm}';
   static readonly findProductByStoreIdAndCategoryNameUsingGETPath = '/api/query/findProductByStoreIdAndCategoryName/{userId}/{categoryName}';
@@ -65,6 +70,7 @@ class QueryResourceService extends __BaseService {
   static readonly findStockCurrentByProductNameAndStoreIdUsingGETPath = '/api/query/findStockCurrentByProductNameStoreId/{name}/{storeId}';
   static readonly findStockCurrentByStoreIdAndCategoryIdUsingGETPath = '/api/query/findStockCurrentByStoreIdAndCategoryId/{userId}/{categoryId}';
   static readonly findStoreBySearchTermUsingGETPath = '/api/query/findStore/{searchTerm}';
+  static readonly findStoreByIdUsingGETPath = '/api/query/findStoreById/{id}';
   static readonly findStoreByTypeNameUsingGETPath = '/api/query/findStoreByTypeName/{name}';
   static readonly findStoreAndCountUsingGETPath = '/api/query/findStoreTypeAndCount';
   static readonly findAllProductByStoreIdUsingGETPath = '/api/query/findproducts/{storeId}';
@@ -419,6 +425,120 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
+   * @param params The `QueryResourceService.FindFavouriteProductsByCustomerReferenceUsingGETParams` containing the following parameters:
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `reference`: reference
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findFavouriteProductsByCustomerReferenceUsingGETResponse(params: QueryResourceService.FindFavouriteProductsByCustomerReferenceUsingGETParams): __Observable<__StrictHttpResponse<PageOfFavouriteProduct>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
+    if (params.size != null) __params = __params.set('size', params.size.toString());
+    if (params.reference != null) __params = __params.set('reference', params.reference.toString());
+    if (params.page != null) __params = __params.set('page', params.page.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/favouriteproductsbycustomerreference/${params.reference}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PageOfFavouriteProduct>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.FindFavouriteProductsByCustomerReferenceUsingGETParams` containing the following parameters:
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `reference`: reference
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findFavouriteProductsByCustomerReferenceUsingGET(params: QueryResourceService.FindFavouriteProductsByCustomerReferenceUsingGETParams): __Observable<PageOfFavouriteProduct> {
+    return this.findFavouriteProductsByCustomerReferenceUsingGETResponse(params).pipe(
+      __map(_r => _r.body as PageOfFavouriteProduct)
+    );
+  }
+
+  /**
+   * @param params The `QueryResourceService.FindFavouriteStoresByCustomerReferenceUsingGETParams` containing the following parameters:
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `reference`: reference
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findFavouriteStoresByCustomerReferenceUsingGETResponse(params: QueryResourceService.FindFavouriteStoresByCustomerReferenceUsingGETParams): __Observable<__StrictHttpResponse<PageOfFavouriteStore>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
+    if (params.size != null) __params = __params.set('size', params.size.toString());
+    if (params.reference != null) __params = __params.set('reference', params.reference.toString());
+    if (params.page != null) __params = __params.set('page', params.page.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/favouritestoresbycustomerreference/${params.reference}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PageOfFavouriteStore>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.FindFavouriteStoresByCustomerReferenceUsingGETParams` containing the following parameters:
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `reference`: reference
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findFavouriteStoresByCustomerReferenceUsingGET(params: QueryResourceService.FindFavouriteStoresByCustomerReferenceUsingGETParams): __Observable<PageOfFavouriteStore> {
+    return this.findFavouriteStoresByCustomerReferenceUsingGETResponse(params).pipe(
+      __map(_r => _r.body as PageOfFavouriteStore)
+    );
+  }
+
+  /**
    * @param params The `QueryResourceService.FindAllCategoriesUsingGETParams` containing the following parameters:
    *
    * - `iDPcode`: iDPcode
@@ -633,6 +753,42 @@ class QueryResourceService extends __BaseService {
   findCategoryAndCountBystoreIdUsingGET(params: QueryResourceService.FindCategoryAndCountBystoreIdUsingGETParams): __Observable<Array<Entry>> {
     return this.findCategoryAndCountBystoreIdUsingGETResponse(params).pipe(
       __map(_r => _r.body as Array<Entry>)
+    );
+  }
+
+  /**
+   * @param mobileNumber mobileNumber
+   * @return OK
+   */
+  findByMobileNumberUsingGETResponse(mobileNumber: number): __Observable<__StrictHttpResponse<CustomerDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/findCustomerByMobileNumber/${mobileNumber}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<CustomerDTO>;
+      })
+    );
+  }
+  /**
+   * @param mobileNumber mobileNumber
+   * @return OK
+   */
+  findByMobileNumberUsingGET(mobileNumber: number): __Observable<CustomerDTO> {
+    return this.findByMobileNumberUsingGETResponse(mobileNumber).pipe(
+      __map(_r => _r.body as CustomerDTO)
     );
   }
 
@@ -1109,6 +1265,42 @@ class QueryResourceService extends __BaseService {
   findStoreBySearchTermUsingGET(params: QueryResourceService.FindStoreBySearchTermUsingGETParams): __Observable<PageOfStore> {
     return this.findStoreBySearchTermUsingGETResponse(params).pipe(
       __map(_r => _r.body as PageOfStore)
+    );
+  }
+
+  /**
+   * @param id id
+   * @return OK
+   */
+  findStoreByIdUsingGETResponse(id: number): __Observable<__StrictHttpResponse<Store>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/findStoreById/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<Store>;
+      })
+    );
+  }
+  /**
+   * @param id id
+   * @return OK
+   */
+  findStoreByIdUsingGET(id: number): __Observable<Store> {
+    return this.findStoreByIdUsingGETResponse(id).pipe(
+      __map(_r => _r.body as Store)
     );
   }
 
@@ -2797,6 +2989,58 @@ module QueryResourceService {
      * Size of a page
      */
     size?: number;
+
+    /**
+     * Page number of the requested page
+     */
+    page?: number;
+  }
+
+  /**
+   * Parameters for findFavouriteProductsByCustomerReferenceUsingGET
+   */
+  export interface FindFavouriteProductsByCustomerReferenceUsingGETParams {
+
+    /**
+     * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     */
+    sort?: Array<string>;
+
+    /**
+     * Size of a page
+     */
+    size?: number;
+
+    /**
+     * reference
+     */
+    reference?: string;
+
+    /**
+     * Page number of the requested page
+     */
+    page?: number;
+  }
+
+  /**
+   * Parameters for findFavouriteStoresByCustomerReferenceUsingGET
+   */
+  export interface FindFavouriteStoresByCustomerReferenceUsingGETParams {
+
+    /**
+     * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     */
+    sort?: Array<string>;
+
+    /**
+     * Size of a page
+     */
+    size?: number;
+
+    /**
+     * reference
+     */
+    reference?: string;
 
     /**
      * Page number of the requested page

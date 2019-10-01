@@ -52,6 +52,8 @@ export { PageOfCategory } from './models/page-of-category';
 export { PageOfComboLineItem } from './models/page-of-combo-line-item';
 export { PageOfCustomer } from './models/page-of-customer';
 export { PageOfDeliveryInfo } from './models/page-of-delivery-info';
+export { PageOfFavouriteProduct } from './models/page-of-favourite-product';
+export { PageOfFavouriteStore } from './models/page-of-favourite-store';
 export { PageOfOrder } from './models/page-of-order';
 export { PageOfProduct } from './models/page-of-product';
 export { PageOfRatingReview } from './models/page-of-rating-review';

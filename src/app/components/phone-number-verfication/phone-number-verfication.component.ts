@@ -39,7 +39,7 @@ export class PhoneNumberVerficationComponent implements OnInit {
   }
 
   startSMSListener() {
-    if(SMSReceive) {
+    if (SMSReceive) {
       SMSReceive.startWatch(
         () => {
           document.addEventListener('onSMSArrive', (e: any) => {
@@ -48,16 +48,16 @@ export class PhoneNumberVerficationComponent implements OnInit {
           });
         },
         () => { console.log('watch start failed'); }
-      );  
+      );
     }
   }
 
   stopSMSListener() {
-    if(SMSReceive) {
+    if (SMSReceive) {
       SMSReceive.stopWatch(
         () => { console.log('watch stopped'); },
         () => { console.log('watch stop failed'); }
-      );  
+      );
     }
   }
 
@@ -66,7 +66,7 @@ export class PhoneNumberVerficationComponent implements OnInit {
       numbers: this.number,
       code: this.OTP
     }).subscribe(d => {
-      this.dismissData(true);
+      console.log(d);
     } , err => {
       this.util.createToast('Invalid API Key');
     });
