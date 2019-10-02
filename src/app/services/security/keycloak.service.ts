@@ -140,7 +140,11 @@ export class KeycloakService {
   }
 
   async getCurrentUserDetails() {
-    return await this.oauthService.loadUserProfile();
+    if (this.oauthService.hasValidAccessToken()) {
+      return await this.oauthService.loadUserProfile();
+    } else {
+      return;
+    }
   }
 
   async updateCurrentUserDetails(

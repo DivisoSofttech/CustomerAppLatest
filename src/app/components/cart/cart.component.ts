@@ -4,7 +4,7 @@ import { Storage } from '@ionic/storage';
 import { Order } from './../../api/models/order';
 import { AllergyComponent } from './../allergy/allergy.component';
 import { CartService } from './../../services/cart.service';
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { OrderLine, Store, StoreSettings } from 'src/app/api/models';
 import { ModalController, NavController } from '@ionic/angular';
 import { Util } from 'src/app/services/util';
@@ -48,9 +48,15 @@ export class CartComponent implements OnInit {
   deliveryOk = false;
   collectionOk = false;
 
+  @Output() routeBasketEvent = new EventEmitter();
+
 
   @ViewChild(DeliveryItemDetailsComponent , null) delivery: DeliveryItemDetailsComponent;
 
+  routeBasket() {
+    this.logger.info('Firing event');
+    this.routeBasketEvent.emit(null);
+  }
 
   constructor(
     private cart: CartService,
