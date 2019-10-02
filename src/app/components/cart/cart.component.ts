@@ -59,7 +59,6 @@ export class CartComponent implements OnInit {
     private modalController: ModalController,
     private navController: NavController,
     private logger: NGXLogger,
-    private storage: Storage,
     private util: Util,
     private orderCommandResource: OrderCommandResourceService
   ) {}
@@ -99,8 +98,6 @@ export class CartComponent implements OnInit {
 
         if (user === null || user.preferred_username === 'guest') {
           this.guest = true;
-          if (this.viewType === 'full') {
-          }
         } else {
           this.guest = false;
         }

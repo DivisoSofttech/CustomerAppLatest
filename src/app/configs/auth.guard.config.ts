@@ -10,7 +10,7 @@ export const authConfig: AuthConfig = {
   dummyClientSecret: '61aed705-1f70-4955-ad23-94bc15c09c29',
   tokenEndpoint: 'https://dev.servers.divisosofttech.com/auth/realms/graeshoppe/protocol/openid-connect/token',
   userinfoEndpoint: 'https://dev.servers.divisosofttech.com/auth/realms/graeshoppe/protocol/openid-connect/userinfo',
-  // oidc: false,
+  oidc: false,
   requireHttps: false,
 };
 
