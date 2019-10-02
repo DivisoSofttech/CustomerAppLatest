@@ -1,5 +1,5 @@
 import { CartService } from 'src/app/services/cart.service';
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { OrderCommandResourceService, OfferCommandResourceService, PaymentCommandResourceService } from '../api/services';
 import { CommandResource, Order, DeliveryInfo, Address, Offer } from '../api/models';
 import { Storage } from '@ionic/storage';
@@ -9,12 +9,13 @@ import { PaymentSuccessfullInfoComponent } from '../components/payment-successfu
 import { ModalController } from '@ionic/angular';
 import { MakePaymentComponent } from '../components/make-payment/make-payment.component';
 import { BehaviorSubject } from 'rxjs';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class OrderService {
+export class OrderService implements OnInit {
 
   order: Order;
   resource: CommandResource;
@@ -28,11 +29,13 @@ export class OrderService {
     private storage: Storage,
     private cart: CartService,
     private logger: NGXLogger,
+    private oauthService: OAuthService,
     private offerCommandService: OfferCommandResourceService,
     private paymentCommandService: PaymentCommandResourceService,
     private util: Util
-    ) {
-      this.logger.info('Order Service Created');
+    ) { }
+
+    ngOnInit() {
       this.getCustomer();
     }
 
@@ -43,12 +46,14 @@ export class OrderService {
      return this.orderCommandService.initiateOrderUsingPOST(this.order);
   }
 
-  getCustomer() {
-    this.storage.get('user')
-    .then(data => {
-      this.customer = data;
-      this.logger.info('Got Customer ' , data);
-    });
+  async getCustomer() {
+    if (this.oauthService.hasValidAccessToken()) {
+      await this.storage.get('user')
+        .then(data => {
+          this.customer = data;
+          this.logger.info('Got Customer ' , data);
+      });
+    }
   }
 
   collectDeliveryInfo() {
@@ -57,13 +62,19 @@ export class OrderService {
       {taskId: this.resource.nextTaskId, orderId: this.resource.orderId, deliveryInfo: this.deliveryInfo});
   }
 
-  claimMyOffer(totalPrice) {
+  async claimMyOffer(totalPrice) {
+    if (!this.customer) {
+      await this.getCustomer();
+    }
     return this.offerCommandService.checkOfferEligibilityUsingPOST({orderModel: {
       orderTotal: totalPrice
     }, customerId: this.customer.preferred_username});
   }
 
-  processPayment(ref: string, status: string, provider) {
+   processPayment(ref: string, status: string, provider) {
+    if (!this.customer) {
+      this.getCustomer();
+    }
     console.log('Payment reference is ' + ref);
     return  this.paymentCommandService.processPaymentUsingPOST(
       {taskId: this.resource.nextTaskId,

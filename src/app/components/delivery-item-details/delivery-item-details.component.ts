@@ -133,9 +133,10 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
   }
 
   getOffers() {
-    if(this.orderService.customer !== undefined) {
-      this.logger.info('Checking offer eligibility using price ', this.totalPrice);
-      this.orderService.claimMyOffer(this.totalPrice).subscribe(response => {
+    this.logger.info('Checking offer eligibility using price ', this.totalPrice);
+    this.orderService.claimMyOffer(this.totalPrice)
+    .then(orderBehaviour => {
+      orderBehaviour.subscribe(response => {
         this.logger.info('response for cliam offer ' , response);
         if (response.orderDiscountAmount === null) {
           this.logger.info('No offers available');
@@ -148,8 +149,8 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
           };
           this.orderService.setOffer(myOffer);
         }
-      });  
-    }
+      });
+    });
   }
 
   async showAddAuxilaryPopover(p) {

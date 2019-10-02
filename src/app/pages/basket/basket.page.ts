@@ -4,6 +4,7 @@ import { QueryResourceService } from 'src/app/api/services';
 import { Storage } from '@ionic/storage';
 import { Component, OnInit } from '@angular/core';
 import { CartService } from 'src/app/services/cart.service';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-basket',
@@ -18,12 +19,19 @@ export class BasketPage implements OnInit {
     private cart: CartService,
     private  queryResource: QueryResourceService,
     private logger: NGXLogger,
+    private navController: NavController
   ) { }
 
   ngOnInit() {
+    this.logger.info('Basket Page');
     if (this.cart.currentShop !== undefined) {
       this.getStore();
     }
+  }
+
+  navigateBasket() {
+    this.logger.info('Routing to basket');
+    this.navController.navigateForward('/basket');
   }
 
   getStore() {
