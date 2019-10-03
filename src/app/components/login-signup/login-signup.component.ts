@@ -133,6 +133,10 @@ export class LoginSignupComponent implements OnInit {
           customer => {
             this.logger.info('Got Customer', customer);
             this.storage.set('customer' , customer);
+            this.keycloakService.getCurrentUserDetails()
+            .then(data => {
+              this.keycloakService.getUserChangedSubscription().next(data);
+            });
             loader.dismiss();
             if (this.type === 'page') {
               this.util.navigateRoot();

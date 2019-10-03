@@ -43,7 +43,8 @@
                 "input": "src/global.scss"
               }
             ],
-            "scripts": []
+            "scripts": [],
+            "webWorkerTsConfig": "tsconfig.worker.json"
           },
           "configurations": {
             "production": {
@@ -108,7 +109,9 @@
    
             ],
             "scripts": [
+              
             ],
+            "webWorkerTsConfig": "tsconfig.worker.json",
             "assets": [
               {
                 "glob": "favicon.ico",
@@ -136,7 +139,9 @@
             "tsConfig": [
               "tsconfig.app.json",
               "tsconfig.spec.json",
-              "e2e/tsconfig.json"
+              "e2e/tsconfig.json",
+              "tsconfig.worker.json",
+              "tsconfig.worker.json"
             ],
             "exclude": [
               "**/node_modules/**"

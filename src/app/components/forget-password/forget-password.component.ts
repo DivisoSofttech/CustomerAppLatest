@@ -1,3 +1,4 @@
+import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { Util } from 'src/app/services/util';
 import { CommandResourceService } from 'src/app/api/services';
@@ -40,7 +41,8 @@ export class ForgetPasswordComponent implements OnInit {
     private storage: Storage,
     private commandResource: CommandResourceService,
     private util: Util,
-    private query: QueryResourceService
+    private query: QueryResourceService,
+    private keycloakService: KeycloakService
     ) { }
 
   ngOnInit() {
@@ -79,16 +81,23 @@ export class ForgetPasswordComponent implements OnInit {
     return true;
   }
 
-  updatePassword() {
-
+  updatePassword(user) {
+    this.keycloakService.ForgetPassword(user, this.password, () => {
+      this.util.createToast('Passsword reset success');
+      this.modal.dismiss();
+    }, err => {
+      console.log('reset', err);
+      this.util.createToast('Passsword reset failed');
+    });
   }
 
   sendOtp() {
     if (this.numberValid === true) {
       this.query.findByMobileNumberUsingGET(this.number).subscribe(user => {
+        this.keycloakService.getUser(user.searchKey);
         this.user = user;
         console.log(this.user);
-        // this.initSMSSender();
+        //this.initSMSSender();
         this.showOtp = true;
       }, err => {
         if (err.status === '500') {
@@ -128,17 +137,16 @@ export class ForgetPasswordComponent implements OnInit {
   }
 
   manualProcess() {
-    if (this.OTP.length === 5) {
       this.commandResource.verifyOTPUsingPOST({
         numbers: this.number,
         code: this.OTP
       }).subscribe(d => {
         this.otpVerification = d;
+        this.updatePassword(this.user);
         console.log('otp-verification', d);
       } , err => {
         this.util.createToast('Invalid API Key');
       });
-    }
   }
 
   autoProcessSMS(data) {

@@ -23,6 +23,10 @@ export class GuestUserService {
     await this.keycloakService.authenticate(this.credentials,
       (success) => {
         this.logger.info('guest-logged-in');
+        this.keycloakService.getCurrentUserDetails()
+        .then(data => {
+          this.keycloakService.getUserChangedSubscription().next(data);
+        });
     }, (failure) => {
 
     }, (err) => {

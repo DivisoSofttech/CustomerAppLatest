@@ -25,7 +25,13 @@ export class KeycloakService {
     private storage: Storage,
     private logger: NGXLogger,
     private util: Util
-  ) {}
+  ) {
+    this.logger.info('Created Keycloak Service');
+    this.getCurrentUserDetails()
+    .then(data => {
+      this.getUserChangedSubscription().next(data);
+    });
+  }
 
   public getUserChangedSubscription() {
     return this.userChangedBehaviour;
@@ -188,6 +194,40 @@ export class KeycloakService {
             err(e);
           });
       });
+    });
+  }
+
+  getUser(userId) {
+    console.log('entered');
+    this.keycloakConfig.refreshClient().then(() => {
+      this.keycloakAdmin = this.keycloakConfig.kcAdminClient;
+      this.keycloakAdmin.users.findOne({id: userId}).then(user => {
+        console.log('user', userId);
+        console.log('userA', user);
+      });
+    });
+  }
+
+  ForgetPassword(user, newPassword, success, err) {
+    console.log('user', user);
+    this.keycloakConfig.refreshClient().then(() => {
+      this.keycloakAdmin = this.keycloakConfig.kcAdminClient;
+      this.keycloakAdmin.users
+        .resetPassword({
+          realm: 'graeshoppe',
+          id: user.sub,
+          credential: {
+            temporary: false,
+            type: 'password',
+            value: newPassword
+          }
+        })
+        .then(data => {
+          success(data);
+        })
+        .catch(e => {
+          err(e);
+        });
     });
   }
 
