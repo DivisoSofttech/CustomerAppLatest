@@ -48,7 +48,10 @@ import { IntlNumberInputComponent } from './intl-number-input/intl-number-input.
 import { CountdownComponent } from 'ngx-countdown';
 import { CountdownModule } from 'ngx-countdown';
 import { ErrorComponent } from './error/error.component';
-  
+import { OrderDetailComponent } from './order-detail/order-detail.component';
+import { MaterialModule } from './material.module';
+import { NotificationCardComponent } from './notification-card/notification-card.component';
+
 @NgModule({
   declarations: [
 
@@ -88,20 +91,24 @@ import { ErrorComponent } from './error/error.component';
     NotificationComponent,
     OrderCardComponent,
     BraintreeCardPaymentComponent,
+    OrderDetailComponent,
     RazorpayPaymentComponent,
     PaypalPaymentComponent,
     LoginSignupComponent,
     PhoneNumberVerficationComponent,
     IntlNumberInputComponent,
-    ErrorComponent
+    ErrorComponent,
+    NotificationCardComponent
   ],
 
   imports: [
     ImageCropperModule,
     CommonModule,
+    ReactiveFormsModule,
     FormsModule,
     IonicModule,
     RouterModule,
+    MaterialModule,
     CountdownModule
 
 
@@ -141,12 +148,14 @@ import { ErrorComponent } from './error/error.component';
     NotificationComponent,
     OrderCardComponent,
     BraintreeCardPaymentComponent,
+    OrderDetailComponent,
     RazorpayPaymentComponent,
     PaypalPaymentComponent,
     LoginSignupComponent,
     PhoneNumberVerficationComponent,
     IntlNumberInputComponent,
-    ErrorComponent
+    ErrorComponent,
+    NotificationCardComponent
   ],
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -175,7 +184,9 @@ import { ErrorComponent } from './error/error.component';
     PhoneNumberVerficationComponent,
     IntlNumberInputComponent,
     CountdownComponent,
-    ErrorComponent
+    OrderDetailComponent,
+    ErrorComponent,
+    NotificationCardComponent
   ]
 })
 export class ComponentsModule { }

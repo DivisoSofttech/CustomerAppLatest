@@ -4,7 +4,7 @@ import { Storage } from '@ionic/storage';
 import { Order } from './../../api/models/order';
 import { AllergyComponent } from './../allergy/allergy.component';
 import { CartService } from './../../services/cart.service';
-import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter,OnDestroy } from '@angular/core';
 import { OrderLine, Store, StoreSettings } from 'src/app/api/models';
 import { ModalController, NavController } from '@ionic/angular';
 import { Util } from 'src/app/services/util';
@@ -51,7 +51,15 @@ export class CartComponent implements OnInit, OnDestroy {
 
   initiateOrderSubcription: Subscription;
   @ViewChild(DeliveryItemDetailsComponent, null)
-  delivery: DeliveryItemDetailsComponent;
+  @Output() routeBasketEvent = new EventEmitter();
+
+
+  @ViewChild(DeliveryItemDetailsComponent , null) delivery: DeliveryItemDetailsComponent;
+
+  routeBasket() {
+    this.logger.info('Firing event');
+    this.routeBasketEvent.emit(null);
+  }
 
   constructor(
     private cart: CartService,
@@ -60,7 +68,6 @@ export class CartComponent implements OnInit, OnDestroy {
     private modalController: ModalController,
     private navController: NavController,
     private logger: NGXLogger,
-    private storage: Storage,
     private util: Util,
     private orderCommandResource: OrderCommandResourceService
   ) {}
@@ -98,20 +105,13 @@ export class CartComponent implements OnInit, OnDestroy {
   getCustomer() {
     this.util.createLoader().then(loader => {
       loader.present();
-      this.keycloakService.getUserChangedSubscription().subscribe(
-        user => {
-          if (user === null || user.preferred_username === 'guest') {
-            this.guest = true;
-            if (this.viewType === 'full') {
-            }
-          } else {
-            this.guest = false;
-          }
-          this.customer = user;
-          loader.dismiss();
-        },
-        err => {
-          loader.dismiss();
+      this.keycloakService.getUserChangedSubscription()
+      .subscribe(user => {
+
+        if (user === null || user.preferred_username === 'guest') {
+          this.guest = true;
+        } else {
+          this.guest = false;
         }
       );
     });

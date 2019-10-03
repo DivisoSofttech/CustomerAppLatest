@@ -49,10 +49,27 @@ export class AppComponent {
     private storage: Storage,
     private keycloakService: KeycloakService,
     private menuController: MenuController,
+<<<<<<< HEAD
     private screenOrientation: ScreenOrientation,
     private backgroundMode: BackgroundMode,
     private localNotifications: LocalNotifications
       ) {
+=======
+    private screenOrientation: ScreenOrientation
+  ) {
+    this.getUser();
+    // if (typeof Worker !== 'undefined') {
+    //   // Create a new
+    //   const worker = new Worker('./user.worker', { type: 'module' });
+    //   worker.onmessage = ({ data }) => {
+    //     console.log(`page got message: ${data}`);
+    //   };
+    //   worker.postMessage('hello');
+    // } else {
+    //   // Web Workers are not supported in this environment.
+    //   // You should add a fallback so that your program still executes correctly.
+    // }
+>>>>>>> 0dd37fc65a73a768ebf5b3e01d03cb34a54412bc
     this.initializeApp();
   }
 
@@ -113,6 +130,7 @@ export class AppComponent {
   getUser() {
     this.keycloakService.getUserChangedSubscription()
     .subscribe(user => {
+      this.logger.info('Checking If guest : App Component');
       if (user !== null) {
         if (user.preferred_username === 'guest') {
           this.logger.info('Show Login');

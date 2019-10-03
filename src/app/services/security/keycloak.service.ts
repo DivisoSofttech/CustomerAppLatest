@@ -20,6 +20,7 @@ export class KeycloakService {
 
   keycloakAdmin: KeycloakAdminClient;
   customer;
+  realm = 'graeshoppe';
   constructor(
     private oauthService: OAuthService,
     private keycloakConfig: KeycloakAdminConfig,
@@ -27,7 +28,14 @@ export class KeycloakService {
     private logger: NGXLogger,
     private util: Util,
     private notificationService: NotificationService
-  ) {}
+
+  ) {
+    this.logger.info('Created Keycloak Service');
+    this.getCurrentUserDetails()
+    .then(data => {
+      this.getUserChangedSubscription().next(data);
+    });
+  }
 
   public getUserChangedSubscription() {
     return this.userChangedBehaviour;
@@ -36,7 +44,7 @@ export class KeycloakService {
   createAccount(user: any, password: string, success: any, err: any) {
     this.keycloakConfig.refreshClient().then(() => {
       this.keycloakAdmin = this.keycloakConfig.kcAdminClient;
-      user.realm = 'graeshoppe';
+      user.realm = this.realm;
       user.credentials = [{ type: 'password', value: password }];
       user.attributes = map;
       user.enabled = true;
@@ -48,13 +56,13 @@ export class KeycloakService {
           await this.keycloakAdmin.roles
             .findOneByName({
               name: 'customer',
-              realm: 'graeshoppe'
+              realm: this.realm
             })
             .then(async role => {
               this.logger.info('Role findonebyname ', role);
               await this.keycloakAdmin.users.addRealmRoleMappings({
                 id: res.id,
-                realm: 'graeshoppe',
+                realm: this.realm,
                 roles: [
                   {
                     id: role.id,
@@ -83,7 +91,7 @@ export class KeycloakService {
           await this.keycloakConfig.kcAdminClient.users
             .listRoleMappings({
               id: user,
-              realm: 'graeshoppe'
+              realm: this.realm
             })
             .then(async roles => {
               this.logger.info('Available roles for the user are ', roles);
@@ -150,7 +158,11 @@ export class KeycloakService {
     return false;
   }
   async getCurrentUserDetails() {
-    return await this.oauthService.loadUserProfile();
+    if (this.oauthService.hasValidAccessToken()) {
+      return await this.oauthService.loadUserProfile();
+    } else {
+      return;
+    }
   }
 
   async updateCurrentUserDetails(
@@ -167,7 +179,7 @@ export class KeycloakService {
         .update(
           {
             id: keycloakUser.sub,
-            realm: 'graeshoppe'
+            realm: this.realm
           },
           {
             firstName: firstN,
@@ -190,7 +202,7 @@ export class KeycloakService {
         this.keycloakAdmin = this.keycloakConfig.kcAdminClient;
         this.keycloakAdmin.users
           .resetPassword({
-            realm: 'graeshoppe',
+            realm: this.realm,
             id: user.sub,
             credential: {
               temporary: false,

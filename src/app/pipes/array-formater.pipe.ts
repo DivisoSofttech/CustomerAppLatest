@@ -10,7 +10,8 @@ export class ArrayFormaterPipe implements PipeTransform {
     let str = '';
     if (value !== undefined) {
       value.forEach(dt => {
-      nameArray.push(dt.name.charAt(0).toUpperCase() +  dt.name.slice(1));
+      let nstr = dt.name.toLowerCase();
+      nameArray.push(nstr.charAt(0).toUpperCase() +  nstr.slice(1));
       });
       str = nameArray.join(', ');
       if (value.length === 1 && args !== undefined) {

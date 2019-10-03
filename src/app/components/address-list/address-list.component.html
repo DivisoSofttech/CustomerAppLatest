@@ -54,54 +54,54 @@
   </ion-header>
 
 <ion-content *ngIf="showAddressPanel">
-
-  <ion-item>
-    <ion-label position="floating">Name</ion-label>
-    <ion-input type="text" [(ngModel)]="address.name"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label position="floating">Phone</ion-label>
-    <ion-input type="number" [(ngModel)]="address.phone"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label position="floating">Alternate Phone</ion-label>
-    <ion-input type="number" [(ngModel)]="address.alternatePhone"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label position="floating">House Number / Building Name</ion-label>
-    <ion-input type="text" [(ngModel)]="address.houseNoOrBuildingName"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label position="floating">Road Name Area Or Street</ion-label>
-    <ion-input type="text" [(ngModel)]="address.roadNameAreaOrStreet"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label position="floating">City</ion-label>
-    <ion-input type="text" [(ngModel)]="address.city"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label position="floating">Landmark</ion-label>
-    <ion-input type="text" [(ngModel)]="address.landmark"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label position="floating">Pincode</ion-label>
-    <ion-input type="number" [(ngModel)]="address.pincode"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label position="floating">State</ion-label>
-    <ion-input type="text" [(ngModel)]="address.state"></ion-input>
-  </ion-item>
-  <ion-radio-group [(ngModel)]="address.addressType">
-    <ion-item>
-      <ion-label>Home</ion-label>
-      <ion-radio value="home"></ion-radio>
-    </ion-item>
-    <ion-item>
-      <ion-label>Work</ion-label>
-      <ion-radio value="work"></ion-radio>
-    </ion-item>
-  </ion-radio-group>
-
+  <form [formGroup]="addressForm">
+      <ion-item>
+          <ion-label position="floating">Name *</ion-label>
+          <ion-input formControlName="name" type="text" ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Phone *</ion-label>
+          <ion-input formControlName="phone" type="number" ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Alternate Phone *</ion-label>
+          <ion-input formControlName="alternatePhone" type="number" ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">House Number / Building Name * </ion-label>
+          <ion-input formControlName="houseNoOrBuildingName" type="text" ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Road Name Area Or Street *</ion-label>
+          <ion-input formControlName="roadNameAreaOrStreet" type="text" ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">City *</ion-label>
+          <ion-input formControlName="city" type="text" ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Landmark *</ion-label>
+          <ion-input formControlName="landmark" type="text" ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Pincode *</ion-label>
+          <ion-input formControlName="pincode" type="number" ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">State *</ion-label>
+          <ion-input formControlName="state" type="text" ></ion-input>
+        </ion-item>
+        <ion-radio-group  formControlName="addressType">
+          <ion-item>
+            <ion-label>Home</ion-label>
+            <ion-radio value="home"></ion-radio>
+          </ion-item>
+          <ion-item>
+            <ion-label>Work</ion-label>
+            <ion-radio value="work"></ion-radio>
+          </ion-item>
+        </ion-radio-group>      
+  </form>
 </ion-content>
 
   <ion-footer *ngIf="showAddressPanel">

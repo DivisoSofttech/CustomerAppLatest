@@ -52,7 +52,7 @@
                   " class="imageShow">
                     </ion-img>
                   </ion-avatar>
-                  <ion-label margin>{{category.name}}</ion-label>
+                  <ion-label margin>{{category.name | titlecase}}</ion-label>
                 </ion-item>
                 <app-category-wise-products-card *ngIf="store !== undefined" [category]="category" [store]="store">
                 </app-category-wise-products-card>

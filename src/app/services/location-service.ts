@@ -22,7 +22,6 @@ export class LocationService {
     private geolocation: Geolocation,
     private logger: NGXLogger
   ) {
-
     this.logger.info('Location Service Created');
     this.mapsAPILoader.load().then(() => {
       this.autoCompleteService = new google.maps.places.AutocompleteService();

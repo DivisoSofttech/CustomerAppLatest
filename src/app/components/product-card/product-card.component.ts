@@ -1,20 +1,20 @@
 import { CartService } from './../../services/cart.service';
 import { Router } from '@angular/router';
 import { FavouriteService } from './../../services/favourite.service';
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { StockCurrent, AuxilaryLineItem, ComboLineItem, Discount } from 'src/app/api/models';
-import { ModalController, PopoverController, IonInput } from '@ionic/angular';
+import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
+import { StockCurrent, AuxilaryLineItem, ComboLineItem, Discount, OrderLine } from 'src/app/api/models';
+import { PopoverController, IonInput } from '@ionic/angular';
 import { QueryResourceService } from 'src/app/api/services';
 import { NGXLogger } from 'ngx-logger';
 import { ShowAuxilaryModalComponent } from '../show-auxilary-modal/show-auxilary-modal.component';
-import { Util } from 'src/app/services/util';
+import { KeycloakService } from 'src/app/services/security/keycloak.service';
 
 @Component({
   selector: 'app-product-card',
   templateUrl: './product-card.component.html',
   styleUrls: ['./product-card.component.scss'],
 })
-export class ProductCardComponent implements OnInit {
+export class ProductCardComponent implements OnInit , OnDestroy {
 
   @Input() stockCurrent: StockCurrent;
 
@@ -22,36 +22,72 @@ export class ProductCardComponent implements OnInit {
 
   @Input() showDescription = false;
 
-  auxilaries: AuxilaryLineItem[] = [];
+  @Input() type = 'full';
 
-  comboLineItems: ComboLineItem[] = [];
+  @Input() auxilaries: AuxilaryLineItem[] = [];
+
+  @Input() comboLineItems: ComboLineItem[] = [];
 
   isFavourite = false;
 
-  orderCount  = 0;
+  showFavourite = false;
+
+  @Input() orderCount  = 0;
+
+  @Input() orderLine: OrderLine;
+
+  @Input() product;
+
   auxilaryLoadComplete = false;
+  
   discount: Discount;
 
   @ViewChild('orderCountInput' , null) orderCountInput: IonInput;
+  keycloakSubscrption: any;
 
   constructor(
     private favourite: FavouriteService,
-    private modalController: ModalController,
     private popover: PopoverController,
     private queryResource: QueryResourceService,
     private router: Router,
     private cartService: CartService,
     private logger: NGXLogger,
-    private util: Util
+    private keycloakService: KeycloakService
   ) { }
 
+  ngOnDestroy() {
+    if(this.keycloakSubscrption) {
+      this.keycloakSubscrption.unsubscribe();
+    }
+  }
+
   async ngOnInit() {
-    this.checkIfAlreadyFavourite();
-    this.checkIfOrdered();
-    this.getAuxilaries(0);
-    this.getProductDiscount();
-    if (this.stockCurrent.product.isAuxilaryItem === false) {
-      this.getComboItems(0);
+
+  if (this.type === 'full') {
+      this.keycloakSubscrption = this.keycloakService.getUserChangedSubscription()
+      .subscribe((data: any) => {
+        this.logger.info('Checking If guest : RestaurantCardComponet');
+        if (data !== null) {
+          if (data.preferred_username === 'guest') {
+            this.showFavourite = false;
+          } else {
+            this.showFavourite = true;
+          }
+        } else {
+          this.showFavourite = false;
+        }
+      });
+      this.checkIfAlreadyFavourite();
+      this.checkIfOrdered();
+      this.getAuxilaries(0);
+      this.getProductDiscount();
+      if (this.stockCurrent.product.isAuxilaryItem === false) {
+        this.getComboItems(0);
+      }
+    } else {
+
+      
+
     }
   }
 

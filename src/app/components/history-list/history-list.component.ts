@@ -6,6 +6,7 @@ import { Order, OpenTask, CommandResource } from 'src/app/api/models';
 import { NGXLogger } from 'ngx-logger';
 import { OrderService } from 'src/app/services/order.service';
 import { Util } from 'src/app/services/util';
+import { OrderDetailComponent } from '../order-detail/order-detail.component';
 
 
 
@@ -47,7 +48,7 @@ export class HistoryListComponent implements OnInit {
     this.util.createLoader().then( loader => {
       loader.present();
       this.queryResource.getTasksUsingGET({name: 'Process Payment', assignee: this.orderService.customer.preferred_username})
-    .subscribe(result => {
+      .subscribe(result => {
       this.logger.info('Approved Orders opentasks ', result);
       result.forEach( opentask => {
         if (opentask.orderId === order.orderId) {
@@ -77,7 +78,8 @@ export class HistoryListComponent implements OnInit {
     this.queryResource.findOrdersByCustomerIdUsingGET({
       customerId: this.keyCloakUser.preferred_username,
       page: i,
-      size: 20
+      size: 20,
+      sort: ['desc']
     })
     .subscribe(porders => {
       porders.content.forEach(o => {
@@ -101,6 +103,15 @@ export class HistoryListComponent implements OnInit {
       this.showHistoryLoading = false;
       this.logger.info('Error Getting Order Page ' + i , err);
     });
+  }
+
+  async showOrderDetails(porder) {
+    const modal = await this.modalController.create({
+      component: OrderDetailComponent,
+      componentProps: {order: porder , store: this.stores[porder.storeId]}
+    });
+
+    modal.present();
   }
 
   getStores(id) {

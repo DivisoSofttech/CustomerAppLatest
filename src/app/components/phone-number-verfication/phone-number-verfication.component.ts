@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { Util } from 'src/app/services/util';
 import { QueryResourceService, CommandResourceService } from 'src/app/api/services';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
+import { NGXLogger } from 'ngx-logger';
 declare var SMSReceive: any;
 
 @Component({
@@ -25,7 +26,8 @@ export class PhoneNumberVerficationComponent implements OnInit {
     private util: Util,
     private queryResource: QueryResourceService,
     private commandResource: CommandResourceService,
-    private keycloakService: KeycloakService
+    private keycloakService: KeycloakService,
+    private logger: NGXLogger
   ) { }
 
   ngOnInit() {
@@ -66,28 +68,39 @@ export class PhoneNumberVerficationComponent implements OnInit {
       numbers: this.number,
       code: this.OTP
     }).subscribe(d => {
-      this.dismissData(true);
+      if(d.status === 'success') {
+        this.dismissData(true);
+      } else {
+        this.util.createToast('Invalid OTP');
+      }
     } , err => {
-      this.util.createToast('Invalid API Key');
+      this.util.createToast('Error Validating OTP ');
     });
   }
 
   autoProcessSMS(data) {
     const message = data.body;
-    if (message && message.indexOf('enappd_starters') !== -1) {
-      this.OTP = data.body.slice(0, 5);
+    const sender = data.address;
+    if (sender === 'VK-040060') {
+      this.OTP = data.body.slice((message.length - 6), message.length - 1);
 
       this.commandResource.verifyOTPUsingPOST({
         numbers: this.number,
         code: this.OTP
       }).subscribe(d => {
-        this.dismissData(true);
+        if(d.status === 'success') {
+          this.dismissData(true);
+        } else {
+          this.util.createToast('Invalid OTP');
+        }
       } , err => {
-        this.util.createToast('Invalid API Key');
+        this.util.createToast('Error Validating OTP ');
       });
 
       this.OTPmessage = 'OTP received. Proceed to register';
       this.stopSMSListener();
+    } else {
+      this.logger.info(sender);
     }
   }
 
@@ -105,7 +118,9 @@ export class PhoneNumberVerficationComponent implements OnInit {
   }
 
   timerEvent(event) {
-    console.log(event);
+    if(event.action === 'done') {
+      // alert('OTP Expired');
+    }
   }
 
 }

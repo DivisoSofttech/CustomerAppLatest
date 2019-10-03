@@ -32,6 +32,7 @@ export class CartService {
   ) {
     this.observableTickets = new BehaviorSubject<OrderLine[]>(this.orderLines);
     this.observablePrice = new BehaviorSubject<number>(this.totalPrice);
+    this.logger.info('Cart Service Created');
   }
 
   async presentAlert() {
@@ -39,6 +40,13 @@ export class CartService {
       header: 'Checkout First',
       message: 'Checkout From ' + this.currentShop.name,
       buttons: [
+        {
+          text: 'Cancel',
+          cssClass: 'secondary',
+          handler: ()=> {
+            this.alertController.dismiss();
+          }
+        },
         {
           text: 'Go To Cart',
           cssClass: 'secondary',

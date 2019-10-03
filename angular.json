@@ -33,6 +33,7 @@
               "src/manifest.webmanifest"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               {
                 "input": "node_modules/flag-icon-css/css/flag-icon.css"
               },
@@ -43,7 +44,8 @@
                 "input": "src/global.scss"
               }
             ],
-            "scripts": []
+            "scripts": [],
+            "webWorkerTsConfig": "tsconfig.worker.json"
           },
           "configurations": {
             "production": {
@@ -105,10 +107,10 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "styles": [
-   
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
             ],
-            "scripts": [
-            ],
+            "scripts": [],
+            "webWorkerTsConfig": "tsconfig.worker.json",
             "assets": [
               {
                 "glob": "favicon.ico",
@@ -136,7 +138,9 @@
             "tsConfig": [
               "tsconfig.app.json",
               "tsconfig.spec.json",
-              "e2e/tsconfig.json"
+              "e2e/tsconfig.json",
+              "tsconfig.worker.json",
+              "tsconfig.worker.json"
             ],
             "exclude": [
               "**/node_modules/**"
