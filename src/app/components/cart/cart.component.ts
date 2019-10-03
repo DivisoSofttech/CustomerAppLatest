@@ -4,7 +4,7 @@ import { Storage } from '@ionic/storage';
 import { Order } from './../../api/models/order';
 import { AllergyComponent } from './../allergy/allergy.component';
 import { CartService } from './../../services/cart.service';
-import { Component, OnInit, Input, ViewChild, Output, EventEmitter,OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { OrderLine, Store, StoreSettings } from 'src/app/api/models';
 import { ModalController, NavController } from '@ionic/angular';
 import { Util } from 'src/app/services/util';

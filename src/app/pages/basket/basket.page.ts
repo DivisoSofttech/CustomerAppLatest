@@ -31,11 +31,6 @@ export class BasketPage implements OnInit {
     }
   }
 
-  navigateBasket() {
-    this.logger.info('Routing to basket');
-    this.navController.navigateForward('/basket');
-  }
-
   getStore() {
     this.logger.info('Basket Page Getting Store' ,     this.cart.currentShop.regNo);
     this.queryResource.findStoreByRegisterNumberUsingGET(this.cart.currentShop.regNo)
