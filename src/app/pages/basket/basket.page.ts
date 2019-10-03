@@ -19,7 +19,6 @@ export class BasketPage implements OnInit {
     private cart: CartService,
     private  queryResource: QueryResourceService,
     private logger: NGXLogger,
-    private navController: NavController
   ) { }
 
   ngOnInit() {
@@ -27,11 +26,6 @@ export class BasketPage implements OnInit {
     if (this.cart.currentShop !== undefined) {
       this.getStore();
     }
-  }
-
-  navigateBasket() {
-    this.logger.info('Routing to basket');
-    this.navController.navigateForward('/basket');
   }
 
   getStore() {

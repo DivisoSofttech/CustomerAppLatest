@@ -1,5 +1,5 @@
 import { OrderService } from 'src/app/services/order.service';
-import { IonSlides, IonRefresher, PopoverController } from '@ionic/angular';
+import { IonSlides, IonRefresher, PopoverController, NavController } from '@ionic/angular';
 import { ViewChild } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { Component, OnInit } from '@angular/core';
@@ -48,7 +48,8 @@ export class StorePage implements OnInit {
     private popover: PopoverController,
     private logger: NGXLogger,
     private util: Util,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private navController: NavController
   ) {}
 
   ngOnInit() {
@@ -148,6 +149,11 @@ export class StorePage implements OnInit {
       }
     });
     return await popover.present();
+  }
+
+  navigateBasket() {
+    this.logger.info('Routing to basket');
+    this.navController.navigateForward('/basket');
   }
 
   segmentChanged(event) {
