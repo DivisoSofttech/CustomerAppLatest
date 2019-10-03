@@ -24,7 +24,7 @@ export class OrderService implements OnInit {
   customer;
   paymentMethod;
   acceptType = 'automatic';
-  shop;
+  shop;    
   offer: Offer;
   constructor(
     private orderCommandService: OrderCommandResourceService,

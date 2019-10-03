@@ -1,9 +1,13 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { QueryResourceService } from 'src/app/api/services';
-import { Order, OrderLine, Product, AuxilaryLineItem, ComboLineItem, Store } from 'src/app/api/models';
+import { Order, OrderLine, Product, AuxilaryLineItem, ComboLineItem, Store, CommandResource } from 'src/app/api/models';
 import { CartService } from 'src/app/services/cart.service';
 import { AlertController, NavController, ModalController } from '@ionic/angular';
+import { ModalDisplayUtilService } from 'src/app/services/modal-display-util.service';
+import { OrderService } from 'src/app/services/order.service';
+import { Subscription } from 'rxjs';
+import { Util } from 'src/app/services/util';
 
 @Component({
   selector: 'app-order-detail',
@@ -22,15 +26,38 @@ export class OrderDetailComponent implements OnInit {
 
   comboLineItems = {};
 
-
+  taskDetailsSubscription: Subscription;
   @Input() store: Store;
 
   constructor(
     private logger: NGXLogger,
     private queryResource: QueryResourceService,
     private cartService: CartService,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private displayModalService: ModalDisplayUtilService,
+    private orderService: OrderService,
+    private util: Util
   ) { }
+
+  completePayment() {
+    this.util.createLoader().then(loader => {
+    loader.present();
+    this.orderService.order = this.order;
+    this.taskDetailsSubscription = this.queryResource.getTaskDetailsUsingGET(
+      {taskName: 'Process Payment', orderId: this.order.orderId, storeId: this.order.customerId})
+      .subscribe(openTask => {
+        console.log('Open task is ', openTask);
+        const resource: CommandResource = {
+          nextTaskId: openTask.taskId,
+          nextTaskName: openTask.taskName,
+          orderId: this.order.orderId
+        };
+        this.orderService.resource = resource;
+        this.displayModalService.presentMakePayment();
+        loader.dismiss();
+      });
+    });
+  }
 
   ngOnInit() {
     this.logger.info(this.order);

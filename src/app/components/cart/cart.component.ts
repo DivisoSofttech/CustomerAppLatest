@@ -113,8 +113,8 @@ export class CartComponent implements OnInit, OnDestroy {
         } else {
           this.guest = false;
         }
-      );
     });
+  });
   }
 
   checkDeliveryTypeExists() {

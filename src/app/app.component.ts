@@ -49,14 +49,10 @@ export class AppComponent {
     private storage: Storage,
     private keycloakService: KeycloakService,
     private menuController: MenuController,
-<<<<<<< HEAD
     private screenOrientation: ScreenOrientation,
     private backgroundMode: BackgroundMode,
     private localNotifications: LocalNotifications
       ) {
-=======
-    private screenOrientation: ScreenOrientation
-  ) {
     this.getUser();
     // if (typeof Worker !== 'undefined') {
     //   // Create a new
@@ -69,7 +65,6 @@ export class AppComponent {
     //   // Web Workers are not supported in this environment.
     //   // You should add a fallback so that your program still executes correctly.
     // }
->>>>>>> 0dd37fc65a73a768ebf5b3e01d03cb34a54412bc
     this.initializeApp();
   }
 
@@ -100,15 +95,14 @@ export class AppComponent {
       // Set orientation to portrait
       if (this.platform.is('cordova')) {
         this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
-        // this.backgroundMode.enable();
+        this.backgroundMode.enable();
 
         // console.log('Backgorund mode status is enable', this.backgroundMode.isEnabled());
 
 
-        // this.backgroundMode.on('activate').subscribe(() => {
-        //   console.log('activate background mode');
-
-        // });
+        this.backgroundMode.on('activate').subscribe(() => {
+           console.log('activate background mode');
+         });
         // console.log('Backgorund mode status is active', this.backgroundMode.isActive());
 
       }
