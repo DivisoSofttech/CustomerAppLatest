@@ -14,7 +14,6 @@ import { Util } from 'src/app/services/util';
 export class NotificationComponent implements OnInit  , OnDestroy {
 
   user;
-
   openTasks: OpenTask[] = [];
   showLoading;
   taskSubscription;

@@ -50,7 +50,7 @@ export class LoginSignupComponent implements OnInit {
         this.keycloakService.authenticate({ username: this.username, password: this.password },
           () => {
             loader.dismiss();
-            this.util.createToast('Logged in successfully');
+            this.util.createToast('Logged in successfully', 'checkmark-circle-outline');
             this.createUserIfNotExists(this.username);
           }, () => {
             loader.dismiss();

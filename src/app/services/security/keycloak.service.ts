@@ -1,3 +1,4 @@
+import { NotificationService } from './../notification.service';
 import { NGXLogger } from 'ngx-logger';
 import { Util } from './../util';
 import { KeycloakAdminConfig } from './../../configs/keycloak.admin.config';
@@ -24,7 +25,8 @@ export class KeycloakService {
     private keycloakConfig: KeycloakAdminConfig,
     private storage: Storage,
     private logger: NGXLogger,
-    private util: Util
+    private util: Util,
+    private notificationService: NotificationService
   ) {}
 
   public getUserChangedSubscription() {
@@ -122,16 +124,31 @@ export class KeycloakService {
             if (hasRoleCustomer) {
               this.logger.info('Success callback');
               success();
+              if (!this.isGuest(credentials.username)) {
+                 console.log('IsNotGuest');
+                 this.notificationService.connectToNotification();
+                 this.notificationService.subscribeToMyNotifications(credentials.username);
+              }
             } else {
               this.oauthService.logOut();
               this.logger.info('Failure callback');
               failure();
             }
           })
-          .catch(() => failure());
+          .catch(error => {
+            failure();
+            console.log('Error in authenticate', error);
+            });
       });
   }
 
+  isGuest(user): boolean {
+    console.log('Checking is guest');
+    if (user === 'guest') {
+      return true;
+    }
+    return false;
+  }
   async getCurrentUserDetails() {
     return await this.oauthService.loadUserProfile();
   }
@@ -196,5 +213,6 @@ export class KeycloakService {
     this.storage.clear();
     this.userChangedBehaviour.next(null);
     this.util.navigateHome();
+    this.notificationService.disconnectToMyNotifications();
   }
 }
