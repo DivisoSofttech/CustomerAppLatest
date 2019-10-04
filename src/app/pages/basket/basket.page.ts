@@ -1,3 +1,4 @@
+import { OrderService } from 'src/app/services/order.service';
 import { NGXLogger } from 'ngx-logger';
 import { Store } from './../../api/models/store';
 import { QueryResourceService } from 'src/app/api/services';
@@ -19,6 +20,8 @@ export class BasketPage implements OnInit {
     private cart: CartService,
     private  queryResource: QueryResourceService,
     private logger: NGXLogger,
+    private orderService: OrderService,
+    private navController: NavController
   ) { }
 
   ngOnInit() {
@@ -33,6 +36,8 @@ export class BasketPage implements OnInit {
     this.queryResource.findStoreByRegisterNumberUsingGET(this.cart.currentShop.regNo)
     .subscribe(store => {
       this.store = store;
+      this.orderService.acceptType = store.storeSettings.orderAcceptType;
+      console.log(' Accept type is ', this.orderService.acceptType);
     });
   }
 

@@ -18,11 +18,13 @@ import { OAuthService } from 'angular-oauth2-oidc';
 export class OrderService implements OnInit {
 
   order: Order;
-  resource: CommandResource;
+  resource: CommandResource = {};
+  orderResourceBehaviour: BehaviorSubject<string> =  new BehaviorSubject(this.resource.nextTaskName);
   deliveryInfo: DeliveryInfo = {};
   customer;
   paymentMethod;
-  shop;
+  acceptType = 'automatic';
+  shop;    
   offer: Offer;
   constructor(
     private orderCommandService: OrderCommandResourceService,
@@ -38,6 +40,10 @@ export class OrderService implements OnInit {
     ngOnInit() {
       this.getCustomer();
     }
+
+  isTask(taskName: string): boolean {
+    return this.resource.nextTaskName === taskName;
+  }
 
    initiateOrder() {
      if ( this.offer !== undefined) {

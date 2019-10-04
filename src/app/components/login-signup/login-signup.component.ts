@@ -51,7 +51,7 @@ export class LoginSignupComponent implements OnInit {
         this.keycloakService.authenticate({ username: this.username, password: this.password },
           () => {
             loader.dismiss();
-            this.util.createToast('Logged in successfully');
+            this.util.createToast('Logged in successfully', 'checkmark-circle-outline');
             this.createUserIfNotExists(this.username);
           }, () => {
             loader.dismiss();
@@ -74,7 +74,7 @@ export class LoginSignupComponent implements OnInit {
     modal.onDidDismiss()
     .then((data: any) => {
       console.log('---------' , data.data.numberVerified);
-        if (data.data.numberVerified === true) {
+      if (data.data.numberVerified === true) {
           this.signup();
         }
     });
@@ -152,6 +152,7 @@ export class LoginSignupComponent implements OnInit {
                   name: this.username,
                   email: this.email,
                   mobileNumber: this.phone,
+                  phoneCode: 91,
                   searchKey: this.keycloakUserid
                 })
                 .subscribe(

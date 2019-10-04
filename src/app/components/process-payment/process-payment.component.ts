@@ -1,9 +1,10 @@
 import { OrderService } from './../../services/order.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Util } from 'src/app/services/util';
 import { ModalController, NavController } from '@ionic/angular';
 import { PaymentSuccessfullInfoComponent } from '../payment-successfull-info/payment-successfull-info.component';
+import { Subscription } from 'rxjs';
 
 
 
@@ -12,7 +13,11 @@ import { PaymentSuccessfullInfoComponent } from '../payment-successfull-info/pay
   templateUrl: './process-payment.component.html',
   styleUrls: ['./process-payment.component.scss']
 })
-export class ProcessPaymentComponent implements OnInit {
+export class ProcessPaymentComponent implements OnInit, OnDestroy {
+
+
+  codPaymentSubscription: Subscription;
+  behaviouralSubjectSubscription: Subscription;
 
   paymentId: string;
   provider: string;
@@ -34,19 +39,32 @@ export class ProcessPaymentComponent implements OnInit {
     } else if (this.orderService.paymentMethod === 'cod') {
       console.log('Cash on elivery option ');
       this.util.createCustomLoader('lines', 'Payment processing').then(loader => {
-      loader.present();
-      this.orderService.processPayment('pay-cod', 'success', 'cod')
-        .subscribe(resource => {
-          this.orderService.resource = resource;
-          this.presentPaymentSuccessfullInfo();
-          loader.dismiss();
-        }, (err) => {
-          console.log('Error occured cod payment');
-          loader.dismiss();
-          this.util.createToast('Something went wrong try again', 'information-circle-outline');
-          this.navigateToBasket();
-        });
+        loader.present();
+        this.behaviouralSubjectSubscription = this.orderService.orderResourceBehaviour.subscribe(resources => {
+        console.log('Subscription called');
+        if (this.orderService.resource.nextTaskName === 'Process Payment') {
+
+          this.codPaymentSubscription = this.orderService.processPayment('pay-cod', 'success', 'cod')
+          .subscribe(resource => {
+            console.log('process payment Subscribed');
+            console.log('resource payment process is ', resource.nextTaskName);
+            this.orderService.resource = resource;
+            this.behaviouralSubjectSubscription.unsubscribe();
+            this.orderService.orderResourceBehaviour.next(resource.nextTaskName);
+            this.presentPaymentSuccessfullInfo();
+            this.modalController.dismiss();
+            loader.dismiss();
+          }, (err) => {
+             loader.dismiss();
+             console.log('Error occured cod payment');
+             this.util.createToast('Something went wrong try again', 'information-circle-outline');
+             this.navigateToBasket();
+          });
+        } else {
+          loader.present();
+        }
       });
+    });
     } else if (this.orderService.paymentMethod === 'card') {
       console.log('Razorpay payment ');
       this.provider = 'razorpay';
@@ -56,6 +74,12 @@ export class ProcessPaymentComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    console.log('Ng destroy calls process payment');
+    if (this.codPaymentSubscription !== undefined) {
+      this.codPaymentSubscription.unsubscribe();
+    }
+  }
   navigateToBasket() {
     this.navController.navigateForward('basket');
   }
