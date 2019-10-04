@@ -16,6 +16,7 @@ import {
 } from '@angular/core';
 import { Util } from 'src/app/services/util';
 import { NGXLogger } from 'ngx-logger';
+import { KeycloakService } from 'src/app/services/security/keycloak.service';
 
 @Component({
   selector: 'app-header',
@@ -49,18 +50,38 @@ export class HeaderComponent implements OnInit {
   @ViewChild(IonInfiniteScroll, null) infiniteScroll: IonInfiniteScroll;
   @ViewChild('restaurantSearch', null) restaurantSearch: IonSearchbar;
   @ViewChild('placeSearch', null) placeSearch: IonSearchbar;
+  keycloakSubscription: any;
+  notificationsOn = false;
 
   constructor(
     private locationService: LocationService,
     private queryResource: QueryResourceService,
     private util: Util,
     private logger: NGXLogger,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private keycloakService: KeycloakService
   ) {}
 
   ngOnInit() {
     this.logger.info('Initializing', HeaderComponent.name);
     this.getCurrentLocation();
+    this.checkUser();
+  }
+
+  checkUser() {
+    this.keycloakSubscription = this.keycloakService.getUserChangedSubscription()
+    .subscribe((data: any) => {
+      this.logger.info('Checking If guest : HeaderComponet');
+      if (data !== null) {
+        if (data.preferred_username === 'guest') {
+          this.notificationsOn = false;
+        } else {
+          this.notificationsOn = true;
+        }
+      } else {
+        this.notificationsOn = false;
+      }
+    });
   }
 
   toggleSearchBar() {

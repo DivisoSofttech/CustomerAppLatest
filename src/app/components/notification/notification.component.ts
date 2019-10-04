@@ -48,6 +48,7 @@ export class NotificationComponent implements OnInit  , OnDestroy {
         page: i
       }
     ).subscribe(notifcatons => {
+      this.logger.info('Notificatins ' , i , notifcatons.body.content);
       notifcatons.body.content.forEach(n => {
         this.notifications.push(n);
       });

@@ -26,6 +26,15 @@ export class NotificationCardComponent implements OnInit {
 
   ngOnInit() {
     this.logger.info('Notifications' , this.notification);
+    this.getOrder();
+  }
+
+  getOrder() {
+    this.queryResource.findOrderByOrderIdUsingGET(this.notification.targetId)
+    .subscribe(order => {
+      this.order = order;
+      this.getStore();
+    });
   }
 
   getStore() {
@@ -35,10 +44,10 @@ export class NotificationCardComponent implements OnInit {
     });
   }
 
-  async showOrderDetails(porder) {
+  async showOrderDetails() {
     const modal = await this.modalController.create({
       component: OrderDetailComponent,
-      componentProps: {order: porder , store: this.store}
+      componentProps: {order: this.order , store: this.store}
     });
 
     modal.present();

@@ -31,4 +31,6 @@ export class PaymentSuccessfullInfoComponent implements OnInit {
     this.method = this.orderService.paymentMethod;
     this.ref = this.orderService.order.orderId;
   }
+
+
 }

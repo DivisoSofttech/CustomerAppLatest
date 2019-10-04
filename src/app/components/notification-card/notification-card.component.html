@@ -1,7 +1,7 @@
 
-  <ion-item *ngIf="store">
+  <ion-item *ngIf="store" lines="full" (click)="showOrderDetails()">
 
-      <ion-thumbnail>
+      <ion-thumbnail margin>
           <ion-img
           [src]="
             'data:' +
@@ -11,10 +11,9 @@
           "
         ></ion-img>
       </ion-thumbnail>
-      <ion-text>
-        <h1>Order Accepted</h1>
-        <h2>{{store.name}}</h2>
-        <h3>{{'Order Id: ' + order.orderId}}</h3>
-      </ion-text>
-  
+        <ion-label>
+          <h2>{{(store.name | titlecase) + ' Accepted Your Order'}}</h2>
+          <h3>{{order.orderId}}</h3>
+          <p>{{notification.message}}</p>
+        </ion-label>  
     </ion-item>
