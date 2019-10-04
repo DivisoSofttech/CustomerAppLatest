@@ -166,7 +166,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   continue(deliveryType) {
-    console.log('IN continue ****** ');
+    console.log('IN continue ****** ', this.customer);
     this.orderService.setShop(this.store);
     this.orderService.setDeliveryType(deliveryType);
     this.orderService.setDeliveryCharge(this.storeSetting.deliveryCharge);
