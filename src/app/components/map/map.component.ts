@@ -20,7 +20,7 @@ import { Store } from 'src/app/api/models';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit{
   mapCanvas: GoogleMap;
 
   mapAlreadyLoaded = false;
@@ -39,6 +39,10 @@ export class MapComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.initLoadMap();
+  }
+
+  initLoadMap() {
     this.platform.ready().then(data => {
       if (data === 'cordova') {
         this.logger.info('Map component getting LatLon');
@@ -87,7 +91,10 @@ export class MapComponent implements OnInit {
     });
   }
 
-  updateMap(coords) {
+  async updateMap(coords) {
+    if (!this.mapCanvas) {
+      await this.initLoadMap();
+    }
     this.logger.info('Updating Maps');
     this.logger.info('Updating Location', coords);
     const latlngArr = coords.split(',');
@@ -98,7 +105,10 @@ export class MapComponent implements OnInit {
     this.setCurrentLocationMarker(latLng);
   }
 
-  setCurrentLocationMarker(latLng) {
+  async setCurrentLocationMarker(latLng) {
+    if (!this.mapCanvas) {
+      await this.initLoadMap();
+    }
     this.logger.info('Setting Marker', latLng);
     if (this.curentLocationMarker !== undefined) {
       this.logger.info('Removing Old Marker', latLng);
@@ -125,7 +135,10 @@ export class MapComponent implements OnInit {
   }
 
   setStoreLocationMarkers(stores: Store[]) {
-    this.platform.ready().then(data => {
+    this.platform.ready().then(async data => {
+      if (!this.mapCanvas) {
+        await this.initLoadMap();
+      }
       if (data === 'cordova') {
         stores.forEach(s => {
           if (s.location !== undefined && s.location !== null) {
