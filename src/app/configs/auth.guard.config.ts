@@ -25,7 +25,6 @@ export class AuthGuardConfig {
     }
 
     private configureWithNewConfigApi() {
-
         this.oauthService.configure(authConfig);
         this.oauthService.setStorage(localStorage);
         this.oauthService.tokenValidationHandler = new JwksValidationHandler();
