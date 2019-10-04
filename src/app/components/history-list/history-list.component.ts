@@ -106,12 +106,16 @@ export class HistoryListComponent implements OnInit {
   }
 
   async showOrderDetails(porder) {
-    const modal = await this.modalController.create({
-      component: OrderDetailComponent,
-      componentProps: {order: porder , store: this.stores[porder.storeId]}
-    });
+    if(this.stores[porder.storeId].name !== undefined) {
+      const modal = await this.modalController.create({
+        component: OrderDetailComponent,
+        componentProps: {order: porder , store: this.stores[porder.storeId]}
+      });
+  
+      modal.present();  
+    } else {
 
-    modal.present();
+    }
   }
 
   getStores(id) {

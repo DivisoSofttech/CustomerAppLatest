@@ -111,6 +111,6 @@
         <ion-label class="ion-margin" *ngIf="orderLine !== undefined">
           <h1>{{product.name}}</h1>
           <span>{{orderLine.quantity + ' x &#8364;' + orderLine.pricePerUnit + ' '}}</span>
-          <span>{{'Total: &#8364;' + orderLine.total}}</span>
+          <span>{{'Total: &#8364;' + (orderLine.total |  number: "1.1-2")}}</span>
         </ion-label>
   </ion-item>

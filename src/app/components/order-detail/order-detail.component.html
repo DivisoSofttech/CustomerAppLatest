@@ -4,7 +4,7 @@
       <ion-button (click)="dismiss()">
         <ion-icon name="arrow-back"></ion-icon>
       </ion-button>
-      <ion-title>{{'Order ' +  order.orderId}}</ion-title>
+      <ion-title>Order Details</ion-title>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -38,6 +38,7 @@
     <ion-text class="ion-margin">
       {{store.name}}
     </ion-text>
+    <ion-badge slot="end" padding>{{'Order ' +  order.orderId}}</ion-badge>
   </ion-item>
 
   <ion-card class="ion-no-padding">
@@ -47,7 +48,7 @@
             Subtotal
         </ion-text>
         <ion-text slot="start" slot="end" class="ion-text-right">
-            &#8364;{{ order.grandTotal}}
+            &#8364;{{ order.grandTotal |  number: "1.1-2"}}
         </ion-text>
       </ion-item>
       <ion-item lines="none" *ngIf=" order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='delivery'">
@@ -55,7 +56,7 @@
               Delivery
           </ion-text>
           <ion-text slot="start" slot="end" class="ion-text-right">
-              &#8364;{{order.deliveryInfo.deliveryCharge}}
+              &#8364;{{order.deliveryInfo.deliveryCharge |  number: "1.1-2"}}
           </ion-text>
         </ion-item>  
         <ion-item lines="none" *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='collection'">
@@ -74,7 +75,7 @@
                 <b>Total</b>
             </ion-text>
             <ion-text slot="start" slot="end" class="ion-text-right">
-              <b>&#8364;{{order.grandTotal}}</b>
+              <b>&#8364;{{order.grandTotal |  number: "1.1-2"}}</b>
             </ion-text>
           </ion-item>    
     </ion-card-content>

@@ -2,6 +2,7 @@ import { OrderService } from './../../services/order.service';
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
 import { CartService } from 'src/app/services/cart.service';
+import { OrderDetailComponent } from '../order-detail/order-detail.component';
 
 @Component({
   selector: 'app-payment-successfull-info',
@@ -32,5 +33,12 @@ export class PaymentSuccessfullInfoComponent implements OnInit {
     this.ref = this.orderService.order.orderId;
   }
 
+  // async showOrderDetails() {
+  //   const modal = await this.modalController.create({
+  //     componentProps: {order: this.orderService.order , store: this.cartService.currentShop}
+  //   });
+
+  //   modal.present();
+  // }
 
 }

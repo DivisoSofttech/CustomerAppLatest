@@ -42,7 +42,7 @@ export class NotificationComponent implements OnInit  , OnDestroy {
   }
 
   getNotifications(i , event) {
-    this.queryResource.findNotificationByReceiverIdUsingGETResponse(
+    this.notificationSubscription = this.queryResource.findNotificationByReceiverIdUsingGETResponse(
       {
         receiverId: this.user.preferred_username,
         page: i
@@ -53,10 +53,10 @@ export class NotificationComponent implements OnInit  , OnDestroy {
         this.notifications.push(n);
       });
       this.showLoading = false;
-      if (i !== 0) {
+      if(i !== 0) {
         event.target.complete();
       }
-      if (i === notifcatons.body.totalPages) {
+      if (i ===notifcatons.body.totalPages) {
         this.logger.info('Toggle disabled');
         this.toggleInfiniteScroll();
       }
@@ -68,7 +68,7 @@ export class NotificationComponent implements OnInit  , OnDestroy {
     });
   }
 
-
+  
   dismiss() {
     this.modalController.dismiss();
   }

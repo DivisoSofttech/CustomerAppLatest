@@ -15,13 +15,13 @@
 
 <ion-content>
 
+  <ion-spinner name="circles" *ngIf="showLoading"></ion-spinner>
   <ion-list>
     <app-notification-card
     *ngFor="let notification of notifications"
     [notification]="notification"
     ></app-notification-card>
   </ion-list>
-  <app-loading *ngIf="showLoading === true" [type]="'notification'"></app-loading>
   <ion-infinite-scroll
   threshold="500px"
   (ionInfinite)="loadMoreData($event)"

@@ -18,6 +18,8 @@ export class NotificationCardComponent implements OnInit {
 
   store;
 
+  showLoading = true;
+
   constructor(
     private queryResource: QueryResourceService,
     private logger: NGXLogger,
@@ -41,6 +43,7 @@ export class NotificationCardComponent implements OnInit {
     this.queryResource.findStoreByRegisterNumberUsingGET(this.order.storeId)
     .subscribe(store => {
       this.store = store;
+      this.showLoading = false;
     });
   }
 

@@ -1,6 +1,5 @@
 import { NGXLogger } from 'ngx-logger';
 import { DeliveryItemDetailsComponent } from './../delivery-item-details/delivery-item-details.component';
-import { Storage } from '@ionic/storage';
 import { Order } from './../../api/models/order';
 import { AllergyComponent } from './../allergy/allergy.component';
 import { CartService } from './../../services/cart.service';
@@ -50,16 +49,12 @@ export class CartComponent implements OnInit, OnDestroy {
   collectionOk = false;
 
   initiateOrderSubcription: Subscription;
-  @ViewChild(DeliveryItemDetailsComponent, null)
-  @Output() routeBasketEvent = new EventEmitter();
+
+
+  @Output() viewClick = new EventEmitter();
 
 
   @ViewChild(DeliveryItemDetailsComponent , null) delivery: DeliveryItemDetailsComponent;
-
-  routeBasket() {
-    this.logger.info('Firing event');
-    this.routeBasketEvent.emit(null);
-  }
 
   constructor(
     private cart: CartService,
@@ -82,6 +77,11 @@ export class CartComponent implements OnInit, OnDestroy {
     if (this.initiateOrderSubcription !== undefined) {
       this.initiateOrderSubcription.unsubscribe();
     }
+  }
+
+  routeBasket() {
+    this.logger.info('Firing event');
+    this.viewClick.emit({});
   }
 
   async loginModal(continueMethod) {
@@ -107,7 +107,7 @@ export class CartComponent implements OnInit, OnDestroy {
       loader.present();
       this.keycloakService.getUserChangedSubscription()
       .subscribe(user => {
-
+        this.customer  = user;
         if (user === null || user.preferred_username === 'guest') {
           this.guest = true;
         } else {
