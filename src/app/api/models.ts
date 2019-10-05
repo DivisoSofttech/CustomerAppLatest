@@ -21,6 +21,7 @@ export { CustomerDTO } from './models/customer-dto';
 export { DeliveryInfo } from './models/delivery-info';
 export { Details } from './models/details';
 export { Discount } from './models/discount';
+export { ElasticDataEntry } from './models/elastic-data-entry';
 export { Entry } from './models/entry';
 export { FavouriteProduct } from './models/favourite-product';
 export { FavouriteProductDTO } from './models/favourite-product-dto';

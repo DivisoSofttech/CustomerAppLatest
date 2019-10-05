@@ -1,24 +1,27 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import {  Subscription } from 'rxjs';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { Platform, NavController } from '@ionic/angular';
 import { NotificationDTO } from '../api/models';
+import { QueryResourceService } from '../api/services';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class NotificationService {
+export class NotificationService implements OnDestroy {
 
   notificationCount = 0;
   connectSubscription: Subscription;
   notificationListenSubscription: Subscription;
+  notificationCountSubscription: Subscription;
 
   constructor(private socket: Socket,
               private localNotifications: LocalNotifications,
               private platform: Platform,
-              private navCtrl: NavController) {
+              private navCtrl: NavController,
+              private queryResource: QueryResourceService) {
     this.socket.disconnect();
     this.onConnect().subscribe(data => {
       console.log('Socket has been connected successfully');
@@ -35,8 +38,18 @@ export class NotificationService {
      return this.socket.fromEvent('connect');
   }
 
+
+  getNotificationCount(user) {
+   this.notificationCountSubscription = this.queryResource.findNotificationCountByReceiverIdAndStatusNameUsingGET(
+     {status: 'unread', receiverId: user})
+    .subscribe(count => {
+      console.log('Notification count unread is ', count);
+      this.notificationCount = count;
+    });
+  }
   subscribeToMyNotifications(user) {
     console.log('Start listening to my notifications ', user);
+    this.getNotificationCount(user);
     this.localNotifications.on('click').subscribe(event => {
       console.log('Notification clicked', event);
       this.navCtrl.navigateForward('restaurant');
@@ -53,11 +66,17 @@ export class NotificationService {
                 foreground: true,
                 wakeup: true,
                 lockscreen: true,
-                sound: 'file://assets/beep.mp3',
+                sound: 'file://assets/sounds/plucky.mp3',
                 icon: 'file://assets/images/logo.png'
               });
             });
         });
+  }
+
+
+  ngOnDestroy() {
+    console.log('Ng ondestroy in notification service');
+    this.notificationCountSubscription.unsubscribe();
   }
 
 disconnectToMyNotifications() {

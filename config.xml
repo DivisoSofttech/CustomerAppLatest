@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.diviso.graeshoppe.customer" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Food Exp</name>
+    <name>FoodExp</name>
     <description>A platform for purchasing food and beverages.</description>
     <author email="ceodiviso@lxisoft.com" href="https://divisosfttech.com/">Diviso Softtech</author>
     <content src="index.html" />
@@ -98,8 +98,8 @@
         <splash height="2732" src="resources/ios/splash/Default@2x~universal~anyany.png" width="2732" />
     </platform>
     <engine name="browser" spec="^5.0.4" />
-    <engine name="android" spec="^6.4.0" />
     <engine name="ios" spec="4.5.5" />
+    <engine name="android" spec="6.4.0" />
     <plugin name="cordova-plugin-whitelist" spec="^1.3.4" />
     <plugin name="cordova-plugin-statusbar" spec="^2.4.3" />
     <plugin name="cordova-plugin-device" spec="^2.0.3" />
@@ -115,7 +115,7 @@
     <plugin name="cordova-plugin-geolocation" spec="^4.0.2" />
     <plugin name="cordova-plugin-googlemaps" spec="git+https://github.com/mapsplugin/cordova-plugin-googlemaps.git#multiple_maps" />
     <plugin name="com.paypal.cordova.mobilesdk" spec="^3.5.0" />
-    <plugin name="com.razorpay.cordova" spec="^1.4.6" />
+    <plugin name="com.razorpay.cordova" spec="^1.4.8" />
     <plugin name="cordova-plugin-inappbrowser" spec="^3.1.0" />
     <plugin name="cordova-plugin-screen-orientation" spec="^3.0.2" />
     <plugin name="cordova-plugin-sim" spec="^1.3.3" />
