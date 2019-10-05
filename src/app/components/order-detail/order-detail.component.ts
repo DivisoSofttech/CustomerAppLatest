@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { QueryResourceService } from 'src/app/api/services';
 import { Order, OrderLine, Product, Store, CommandResource } from 'src/app/api/models';
@@ -14,7 +14,8 @@ import { PaymentSuccessfullInfoComponent } from '../payment-successfull-info/pay
   templateUrl: './order-detail.component.html',
   styleUrls: ['./order-detail.component.scss'],
 })
-export class OrderDetailComponent implements OnInit {
+export class OrderDetailComponent implements OnInit, OnDestroy {
+ 
 
   @Input() order: Order;
 
@@ -27,6 +28,10 @@ export class OrderDetailComponent implements OnInit {
   comboLineItems = {};
 
   taskDetailsSubscription: Subscription;
+  orderLinesByOrderIdSubscription: Subscription;
+  productByProductIdSubscrption: Subscription;
+  auxilayByProductIdSubscription: Subscription;
+
   @Input() store: Store;
 
   constructor(
@@ -61,8 +66,9 @@ export class OrderDetailComponent implements OnInit {
           orderId: this.order.orderId
         };
         this.orderService.resource = resource;
-        this.presentPaymentSuccessfullInfo();
         loader.dismiss();
+        this.dismiss();
+        this.presentPaymentSuccessfullInfo();
       });
     });
   }
@@ -72,8 +78,18 @@ export class OrderDetailComponent implements OnInit {
     this.getOrderLines();
   }
 
+  ngOnDestroy() {
+    console.log('Ng Destroy calls in orderDetail component');
+    if (this.taskDetailsSubscription !== undefined) {
+      this.taskDetailsSubscription.unsubscribe();
+    }
+    this.orderLinesByOrderIdSubscription.unsubscribe();
+    this.productByProductIdSubscrption.unsubscribe();
+    this.auxilayByProductIdSubscription.unsubscribe();
+  }
+
   getOrderLines() {
-    this.queryResource.findOrderLinesByOrderIdUsingGET(this.order.id)
+    this.orderLinesByOrderIdSubscription = this.queryResource.findOrderLinesByOrderIdUsingGET(this.order.id)
     .subscribe(orderLines => {
       this.orderLines = orderLines;
       this.orderLines.forEach(o => {
@@ -83,7 +99,7 @@ export class OrderDetailComponent implements OnInit {
   }
 
   getProducts(id) {
-    this.queryResource.findProductByIdUsingGET(id)
+   this.productByProductIdSubscrption =  this.queryResource.findProductByIdUsingGET(id)
     .subscribe(data => {
       this.products[data.id] = data;
       this.auxilaries[data.id] = [];
@@ -92,7 +108,7 @@ export class OrderDetailComponent implements OnInit {
   }
 
   getAuxilary(product: Product , i) {
-    this.queryResource.findAuxilariesByProductIdUsingGET(product.id)
+    this.auxilayByProductIdSubscription = this.queryResource.findAuxilariesByProductIdUsingGET(product.id)
     .subscribe(pauxProducts => {
       pauxProducts.content.forEach(apr => {
         this.auxilaries[product.id].push(apr);

@@ -9,7 +9,8 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Storage } from '@ionic/storage';
 import { BackgroundMode } from '@ionic-native/background-mode/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
-// import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { NotificationService } from './services/notification.service';
 
 @Component({
   selector: 'app-root',
@@ -51,20 +52,11 @@ export class AppComponent {
     private menuController: MenuController,
     private screenOrientation: ScreenOrientation,
     private backgroundMode: BackgroundMode,
-    private localNotifications: LocalNotifications
+    private localNotifications: LocalNotifications,
+    private oauthService: OAuthService,
+    private notificationService: NotificationService
       ) {
     this.getUser();
-    // if (typeof Worker !== 'undefined') {
-    //   // Create a new
-    //   const worker = new Worker('./user.worker', { type: 'module' });
-    //   worker.onmessage = ({ data }) => {
-    //     console.log(`page got message: ${data}`);
-    //   };
-    //   worker.postMessage('hello');
-    // } else {
-    //   // Web Workers are not supported in this environment.
-    //   // You should add a fallback so that your program still executes correctly.
-    // }
     this.initializeApp();
   }
 
@@ -77,15 +69,6 @@ export class AppComponent {
           console.log('Permission has been granted', permission);
         });
       }
-      // if (this.platform.is('android')) {
-      //   this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACCESS_NOTIFICATION_POLICY).then(
-      //     result => {console.log('Has permission?', result.hasPermission);
-      //                console.log('Has Permission is true');},
-      //     err => { this.androidPermissions.requestPermissions([this.androidPermissions.PERMISSION.ACCESS_NOTIFICATION_POLICY]);
-      //              console.log('In error has no permission');
-      //     }
-      //     );
-      // }
       if (this.platform.is('pwa')) {
         console.log('Browser');
         this.browser = true;
@@ -96,15 +79,9 @@ export class AppComponent {
       if (this.platform.is('cordova')) {
         this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
         this.backgroundMode.enable();
-
-        // console.log('Backgorund mode status is enable', this.backgroundMode.isEnabled());
-
-
         this.backgroundMode.on('activate').subscribe(() => {
            console.log('activate background mode');
          });
-        // console.log('Backgorund mode status is active', this.backgroundMode.isActive());
-
       }
       this.splashScreen.hide();
       this.getUser();

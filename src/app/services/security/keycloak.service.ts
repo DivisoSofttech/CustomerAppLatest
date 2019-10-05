@@ -32,8 +32,13 @@ export class KeycloakService {
   ) {
     this.logger.info('Created Keycloak Service');
     this.getCurrentUserDetails()
-    .then(data => {
+    .then((data: any ) => {
       this.getUserChangedSubscription().next(data);
+      if (!this.isGuest(data.preferred_username)) {
+        console.log('Subscribing to notifications for the user from KC Cons ', data.preferred_username);
+        this.notificationService.connectToNotification();
+        this.notificationService.subscribeToMyNotifications(data.preferred_username);
+      }
     });
   }
 
@@ -48,7 +53,6 @@ export class KeycloakService {
       user.credentials = [{ type: 'password', value: password }];
       user.attributes = map;
       user.enabled = true;
-
       this.keycloakAdmin.users
         .create(user)
         .then(async res => {

@@ -19,6 +19,7 @@ import { PageOfFavouriteStore } from '../models/page-of-favourite-store';
 import { PageOfCategory } from '../models/page-of-category';
 import { PageOfCustomer } from '../models/page-of-customer';
 import { Entry } from '../models/entry';
+import { ElasticDataEntry } from '../models/elastic-data-entry';
 import { OrderLine } from '../models/order-line';
 import { PageOfProduct } from '../models/page-of-product';
 import { Product } from '../models/product';
@@ -79,7 +80,7 @@ class QueryResourceService extends __BaseService {
   static readonly findStoreByTypeNameUsingGETPath = '/api/query/findStoreByTypeName/{name}';
   static readonly findStoreAndCountUsingGETPath = '/api/query/findStoreTypeAndCount';
   static readonly findNotificationByReceiverIdUsingGETPath = '/api/query/findnotificationbyreceiverid/{receiverId}';
-  static readonly findNotificationCountByReceiverIdAndStatusNameUsingGETPath = '/api/query/findnotificationcount/{receiverId}';
+  static readonly findNotificationCountByReceiverIdAndStatusNameUsingGETPath = '/api/query/findnotificationcount/{receiverId}/{status}';
   static readonly findAllProductByStoreIdUsingGETPath = '/api/query/findproducts/{storeId}';
   static readonly headerUsingGETPath = '/api/query/header/{searchTerm}';
   static readonly findOrderByDatebetweenAndStoreIdUsingGETPath = '/api/query/order/{from}/{to}/{storeId}';
@@ -720,7 +721,7 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  findCategoryAndCountBystoreIdUsingGETResponse(params: QueryResourceService.FindCategoryAndCountBystoreIdUsingGETParams): __Observable<__StrictHttpResponse<Array<Entry>>> {
+  findCategoryAndCountBystoreIdUsingGETResponse(params: QueryResourceService.FindCategoryAndCountBystoreIdUsingGETParams): __Observable<__StrictHttpResponse<Array<ElasticDataEntry>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -741,7 +742,7 @@ class QueryResourceService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Array<Entry>>;
+        return _r as __StrictHttpResponse<Array<ElasticDataEntry>>;
       })
     );
   }
@@ -758,9 +759,9 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  findCategoryAndCountBystoreIdUsingGET(params: QueryResourceService.FindCategoryAndCountBystoreIdUsingGETParams): __Observable<Array<Entry>> {
+  findCategoryAndCountBystoreIdUsingGET(params: QueryResourceService.FindCategoryAndCountBystoreIdUsingGETParams): __Observable<Array<ElasticDataEntry>> {
     return this.findCategoryAndCountBystoreIdUsingGETResponse(params).pipe(
-      __map(_r => _r.body as Array<Entry>)
+      __map(_r => _r.body as Array<ElasticDataEntry>)
     );
   }
 
@@ -1553,57 +1554,47 @@ class QueryResourceService extends __BaseService {
   /**
    * @param params The `QueryResourceService.FindNotificationCountByReceiverIdAndStatusNameUsingGETParams` containing the following parameters:
    *
-   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-   *
-   * - `size`: Size of a page
+   * - `status`: status
    *
    * - `receiverId`: receiverId
    *
-   * - `page`: Page number of the requested page
-   *
    * @return OK
    */
-  findNotificationCountByReceiverIdAndStatusNameUsingGETResponse(params: QueryResourceService.FindNotificationCountByReceiverIdAndStatusNameUsingGETParams): __Observable<__StrictHttpResponse<PageOfNotification>> {
+  findNotificationCountByReceiverIdAndStatusNameUsingGETResponse(params: QueryResourceService.FindNotificationCountByReceiverIdAndStatusNameUsingGETParams): __Observable<__StrictHttpResponse<number>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
-    if (params.size != null) __params = __params.set('size', params.size.toString());
+    if (params.status != null) __params = __params.set('status', params.status.toString());
     if (params.receiverId != null) __params = __params.set('receiverId', params.receiverId.toString());
-    if (params.page != null) __params = __params.set('page', params.page.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/api/query/findnotificationcount/${params.receiverId}`,
+      this.rootUrl + `/api/query/findnotificationcount/${params.receiverId}/${params.status}`,
       __body,
       {
         headers: __headers,
         params: __params,
-        responseType: 'json'
+        responseType: 'text'
       });
 
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<PageOfNotification>;
+        return (_r as HttpResponse<any>).clone({ body: parseFloat((_r as HttpResponse<any>).body as string) }) as __StrictHttpResponse<number>
       })
     );
   }
   /**
    * @param params The `QueryResourceService.FindNotificationCountByReceiverIdAndStatusNameUsingGETParams` containing the following parameters:
    *
-   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-   *
-   * - `size`: Size of a page
+   * - `status`: status
    *
    * - `receiverId`: receiverId
    *
-   * - `page`: Page number of the requested page
-   *
    * @return OK
    */
-  findNotificationCountByReceiverIdAndStatusNameUsingGET(params: QueryResourceService.FindNotificationCountByReceiverIdAndStatusNameUsingGETParams): __Observable<PageOfNotification> {
+  findNotificationCountByReceiverIdAndStatusNameUsingGET(params: QueryResourceService.FindNotificationCountByReceiverIdAndStatusNameUsingGETParams): __Observable<number> {
     return this.findNotificationCountByReceiverIdAndStatusNameUsingGETResponse(params).pipe(
-      __map(_r => _r.body as PageOfNotification)
+      __map(_r => _r.body as number)
     );
   }
 
@@ -3695,24 +3686,14 @@ module QueryResourceService {
   export interface FindNotificationCountByReceiverIdAndStatusNameUsingGETParams {
 
     /**
-     * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     * status
      */
-    sort?: Array<string>;
-
-    /**
-     * Size of a page
-     */
-    size?: number;
+    status?: string;
 
     /**
      * receiverId
      */
     receiverId?: string;
-
-    /**
-     * Page number of the requested page
-     */
-    page?: number;
   }
 
   /**
