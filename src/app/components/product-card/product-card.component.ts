@@ -150,7 +150,10 @@ export class ProductCardComponent implements OnInit , OnDestroy {
   }
 
   add(i, stock: StockCurrent) {
-    this.cartService.addShop(this.store);
+    if(this.store.id !== this.cartService.storeId) {
+      this.cartService.addShop(this.store);
+      this.cartService.behaviourStore.next(this.store);
+    }
     if (this.auxilaries.length > 0 && this.stockCurrent.product.isAuxilaryItem === false) {
       this.logger.info('Add Auxilary Items ' , this.auxilaries);
       this.cartService.addAuxilary(this.stockCurrent.product , this.auxilaries);

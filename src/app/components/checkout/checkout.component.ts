@@ -52,7 +52,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     console.log('destroy calls');
-    this.collectDeliveryInfoSubscription.unsubscribe();
+    if(this.collectDeliveryInfoSubscription !== undefined) {
+      this.collectDeliveryInfoSubscription.unsubscribe();
+    }
   }
   getCustomer() {
     this.logger.info(this.orderService.customer);
