@@ -7,6 +7,8 @@ import { NGXLogger } from 'ngx-logger';
 import { MapComponent } from 'src/app/components/map/map.component';
 import { FooterComponent } from 'src/app/components/footer/footer.component';
 import { MakePaymentComponent } from 'src/app/components/make-payment/make-payment.component';
+import { PlaceSuggestionComponent } from 'src/app/components/place-suggestion/place-suggestion.component';
+import { LocationService } from 'src/app/services/location-service';
 
 @Component({
   selector: 'app-restaurant',
@@ -23,6 +25,8 @@ export class RestaurantPage implements OnInit {
 
   stores: StoreDTO[] = [];
 
+  currentPlaceName = '';
+
   @ViewChild(IonInfiniteScroll , null) ionInfiniteScroll: IonInfiniteScroll;
   @ViewChild(IonRefresher , null) IonRefresher: IonRefresher;
   @ViewChild(MapComponent , null) mapComponent: MapComponent;
@@ -34,7 +38,8 @@ export class RestaurantPage implements OnInit {
     private filter: FilterService,
     private util: Util,
     private logger: NGXLogger,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private locationService: LocationService
   ) {}
 
   async presentmakePayment() {
@@ -45,14 +50,7 @@ export class RestaurantPage implements OnInit {
   }
   ngOnInit() {
     this.getStores();
-  }
-
-  updatedLocation(event) {
-    this.logger.info('Changed Current Location - LatLon ' , event);
-    this.filter.setCoordinates(event.latLon);
-    // this.logger.info('Setting Distance_wise Filter');
-    // this.filter.setFilter(FILTER_TYPES.DISTANCE_WISE);
-    // this.logger.info('Getting Stores');
+    this.getCurrentLocation();
   }
 
   getStores() {
@@ -120,9 +118,55 @@ export class RestaurantPage implements OnInit {
     }
   }
 
+  async showPlaceSelectionModal() {
+    this.util.createLoader()
+    .then(async loader => {
+      loader.present();
+      const modal = await this.modalController.create(
+        {
+          component: PlaceSuggestionComponent
+        }
+      );
+      modal.onDidDismiss()
+      .then(data => {
+        if(data.data !==  undefined) {
+          this.updatedLocation(data);
+        }
+      });
+      modal.present()
+      .then(() => {
+        loader.dismiss();
+      });
+  
+    })
+  }
+
+  updatedLocation(data) {
+    this.logger.info('Changed Current Location - LatLon ' , data.data.latLon);
+    this.filter.setCoordinates(data.data.latLon);
+    this.currentPlaceName = data.data.name;
+    // this.logger.info('Setting Distance_wise Filter');
+    // this.filter.setFilter(FILTER_TYPES.DISTANCE_WISE);
+    // this.logger.info('Getting Stores');
+  }
+
   // Fix for Footer
   ionViewDidEnter() {
     this.footer.setcurrentRoute('restaurant');
+  }
+
+  getCurrentLocation() {
+    this.util.createLoader()
+    .then(loader => {
+      loader.present();
+      this.logger.info('Getting Current Location');
+      this.locationService.getCurrentLoactionAddress((data, coords) => {
+        loader.dismiss();
+        this.currentPlaceName = data[0].address_components[0].short_name;
+        this.logger.info('Current Place Name ', this.currentPlaceName);
+        this.logger.info('Getting LatLon for current Location', coords);
+      });
+    });
   }
 
 }

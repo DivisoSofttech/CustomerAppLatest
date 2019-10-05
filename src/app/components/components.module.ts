@@ -51,6 +51,7 @@ import { ErrorComponent } from './error/error.component';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
 import { MaterialModule } from './material.module';
 import { NotificationCardComponent } from './notification-card/notification-card.component';
+import { PlaceSuggestionComponent } from './place-suggestion/place-suggestion.component';
 
 @NgModule({
   declarations: [
@@ -98,7 +99,8 @@ import { NotificationCardComponent } from './notification-card/notification-card
     PhoneNumberVerficationComponent,
     IntlNumberInputComponent,
     ErrorComponent,
-    NotificationCardComponent
+    NotificationCardComponent,
+    PlaceSuggestionComponent
   ],
 
   imports: [
@@ -155,7 +157,8 @@ import { NotificationCardComponent } from './notification-card/notification-card
     PhoneNumberVerficationComponent,
     IntlNumberInputComponent,
     ErrorComponent,
-    NotificationCardComponent
+    NotificationCardComponent,
+    PlaceSuggestionComponent
   ],
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -186,7 +189,8 @@ import { NotificationCardComponent } from './notification-card/notification-card
     CountdownComponent,
     OrderDetailComponent,
     ErrorComponent,
-    NotificationCardComponent
+    NotificationCardComponent,
+    PlaceSuggestionComponent
   ]
 })
 export class ComponentsModule { }

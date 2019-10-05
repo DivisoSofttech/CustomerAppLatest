@@ -107,7 +107,6 @@ export class CartService {
   getStoreDeliveryType() {
     this.util.createLoader()
     .then(loader => {
-      loader.present();
       this.queryResource
       .findAllDeliveryTypesByStoreIdUsingGET({
         storeId: this.currentShopId
@@ -214,7 +213,7 @@ export class CartService {
       this.currentShop = shop;
       this.currentShopId = shop.id;
       this.storeId = this.currentShop.regNo;
-      this.getStoreSettings();
+      // this.getStoreSettings();
     }
   }
 
