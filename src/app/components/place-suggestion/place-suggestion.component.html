@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar>
+     <ion-buttons>
+    <ion-searchbar #placeSearch showCancelButton debounce="1500" placeholder="Enter Location Name"
+      (ionCancel)="close()" (ionChange)="getPlacePredictions($event)"></ion-searchbar>
+  </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<!--List Of Available place Suggestions-->
+<ion-spinner name="bubbles" *ngIf="showSpinner"></ion-spinner>
+<ion-list *ngIf="places.length > 0 && !showSpinner">
+    <ion-item *ngFor="let place of places" (click)="selectPlace(place)">
+      {{ place.description }}</ion-item>
+  </ion-list>
+</ion-content>

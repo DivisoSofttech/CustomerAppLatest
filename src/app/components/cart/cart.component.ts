@@ -136,6 +136,10 @@ export class CartComponent implements OnInit, OnDestroy {
           }
         });
       }
+    } else {
+      if(this.cart.currentShop !== undefined) {
+        this.cart.getStoreSettings();
+      }
     }
   }
 
@@ -146,7 +150,6 @@ export class CartComponent implements OnInit, OnDestroy {
       this.orderLines = data;
       this.storeSetting = this.cart.currentShopSetting;
       this.store = this.cart.currentShop;
-
       this.checkDeliveryTypeExists();
       if (this.store !== undefined && this.store.minAmount > this.totalPrice) {
         this.neededCheckOutAmount = this.store.minAmount - this.totalPrice;
