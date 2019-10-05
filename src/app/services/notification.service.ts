@@ -5,6 +5,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { Platform, NavController } from '@ionic/angular';
 import { NotificationDTO } from '../api/models';
 import { QueryResourceService } from '../api/services';
+import { BehaviorSubject } from 'rxjs';
 
 
 @Injectable({
@@ -13,6 +14,7 @@ import { QueryResourceService } from '../api/services';
 export class NotificationService implements OnDestroy {
 
   notificationCount = 0;
+  notificationBehaviouralSubject: BehaviorSubject<number> =  new BehaviorSubject(this.notificationCount);
   connectSubscription: Subscription;
   notificationListenSubscription: Subscription;
   notificationCountSubscription: Subscription;
@@ -45,6 +47,7 @@ export class NotificationService implements OnDestroy {
     .subscribe(count => {
       console.log('Notification count unread is ', count);
       this.notificationCount = count;
+      this.notificationBehaviouralSubject.next(count);
     });
   }
   subscribeToMyNotifications(user) {
