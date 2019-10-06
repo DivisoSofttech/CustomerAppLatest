@@ -25,9 +25,9 @@ export class MapComponent implements OnInit{
 
   mapAlreadyLoaded = false;
 
-  // curentLocationMarker: Marker;
+  curentLocationMarker: Marker;
 
-  // storeLocationMarkers: Marker[] = [];
+  storeLocationMarkers: Marker[] = [];
 
   @Input() showActiveLocation = true;
 
@@ -102,67 +102,67 @@ export class MapComponent implements OnInit{
       parseFloat(latlngArr[0]),
       parseFloat(latlngArr[1])
     );
-    // this.setCurrentLocationMarker(latLng);
+    this.setCurrentLocationMarker(latLng);
   }
 
-  // async setCurrentLocationMarker(latLng) {
-  //   if (!this.mapCanvas) {
-  //     await this.initLoadMap();
-  //   }
-  //   this.logger.info('Setting Marker', latLng);
-  //   if (this.curentLocationMarker !== undefined) {
-  //     this.logger.info('Removing Old Marker', latLng);
-  //     this.curentLocationMarker.remove();
-  //   }
-  //   this.mapCanvas.animateCamera({
-  //     target: latLng,
-  //     zoom: 14,
-  //     tilt: 30
-  //   });
-  //   if (this.showActiveLocation === true) {
-  //     this.curentLocationMarker = this.mapCanvas.addMarkerSync({
-  //       position: latLng,
-  //       animation: GoogleMapsAnimation.DROP
-  //     });
-  //   } else {
-  //     this.curentLocationMarker = this.mapCanvas.addMarkerSync({
-  //       icon: 'assets/icon/marker.png',
-  //       position: latLng,
-  //       animation: GoogleMapsAnimation.DROP
-  //     });
-  //   }
-  //   this.curentLocationMarker.showInfoWindow();
-  // }
+  async setCurrentLocationMarker(latLng) {
+    if (!this.mapCanvas) {
+      await this.initLoadMap();
+    }
+    this.logger.info('Setting Marker', latLng);
+    if (this.curentLocationMarker !== undefined) {
+      this.logger.info('Removing Old Marker', latLng);
+      this.curentLocationMarker.remove();
+    }
+    this.mapCanvas.animateCamera({
+      target: latLng,
+      zoom: 14,
+      tilt: 30
+    });
+    if (this.showActiveLocation === true) {
+      this.curentLocationMarker = this.mapCanvas.addMarkerSync({
+        position: latLng,
+        animation: GoogleMapsAnimation.DROP
+      });
+    } else {
+      this.curentLocationMarker = this.mapCanvas.addMarkerSync({
+        icon: 'assets/icon/marker.png',
+        position: latLng,
+        animation: GoogleMapsAnimation.DROP
+      });
+    }
+    this.curentLocationMarker.showInfoWindow();
+  }
 
-  // setStoreLocationMarkers(stores: Store[]) {
-  //   this.platform.ready().then(async data => {
-  //     if (!this.mapCanvas) {
-  //       await this.initLoadMap();
-  //     }
-  //     if (data === 'cordova') {
-  //       stores.forEach(s => {
-  //         if (s.location !== undefined && s.location !== null) {
-  //           const latlngArr = s.location.split(',');
-  //           const latLng: LatLng = new LatLng(
-  //             parseFloat(latlngArr[0]),
-  //             parseFloat(latlngArr[1])
-  //           );
-  //           const i = this.storeLocationMarkers.length;
-  //           this.storeLocationMarkers[i] = this.mapCanvas.addMarkerSync({
-  //             icon: 'assets/icon/marker.png',
-  //             position: latLng,
-  //             animation: GoogleMapsAnimation.DROP
-  //           });
-  //           this.curentLocationMarker.showInfoWindow();
-  //         }
-  //       });
-  //     }
-  //   });
-  // }
+  setStoreLocationMarkers(stores: Store[]) {
+    this.platform.ready().then(async data => {
+      if (!this.mapCanvas) {
+        await this.initLoadMap();
+      }
+      if (data === 'cordova') {
+        stores.forEach(s => {
+          if (s.location !== undefined && s.location !== null) {
+            const latlngArr = s.location.split(',');
+            const latLng: LatLng = new LatLng(
+              parseFloat(latlngArr[0]),
+              parseFloat(latlngArr[1])
+            );
+            const i = this.storeLocationMarkers.length;
+            this.storeLocationMarkers[i] = this.mapCanvas.addMarkerSync({
+              icon: 'assets/icon/marker.png',
+              position: latLng,
+              animation: GoogleMapsAnimation.DROP
+            });
+            this.curentLocationMarker.showInfoWindow();
+          }
+        });
+      }
+    });
+  }
 
-  // removeStoreLocationMarkers() {
-  //   this.storeLocationMarkers.forEach(sm => {
-  //     sm.remove();
-  //   });
-  // }
+  removeStoreLocationMarkers() {
+    this.storeLocationMarkers.forEach(sm => {
+      sm.remove();
+    });
+  }
 }

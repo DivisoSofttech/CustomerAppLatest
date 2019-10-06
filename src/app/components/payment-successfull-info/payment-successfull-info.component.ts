@@ -6,6 +6,7 @@ import { OrderDetailComponent } from '../order-detail/order-detail.component';
 import { NGXLogger } from 'ngx-logger';
 import { QueryResourceService } from 'src/app/api/services';
 import { Util } from 'src/app/services/util';
+import { OrderSummaryComponent } from '../order-summary/order-summary.component';
 
 @Component({
   selector: 'app-payment-successfull-info',
@@ -61,9 +62,9 @@ export class PaymentSuccessfullInfoComponent implements OnInit {
 
   async showOrderDetails() {
 
-    if(this.order !== null) {
+    if (this.order !== null) {
       const modal = await this.modalController.create({
-        component: OrderDetailComponent,
+        component: OrderSummaryComponent,
         componentProps: {order: this.order , store: this.cartService.currentShop}
       });
       modal.present();

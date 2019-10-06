@@ -35,6 +35,7 @@ import { Sim } from '@ionic-native/sim/ngx';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { BackgroundMode } from '@ionic-native/background-mode/ngx';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
 const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', options: {} };
 
@@ -75,6 +76,7 @@ const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', 
     Util,
     SplashScreen,
     LocalNotifications,
+    AndroidPermissions,
     BackgroundMode,
     PayPal,
     Sim,
