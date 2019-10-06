@@ -36,6 +36,7 @@ import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { BackgroundMode } from '@ionic-native/background-mode/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { ForegroundService } from '@ionic-native/foreground-service/ngx';
 
 const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', options: {} };
 
@@ -78,6 +79,7 @@ const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', 
     LocalNotifications,
     AndroidPermissions,
     BackgroundMode,
+    ForegroundService,
     PayPal,
     Sim,
     InAppBrowser,
