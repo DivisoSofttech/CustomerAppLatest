@@ -1,3 +1,4 @@
+import { LocationService } from './../../services/location-service';
 import { Component, OnInit, Input } from '@angular/core';
 import {
   Environment,
@@ -35,7 +36,8 @@ export class MapComponent implements OnInit{
     private logger: NGXLogger,
     private platform: Platform,
     private filter: FilterService, // Filter Service Contains the current latlon of the current
-    private util: Util // or selected location
+    private util: Util, // or selected location,
+    private locationService: LocationService
   ) {}
 
   ngOnInit() {
@@ -44,7 +46,8 @@ export class MapComponent implements OnInit{
 
   initLoadMap() {
     this.platform.ready().then(data => {
-      if (data === 'cordova') {
+      console.log(data);
+      if (this.platform.is('cordova' || 'android' || 'ios')) {
         this.logger.info('Map component getting LatLon');
         if (this.showActiveLocation === true) {
           this.getLatLon();
@@ -63,13 +66,19 @@ export class MapComponent implements OnInit{
         } else {
           this.updateMap(coords);
         }
+      } else {
+        this.locationService.getCurrentLocation().then(latlon => {
+          console.log('iyftudytdyfutu', latlon);
+          this.loadMap(latlon.coords.latitude + ',' + latlon.coords.longitude);
+          this.mapAlreadyLoaded = true;
+        });
       }
     });
   }
 
   loadMap(coords) {
     this.platform.ready().then(data => {
-      if (data === 'cordova') {
+      if (this.platform.is('cordova' || 'android' || 'ios')) {
         if (coords !== undefined && coords !== null) {
           this.logger.info('Loading Maps', coords);
           const latlngArr = coords.split(',');
@@ -85,7 +94,7 @@ export class MapComponent implements OnInit{
           };
           this.mapCanvas = GoogleMaps.create('map_canvas', mapOptions);
           this.logger.info('Setting Marker', mapOptions);
-          // this.setCurrentLocationMarker(latLng);
+          this.setCurrentLocationMarker(latLng);
         }
       }
     });
@@ -135,11 +144,12 @@ export class MapComponent implements OnInit{
   }
 
   setStoreLocationMarkers(stores: Store[]) {
+    console.log('inside store markers ', this.mapCanvas);
     this.platform.ready().then(async data => {
-      if (!this.mapCanvas) {
+      if (this.mapCanvas === undefined) {
         await this.initLoadMap();
       }
-      if (data === 'cordova') {
+      if (this.platform.is('cordova' || 'android' || 'ios')) {
         stores.forEach(s => {
           if (s.location !== undefined && s.location !== null) {
             const latlngArr = s.location.split(',');

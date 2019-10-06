@@ -166,6 +166,7 @@ export class RestaurantPage implements OnInit {
       this.logger.info('Getting Current Location');
       this.locationService.getCurrentLoactionAddress((data, coords) => {
         loader.dismiss();
+        // this.filter.setCoordinates(coords);
         this.currentPlaceName = data[0].address_components[0].short_name;
         this.logger.info('Current Place Name ', this.currentPlaceName);
         this.logger.info('Getting LatLon for current Location', coords);
