@@ -11,7 +11,7 @@ import { BackgroundMode } from '@ionic-native/background-mode/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { NotificationService } from './services/notification.service';
-
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -54,7 +54,8 @@ export class AppComponent {
     private backgroundMode: BackgroundMode,
     private localNotifications: LocalNotifications,
     private oauthService: OAuthService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private androidPermissions: AndroidPermissions
       ) {
     this.getUser();
     this.initializeApp();
@@ -72,6 +73,12 @@ export class AppComponent {
       if (this.platform.is('pwa')) {
         console.log('Browser');
         this.browser = true;
+      }
+      if (this.platform.is('android')) {
+        this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.FOREGROUND_SERVICE).then(
+          result => console.log('Has permission?', result.hasPermission),
+          err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.FOREGROUND_SERVICE)
+        );
       }
       this.statusBar.styleDefault();
       this.statusBar.backgroundColorByHexString('#e6e6e6');

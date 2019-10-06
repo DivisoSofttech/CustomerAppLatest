@@ -26,6 +26,7 @@
     "@angular/pwa": "^0.803.5",
     "@angular/router": "~8.1.3",
     "@angular/service-worker": "~8.1.3",
+    "@ionic-native/android-permissions": "^5.15.0",
     "@ionic-native/background-mode": "^5.14.0",
     "@ionic-native/camera": "^5.11.0",
     "@ionic-native/core": "^5.0.0",
@@ -47,9 +48,10 @@
     "com.paypal.cordova.mobilesdk": "^3.5.0",
     "com.razorpay.cordova": "^1.4.8",
     "cordova": "^7.1.0",
-    "cordova-android": "6.4.0",
+    "cordova-android": "^6.3.0",
     "cordova-browser": "^5.0.4",
     "cordova-ios": "4.5.5",
+    "cordova-plugin-android-permissions": "^1.0.0",
     "cordova-plugin-background-mode": "^0.7.3",
     "cordova-plugin-badge": "^0.8.8",
     "cordova-plugin-camera": "^4.1.0",
@@ -137,7 +139,8 @@
       "cordova-plugin-sim": {},
       "cordova-plugin-sms-receive": {},
       "cordova-plugin-local-notification": {},
-      "cordova-plugin-background-mode": {}
+      "cordova-plugin-background-mode": {},
+      "cordova-plugin-android-permissions": {}
     },
     "platforms": [
       "browser",
