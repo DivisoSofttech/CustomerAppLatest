@@ -12,6 +12,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { NotificationService } from './services/notification.service';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { ForegroundService } from '@ionic-native/foreground-service/ngx';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -55,13 +56,20 @@ export class AppComponent {
     private localNotifications: LocalNotifications,
     private oauthService: OAuthService,
     private notificationService: NotificationService,
-    private androidPermissions: AndroidPermissions
+    private androidPermissions: AndroidPermissions,
+    public foregroundService: ForegroundService
       ) {
     this.getUser();
     this.initializeApp();
   }
 
+
+  startService() {
+    // Notification importance is optional, the default is 1 - Low (no sound or vibration)
+    this.foregroundService.start('Foodexp', 'Background Service', 'drawable/fsicon');
+   }
   initializeApp() {
+    this.startService();
     this.platform.ready().then(() => {
       if (this.localNotifications.hasPermission()) {
         console.log('Local Notifications has permission');
