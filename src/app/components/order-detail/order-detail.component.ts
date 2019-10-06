@@ -1,13 +1,13 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { QueryResourceService } from 'src/app/api/services';
-import { Order, OrderLine, Product, AuxilaryLineItem, ComboLineItem, Store, CommandResource } from 'src/app/api/models';
+import { Order, OrderLine, Product, Store, CommandResource } from 'src/app/api/models';
 import { CartService } from 'src/app/services/cart.service';
-import { AlertController, NavController, ModalController } from '@ionic/angular';
-import { ModalDisplayUtilService } from 'src/app/services/modal-display-util.service';
+import { ModalController } from '@ionic/angular';
 import { OrderService } from 'src/app/services/order.service';
 import { Subscription } from 'rxjs';
 import { Util } from 'src/app/services/util';
+import { PaymentSuccessfullInfoComponent } from '../payment-successfull-info/payment-successfull-info.component';
 
 @Component({
   selector: 'app-order-detail',
@@ -39,10 +39,18 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     private queryResource: QueryResourceService,
     private cartService: CartService,
     private modalController: ModalController,
-    private displayModalService: ModalDisplayUtilService,
     private orderService: OrderService,
     private util: Util
   ) { }
+
+
+  async presentPaymentSuccessfullInfo() {
+    this.modalController.dismiss();
+    const modal = await this.modalController.create({
+      component: PaymentSuccessfullInfoComponent
+    });
+    return await modal.present();
+  }
 
   completePayment() {
     this.util.createLoader().then(loader => {
@@ -60,7 +68,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
         this.orderService.resource = resource;
         loader.dismiss();
         this.dismiss();
-        this.displayModalService.presentMakePayment();
+        this.presentPaymentSuccessfullInfo();
       });
     });
   }
