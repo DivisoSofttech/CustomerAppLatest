@@ -11,7 +11,7 @@ import { OrderService } from 'src/app/services/order.service';
 import { OrderCommandResourceService } from 'src/app/api/services';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { LoginSignupComponent } from '../login-signup/login-signup.component';
-import { Subscription } from 'rxjs';
+import { Subscription, BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-cart',
@@ -47,6 +47,7 @@ export class CartComponent implements OnInit, OnDestroy {
   storeSetting: StoreSettings;
   deliveryOk = false;
   collectionOk = false;
+  defaultDelivery = false;
 
   initiateOrderSubcription: Subscription;
 
@@ -63,13 +64,19 @@ export class CartComponent implements OnInit, OnDestroy {
     private modalController: ModalController,
     private navController: NavController,
     private logger: NGXLogger,
-    private util: Util,
-    private orderCommandResource: OrderCommandResourceService
+    private util: Util
   ) {}
 
   ngOnInit() {
     this.getCartDetails();
     this.getCustomer();
+    if(this.viewType === 'full') {
+      this.cart.behaviourDeliveryTypes.subscribe(data => {
+        if(data !== undefined) {
+          this.checkDeliveryTypeExists();
+        } 
+      });  
+    }
   }
 
   ngOnDestroy() {
@@ -118,6 +125,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   checkDeliveryTypeExists() {
+    this.logger.info('Checking delivery Types');
     if (this.cart.currentDeliveryTypes !== undefined) {
       if (this.cart.currentDeliveryTypes.length === 1) {
         if (this.cart.currentDeliveryTypes[0].name === 'delivery') {
@@ -126,6 +134,7 @@ export class CartComponent implements OnInit, OnDestroy {
         } else if (this.cart.currentDeliveryTypes[0].name === 'collection') {
           this.collectionOk = true;
           this.currentSegment = 'collection';
+          this.defaultDelivery = false;
         }
       } else {
         this.cart.currentDeliveryTypes.forEach(element => {
@@ -133,6 +142,7 @@ export class CartComponent implements OnInit, OnDestroy {
             this.deliveryOk = true;
           } else if (element.name === 'collection') {
             this.collectionOk = true;
+            this.defaultDelivery = false;
           }
         });
       }
@@ -150,7 +160,6 @@ export class CartComponent implements OnInit, OnDestroy {
       this.orderLines = data;
       this.storeSetting = this.cart.currentShopSetting;
       this.store = this.cart.currentShop;
-      this.checkDeliveryTypeExists();
       if (this.store !== undefined && this.store.minAmount > this.totalPrice) {
         this.neededCheckOutAmount = this.store.minAmount - this.totalPrice;
       } else {

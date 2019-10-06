@@ -79,7 +79,10 @@ export class HeaderComponent implements OnInit {
   }
 
   getNotificationCount() {
-    this.notificationCount = this.notificationService.notificationCount;
+    this.notificationService.notificationBehaviouralSubject
+      .subscribe(count => {
+        this.notificationCount = count;
+      });
   }
 
   toggleSearchBar() {

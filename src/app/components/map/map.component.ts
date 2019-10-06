@@ -94,7 +94,7 @@ export class MapComponent implements OnInit{
           };
           this.mapCanvas = GoogleMaps.create('map_canvas', mapOptions);
           this.logger.info('Setting Marker', mapOptions);
-          this.setCurrentLocationMarker(latLng);
+          // this.setCurrentLocationMarker(latLng);
         }
       }
     });

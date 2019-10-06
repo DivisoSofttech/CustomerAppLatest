@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.diviso.graeshoppe.customer" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Food Exp</name>
+    <name>FoodExp</name>
     <description>A platform for purchasing food and beverages.</description>
     <author email="ceodiviso@lxisoft.com" href="https://divisosfttech.com/">Diviso Softtech</author>
     <content src="index.html" />
@@ -122,4 +122,5 @@
     <plugin name="cordova-plugin-sms-receive" spec="^1.0.2" />
     <plugin name="cordova-plugin-local-notification" spec="^0.9.0-beta.2" />
     <plugin name="cordova-plugin-background-mode" spec="^0.7.3" />
+    <plugin name="cordova-plugin-android-permissions" spec="^1.0.0" />
 </widget>

@@ -22,6 +22,8 @@ export class CartService {
   auxilaryItems = {};
   currentDeliveryTypes;
   MAX_ORDERS = 10;
+  behaviourDeliveryTypes = new BehaviorSubject<any>(this.currentDeliveryTypes);
+  behaviourStore = new BehaviorSubject<Store>(this.currentShop);
 
   constructor(
     private alertController: AlertController,
@@ -33,6 +35,9 @@ export class CartService {
     this.observableTickets = new BehaviorSubject<OrderLine[]>(this.orderLines);
     this.observablePrice = new BehaviorSubject<number>(this.totalPrice);
     this.logger.info('Cart Service Created');
+    this.behaviourStore.subscribe(data => {
+      this.getStoreSettings();
+    })
   }
 
   async presentAlert() {
@@ -100,8 +105,10 @@ export class CartService {
   }
 
   getStoreSettings() {
-    this.currentShopSetting = this.currentShop.storeSettings;
-    this.getStoreDeliveryType();
+    if(this.currentShop !== undefined) {
+      this.currentShopSetting = this.currentShop.storeSettings;
+      this.getStoreDeliveryType();  
+    }
   }
 
   getStoreDeliveryType() {
@@ -116,7 +123,7 @@ export class CartService {
           loader.dismiss();
           this.logger.info('Got Store Delivery Types ' , success.content);
           this.currentDeliveryTypes = success.content;
-          this.observableTickets.next(this.orderLines);
+          this.behaviourDeliveryTypes.next(this.currentDeliveryTypes);
         },
         err => {
           loader.dismiss();
@@ -213,7 +220,7 @@ export class CartService {
       this.currentShop = shop;
       this.currentShopId = shop.id;
       this.storeId = this.currentShop.regNo;
-      // this.getStoreSettings();
+      this.getStoreSettings();
     }
   }
 

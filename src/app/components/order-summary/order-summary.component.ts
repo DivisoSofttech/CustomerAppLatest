@@ -7,18 +7,14 @@ import { ModalController } from '@ionic/angular';
 import { OrderService } from 'src/app/services/order.service';
 import { Subscription } from 'rxjs';
 import { Util } from 'src/app/services/util';
-import { PaymentSuccessfullInfoComponent } from '../payment-successfull-info/payment-successfull-info.component';
-import { MakePaymentComponent } from '../make-payment/make-payment.component';
 
 @Component({
-  selector: 'app-order-detail',
-  templateUrl: './order-detail.component.html',
-  styleUrls: ['./order-detail.component.scss'],
+  selector: 'app-order-summary',
+  templateUrl: './order-summary.component.html',
+  styleUrls: ['./order-summary.component.scss'],
 })
-export class OrderDetailComponent implements OnInit, OnDestroy {
- 
-
-  @Input() order: Order;
+export class OrderSummaryComponent implements OnInit, OnDestroy {
+@Input() order: Order;
 
   orderLines: OrderLine[] = [];
 
@@ -45,13 +41,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
   ) { }
 
 
-  async presentMakePayment() {
-    this.modalController.dismiss();
-    const modal = await this.modalController.create({
-      component: MakePaymentComponent
-    });
-    return await modal.present();
-  }
+
 
   completePayment() {
     this.util.createLoader().then(loader => {
@@ -69,7 +59,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
         this.orderService.resource = resource;
         loader.dismiss();
         this.dismiss();
-        this.presentMakePayment();
       });
     });
   }
@@ -147,4 +136,5 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
   dismiss() {
     this.modalController.dismiss();
   }
+
 }

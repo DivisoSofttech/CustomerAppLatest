@@ -1,5 +1,5 @@
 <ion-item
-*ngIf="store !== undefined && viewType === 'full'"
+*ngIf="store !== undefined && store !== null && viewType === 'full'"
 >
 <ion-label>
   {{store.name}}
@@ -116,11 +116,11 @@
     *ngIf="orderLines.length !== 0"
   >
   <ion-segment-button *ngIf="deliveryOk" value="delivery" [checked]="deliveryOk">Delivery</ion-segment-button>
-    <ion-segment-button *ngIf="collectionOk" value="collection" [checked]="collectionOk">Collection</ion-segment-button>
+    <ion-segment-button *ngIf="collectionOk" value="collection" [checked]="collectionOk && defaultDelivery">Collection</ion-segment-button>
   </ion-segment>
 
   <div>
-    <app-delivery-item-details class="vertical-align-center ion-padding-top ion-margin-top"></app-delivery-item-details>
+    <app-delivery-item-details class="vertical-align-center"></app-delivery-item-details>
   </div>
 
 </div>

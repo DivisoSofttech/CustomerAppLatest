@@ -26,6 +26,7 @@
     "@angular/pwa": "^0.803.5",
     "@angular/router": "~8.1.3",
     "@angular/service-worker": "~8.1.3",
+    "@ionic-native/android-permissions": "^5.15.0",
     "@ionic-native/background-mode": "^5.14.0",
     "@ionic-native/camera": "^5.11.0",
     "@ionic-native/core": "^5.0.0",
@@ -50,6 +51,7 @@
     "cordova-android": "^6.3.0",
     "cordova-browser": "^5.0.4",
     "cordova-ios": "4.5.5",
+    "cordova-plugin-android-permissions": "^1.0.0",
     "cordova-plugin-background-mode": "^0.7.3",
     "cordova-plugin-badge": "^0.8.8",
     "cordova-plugin-camera": "^4.1.0",
@@ -57,8 +59,8 @@
     "cordova-plugin-geolocation": "^4.0.2",
     "cordova-plugin-googlemaps": "git+https://github.com/mapsplugin/cordova-plugin-googlemaps.git#multiple_maps",
     "cordova-plugin-inappbrowser": "^3.1.0",
-    "cordova-plugin-ionic-keyboard": "^2.1.3",
-    "cordova-plugin-ionic-webview": "^4.1.1",
+    "cordova-plugin-ionic-keyboard": "^2.2.0",
+    "cordova-plugin-ionic-webview": "^4.1.2",
     "cordova-plugin-local-notification": "^0.9.0-beta.2",
     "cordova-plugin-screen-orientation": "^3.0.2",
     "cordova-plugin-sim": "^1.3.3",
@@ -137,7 +139,8 @@
       "cordova-plugin-sim": {},
       "cordova-plugin-sms-receive": {},
       "cordova-plugin-local-notification": {},
-      "cordova-plugin-background-mode": {}
+      "cordova-plugin-background-mode": {},
+      "cordova-plugin-android-permissions": {}
     },
     "platforms": [
       "browser",

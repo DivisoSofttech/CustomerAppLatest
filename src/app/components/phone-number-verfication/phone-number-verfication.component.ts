@@ -4,6 +4,7 @@ import { Util } from 'src/app/services/util';
 import { QueryResourceService, CommandResourceService } from 'src/app/api/services';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { NGXLogger } from 'ngx-logger';
+import { log } from 'util';
 declare var SMSReceive: any;
 
 @Component({
@@ -41,7 +42,7 @@ export class PhoneNumberVerficationComponent implements OnInit {
   }
 
   startSMSListener() {
-    if(SMSReceive) {
+    if (SMSReceive) {
       SMSReceive.startWatch(
         () => {
           document.addEventListener('onSMSArrive', (e: any) => {
@@ -50,16 +51,16 @@ export class PhoneNumberVerficationComponent implements OnInit {
           });
         },
         () => { console.log('watch start failed'); }
-      );  
+      );
     }
   }
 
   stopSMSListener() {
-    if(SMSReceive) {
+    if (SMSReceive) {
       SMSReceive.stopWatch(
         () => { console.log('watch stopped'); },
         () => { console.log('watch stop failed'); }
-      );  
+      );
     }
   }
 
@@ -68,7 +69,7 @@ export class PhoneNumberVerficationComponent implements OnInit {
       numbers: this.number,
       code: this.OTP
     }).subscribe(d => {
-      if(d.status === 'success') {
+      if (d.status === 'success') {
         this.dismissData(true);
       } else {
         this.util.createToast('Invalid OTP');
@@ -81,14 +82,15 @@ export class PhoneNumberVerficationComponent implements OnInit {
   autoProcessSMS(data) {
     const message = data.body;
     const sender = data.address;
-    if (sender === 'VK-040060') {
+    console.log('The sender of sms is ', data.address);
+    if (sender === 'VK-040060' || 'VM-040060' || 'AD-040060' || 'Foodexp' ) {
       this.OTP = data.body.slice((message.length - 6), message.length - 1);
-
+      console.log('OTP is readed is ', this.OTP);
       this.commandResource.verifyOTPUsingPOST({
         numbers: this.number,
         code: this.OTP
       }).subscribe(d => {
-        if(d.status === 'success') {
+        if (d.status === 'success') {
           this.dismissData(true);
         } else {
           this.util.createToast('Invalid OTP');
@@ -118,7 +120,7 @@ export class PhoneNumberVerficationComponent implements OnInit {
   }
 
   timerEvent(event) {
-    if(event.action === 'done') {
+    if (event.action === 'done') {
       // alert('OTP Expired');
     }
   }
