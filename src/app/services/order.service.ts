@@ -24,7 +24,7 @@ export class OrderService implements OnInit {
   customer;
   paymentMethod;
   acceptType = 'automatic';
-  shop;    
+  shop;
   offer: Offer;
   constructor(
     private orderCommandService: OrderCommandResourceService,
@@ -35,10 +35,11 @@ export class OrderService implements OnInit {
     private offerCommandService: OfferCommandResourceService,
     private paymentCommandService: PaymentCommandResourceService,
     private util: Util
-    ) { }
+    ) {
+      this.getCustomer();
+    }
 
     ngOnInit() {
-      this.getCustomer();
     }
 
   isTask(taskName: string): boolean {
@@ -53,13 +54,17 @@ export class OrderService implements OnInit {
   }
 
   async getCustomer() {
-    if (this.oauthService.hasValidAccessToken()) {
-      await this.storage.get('user')
-        .then(data => {
-          this.customer = data;
-          this.logger.info('Got Customer ' , data);
-      });
-    }
+   await this.util.createLoader().then( async loader => {
+     loader.dismiss();
+     if (this.oauthService.hasValidAccessToken()) {
+        await this.storage.get('user')
+          .then(data => {
+            this.customer = data;
+            this.logger.info('Got Customer ' , data);
+            loader.dismiss();
+        });
+      }
+    });
   }
 
   collectDeliveryInfo() {

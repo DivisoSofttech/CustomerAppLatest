@@ -24,19 +24,21 @@
         <ion-text color="primary">
           <h2><b>Date :</b> {{ order.date | date: "short" }}</h2>
           <h3 class="fnt-big">Grand Total {{ order.grandTotal | number: "1.1-2" }}</h3>
-          <ion-badge color="light" *ngIf="order.status.name.toLowerCase() ==='created'">
+          <ion-badge color="secondary" *ngIf="order.status.name.toLowerCase() ==='created'">
             <p>Ordered</p>
         </ion-badge>
           <ion-badge color="success" *ngIf="order.status.name.toLowerCase() ==='approved'">
               <p>{{ order.status.name | titlecase }}</p>
           </ion-badge>
           <ion-badge color="warning" *ngIf="order.status.name.toLowerCase() ==='payment-processed'">
-            <p>{{ order.status.name | titlecase }}</p>
+            <p>Payment Processed</p>
         </ion-badge>
           <ion-badge color="danger" *ngIf="order.status.name.toLowerCase() ==='unapproved'">
               <p>{{ order.status.name | titlecase }}</p>
           </ion-badge>
-
+          <ion-badge color="medium" *ngIf="order.status.name.toLowerCase() ==='delivered'">
+            <p>{{ order.status.name | titlecase }}</p>
+        </ion-badge>
         </ion-text>
         <p *ngIf="stores[order.storeId] != null">
           <b>Store Name : </b>{{ stores[order.storeId].name }}

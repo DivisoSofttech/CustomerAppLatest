@@ -124,25 +124,29 @@ export class RestaurantPage implements OnInit {
       loader.present();
       const modal = await this.modalController.create(
         {
-          component: PlaceSuggestionComponent
+          component: PlaceSuggestionComponent,
+          componentProps: {currentPlaceName: this.currentPlaceName}
         }
       );
       modal.onDidDismiss()
       .then(data => {
-        if(data.data !==  undefined) {
+        if(data.data !==  undefined && data.data.data !== 'current') {
           this.updatedLocation(data);
+        } else if(data.data.data === 'current') {
+          this.logger.info('Setting Current Location ' , data.data);
+          this.currentPlaceName = '';
+          this.getCurrentLocation();
         }
       });
       modal.present()
       .then(() => {
         loader.dismiss();
       });
-  
-    })
+    });
   }
 
   updatedLocation(data) {
-    this.logger.info('Changed Current Location - LatLon ' , data.data.latLon);
+    this.logger.info('Changed Current Location - LatLon ' , data);
     this.filter.setCoordinates(data.data.latLon);
     this.currentPlaceName = data.data.name;
     // this.logger.info('Setting Distance_wise Filter');
@@ -162,6 +166,7 @@ export class RestaurantPage implements OnInit {
       this.logger.info('Getting Current Location');
       this.locationService.getCurrentLoactionAddress((data, coords) => {
         loader.dismiss();
+        // this.filter.setCoordinates(coords);
         this.currentPlaceName = data[0].address_components[0].short_name;
         this.logger.info('Current Place Name ', this.currentPlaceName);
         this.logger.info('Getting LatLon for current Location', coords);
