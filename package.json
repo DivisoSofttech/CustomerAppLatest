@@ -141,12 +141,9 @@
       "cordova-plugin-sms-receive": {},
       "cordova-plugin-local-notification": {},
       "cordova-plugin-background-mode": {},
-<<<<<<< HEAD
-      "cordova-plugin-googlemaps": {}
-=======
+      "cordova-plugin-googlemaps": {},
       "cordova-plugin-android-permissions": {},
       "cordova-plugin-foreground-service": {}
->>>>>>> de0714f2d3fb5d5254add8ffe640666eb6bd8e33
     },
     "platforms": [
       "browser",
