@@ -16,8 +16,8 @@
 @import "~@ionic/angular/css/normalize.css";
 @import "~@ionic/angular/css/structure.css";
 @import "~@ionic/angular/css/typography.css";
-@import '~@ionic/angular/css/display.css';
- 
+@import "~@ionic/angular/css/display.css";
+
 /* Optional CSS utils that can be commented out */
 @import "~@ionic/angular/css/padding.css";
 @import "~@ionic/angular/css/float-elements.css";
@@ -27,7 +27,7 @@
 @import "./theme/animate.min.css";
 
 .pointer {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .text-overflow-hidden {
@@ -37,19 +37,19 @@
 }
 
 .hidden {
-    display: none;
+  display: none;
 }
 
 .vertical-align-center {
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    position: relative;
-    font-family: monospace;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  position: relative;
+  font-family: monospace;
 }
 
 .half-width {
-    width: 50%;
+  width: 50%;
 }
 
 .full-width {
@@ -60,42 +60,37 @@
 }
 
 ion-modal.modal-popover {
-
-    &.bottom {
+  &.bottom {
     align-items: flex-end;
+  }
+
+  .modal-wrapper {
+    position: absolute;
+    bottom: 36vh;
+    height: 29vh;
+    width: 90vw;
+  }
+
+  .ion-page {
+    position: relative;
+    display: block;
+    contain: content;
+    .inner-content {
+      max-height: 40vh;
+      overflow: auto;
+      padding: 10px;
     }
-    
-    
-    
-        .modal-wrapper {
-            position: absolute;
-            bottom: 36vh;
-            height: 29vh;
-            width: 90vw;
-        }
-    
-    
-    .ion-page {
-        position: relative;
-        display: block;
-        contain: content;
-        .inner-content {
-        max-height: 40vh;
-        overflow: auto;
-        padding: 10px;
-        }
-    }
+  }
 }
 
-ion-popover{
-
-    .popover-wrapper{
-        .popover-content{
-        width:80vw;
-        max-width:500px;
-        }
-    }
-}
+// ion-popover {
+//   .popover-wrapper {
+//     .popover-content {
+//       width: 80vw;
+//       max-width: 500px;
+//     }
+//   }
+// }
 
 .ios ion-segment {
   border-radius: 0;
@@ -104,99 +99,98 @@ ion-popover{
 }
 
 .ios ion-segment-button {
-  border-radius:0;
+  border-radius: 0;
 }
 
 .ios .footer-tabs {
   border-top: 1px solid grey;
 }
 
-.ios .footer-tabs ion-segment-button ,
-.ios .slider-tabs ion-segment-button 
-{
-  border:none;
+.ios .footer-tabs ion-segment-button,
+.ios .slider-tabs ion-segment-button {
+  border: none;
 }
 
 .ios .slider-tabs {
   border-top: 1px solid grey;
   border-bottom: 1px solid grey;
-
 }
-/* 
-  ##Device = Desktops
-  ##Screen = 1281px to higher resolution desktops
-*/
 
-@media (min-width: 1281px) {
-    //CSS
-    app-footer {
-      display: none;
-    }
+.split-pane-ios.split-pane-visible > .split-pane-side,
+.split-pane-md.split-pane-visible > .split-pane-side {
+  max-width: 350px;
+  min-width: 350px;
 }
-  
-  /* 
-    ##Device = Laptops, Desktops
-    ##Screen = B/w 1025px to 1280px
-  */
-  
-  @media (min-width: 1025px) and (max-width: 1280px) {
-    //CSS
-    app-footer {
-      display: none;
-    }
-  }
-  
-  /* 
-    ##Device = Tablets, Ipads (portrait)
-    ##Screen = B/w 768px to 1024px
-  */
-  
-  @media (min-width: 768px) and (max-width: 1024px) {
-    
-    //CSS
-    
-  }
-  
-  /* 
-    ##Device = Tablets, Ipads (landscape)
-    ##Screen = B/w 768px to 1024px
-  */
-  
-  @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
-    
-    //CSS
-    
-  }
-  
-  /* 
-    ##Device = Low Resolution Tablets, Mobiles (Landscape)
-    ##Screen = B/w 481px to 767px
-  */
-  
-  @media (min-width: 481px) and (max-width: 767px) {
-    
-    //CSS
-    
-  }
-  
-  /* 
-    ##Device = Most of the Smartphones Mobiles (Portrait)
-    ##Screen = B/w 320px to 479px
-  */
-  
-  @media (min-width: 320px) and (max-width: 480px) {
-    
-    //CSS
-    
-  }
-
-
-  .split-pane-ios.split-pane-visible>.split-pane-side,
-  .split-pane-md.split-pane-visible>.split-pane-side{
-    max-width: 325px;
-    min-width: 325px;
-  }
 .height-65 {
   height: 65%;
   overflow: hidden;
+}
+
+.desktop-only {
+  display:none !important;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+@media (min-width: 992px) and (max-width: 2280px) {
+  //CSS
+
+
+ion-modal.full-height {
+  &.bottom {
+    align-items: flex-end;
+  }
+
+  .modal-wrapper {
+    height: 98vh;
+    width: 40vw;
+  }
+
+  .ion-page {
+    .inner-content {
+      max-height: 40vh;
+      overflow: auto;
+      padding: 10px;
+    }
+  }
+}
+
+  app-footer {
+    display: none;
+  }
+
+  .mobile-only {
+    display: none !important;
+  }
+
+  .desktop-only {
+    display: block !important;
+  }
+
+  .margin-top-desktop {
+    margin-top: 63px;
+  }
+
+  .padding-left-desktop {
+    padding-left: 10px;
+  }
+
+  .header-search{
+    width: 25vw !important;
+    position: fixed;
+    right: 0;
+  }
+
+  .header-content {
+    right: 5px;
+    border: 1px solid lightgray;
+    --background: rgba(0,0,0,0.02);
+  }
+
+  .desktop-full-width {
+    width: 100% !important;
+  }
+
 }

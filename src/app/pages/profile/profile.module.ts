@@ -12,6 +12,7 @@ import { IonicModule } from '@ionic/angular';
 import { ProfilePage } from './profile.page';
 import { ProfileInfoComponent } from 'src/app/components/profile-info/profile-info.component';
 import { FooterComponent } from 'src/app/components/footer/footer.component';
+import { DirectiveModule } from 'src/app/directives/directive.module';
 
 const routes: Routes = [
   {
@@ -26,6 +27,7 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     ComponentsModule,
+    DirectiveModule,
     RouterModule.forChild(routes)
   ],
   declarations: [ProfilePage],

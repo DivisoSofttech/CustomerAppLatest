@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header class="mobile-only">
   <ion-toolbar>
     <ion-buttons>
       <ion-menu-button slot="start" auto-hide="true"></ion-menu-button>
@@ -12,7 +12,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content appScrollbarTheme>
   <app-loading
     *ngIf="customer === undefined"
     [type]="'profile'">

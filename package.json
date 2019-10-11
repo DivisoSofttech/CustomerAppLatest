@@ -50,7 +50,7 @@
     "com.razorpay.cordova": "^1.4.8",
     "cordova": "^7.1.0",
     "cordova-android": "^6.3.0",
-    "cordova-browser": "^5.0.4",
+    "cordova-browser": "5.0.4",
     "cordova-ios": "4.5.5",
     "cordova-plugin-android-permissions": "^1.0.0",
     "cordova-plugin-background-mode": "^0.7.3",

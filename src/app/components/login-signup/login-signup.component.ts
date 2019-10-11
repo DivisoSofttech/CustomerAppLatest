@@ -68,7 +68,8 @@ export class LoginSignupComponent implements OnInit {
 
     const modal = await this.modalController.create({
       component: PhoneNumberVerficationComponent,
-      componentProps: {number: this.phone}
+      componentProps: {number: this.phone},
+      cssClass: 'full-height'
     });
 
     modal.onDidDismiss()

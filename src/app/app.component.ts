@@ -61,7 +61,13 @@ export class AppComponent {
       ) {
     this.getUser();
     this.initializeApp();
+    if(this.platform.is('pwa') || this.platform.is('cordova')) {
+      this.browser = true;
+    } else {
+    }
+    
   }
+
 
 
   // startService() {

@@ -2,7 +2,8 @@
 *ngIf="orders.length > 0 && productsGot === false"
 [type]="'delivery'"></app-loading>
 
-<ion-list can-swipe="true" *ngIf="orders.length > 0 && productsGot === true" class="page-parent">
+<ion-list can-swipe="true" *ngIf="orders.length > 0 && productsGot === true" class="page-parent
+  desktop-full-width">
   <ion-card *ngFor="let orderLine of orders">
     <!--Main Product Start -->
     <ion-item-sliding *ngIf="products[orderLine.productId] !== undefined">
@@ -14,6 +15,17 @@
             </ion-item-option>
         </ion-item-options>
         <ion-item color="secondary" >
+            <ion-thumbnail class="desktop-only ion-margin">
+                <ion-img
+                  [src]="
+                    'data:' +
+                    products[orderLine.productId].imageContentType +
+                    ';base64,' +
+                    products[orderLine.productId].image
+                  "
+                >
+                </ion-img>
+              </ion-thumbnail>
             <ion-label text-start class="wrap">
                <h2>{{products[orderLine.productId].name}}</h2>
                <h3>

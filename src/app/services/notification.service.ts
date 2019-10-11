@@ -84,8 +84,10 @@ export class NotificationService implements OnDestroy {
 
 disconnectToMyNotifications() {
     console.log('Socket connection is disconnects');
-    this.connectSubscription.unsubscribe();
-    this.notificationListenSubscription.unsubscribe();
+    if(this.connectSubscription !== undefined && this.notificationListenSubscription !== undefined) {
+      this.connectSubscription.unsubscribe();
+      this.notificationListenSubscription.unsubscribe();  
+    }
     this.socket.disconnect();
   }
 }

@@ -1,8 +1,13 @@
 <ion-toolbar>
-  <ion-buttons slot="start" *ngIf="!showSearchBar && !showPlaceSearch">
+  <ion-buttons slot="start" *ngIf="!showSearchBar" class="mobile-only">
     <ion-menu-button></ion-menu-button>
-    <ion-img src="/assets/icon/favicon.png"></ion-img>
+    <ion-img class="padding-left-desktop" src="/assets/icon/favicon.png"></ion-img>
   </ion-buttons>
+
+  <ion-buttons slot="start" class="desktop-only">
+    <ion-img class="logo padding-left-desktop" src="/assets/icon/favicon.png"></ion-img>
+  </ion-buttons>
+  
 
   <!--SearchBar Toggle Button-->
   <ion-buttons
@@ -11,6 +16,30 @@
     <ion-button (click)="toggleSearchBar()"  *ngIf="showSearchBar === false">
       <ion-icon name="search" slot="icon-only"></ion-icon>
     </ion-button>
+
+    <!-- <ion-button *ngIf="showSearchBar === false && customer === undefined" class="desktop-only">
+        <ion-icon name="contact" slot="icon-only"></ion-icon>
+    </ion-button>
+
+    <ion-avatar class="desktop-only avatar" *ngIf="showSearchBar === false && customer !== undefined">
+        <ion-img
+          *ngIf="customer.photo === null"
+          src="assets/images/user.png"
+          class="profileImage"
+        ></ion-img>
+        <ion-img
+          class="profileImage"
+          *ngIf="customer.photo !== null"
+          [src]="
+            'data:' + customer.photoContentType + ';base64,' + customer.photo
+          "
+        ></ion-img>
+      </ion-avatar> -->
+
+    <ion-button *ngIf="showSearchBar === false" class="desktop-only">
+        <ion-icon name="information-circle" slot="icon-only"></ion-icon>
+    </ion-button>
+
     <ion-button (click)="showNotification()"   *ngIf="showSearchBar === false && notificationsOn === true"    >
       <ion-icon name="notifications-outline"></ion-icon>
       <ion-badge color="success">{{notificationCount}}</ion-badge>
@@ -20,28 +49,31 @@
 
   <!--SearchBar Restaurant-->
   <ion-buttons [ngClass]="(showSearchBar === true)?'':'hidden'">
-    <ion-searchbar #restaurantSearch showCancelButton debounce="1500" placeholder="Search"
-      (ionCancel)="toggleSearchBar()" (ionChange)="search($event)"></ion-searchbar>
+    <ion-searchbar #restaurantSearch showCancelButton="always" debounce="1500"
+      placeholder="Search"
+      (ionCancel)="toggleSearchBar()" (ionChange)="search($event)"
+      class="header-search"
+      ></ion-searchbar>
   </ion-buttons>
   <!--SearchBar Restaurant-->
 
 </ion-toolbar>
 
 <ion-content
-  class="container"
+  class="container header-search header-content"
   [style.display]="(showSearchPane === true && showSearchBar === true) ? 'block' : 'none'"
 >
-  <app-loading [type]="'restaurant'" *ngIf="showLoading"></app-loading>
+  <ion-spinner name="dots" [type]="'restaurant'" *ngIf="showLoading"></ion-spinner>
 
   <ion-grid *ngIf="!showLoading">
     <ion-row *ngIf="storeSearchResults.length > 0">
       <ion-item color="light" class="full-width">
-        <ion-label slot="start">{{storeSearchResults.length + ' Matches'}}</ion-label>
+        <ion-label slot="start">{{storeSearchResults.length + ' Restaurant Found'}}</ion-label>
       </ion-item>
       <app-restaurant-card *ngFor="let store of storeSearchResults" [store]="store"></app-restaurant-card>
     </ion-row>
-    <ion-row *ngIf="storeSearchResults.length === 0" class="vertical-align-center">
-      <ion-col text-center>
+    <ion-row *ngIf="storeSearchResults.length === 0 && searchTerm !== ''" class="vertical-align-center">
+      <ion-col text-center size="12">
         <p>No Results Found(0)</p>
       </ion-col>
     </ion-row>

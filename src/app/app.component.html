@@ -1,7 +1,10 @@
 <ion-app>
-  <ion-split-pane>
+    <ion-header class="desktop-only">
+        <app-header></app-header>
+      </ion-header>
+  <ion-split-pane class="margin-top-desktop">
     <ion-menu type="overlay">
-      <ion-header>
+      <ion-header class="mobile-only">
         <ion-toolbar>
           <ion-title>FoodExp</ion-title>
         </ion-toolbar>
@@ -27,7 +30,7 @@
                 Login
               </ion-label>  
             </ion-item>
-            <ion-item (click)="exitApp()" *ngIf="!browser">
+            <ion-item  (click)="exitApp()" *ngIf="!browser">
                 <ion-icon slot="start" name="exit"></ion-icon>
               <ion-label>Exit</ion-label>
             </ion-item>
@@ -36,7 +39,8 @@
       </ion-content>
     </ion-menu>
     <ion-router-outlet main></ion-router-outlet>
-    <!-- <div class="something" main>
-    </div> -->
+    <div class="extra desktop-only" main>
+      
+    </div>
   </ion-split-pane>
 </ion-app>
