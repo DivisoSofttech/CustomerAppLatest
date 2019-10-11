@@ -34,11 +34,12 @@
             'data:' + customer.photoContentType + ';base64,' + customer.photo
           "
         ></ion-img>
-      </ion-avatar> -->
+      </ion-avatar> 
 
     <ion-button *ngIf="showSearchBar === false" class="desktop-only">
         <ion-icon name="information-circle" slot="icon-only"></ion-icon>
     </ion-button>
+    -->
 
     <ion-button (click)="showNotification()"   *ngIf="showSearchBar === false && notificationsOn === true"    >
       <ion-icon name="notifications-outline"></ion-icon>

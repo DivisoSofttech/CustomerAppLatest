@@ -53,6 +53,7 @@ import { MaterialModule } from './material.module';
 import { NotificationCardComponent } from './notification-card/notification-card.component';
 import { PlaceSuggestionComponent } from './place-suggestion/place-suggestion.component';
 import { DirectiveModule } from '../directives/directive.module';
+import { OrderSummaryComponent } from './order-summary/order-summary.component';
 
 @NgModule({
   declarations: [
@@ -101,7 +102,8 @@ import { DirectiveModule } from '../directives/directive.module';
     IntlNumberInputComponent,
     ErrorComponent,
     NotificationCardComponent,
-    PlaceSuggestionComponent
+    PlaceSuggestionComponent,
+    OrderSummaryComponent
   ],
 
   imports: [
@@ -160,7 +162,8 @@ import { DirectiveModule } from '../directives/directive.module';
     IntlNumberInputComponent,
     ErrorComponent,
     NotificationCardComponent,
-    PlaceSuggestionComponent
+    PlaceSuggestionComponent,
+    OrderSummaryComponent
   ],
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -193,6 +196,7 @@ import { DirectiveModule } from '../directives/directive.module';
     ErrorComponent,
     NotificationCardComponent,
     PlaceSuggestionComponent,
+    OrderSummaryComponent
   ]
 })
 export class ComponentsModule { }
