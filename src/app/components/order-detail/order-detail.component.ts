@@ -81,12 +81,10 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     console.log('Ng Destroy calls in orderDetail component');
-    if (this.taskDetailsSubscription !== undefined) {
-      this.taskDetailsSubscription.unsubscribe();
-    }
-    this.orderLinesByOrderIdSubscription.unsubscribe();
-    this.productByProductIdSubscrption.unsubscribe();
-    this.auxilayByProductIdSubscription.unsubscribe();
+    this.taskDetailsSubscription !== undefined?this.taskDetailsSubscription.unsubscribe():null;
+    this.orderLinesByOrderIdSubscription !== undefined?this.orderLinesByOrderIdSubscription.unsubscribe():null
+    this.productByProductIdSubscrption !== undefined?this.productByProductIdSubscrption.unsubscribe():null;
+    this.auxilayByProductIdSubscription !==undefined?this.auxilayByProductIdSubscription.unsubscribe():null;
   }
 
   getOrderLines() {
