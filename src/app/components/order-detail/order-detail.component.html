@@ -127,7 +127,7 @@
 
 </ion-content>
 
-<ion-footer class="ion-padding  ">
+<ion-footer class="ion-padding">
   <ion-button *ngIf="order.status.name === 'payment-processed' || order.status.name === 'delivered'" expand="block" (click)="reorder()">Reorder</ion-button>
   <ion-button *ngIf="order.status.name === 'approved'"  expand="block" (click)="completePayment()">Complete Payment</ion-button>
 </ion-footer>

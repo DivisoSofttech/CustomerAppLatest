@@ -3,7 +3,7 @@ import { NGXLogger } from 'ngx-logger';
 import { QueryResourceService } from 'src/app/api/services';
 import { Order, OrderLine, Product, Store, CommandResource } from 'src/app/api/models';
 import { CartService } from 'src/app/services/cart.service';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { OrderService } from 'src/app/services/order.service';
 import { Subscription } from 'rxjs';
 import { Util } from 'src/app/services/util';
@@ -36,6 +36,7 @@ export class OrderSummaryComponent implements OnInit, OnDestroy {
     private queryResource: QueryResourceService,
     private cartService: CartService,
     private modalController: ModalController,
+    private navController: NavController,
     private orderService: OrderService,
     private util: Util
   ) { }
@@ -43,24 +44,12 @@ export class OrderSummaryComponent implements OnInit, OnDestroy {
 
 
 
-  completePayment() {
-    this.util.createLoader().then(loader => {
-    loader.present();
-    this.orderService.order = this.order;
-    this.taskDetailsSubscription = this.queryResource.getTaskDetailsUsingGET(
-      {taskName: 'Process Payment', orderId: this.order.orderId, storeId: this.order.customerId})
-      .subscribe(openTask => {
-        console.log('Open task is ', openTask);
-        const resource: CommandResource = {
-          nextTaskId: openTask.taskId,
-          nextTaskName: openTask.taskName,
-          orderId: this.order.orderId
-        };
-        this.orderService.resource = resource;
-        loader.dismiss();
-        this.dismiss();
-      });
-    });
+  async completePayment() {
+    this.logger.info('Completed Order');
+    const parentModal = await this.modalController.getTop();
+    parentModal.dismiss();
+    this.modalController.dismiss();
+    this.navController.navigateRoot('/restaurant');
   }
 
   ngOnInit() {
