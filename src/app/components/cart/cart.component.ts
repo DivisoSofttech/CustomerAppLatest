@@ -51,6 +51,11 @@ export class CartComponent implements OnInit, OnDestroy {
 
   initiateOrderSubcription: Subscription;
 
+  // Temproary hack to fix login modal opening multiple times
+  loginModalOpen = false;
+
+  keycloakSubscription: Subscription;
+
 
   @Output() viewClick = new EventEmitter();
 
@@ -84,6 +89,7 @@ export class CartComponent implements OnInit, OnDestroy {
     if (this.initiateOrderSubcription !== undefined) {
       this.initiateOrderSubcription.unsubscribe();
     }
+    this.keycloakSubscription !== undefined?this.keycloakSubscription.unsubscribe():null;
   }
 
   routeBasket() {
@@ -92,8 +98,9 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   async loginModal(continueMethod) {
+    this.logger.info('CartComponent Login Modal');
     if (this.guest === true) {
-      const modal = await this.modalController.create({
+          const modal = await this.modalController.create({
         component: LoginSignupComponent,
         componentProps: { type: 'modal' }
       });
@@ -102,6 +109,8 @@ export class CartComponent implements OnInit, OnDestroy {
       modal.onDidDismiss().then(data => {
         if (data.data) {
           continueMethod();
+        } else {
+          this.navController.back();
         }
       });
     } else {
@@ -112,12 +121,17 @@ export class CartComponent implements OnInit, OnDestroy {
   getCustomer() {
     this.util.createLoader().then(loader => {
       loader.present();
-      this.keycloakService.getUserChangedSubscription()
+      this.keycloakSubscription = this.keycloakService.getUserChangedSubscription()
       .subscribe(user => {
         this.customer  = user;
         if (user === null || user.preferred_username === 'guest') {
           this.guest = true;
+          if(this.viewType==='full' && this.loginModalOpen === false) {
+            this.loginModalOpen = true;
+            this.loginModal(()=>{});
+          }
         } else {
+          this.loginModalOpen = true;
           this.guest = false;
         }
     });

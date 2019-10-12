@@ -1,30 +1,38 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-buttons>
       <ion-button (click)="dismiss()">
         <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
       </ion-button>
+      <ion-title>Payment Method</ion-title>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-grid>
-    <ion-row class="ion-margin-vertical">
-      <ion-col text-center>
-        <ion-text>
-            <h1><b>&euro;</b>{{toBePaid | number:'1.2-2'}}</h1>
-          <p>Total amount Due</p>
-        </ion-text>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-    </ion-row>
-  </ion-grid>
+ 
+  <ion-card>
+    <ion-card-content>
+        <ion-grid>
+            <ion-row class="ion-margin-vertical">
+              <ion-col text-center>
+                <ion-text>
+                    <h1><b>&euro;</b>{{toBePaid | number:'1.2-2'}}</h1>
+                  <p>Total amount Due</p>
+                </ion-text>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+            </ion-row>
+          </ion-grid>
+    </ion-card-content>
+  </ion-card>
 
   <ion-list lines="none">
   <ion-radio-group [(ngModel)]="paymentMethod">
     <ion-list-header>
-      <ion-label>Choose A Payment Method</ion-label>
+      <ion-label>
+        <h2>Choose A Payment Method</h2>
+      </ion-label>
     </ion-list-header>
     <ion-item *ngFor="let paymentOption of paymentOptions" >
       <ion-label>{{paymentOption.name}}</ion-label>
@@ -32,14 +40,9 @@
     </ion-item>
   </ion-radio-group>
 </ion-list>
-<ion-row>
-  <ion-col>
-    <ion-button expand="block" 
-    [disabled]="paymentMethod==undefined" (click)="presentModal()"
-    >Continue</ion-button>
-  </ion-col>
-</ion-row>
 </ion-content>
 <ion-footer>
-    <app-footer></app-footer>
+    <ion-button expand="block"  class="ion-margin" 
+    [disabled]="paymentMethod==undefined" (click)="presentModal()"
+    >Continue</ion-button>
 </ion-footer>

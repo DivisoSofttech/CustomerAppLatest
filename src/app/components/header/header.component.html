@@ -51,7 +51,7 @@
   <!--SearchBar Restaurant-->
   <ion-buttons [ngClass]="(showSearchBar === true)?'':'hidden'">
     <ion-searchbar #restaurantSearch showCancelButton="always" debounce="1500"
-      placeholder="Search"
+      placeholder="Search Restaurants"
       (ionCancel)="toggleSearchBar()" (ionChange)="search($event)"
       class="header-search"
       ></ion-searchbar>

@@ -121,7 +121,7 @@ lines="full"
   </ion-segment>
 
   <div>
-    <app-delivery-item-details class="vertical-align-center"></app-delivery-item-details>
+    <app-delivery-item-details *ngIf="!guest" class="vertical-align-center"></app-delivery-item-details>
   </div>
 
 </div>

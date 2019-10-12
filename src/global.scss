@@ -134,7 +134,7 @@ ion-modal.modal-popover {
   cursor: pointer;
 }
 
-@media (min-width: 992px) and (max-width: 2280px) {
+@media (min-width: 1300px) and (max-width: 2280px) {
   //CSS
 
 
@@ -191,6 +191,10 @@ ion-modal.full-height {
 
   .desktop-full-width {
     width: 100% !important;
+  }
+
+  .modal-wrapper.sc-ion-modal-md {
+    height: 95vh;
   }
 
 }
