@@ -241,7 +241,9 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   segmenChanged(event) {
-    this.delivery.currentDeliveryMode = event.detail.value;
-    this.currentSegment = event.detail.value;
+    if(this.delivery !== undefined) {
+      this.delivery.currentDeliveryMode = event.detail.value;
+      this.currentSegment = event.detail.value;  
+    }
   }
 }

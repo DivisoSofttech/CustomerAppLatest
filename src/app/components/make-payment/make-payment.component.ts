@@ -14,26 +14,24 @@ export class MakePaymentComponent implements OnInit {
   paymentMethod;
   toBePaid;
 
- paymentOptions = [
-   {name: 'Cash On Delivery', value: 'cod'},
-  // {name: 'Debit/Credit Cards', value: 'card'},
-   {name: 'Credit/Debit Card', value: 'braintree'}
- ];
+  paymentOptions = [
+    { name: 'Cash On Delivery', value: 'cod' },
+    // {name: 'Debit/Credit Cards', value: 'card'},
+    { name: 'Credit/Debit Card', value: 'braintree' }
+  ];
 
-constructor(
+  constructor(
     private modalController: ModalController,
     private navController: NavController,
     private logger: NGXLogger,
     private orderService: OrderService,
     private platform: Platform
-          ) { }
+  ) { }
 
-dismiss() {
+  dismiss() {
     this.orderService.paymentMethod = this.paymentMethod;
     this.modalController.dismiss();
   }
-
-
 
   async presentModal() {
     this.dismiss();
@@ -42,18 +40,19 @@ dismiss() {
     });
     return await modal.present();
   }
-ngOnInit() {
+
+  ngOnInit() {
     this.toBePaid = this.orderService.order.grandTotal;
     if (this.platform.is('android') || this.platform.is('ios')) {
       this.logger.info(' android ios platform');
-      this.paymentOptions.push({name: 'Paypal Wallet/Card', value: 'paypal'});
+      this.paymentOptions.push({ name: 'Paypal Wallet/Card', value: 'paypal' });
     } else if (this.platform.is('desktop') || this.platform.is('pwa')) {
       console.log('This is a browser platform ');
       // this.paymentOptions.push({name: 'Paypal Wallet', value: 'paypal'});
     }
   }
 
-returnToSale() {
+  returnToSale() {
     this.navController.navigateRoot('/tabs/home');
   }
 

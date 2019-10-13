@@ -41,17 +41,6 @@ export class OrderSummaryComponent implements OnInit, OnDestroy {
     private util: Util
   ) { }
 
-
-
-
-  async completePayment() {
-    this.logger.info('Completed Order');
-    const parentModal = await this.modalController.getTop();
-    parentModal.dismiss();
-    this.modalController.dismiss();
-    this.navController.navigateRoot('/restaurant');
-  }
-
   ngOnInit() {
     this.logger.info(this.order);
     this.getOrderLines();
@@ -62,9 +51,9 @@ export class OrderSummaryComponent implements OnInit, OnDestroy {
     if (this.taskDetailsSubscription !== undefined) {
       this.taskDetailsSubscription.unsubscribe();
     }
-    this.orderLinesByOrderIdSubscription.unsubscribe();
-    this.productByProductIdSubscrption.unsubscribe();
-    this.auxilayByProductIdSubscription.unsubscribe();
+    this.orderLinesByOrderIdSubscription !== undefined?this.orderLinesByOrderIdSubscription.unsubscribe():null;
+    this.productByProductIdSubscrption !== undefined?this.productByProductIdSubscrption.unsubscribe():null;
+    this.auxilayByProductIdSubscription !== undefined?this.auxilayByProductIdSubscription.unsubscribe():null;
   }
 
   getOrderLines() {
@@ -122,8 +111,8 @@ export class OrderSummaryComponent implements OnInit, OnDestroy {
     });
   }
 
-  dismiss() {
-    this.modalController.dismiss();
+  dismiss(value) {
+    this.modalController.dismiss(value);
   }
 
 }
