@@ -84,7 +84,7 @@ export class PhoneNumberVerficationComponent implements OnInit {
     const sender = data.address;
     console.log('The sender of sms is ', data.address);
     if (sender === 'VK-040060' || 'VM-040060' || 'AD-040060' || 'Foodexp' ) {
-      this.OTP = data.body.slice((message.length - 6), message.length - 1);
+      this.OTP = data.body.slice((message.length - 7), message.length - 1);
       console.log('OTP is readed is ', this.OTP);
       this.commandResource.verifyOTPUsingPOST({
         numbers: this.number,

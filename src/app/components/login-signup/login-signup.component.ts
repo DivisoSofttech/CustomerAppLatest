@@ -20,6 +20,7 @@ export class LoginSignupComponent implements OnInit {
   email = '';
   phone = 0;
   numberValid = false;
+  numberCode = 0;
   loginTab = true;
   value = 'login';
   keycloakUserid;
@@ -91,7 +92,6 @@ export class LoginSignupComponent implements OnInit {
         this.keycloakService.createAccount(user, this.password,
           (res) => {
             loader.dismiss();
-            alert(res.id);
             this.keycloakUserid = res.id;
             this.login();
           },
@@ -153,7 +153,7 @@ export class LoginSignupComponent implements OnInit {
                   name: this.username,
                   email: this.email,
                   mobileNumber: this.phone,
-                  phoneCode: 91,
+                  phoneCode: this.numberCode,
                   searchKey: this.keycloakUserid
                 })
                 .subscribe(
@@ -221,8 +221,9 @@ export class LoginSignupComponent implements OnInit {
   }
 
   checkNumber(event) {
-    console.log(event);
+    console.log(event.extra.numberCode);
     this.numberValid = event.valid;
+    this.numberCode = event.extra.numberCode;
     this.phone = event.value;
   }
 
