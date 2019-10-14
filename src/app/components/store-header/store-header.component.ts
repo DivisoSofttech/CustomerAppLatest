@@ -59,30 +59,36 @@ export class StoreHeaderComponent implements OnInit {
   }
 
   getProductsByName(i) {
-    this.queryResource
-      .findStockCurrentByProductNameAndStoreIdUsingGET({
-        name: this.searchTerm,
-        storeId: this.storeId,
-        page: i
-      })
-      .subscribe(data => {
-        this.showLoading = false;
-        if (data.content.length === 0) {
-          // this.util.createToast('Sorry, couldn\'t find any match');
-          return;
-        } else {
-          ++i;
-          this.logger.info('Found products For ' , this.searchTerm , data.content , 'page ' , i);
-          if (i === data.totalPages) {
-            this.toggleInfiniteScroll();
+    if(this.searchTerm !== '') {
+      this.showLoading = true;
+      this.queryResource
+        .findStockCurrentByProductNameAndStoreIdUsingGET({
+          name: this.searchTerm,
+          storeId: this.storeId,
+          page: i
+        })
+        .subscribe(data => {
+          this.showLoading = false;
+          if (data.content.length === 0) {
+            // this.util.createToast('Sorry, couldn\'t find any match');
+            return;
+          } else {
+            ++i;
+            this.logger.info('Found products For ' , this.searchTerm , data.content , 'page ' , i);
+            if (i === data.totalPages) {
+              this.toggleInfiniteScroll();
+            }
+            data.content.forEach(s => {
+              this.stockCurrents.push(s);
+            });
           }
-          data.content.forEach(s => {
-            this.stockCurrents.push(s);
-          });
-        }
-      }, err => {
-        this.showLoading = false;
-      });
+        }, err => {
+          this.showLoading = false;
+        });
+    } else {
+      this.showLoading = false;
+    }
+ 
   }
 
   searchProducts(event) {

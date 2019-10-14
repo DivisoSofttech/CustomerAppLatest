@@ -31,7 +31,7 @@
       [stockCurrent]="stockCurrent"
     ></app-product-card>
   </ion-list>
-  <div *ngIf="stockCurrents.length === 0" class="vertical-align-center">
+  <div *ngIf="stockCurrents.length === 0 && searchTerm !== '' && !showLoading" class="vertical-align-center">
     <p>No Results Found(0)</p>
   </div>
 
