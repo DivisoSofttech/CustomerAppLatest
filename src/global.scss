@@ -134,6 +134,18 @@ ion-modal.modal-popover {
   cursor: pointer;
 }
 
+ion-popover{
+  ion-backdrop{
+  opacity: 0.5 !important;
+  }
+  .popover-wrapper{
+  .popover-content{
+  width:80vw;
+  max-width:500px;
+  }
+  }
+  }
+
 @media (min-width: 1300px) and (max-width: 2280px) {
   //CSS
 

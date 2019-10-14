@@ -53,7 +53,7 @@
 
     <!--Auxilary Product Start-->
     <ion-list
-    *ngIf="auxilaryItems[orderLine.productId].length !== 0">
+    *ngIf="auxilaryItems[orderLine.productId] !== undefined && auxilaryItems[orderLine.productId].length !== 0">
       <ion-list-header>
         <ion-label>Extras</ion-label>
         <ion-icon name="add" class="addAuxilaryButton" (click)="showUpdateAuxilaryPopover(orderLine)"></ion-icon>

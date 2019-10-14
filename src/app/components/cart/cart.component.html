@@ -75,15 +75,7 @@ lines="full"
     </ion-row>
     <ion-row>
       <ion-col size="12">
-        <ion-button *ngIf="currentSegment==='delivery' && deliveryOk"
-          [disabled]="neededCheckOutAmount !== 0"
-          color="primary" expand="full" (click)="continue('delivery')"
-          >Continue</ion-button
-        >
-        <ion-button *ngIf="currentSegment==='collection' && collectionOk"
-         color="primary" expand="full" (click)="continue('collection')"
-        >Continue</ion-button
-      >
+      
       <div *ngIf="!deliveryOk && !collectionOk && orderLines.length > 0"
         class="vertical-align-center"
       >
@@ -126,7 +118,17 @@ lines="full"
 
 </div>
 
-<ion-footer *ngIf="viewType === 'full' &&  currentSegment === 'delivery'
+<ion-footer *ngIf="viewType === 'full'
 && orderLines.length > 0">
-  
+<ion-button
+class="ion-margin" *ngIf="currentSegment==='delivery' && deliveryOk"
+[disabled]="neededCheckOutAmount !== 0"
+color="primary" expand="full" (click)="continue('delivery')"
+>Continue</ion-button
+>
+<ion-button *ngIf="currentSegment==='collection' && collectionOk"
+color="primary" expand="full" (click)="continue('collection')"
+class="ion-margin"
+>Continue</ion-button
+>
 </ion-footer>

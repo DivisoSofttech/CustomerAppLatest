@@ -42,7 +42,11 @@
     </ion-segment-button>
   </ion-segment>
 
-  <ion-slides (ionSlideDidChange)="slideChanged($event)">
+  <ion-slides 
+  [ngStyle]="{ 'height': slidesMoving ? 'auto' : (slidesHeight + 'px') }"
+  (ionSlideDidChange)="slideChanged($event)"
+  (ionSlideWillChange)="slideWillChange()"
+  >
     <!-- <ion-slide>
       <app-frequently-ordered-list></app-frequently-ordered-list>
     </ion-slide> -->

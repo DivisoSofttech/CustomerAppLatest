@@ -12,28 +12,26 @@
 <ion-content appScrollbarTheme>
   <mat-horizontal-stepper labelPosition="bottom">
     <mat-step completed editable="false">
-        <ng-template matStepLabel>Placed</ng-template>
+      <ng-template matStepLabel>Placed</ng-template>
     </mat-step>
     <!-- <mat-step>
         <ng-template matStepLabel>Placed</ng-template>
     </mat-step> -->
     <mat-step completed editable="false">
-        <ng-template matStepLabel >Approved</ng-template>
+      <ng-template matStepLabel>Approved</ng-template>
     </mat-step>
-    <mat-step   editable="false">
-        <ng-template matStepLabel>Delivered</ng-template>
+    <mat-step editable="false">
+      <ng-template matStepLabel>Delivered</ng-template>
     </mat-step>
   </mat-horizontal-stepper>
   <ion-item *ngIf="store" lines="full">
     <ion-avatar>
-        <ion-img
-        [src]="
+      <ion-img [src]="
           'data:' +
           store.imageContentType +
           ';base64,' +
           store.image
-        "
-      ></ion-img>
+        "></ion-img>
     </ion-avatar>
     <ion-text class="ion-margin">
       {{store.name}}
@@ -44,90 +42,87 @@
   <ion-card class="ion-no-padding">
     <ion-card-header class="ion-no-padding">
       <ion-item lines="none">
-        <ion-text slot="start" >
-            Subtotal
+        <ion-text slot="start">
+          Subtotal
         </ion-text>
         <ion-text slot="start" slot="end" class="ion-text-right">
-            &#8364;{{ order.grandTotal |  number: "1.1-2"}}
+          &#8364;{{ order.grandTotal |  number: "1.1-2"}}
         </ion-text>
       </ion-item>
       <ion-item lines="none" *ngIf=" order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='delivery'">
-          <ion-text slot="start" >
-              Delivery
-          </ion-text>
-          <ion-text slot="start" slot="end" class="ion-text-right">
-              &#8364;{{order.deliveryInfo.deliveryCharge |  number: "1.1-2"}}
-          </ion-text>
-        </ion-item>  
-        <ion-item lines="none" *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='collection'">
-            <ion-text slot="start" >
-                Collection
-            </ion-text>
-            <ion-text slot="start" slot="end" class="ion-text-right">
-                &#8364; 0
-            </ion-text>
-        </ion-item>
+        <ion-text slot="start">
+          Delivery
+        </ion-text>
+        <ion-text slot="start" slot="end" class="ion-text-right">
+          &#8364;{{order.deliveryInfo.deliveryCharge |  number: "1.1-2"}}
+        </ion-text>
+      </ion-item>
+      <ion-item lines="none" *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='collection'">
+        <ion-text slot="start">
+          Collection
+        </ion-text>
+        <ion-text slot="start" slot="end" class="ion-text-right">
+          &#8364; 0
+        </ion-text>
+      </ion-item>
 
     </ion-card-header>
     <ion-card-content class="ion-no-padding">
-        <ion-item lines="none">
-            <ion-text slot="start" >
-                <b>Total</b>
-            </ion-text>
-            <ion-text slot="start" slot="end" class="ion-text-right">
-              <b>&#8364;{{order.grandTotal |  number: "1.1-2"}}</b>
-            </ion-text>
-          </ion-item>    
+      <ion-item lines="none">
+        <ion-text slot="start">
+          <b>Total</b>
+        </ion-text>
+        <ion-text slot="start" slot="end" class="ion-text-right">
+          <b>&#8364;{{order.grandTotal |  number: "1.1-2"}}</b>
+        </ion-text>
+      </ion-item>
     </ion-card-content>
   </ion-card>
 
-  <ion-card>
-    <ion-card-content class="ion-no-padding">
-        <app-product-card *ngFor="let orderLine of orderLines" [type]="'minimal'" [auxilaries]="auxilaries[orderLine.productId]"
-        [product]="products[orderLine.productId]"
-        [comboLineItems]="comboLineItems[orderLine.productId]"
-        [orderLine]="orderLine"
-        ></app-product-card>
-    </ion-card-content>
-  </ion-card>
+
+  <app-product-card *ngFor="let orderLine of orderLines" [type]="'minimal'"
+    [auxilariesProducts]="auxilariesProducts[orderLine.productId]" [product]="products[orderLine.productId]"
+    [orderLine]="orderLine" [auxilaryOrderLine]="auxilaryOrderLines[orderLine.id]"></app-product-card>
 
   <ion-card *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryAddress !== null">
-      <ion-card-header color="light">
-        <ion-card-title>
-          <h1>Address</h1>
-        </ion-card-title>
-      </ion-card-header>
-      <ion-card-content class="ion-no-padding pd-10">
-        <ion-item lines="none" *ngIf="order.deliveryInfo !== null">
-            <p>
-                <b>
-                {{order.deliveryInfo.deliveryAddress.name + ',' + order.deliveryInfo.deliveryAddress.houseNoOrBuildingName + ',' | titlecase}}
-                {{order.deliveryInfo.deliveryAddress.city + ',' + order.deliveryInfo.deliveryAddress.roadNameAreaOrStreet + ',' | titlecase}}
-                {{order.deliveryInfo.deliveryAddress.landmark + ',' + order.deliveryInfo.deliveryAddress.pincode + ' ' | titlecase}}
-                {{order.deliveryInfo.deliveryAddress.state + ',' + order.deliveryInfo.deliveryAddress.pincode + ' ' | titlecase}}
-                {{order.deliveryInfo.deliveryAddress.phone + ',' + order.deliveryInfo.deliveryAddress.alternatePhone + ' ' | titlecase}}
-                </b>
-              </p>
-        </ion-item>
-      </ion-card-content>
-    </ion-card>
+    <ion-card-header color="light">
+      <ion-card-title>
+        <h1>Address</h1>
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content class="ion-no-padding pd-10">
+      <ion-item lines="none" *ngIf="order.deliveryInfo !== null">
+        <p>
+          <b>
+            {{order.deliveryInfo.deliveryAddress.name + ',' + order.deliveryInfo.deliveryAddress.houseNoOrBuildingName + ',' | titlecase}}
+            {{order.deliveryInfo.deliveryAddress.city + ',' + order.deliveryInfo.deliveryAddress.roadNameAreaOrStreet + ',' | titlecase}}
+            {{order.deliveryInfo.deliveryAddress.landmark + ',' + order.deliveryInfo.deliveryAddress.pincode + ' ' | titlecase}}
+            {{order.deliveryInfo.deliveryAddress.state + ',' + order.deliveryInfo.deliveryAddress.pincode + ' ' | titlecase}}
+            {{order.deliveryInfo.deliveryAddress.phone + ',' + order.deliveryInfo.deliveryAddress.alternatePhone + ' ' | titlecase}}
+          </b>
+        </p>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
 
-    <ion-card *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryNotes !== null">
-        <ion-card-header color="light">
-          <ion-card-title>
-            <h1>Note</h1>
-          </ion-card-title>
-        </ion-card-header>
-        <ion-card-content class="ion-no-padding pd-10">
-          <ion-item lines="none">
-              <p><b>{{order.deliveryInfo.deliveryNotes | titlecase}}</b></p>
-          </ion-item>
-        </ion-card-content>
-      </ion-card>
+  <ion-card *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryNotes !== null">
+    <ion-card-header color="light">
+      <ion-card-title>
+        <h1>Note</h1>
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content class="ion-no-padding pd-10">
+      <ion-item lines="none">
+        <p><b>{{order.deliveryInfo.deliveryNotes | titlecase}}</b></p>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
 
 </ion-content>
 
 <ion-footer class="ion-padding">
-  <ion-button *ngIf="order.status.name === 'payment-processed' || order.status.name === 'delivered'" expand="block" (click)="reorder()">Reorder</ion-button>
-  <ion-button *ngIf="order.status.name === 'approved'"  expand="block" (click)="completePayment()">Complete Payment</ion-button>
+  <ion-button *ngIf="order.status.name === 'payment-processed' || order.status.name === 'delivered'" expand="block"
+    (click)="reorder()">Reorder</ion-button>
+  <ion-button *ngIf="order.status.name === 'approved'" expand="block" (click)="completePayment()">Complete Payment
+  </ion-button>
 </ion-footer>

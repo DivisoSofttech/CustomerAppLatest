@@ -50,6 +50,7 @@ export { OrderRequest } from './models/order-request';
 export { OrderResponse } from './models/order-response';
 export { PageOfAddress } from './models/page-of-address';
 export { PageOfAuxilaryLineItem } from './models/page-of-auxilary-line-item';
+export { PageOfAuxilaryOrderLine } from './models/page-of-auxilary-order-line';
 export { PageOfCategory } from './models/page-of-category';
 export { PageOfComboLineItem } from './models/page-of-combo-line-item';
 export { PageOfCustomer } from './models/page-of-customer';

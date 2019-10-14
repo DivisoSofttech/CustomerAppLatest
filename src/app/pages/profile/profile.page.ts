@@ -29,6 +29,10 @@ export class ProfilePage implements OnInit {
 
   @ViewChild(FooterComponent , null) footer: FooterComponent;
 
+  @ViewChild(IonSlides , null) slides;
+  slidesMoving: boolean;
+  slidesHeight: number;
+
 
   constructor(
     private storage: Storage,
@@ -67,6 +71,9 @@ export class ProfilePage implements OnInit {
         this.currentSegment = 'history';
       }
     });
+  }
+  slideWillChange () {
+    this.slidesMoving = true;
   }
 
   getUserProfile() {

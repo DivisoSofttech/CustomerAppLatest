@@ -18,6 +18,7 @@ import { PageOfFavouriteProduct } from '../models/page-of-favourite-product';
 import { PageOfFavouriteStore } from '../models/page-of-favourite-store';
 import { PageOfCategory } from '../models/page-of-category';
 import { PageOfCustomer } from '../models/page-of-customer';
+import { PageOfAuxilaryOrderLine } from '../models/page-of-auxilary-order-line';
 import { Entry } from '../models/entry';
 import { ElasticDataEntry } from '../models/elastic-data-entry';
 import { OrderLine } from '../models/order-line';
@@ -63,6 +64,7 @@ class QueryResourceService extends __BaseService {
   static readonly findFavouriteStoresByCustomerReferenceUsingGETPath = '/api/query/favouritestoresbycustomerreference/{reference}';
   static readonly findAllCategoriesUsingGETPath = '/api/query/findAllCategories/{iDPcode}';
   static readonly findAllCustomersWithoutSearchUsingGETPath = '/api/query/findAllCustomers';
+  static readonly findAuxilaryOrderLineByOrderLineIdUsingGETPath = '/api/query/findAuxilaryOrderLineByOrderLineId/{orderLineId}';
   static readonly findCategoryAndCountUsingGETPath = '/api/query/findCategoryAndCount';
   static readonly findCategoryAndCountBystoreIdUsingGETPath = '/api/query/findCategoryAndCountBystoreId/{storeId}';
   static readonly findByMobileNumberUsingGETPath = '/api/query/findCustomerByMobileNumber/{mobileNumber}';
@@ -436,11 +438,11 @@ class QueryResourceService extends __BaseService {
   /**
    * @param params The `QueryResourceService.FindFavouriteProductsByCustomerReferenceUsingGETParams` containing the following parameters:
    *
+   * - `reference`: reference
+   *
    * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    *
    * - `size`: Size of a page
-   *
-   * - `reference`: reference
    *
    * - `page`: Page number of the requested page
    *
@@ -450,9 +452,9 @@ class QueryResourceService extends __BaseService {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
+
     (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
     if (params.size != null) __params = __params.set('size', params.size.toString());
-    if (params.reference != null) __params = __params.set('reference', params.reference.toString());
     if (params.page != null) __params = __params.set('page', params.page.toString());
     let req = new HttpRequest<any>(
       'GET',
@@ -474,11 +476,11 @@ class QueryResourceService extends __BaseService {
   /**
    * @param params The `QueryResourceService.FindFavouriteProductsByCustomerReferenceUsingGETParams` containing the following parameters:
    *
+   * - `reference`: reference
+   *
    * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    *
    * - `size`: Size of a page
-   *
-   * - `reference`: reference
    *
    * - `page`: Page number of the requested page
    *
@@ -657,6 +659,63 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
+   * @param params The `QueryResourceService.FindAuxilaryOrderLineByOrderLineIdUsingGETParams` containing the following parameters:
+   *
+   * - `orderLineId`: orderLineId
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findAuxilaryOrderLineByOrderLineIdUsingGETResponse(params: QueryResourceService.FindAuxilaryOrderLineByOrderLineIdUsingGETParams): __Observable<__StrictHttpResponse<PageOfAuxilaryOrderLine>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
+    if (params.size != null) __params = __params.set('size', params.size.toString());
+    if (params.page != null) __params = __params.set('page', params.page.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/findAuxilaryOrderLineByOrderLineId/${params.orderLineId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PageOfAuxilaryOrderLine>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.FindAuxilaryOrderLineByOrderLineIdUsingGETParams` containing the following parameters:
+   *
+   * - `orderLineId`: orderLineId
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findAuxilaryOrderLineByOrderLineIdUsingGET(params: QueryResourceService.FindAuxilaryOrderLineByOrderLineIdUsingGETParams): __Observable<PageOfAuxilaryOrderLine> {
+    return this.findAuxilaryOrderLineByOrderLineIdUsingGETResponse(params).pipe(
+      __map(_r => _r.body as PageOfAuxilaryOrderLine)
+    );
+  }
+
+  /**
    * @param params The `QueryResourceService.FindCategoryAndCountUsingGETParams` containing the following parameters:
    *
    * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -805,11 +864,11 @@ class QueryResourceService extends __BaseService {
    * @param orderId orderId
    * @return OK
    */
-  findOrderLinesByOrderIdUsingGETResponse(orderId?: number): __Observable<__StrictHttpResponse<Array<OrderLine>>> {
+  findOrderLinesByOrderIdUsingGETResponse(orderId: number): __Observable<__StrictHttpResponse<Array<OrderLine>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    if (orderId != null) __params = __params.set('orderId', orderId.toString());
+
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/api/query/findOrderLinesByOrderId/${orderId}`,
@@ -831,7 +890,7 @@ class QueryResourceService extends __BaseService {
    * @param orderId orderId
    * @return OK
    */
-  findOrderLinesByOrderIdUsingGET(orderId?: number): __Observable<Array<OrderLine>> {
+  findOrderLinesByOrderIdUsingGET(orderId: number): __Observable<Array<OrderLine>> {
     return this.findOrderLinesByOrderIdUsingGETResponse(orderId).pipe(
       __map(_r => _r.body as Array<OrderLine>)
     );
@@ -1497,11 +1556,11 @@ class QueryResourceService extends __BaseService {
   /**
    * @param params The `QueryResourceService.FindNotificationByReceiverIdUsingGETParams` containing the following parameters:
    *
+   * - `receiverId`: receiverId
+   *
    * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    *
    * - `size`: Size of a page
-   *
-   * - `receiverId`: receiverId
    *
    * - `page`: Page number of the requested page
    *
@@ -1511,9 +1570,9 @@ class QueryResourceService extends __BaseService {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
+
     (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
     if (params.size != null) __params = __params.set('size', params.size.toString());
-    if (params.receiverId != null) __params = __params.set('receiverId', params.receiverId.toString());
     if (params.page != null) __params = __params.set('page', params.page.toString());
     let req = new HttpRequest<any>(
       'GET',
@@ -1535,11 +1594,11 @@ class QueryResourceService extends __BaseService {
   /**
    * @param params The `QueryResourceService.FindNotificationByReceiverIdUsingGETParams` containing the following parameters:
    *
+   * - `receiverId`: receiverId
+   *
    * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    *
    * - `size`: Size of a page
-   *
-   * - `receiverId`: receiverId
    *
    * - `page`: Page number of the requested page
    *
@@ -1564,8 +1623,8 @@ class QueryResourceService extends __BaseService {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    if (params.status != null) __params = __params.set('status', params.status.toString());
-    if (params.receiverId != null) __params = __params.set('receiverId', params.receiverId.toString());
+
+
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/api/query/findnotificationcount/${params.receiverId}/${params.status}`,
@@ -3239,6 +3298,11 @@ module QueryResourceService {
   export interface FindFavouriteProductsByCustomerReferenceUsingGETParams {
 
     /**
+     * reference
+     */
+    reference: string;
+
+    /**
      * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
      */
     sort?: Array<string>;
@@ -3247,11 +3311,6 @@ module QueryResourceService {
      * Size of a page
      */
     size?: number;
-
-    /**
-     * reference
-     */
-    reference?: string;
 
     /**
      * Page number of the requested page
@@ -3315,6 +3374,32 @@ module QueryResourceService {
    * Parameters for findAllCustomersWithoutSearchUsingGET
    */
   export interface FindAllCustomersWithoutSearchUsingGETParams {
+
+    /**
+     * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     */
+    sort?: Array<string>;
+
+    /**
+     * Size of a page
+     */
+    size?: number;
+
+    /**
+     * Page number of the requested page
+     */
+    page?: number;
+  }
+
+  /**
+   * Parameters for findAuxilaryOrderLineByOrderLineIdUsingGET
+   */
+  export interface FindAuxilaryOrderLineByOrderLineIdUsingGETParams {
+
+    /**
+     * orderLineId
+     */
+    orderLineId: number;
 
     /**
      * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -3660,6 +3745,11 @@ module QueryResourceService {
   export interface FindNotificationByReceiverIdUsingGETParams {
 
     /**
+     * receiverId
+     */
+    receiverId: string;
+
+    /**
      * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
      */
     sort?: Array<string>;
@@ -3668,11 +3758,6 @@ module QueryResourceService {
      * Size of a page
      */
     size?: number;
-
-    /**
-     * receiverId
-     */
-    receiverId?: string;
 
     /**
      * Page number of the requested page
@@ -3688,12 +3773,12 @@ module QueryResourceService {
     /**
      * status
      */
-    status?: string;
+    status: string;
 
     /**
      * receiverId
      */
-    receiverId?: string;
+    receiverId: string;
   }
 
   /**
