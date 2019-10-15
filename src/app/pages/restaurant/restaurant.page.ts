@@ -9,6 +9,7 @@ import { FooterComponent } from 'src/app/components/footer/footer.component';
 import { MakePaymentComponent } from 'src/app/components/make-payment/make-payment.component';
 import { PlaceSuggestionComponent } from 'src/app/components/place-suggestion/place-suggestion.component';
 import { LocationService } from 'src/app/services/location-service';
+import { ErrorService } from 'src/app/services/error.service';
 
 @Component({
   selector: 'app-restaurant',
@@ -39,7 +40,8 @@ export class RestaurantPage implements OnInit {
     private util: Util,
     private logger: NGXLogger,
     private modalController: ModalController,
-    private locationService: LocationService
+    private locationService: LocationService,
+    private errorService: ErrorService
   ) {}
 
   async presentmakePayment() {
@@ -74,6 +76,9 @@ export class RestaurantPage implements OnInit {
         this.mapComponent.setStoreLocationMarkers(stores);
         this.showLoading = false;
         this.toggleIonRefresher();
+      },
+      () => {
+        this.errorService.showErrorModal(this);
       });
     });
   }

@@ -9,7 +9,7 @@
 
   <ion-list *ngIf="orders.length > 0 && stores !== undefined && showHistoryLoading === false">
     <ion-item lines="full" class="order" *ngFor="let order of orders" margin (click)="showOrderDetails(order)">
-      <ion-thumbnail slot="start" *ngIf="stores[order.storeId] != null">
+      <ion-thumbnail class="image" slot="start" *ngIf="stores[order.storeId] != null">
         <ion-img
           [src]="
             'data:' +
@@ -21,9 +21,11 @@
       </ion-thumbnail>
       <ion-icon slot="start" name="image" class="icon-big" *ngIf="stores[order.storeId] == null"></ion-icon>
       <ion-label>
-        <ion-text color="primary">
-          <h2><b>Date :</b> {{ order.date | date: "short" }}</h2>
-          <h3 class="fnt-big">Grand Total {{ order.grandTotal | number: "1.1-2" }}</h3>
+          <h2 *ngIf="stores[order.storeId] != null">
+              {{ stores[order.storeId].name }}
+          </h2>
+          <p>{{ order.date | date: "short" }}</p>
+          <p>Grand Total &#8364;{{ order.grandTotal | number: "1.1-2" }}</p>
           <ion-badge color="secondary" *ngIf="order.status.name.toLowerCase() ==='created'">
             <p>Ordered</p>
         </ion-badge>
@@ -39,10 +41,7 @@
           <ion-badge color="medium" *ngIf="order.status.name.toLowerCase() ==='delivered'">
             <p>{{ order.status.name | titlecase }}</p>
         </ion-badge>
-        </ion-text>
-        <p *ngIf="stores[order.storeId] != null">
-          <b>Store Name : </b>{{ stores[order.storeId].name }}
-        </p>
+      
         <h3><b>Order id :</b> {{ order.orderId }}</h3>
       </ion-label><br>
     </ion-item>

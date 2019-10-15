@@ -14,7 +14,8 @@ import { Util } from 'src/app/services/util';
   styleUrls: ['./order-summary.component.scss'],
 })
 export class OrderSummaryComponent implements OnInit, OnDestroy {
-@Input() order: Order;
+
+  @Input() order: Order;
 
   orderLines: OrderLine[] = [];
 

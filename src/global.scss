@@ -26,6 +26,14 @@
 @import "~@ionic/angular/css/flex-utils.css";
 @import "./theme/animate.min.css";
 
+* {
+  font-family: "Roboto", sans-serif !important;
+}
+
+.heading-one {
+  font-family: "Montserrat", sans-serif !important;
+}
+
 .pointer {
   cursor: pointer;
 }
@@ -127,37 +135,34 @@ ion-modal.modal-popover {
 }
 
 .desktop-only {
-  display:none !important;
+  display: none !important;
 }
 
 .pointer {
   cursor: pointer;
 }
 
-ion-popover{
-  ion-backdrop{
-  opacity: 0.5 !important;
+ion-popover {
+  ion-backdrop {
+    opacity: 0.5 !important;
   }
-  .popover-wrapper{
-  .popover-content{
-  width:80vw;
-  max-width:500px;
+  .popover-wrapper {
+    .popover-content {
+      width: 80vw;
+      max-width: 500px;
+    }
   }
-  }
-  }
-
-@media (min-width: 1300px) and (max-width: 2280px) {
-  //CSS
+}
 
 
-ion-modal.full-height {
+ion-modal.full {
   &.bottom {
     align-items: flex-end;
   }
 
   .modal-wrapper {
-    height: 98vh;
-    width: 40vw;
+    height: 100%;
+    width: 100%;
   }
 
   .ion-page {
@@ -168,6 +173,28 @@ ion-modal.full-height {
     }
   }
 }
+
+@media (min-width: 1300px) and (max-width: 2280px) {
+  //CSS
+
+  ion-modal.full-height {
+    &.bottom {
+      align-items: flex-end;
+    }
+
+    .modal-wrapper {
+      height: 98vh;
+      width: 40vw;
+    }
+
+    .ion-page {
+      .inner-content {
+        max-height: 40vh;
+        overflow: auto;
+        padding: 10px;
+      }
+    }
+  }
 
   app-footer {
     display: none;
@@ -189,7 +216,7 @@ ion-modal.full-height {
     padding-left: 10px;
   }
 
-  .header-search{
+  .header-search {
     width: 25vw !important;
     position: fixed;
     right: 0;
@@ -198,7 +225,7 @@ ion-modal.full-height {
   .header-content {
     right: 5px;
     border: 1px solid lightgray;
-    --background: rgba(0,0,0,0.02);
+    --background: rgba(0, 0, 0, 0.02);
   }
 
   .desktop-full-width {
@@ -208,5 +235,4 @@ ion-modal.full-height {
   .modal-wrapper.sc-ion-modal-md {
     height: 95vh;
   }
-
 }

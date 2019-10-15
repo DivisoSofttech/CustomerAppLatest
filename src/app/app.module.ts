@@ -39,6 +39,7 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { ForegroundService } from '@ionic-native/foreground-service/ngx';
 import { BannerComponent } from './components/banner/banner.component';
 import { NotificationComponent } from './components/notification/notification.component';
+import { ErrorService } from './services/error.service';
 
 const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', options: {} };
 
@@ -96,6 +97,7 @@ const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', 
     FavouriteService,
     CartService,
     OrderService,
+    ErrorService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

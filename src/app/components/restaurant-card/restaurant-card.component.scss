@@ -3,10 +3,17 @@
   top: 0%;
   height: 120px;
   width: 120px;
+  border-radius: 6px !important;
+  overflow: hidden;
+
 }
+
+
 ion-card {
   margin: 0px;
 }
+
+
 ion-card-header {
   padding: 5px;
   height: 150px;

@@ -1,7 +1,7 @@
 <ion-toolbar *ngIf="showSearchBar === false">
   <ion-buttons slot="start">
     <ion-back-button></ion-back-button>
-    <ion-title>{{ name  | uppercase }}</ion-title>
+    <ion-title class="heading-one">{{ name  | uppercase }}</ion-title>
   </ion-buttons>
   <ion-buttons slot="end">
     <ion-button (click)="toggleSearchBar()">
@@ -12,7 +12,7 @@
 
 <ion-toolbar [ngClass]="showSearchBar === true?'':'hidden'">
   <ion-searchbar
-    showCancelButton
+    showCancelButton="always"
     debounce="500"
     (ionCancel)="toggleSearchBar()"
     (ionChange)="searchProducts($event)"

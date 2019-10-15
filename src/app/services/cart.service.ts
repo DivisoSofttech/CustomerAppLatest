@@ -267,7 +267,6 @@ export class CartService {
 
     this.orderLines.forEach( ol => {
       if (ol === orderLine) {
-        this.logger.info('Tytystytsytsytsyt ' , ol === orderLine);
         ol.requiedAuxilaries.forEach( al => {
           if (auxilaryItem.id === al.productId) {
             al.quantity++;

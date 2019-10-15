@@ -18,6 +18,7 @@ import { PageOfFavouriteProduct } from '../models/page-of-favourite-product';
 import { PageOfFavouriteStore } from '../models/page-of-favourite-store';
 import { PageOfCategory } from '../models/page-of-category';
 import { PageOfCustomer } from '../models/page-of-customer';
+import { PageOfOrderLine } from '../models/page-of-order-line';
 import { PageOfAuxilaryOrderLine } from '../models/page-of-auxilary-order-line';
 import { Entry } from '../models/entry';
 import { ElasticDataEntry } from '../models/elastic-data-entry';
@@ -32,6 +33,7 @@ import { Store } from '../models/store';
 import { PageOfNotification } from '../models/page-of-notification';
 import { PageOfOrder } from '../models/page-of-order';
 import { Order } from '../models/order';
+import { OrderAggregator } from '../models/order-aggregator';
 import { ProductDTO } from '../models/product-dto';
 import { UserRating } from '../models/user-rating';
 import { Review } from '../models/review';
@@ -64,6 +66,7 @@ class QueryResourceService extends __BaseService {
   static readonly findFavouriteStoresByCustomerReferenceUsingGETPath = '/api/query/favouritestoresbycustomerreference/{reference}';
   static readonly findAllCategoriesUsingGETPath = '/api/query/findAllCategories/{iDPcode}';
   static readonly findAllCustomersWithoutSearchUsingGETPath = '/api/query/findAllCustomers';
+  static readonly findAllOrderLinesByOrderIdUsingGETPath = '/api/query/findAllOrderLinesByOrderId/{orderId}';
   static readonly findAuxilaryOrderLineByOrderLineIdUsingGETPath = '/api/query/findAuxilaryOrderLineByOrderLineId/{orderLineId}';
   static readonly findCategoryAndCountUsingGETPath = '/api/query/findCategoryAndCount';
   static readonly findCategoryAndCountBystoreIdUsingGETPath = '/api/query/findCategoryAndCountBystoreId/{storeId}';
@@ -88,6 +91,7 @@ class QueryResourceService extends __BaseService {
   static readonly findOrderByDatebetweenAndStoreIdUsingGETPath = '/api/query/order/{from}/{to}/{storeId}';
   static readonly findOrderByOrderIdUsingGETPath = '/api/query/orderByOrderId/{orderId}';
   static readonly findOrderByStatusNameUsingGETPath = '/api/query/orderStatus/{statusName}';
+  static readonly getOrderAggregatorUsingGETPath = '/api/query/orderaggregator/{orderNumber}';
   static readonly findOrdersByCustomerIdUsingGETPath = '/api/query/ordersByCustomerId/{customerId}';
   static readonly findAndSortProductByPriceUsingGETPath = '/api/query/productByPrice/{from}/{to}';
   static readonly findProductUsingGETPath = '/api/query/products/{id}';
@@ -655,6 +659,63 @@ class QueryResourceService extends __BaseService {
   findAllCustomersWithoutSearchUsingGET(params: QueryResourceService.FindAllCustomersWithoutSearchUsingGETParams): __Observable<PageOfCustomer> {
     return this.findAllCustomersWithoutSearchUsingGETResponse(params).pipe(
       __map(_r => _r.body as PageOfCustomer)
+    );
+  }
+
+  /**
+   * @param params The `QueryResourceService.FindAllOrderLinesByOrderIdUsingGETParams` containing the following parameters:
+   *
+   * - `orderId`: orderId
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findAllOrderLinesByOrderIdUsingGETResponse(params: QueryResourceService.FindAllOrderLinesByOrderIdUsingGETParams): __Observable<__StrictHttpResponse<PageOfOrderLine>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
+    if (params.size != null) __params = __params.set('size', params.size.toString());
+    if (params.page != null) __params = __params.set('page', params.page.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/findAllOrderLinesByOrderId/${params.orderId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PageOfOrderLine>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.FindAllOrderLinesByOrderIdUsingGETParams` containing the following parameters:
+   *
+   * - `orderId`: orderId
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findAllOrderLinesByOrderIdUsingGET(params: QueryResourceService.FindAllOrderLinesByOrderIdUsingGETParams): __Observable<PageOfOrderLine> {
+    return this.findAllOrderLinesByOrderIdUsingGETResponse(params).pipe(
+      __map(_r => _r.body as PageOfOrderLine)
     );
   }
 
@@ -1892,6 +1953,42 @@ class QueryResourceService extends __BaseService {
   findOrderByStatusNameUsingGET(params: QueryResourceService.FindOrderByStatusNameUsingGETParams): __Observable<PageOfOrder> {
     return this.findOrderByStatusNameUsingGETResponse(params).pipe(
       __map(_r => _r.body as PageOfOrder)
+    );
+  }
+
+  /**
+   * @param orderNumber orderNumber
+   * @return OK
+   */
+  getOrderAggregatorUsingGETResponse(orderNumber: string): __Observable<__StrictHttpResponse<OrderAggregator>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/orderaggregator/${orderNumber}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<OrderAggregator>;
+      })
+    );
+  }
+  /**
+   * @param orderNumber orderNumber
+   * @return OK
+   */
+  getOrderAggregatorUsingGET(orderNumber: string): __Observable<OrderAggregator> {
+    return this.getOrderAggregatorUsingGETResponse(orderNumber).pipe(
+      __map(_r => _r.body as OrderAggregator)
     );
   }
 
@@ -3374,6 +3471,32 @@ module QueryResourceService {
    * Parameters for findAllCustomersWithoutSearchUsingGET
    */
   export interface FindAllCustomersWithoutSearchUsingGETParams {
+
+    /**
+     * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     */
+    sort?: Array<string>;
+
+    /**
+     * Size of a page
+     */
+    size?: number;
+
+    /**
+     * Page number of the requested page
+     */
+    page?: number;
+  }
+
+  /**
+   * Parameters for findAllOrderLinesByOrderIdUsingGET
+   */
+  export interface FindAllOrderLinesByOrderIdUsingGETParams {
+
+    /**
+     * orderId
+     */
+    orderId: number;
 
     /**
      * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.

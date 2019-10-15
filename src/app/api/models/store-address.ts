@@ -1,12 +1,12 @@
 /* tslint:disable */
 export interface StoreAddress {
-  landmark?: string;
   addressType?: string;
+  alternatePhone?: number;
   city?: string;
   customerId?: string;
   houseNoOrBuildingName?: string;
   id?: number;
-  alternatePhone?: number;
+  landmark?: string;
   name?: string;
   phone?: number;
   pincode?: number;

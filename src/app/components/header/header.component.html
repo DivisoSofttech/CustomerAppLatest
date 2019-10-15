@@ -64,7 +64,7 @@
   class="container header-search header-content"
   [style.display]="(showSearchPane === true && showSearchBar === true) ? 'block' : 'none'"
 >
-  <ion-spinner name="dots" [type]="'restaurant'" *ngIf="showLoading"></ion-spinner>
+  <ion-spinner color="primary" name="dots" *ngIf="showLoading"></ion-spinner>
 
   <ion-grid *ngIf="!showLoading">
     <ion-row *ngIf="storeSearchResults.length > 0">

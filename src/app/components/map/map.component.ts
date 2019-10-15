@@ -46,7 +46,6 @@ export class MapComponent implements OnInit{
 
   initLoadMap() {
     this.platform.ready().then(data => {
-      console.log(data);
       if (this.platform.is('cordova' || 'android' || 'ios')) {
         this.logger.info('Map component getting LatLon');
         if (this.showActiveLocation === true) {

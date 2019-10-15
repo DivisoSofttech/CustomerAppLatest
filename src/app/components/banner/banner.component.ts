@@ -44,7 +44,7 @@ export class BannerComponent implements OnInit {
       },
       err => {
         this.showLoading = false;
-        this.logger.warn('Unable to get Banners', err);
+        this.logger.error('Error Getting Banners', err);
       }
     );
   }

@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
      <ion-buttons>
-    <ion-searchbar #placeSearch showCancelButton debounce="1500" placeholder="Enter Location Name"
+    <ion-searchbar #placeSearch showCancelButton="always" debounce="1500" placeholder="Enter Location Name"
       (ionCancel)="close()" (ionChange)="getPlacePredictions($event)"></ion-searchbar>
   </ion-buttons>
   </ion-toolbar>

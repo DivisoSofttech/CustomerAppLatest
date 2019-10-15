@@ -76,6 +76,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.logger.info(this.order);
+    // this.getOrderDetails();
     this.getOrderLines(0);
   }
 
@@ -85,6 +86,13 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     this.orderLinesByOrderIdSubscription !== undefined?this.orderLinesByOrderIdSubscription.unsubscribe():null
     this.productByProductIdSubscrption !== undefined?this.productByProductIdSubscrption.unsubscribe():null;
     this.auxilayByProductIdSubscription !==undefined?this.auxilayByProductIdSubscription.unsubscribe():null;
+  }
+
+  getOrderDetails() {
+    this.queryResource.getOrderAggregatorUsingGET(this.order.orderId)
+    .subscribe(data => {
+      this.logger.error(data);
+    })
   }
 
   getOrderLines(i) {
@@ -133,7 +141,13 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     this.queryResource.findProductByIdUsingGET(id)
     .subscribe(auxProduct => {
       this.logger.info(auxProduct.name , 'for' , pid);
-      this.auxilariesProducts[pid][id] = auxProduct;
+
+        //Hack to Make Product Usable in Places Where AuxilaryLineItem 
+      // is used Just add auxilaryItem key to the object
+
+      auxProduct['auxilaryItem']  = auxProduct;
+      this.auxilariesProducts[pid+''][id+''] = auxProduct;
+
     })
   }
 
@@ -150,10 +164,11 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
   addToCart() {
     this.cartService.addShop(this.store);
     this.orderLines.forEach(o => {
-      if (this.auxilaryOrderLines[o.id] === null) {
+      if (this.auxilaryOrderLines[o.id] === undefined) {
        delete o.requiedAuxilaries;
       } else {
         o.requiedAuxilaries = this.auxilaryOrderLines[o.id];
+        this.cartService.auxilaryItems[o.productId] = this.auxilariesProducts[o.productId];
       }
       this.logger.info(o);
       this.modalController.dismiss();
