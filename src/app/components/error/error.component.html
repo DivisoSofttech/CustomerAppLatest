@@ -1,3 +1,33 @@
-<p>
-  error works!
-</p>
+<ion-header no-border>
+
+</ion-header>
+
+<ion-content>
+
+  <ion-grid>
+
+    <ion-row class="ion-justify-content-center ion-text-center">
+      <ion-col size="12">
+          <ion-icon name="alert" color="primary"></ion-icon>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="ion-justify-content-center ion-text-center">
+      <ion-label>
+        <h1>Oh No !</h1>
+        <h1>Something Went Wrong</h1>
+        <h1>Please Try Again</h1>
+      </ion-label>
+    </ion-row>
+
+    <ion-row class="ion-justify-content-center ion-text-center">
+      <ion-col size="12">
+        <ion-button color="success" (click)="refresh()">
+          TRY AGAIN
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+
+</ion-content>

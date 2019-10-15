@@ -12,6 +12,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { NotificationService } from './services/notification.service';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { GuestUserService } from './services/security/guest-user.service';
 // import { ForegroundService } from '@ionic-native/foreground-service/ngx';
 @Component({
   selector: 'app-root',
@@ -54,14 +55,19 @@ export class AppComponent {
     private screenOrientation: ScreenOrientation,
     private backgroundMode: BackgroundMode,
     private localNotifications: LocalNotifications,
-    private oauthService: OAuthService,
-    private notificationService: NotificationService,
-    private androidPermissions: AndroidPermissions
+    private androidPermissions: AndroidPermissions,
+    private guestUserService: GuestUserService
    // public foregroundService: ForegroundService
       ) {
     this.getUser();
     this.initializeApp();
+    if(this.platform.is('pwa') || this.platform.is('cordova')) {
+      this.browser = true;
+    } else {
+    }
+    
   }
+
 
 
   // startService() {
@@ -141,6 +147,7 @@ getUser() {
 logout() {
     this.keycloakService.logout();
     this.util.createToast('You\'ve been logged out');
+    this.guestUserService.logInGuest();
   }
 
 login() {

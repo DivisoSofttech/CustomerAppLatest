@@ -3,7 +3,7 @@ import { NGXLogger } from 'ngx-logger';
 import { QueryResourceService } from 'src/app/api/services';
 import { Order, OrderLine, Product, Store, CommandResource } from 'src/app/api/models';
 import { CartService } from 'src/app/services/cart.service';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { OrderService } from 'src/app/services/order.service';
 import { Subscription } from 'rxjs';
 import { Util } from 'src/app/services/util';
@@ -14,7 +14,8 @@ import { Util } from 'src/app/services/util';
   styleUrls: ['./order-summary.component.scss'],
 })
 export class OrderSummaryComponent implements OnInit, OnDestroy {
-@Input() order: Order;
+
+  @Input() order: Order;
 
   orderLines: OrderLine[] = [];
 
@@ -36,32 +37,10 @@ export class OrderSummaryComponent implements OnInit, OnDestroy {
     private queryResource: QueryResourceService,
     private cartService: CartService,
     private modalController: ModalController,
+    private navController: NavController,
     private orderService: OrderService,
     private util: Util
   ) { }
-
-
-
-
-  completePayment() {
-    this.util.createLoader().then(loader => {
-    loader.present();
-    this.orderService.order = this.order;
-    this.taskDetailsSubscription = this.queryResource.getTaskDetailsUsingGET(
-      {taskName: 'Process Payment', orderId: this.order.orderId, storeId: this.order.customerId})
-      .subscribe(openTask => {
-        console.log('Open task is ', openTask);
-        const resource: CommandResource = {
-          nextTaskId: openTask.taskId,
-          nextTaskName: openTask.taskName,
-          orderId: this.order.orderId
-        };
-        this.orderService.resource = resource;
-        loader.dismiss();
-        this.dismiss();
-      });
-    });
-  }
 
   ngOnInit() {
     this.logger.info(this.order);
@@ -73,9 +52,9 @@ export class OrderSummaryComponent implements OnInit, OnDestroy {
     if (this.taskDetailsSubscription !== undefined) {
       this.taskDetailsSubscription.unsubscribe();
     }
-    this.orderLinesByOrderIdSubscription.unsubscribe();
-    this.productByProductIdSubscrption.unsubscribe();
-    this.auxilayByProductIdSubscription.unsubscribe();
+    this.orderLinesByOrderIdSubscription !== undefined?this.orderLinesByOrderIdSubscription.unsubscribe():null;
+    this.productByProductIdSubscrption !== undefined?this.productByProductIdSubscrption.unsubscribe():null;
+    this.auxilayByProductIdSubscription !== undefined?this.auxilayByProductIdSubscription.unsubscribe():null;
   }
 
   getOrderLines() {
@@ -133,8 +112,8 @@ export class OrderSummaryComponent implements OnInit, OnDestroy {
     });
   }
 
-  dismiss() {
-    this.modalController.dismiss();
+  dismiss(value) {
+    this.modalController.dismiss(value);
   }
 
 }

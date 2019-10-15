@@ -1,6 +1,6 @@
 <!--Normal View-->
 
-<ion-card no-padding *ngIf="viewType === 'normal'">
+<ion-card no-padding *ngIf="viewType === 'normal'" >
   <span class="ribbon6" *ngIf="!(timeNow | closed: store.openingTime:store.closingTime)">Closed</span>
   <ion-card-header (click)="showHotelMenu(store.regNo)">
     <ion-item lines="none">
@@ -55,7 +55,7 @@
 
 <!--Detailed View-->
 
-<div class="container" *ngIf="viewType === 'detailedCard'">
+<div class="container" *ngIf="viewType === 'detailedCard'"> 
   <ion-card color="danger" class="closeCard" *ngIf="!(timeNow | closed: store.openingTime:store.closingTime)">
     <ion-card-content>
       <ion-card-title>Closed</ion-card-title>

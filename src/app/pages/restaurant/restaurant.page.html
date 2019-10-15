@@ -1,7 +1,7 @@
-<ion-header>
+<ion-header class="mobile-only">
   <app-header></app-header>
 </ion-header>
-<ion-content>
+<ion-content appScrollbarTheme>
 
   <app-map></app-map>
   <app-banner></app-banner>
@@ -9,10 +9,10 @@
 
   <ion-item lines="none" color="light">
       <ion-label slot="start">
-          <span class="font-20">What's Nearby! </span> 
+          <span class="font-20 heading-one">What's Nearby! </span> 
       </ion-label>
       <ion-label text-right *ngIf="currentPlaceName!==''" (click)="showPlaceSelectionModal()">
-          <p class="font-20">{{ currentPlaceName}}</p>
+          <p class="font-20 heading-one">{{ currentPlaceName}}</p>
       </ion-label>
       <ion-label slot="end" *ngIf="currentPlaceName===''">
           <ion-spinner name="dots" ></ion-spinner>

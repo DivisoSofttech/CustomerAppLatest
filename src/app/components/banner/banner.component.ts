@@ -1,7 +1,7 @@
 import { BannerDTO } from './../../api/models/banner-dto';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { IonSlides, Platform } from '@ionic/angular';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 
 @Component({
@@ -10,7 +10,9 @@ import { NGXLogger } from 'ngx-logger';
   styleUrls: ['./banner.component.scss']
 })
 export class BannerComponent implements OnInit {
+
   showLoading = true;
+  @Input() direction = 'horizontal';
 
   slideOpts = {
     slidesPerView: this.platform.width() >= 640 ? 3 : 2,
@@ -42,7 +44,7 @@ export class BannerComponent implements OnInit {
       },
       err => {
         this.showLoading = false;
-        this.logger.warn('Unable to get Banners', err);
+        this.logger.error('Error Getting Banners', err);
       }
     );
   }

@@ -2,7 +2,8 @@
 *ngIf="orders.length > 0 && productsGot === false"
 [type]="'delivery'"></app-loading>
 
-<ion-list can-swipe="true" *ngIf="orders.length > 0 && productsGot === true" class="page-parent">
+<ion-list can-swipe="true" *ngIf="orders.length > 0 && productsGot === true" class="page-parent
+  desktop-full-width">
   <ion-card *ngFor="let orderLine of orders">
     <!--Main Product Start -->
     <ion-item-sliding *ngIf="products[orderLine.productId] !== undefined">
@@ -14,6 +15,17 @@
             </ion-item-option>
         </ion-item-options>
         <ion-item color="secondary" >
+            <ion-avatar class="desktop-only ion-margin">  
+                <ion-img
+                  [src]="
+                    'data:' +
+                    products[orderLine.productId].imageContentType +
+                    ';base64,' +
+                    products[orderLine.productId].image
+                  "
+                >
+                </ion-img>
+              </ion-avatar>
             <ion-label text-start class="wrap">
                <h2>{{products[orderLine.productId].name}}</h2>
                <h3>
@@ -41,7 +53,7 @@
 
     <!--Auxilary Product Start-->
     <ion-list
-    *ngIf="auxilaryItems[orderLine.productId].length !== 0">
+    *ngIf="auxilaryItems[orderLine.productId] !== undefined && auxilaryItems[orderLine.productId].length !== 0">
       <ion-list-header>
         <ion-label>Extras</ion-label>
         <ion-icon name="add" class="addAuxilaryButton" (click)="showUpdateAuxilaryPopover(orderLine)"></ion-icon>
@@ -90,7 +102,7 @@
      *ngIf="storeSetting !== undefined && orders.length > 0 && currentDeliveryMode !== 'collection'">
       <ion-label text-start>Delivery charge</ion-label>
       <ion-label text-center> </ion-label>
-      <ion-label text-end>{{ storeSetting.deliveryCharge | number: "1.1-2" }}</ion-label>
+      <ion-label text-end>&euro;{{ storeSetting.deliveryCharge | number: "1.1-2" }}</ion-label>
     </ion-item>
     <ion-item *ngIf="offer" lines="full">
       <ion-avatar slot="start">
@@ -110,12 +122,12 @@
       <ion-label text-end>
         <h3 *ngIf="currentDeliveryMode === 'delivery'">
           <strong>
-            {{ totalPrice + storeSetting.deliveryCharge | number: "1.1-2" }}
+            &euro;{{ totalPrice + storeSetting.deliveryCharge | number: "1.1-2" }}
          </strong>
         </h3>
         <h3 *ngIf="currentDeliveryMode === 'collection'">
          <strong>
-           {{ totalPrice | number: "1.1-2" }}
+           &euro;{{ totalPrice | number: "1.1-2" }}
          </strong>
         </h3>
       </ion-label>

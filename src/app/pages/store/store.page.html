@@ -1,9 +1,14 @@
-<ion-header>
+<ion-header class="mobile-only">
   <app-store-header *ngIf="store != undefined" [name]="store.name" [storeId]="store.regNo" [store]="store"
     (searchEnable)="toggleFabButton($event)"></app-store-header>
 </ion-header>
 
-<ion-content>
+<ion-header class="desktop-only" no-border>
+    <app-store-header *ngIf="store != undefined" [name]="store.name" [storeId]="store.regNo" [store]="store"
+      (searchEnable)="toggleFabButton($event)"></app-store-header>
+  </ion-header>  
+
+<ion-content appScrollbarTheme>
   <ion-fab class="animated animation-duration"
     [ngClass]="(currentSegment === 'menu' && showCatgeoryFilterFab) ? 'rotateIn' : 'rotateOut'" vertical="top"
     horizontal="end" slot="fixed">

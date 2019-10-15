@@ -15,6 +15,7 @@ import { RestaurantCardComponent } from 'src/app/components/restaurant-card/rest
 import { LoadingComponent } from 'src/app/components/loading/loading.component';
 import { FooterComponent } from 'src/app/components/footer/footer.component';
 import { MapComponent } from 'src/app/components/map/map.component';
+import { DirectiveModule } from 'src/app/directives/directive.module';
 
 const routes: Routes = [
   {
@@ -29,6 +30,7 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     ComponentsModule,
+    DirectiveModule,
     RouterModule.forChild(routes)
   ],
   declarations: [RestaurantPage],

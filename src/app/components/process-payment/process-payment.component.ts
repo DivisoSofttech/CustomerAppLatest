@@ -87,7 +87,8 @@ export class ProcessPaymentComponent implements OnInit, OnDestroy {
   async presentPaymentSuccessfullInfo() {
     this.modalController.dismiss();
     const modal = await this.modalController.create({
-      component: PaymentSuccessfullInfoComponent
+      component: PaymentSuccessfullInfoComponent,
+      backdropDismiss: false
     });
     return await modal.present();
   }

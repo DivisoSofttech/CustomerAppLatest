@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons>
-      <ion-button (click)="dismiss()">
+      <ion-button (click)="dismiss(false)">
         <ion-icon name="arrow-back"></ion-icon>
       </ion-button>
       <ion-title>Order Details</ion-title>
@@ -128,6 +128,5 @@
 </ion-content>
 
 <ion-footer class="ion-padding  ">
-  <ion-button *ngIf="order.status.name === 'payment-processed' || order.status.name === 'delivered'" expand="block" (click)="reorder()">Reorder</ion-button>
-  <ion-button *ngIf="order.status.name === 'approved'"  expand="block" (click)="completePayment()">Complete Payment</ion-button>
+      <ion-button *ngIf="order.status.name === 'payment-processed'"  expand="block" (click)="dismiss(true)">Continue Shopping</ion-button>
 </ion-footer>
