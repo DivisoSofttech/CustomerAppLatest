@@ -83,17 +83,17 @@ export class AppComponent {
         this.browser = true;
       }
       if (this.platform.is('android')) {
-        console.log('Checking permission foreground service android');
-        this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.FOREGROUND_SERVICE)
-        .then(
-          result => {
-            console.log('Has permission for foreground');
-            console.log('Has permission?', result.hasPermission);
-          },
-          err => {
-            console.log('Android has no permission for foreground service requesting ****');
-            this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.FOREGROUND_SERVICE);
-          });
+        // console.log('Checking permission foreground service android');
+        // this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.FOREGROUND_SERVICE)
+        // .then(
+        //   result => {
+        //     console.log('Has permission for foreground');
+        //     console.log('Has permission?', result.hasPermission);
+        //   },
+        //   err => {
+        //     console.log('Android has no permission for foreground service requesting ****');
+        //     this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.FOREGROUND_SERVICE);
+        //   });
       }
       this.statusBar.styleDefault();
       this.statusBar.backgroundColorByHexString('#e6e6e6');
