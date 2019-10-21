@@ -52,8 +52,12 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     console.log('destroy calls');
-    if(this.collectDeliveryInfoSubscription !== undefined) {
+    if (this.collectDeliveryInfoSubscription !== undefined) {
       this.collectDeliveryInfoSubscription.unsubscribe();
+    }
+
+    if (this.behaviouralSubjectSubscription !== undefined) {
+        this.behaviouralSubjectSubscription.unsubscribe();
     }
   }
   getCustomer() {
@@ -95,7 +99,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           console.log('Next task name is ' + resource.nextTaskId + ' Next task name '
           + resource.nextTaskName + ' selfid ' + resource.selfId + ' order id is ' + resource.orderId);
         }, (err) => {
-        console.log('oops something went wrong while collecting deliveryinfo');
+        console.log('oops something went wrong while collecting deliveryinfo ', err);
+        this.behaviouralSubjectSubscription.unsubscribe();
         this.util.createToast('Something went wrong try again', 'information-circle-outline');
         this.displayModalService.navigateToBasket();
       });

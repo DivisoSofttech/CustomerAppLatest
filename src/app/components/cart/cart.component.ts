@@ -192,7 +192,6 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   continue(deliveryType) {
-    console.log('IN continue ****** ', this.customer);
     this.orderService.setShop(this.store);
     this.orderService.setDeliveryType(deliveryType);
     this.orderService.setDeliveryCharge(this.storeSetting.deliveryCharge);
@@ -208,14 +207,17 @@ export class CartComponent implements OnInit, OnDestroy {
         customerId: this.customer.preferred_username
       };
       this.orderService.setOrder(order);
-      this.logger.info('Order is in continue ', order);
-
-      console.log('IN continue ****** 2');
       console.log('Delivery type is ', deliveryType);
+      if (this.orderService.resource.nextTaskName === undefined) {
+          console.log('create new order');
+      } else {
+        console.log('update the order' , this.orderService.resource);
+      }
       this.initiateOrderSubcription =  this.orderService.initiateOrder().subscribe(
         resource => {
           this.orderService.setResource(resource);
           this.orderService.orderResourceBehaviour.next(resource.nextTaskName);
+          // order.id = resource.selfId;
           this.orderService.order.orderId = resource.orderId;
           console.log(
             'Next task name is ' +

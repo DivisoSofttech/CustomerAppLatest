@@ -1,16 +1,16 @@
 <ion-header>
     <ion-toolbar>
         <ion-buttons>
-            <ion-button >
-                <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+            <ion-button (click)="showMakePayment()">
+                <ion-icon name="arrow-back" slot="icon-only" ></ion-icon>
             </ion-button>
-            <ion-title>Processing Payment...</ion-title>
+            <ion-title>Process Payment...</ion-title>
         </ion-buttons>
     </ion-toolbar>
-   </ion-header>
-   <ion-content>
-        <ion-spinner animated class="center"></ion-spinner>
-        <app-braintree-card-payment *ngIf="provider==='braintree'" ></app-braintree-card-payment>
-        <app-paypal-payment *ngIf="provider==='paypal'" ></app-paypal-payment>
-        <app-razorpay-payment *ngIf="provider==='razorpay'" ></app-razorpay-payment>
-   </ion-content>
+</ion-header>
+<ion-content>
+    <!-- <ion-spinner animated class="center" ></ion-spinner> -->
+    <app-braintree-card-payment *ngIf="provider==='braintree'"></app-braintree-card-payment>
+    <app-paypal-payment *ngIf="provider==='paypal'"></app-paypal-payment>
+    <app-razorpay-payment *ngIf="provider==='razorpay'"></app-razorpay-payment>
+</ion-content>

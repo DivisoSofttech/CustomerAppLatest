@@ -90,7 +90,6 @@ const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', 
     Sim,
     InAppBrowser,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-
     // Extra Services
     LocationService,
     { provide: LocationStrategy, useClass: HashLocationStrategy },
