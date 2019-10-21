@@ -5,3 +5,28 @@ app-favourite-list, app-frequently-ordered-list, app-history-list{
 ion-slide {
     overflow: hidden;
 }
+
+.fixed-height {
+  height: 100%;
+  overflow: hidden;
+}
+
+.fixed-height-scroll {
+  height: 99vh;
+  overflow: hidden;
+}
+
+.fixed-height-card-scroll {
+  height: 90%;
+  overflow-y: scroll;
+}
+
+.mg-0 {
+  margin: 0px;
+  padding: 11px;
+}
+
+.pd-10 {
+  padding: 8px;
+  padding-left: 2px;
+}

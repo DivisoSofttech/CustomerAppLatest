@@ -15,10 +15,46 @@ export class BannerComponent implements OnInit {
   @Input() direction = 'horizontal';
 
   slideOpts = {
-    slidesPerView: this.platform.width() >= 640 ? 3 : 2,
-    loop: true,
-    autoplay: true
-  };
+    slidesPerView: 3,
+    on: {
+      beforeInit() {
+        const swiper = this;
+  
+        swiper.classNames.push(`${swiper.params.containerModifierClass}coverflow`);
+        swiper.classNames.push(`${swiper.params.containerModifierClass}3d`);
+  
+        swiper.params.watchSlidesProgress = true;
+        swiper.originalParams.watchSlidesProgress = true;
+      },
+      setTranslate() {
+        const swiper = this;
+        const {
+          width: swiperWidth, height: swiperHeight, slides, $wrapperEl, slidesSizesGrid, $
+        } = swiper;
+        const params = swiper.params.coverflowEffect;
+        const isHorizontal = swiper.isHorizontal();
+        const transform$$1 = swiper.translate;
+        const center = isHorizontal ? -transform$$1 + (swiperWidth / 2) : -transform$$1 + (swiperHeight / 2);
+        const rotate = isHorizontal ? params.rotate : -params.rotate;
+        const translate = params.depth;
+        // Each slide offset from center
+        for (let i = 0, length = slides.length; i < length; i += 1) {
+          const $slideEl = slides.eq(i);
+          const slideSize = slidesSizesGrid[i];
+          const slideOffset = $slideEl[0].swiperSlideOffset;
+          const offsetMultiplier = ((center - slideOffset - (slideSize / 2)) / slideSize) * params.modifier;
+        }
+      },
+      setTransition(duration) {
+        const swiper = this;
+        swiper.slides
+          .transition(duration)
+          .find('.swiper-slide-shadow-top, .swiper-slide-shadow-right, .swiper-slide-shadow-bottom, .swiper-slide-shadow-left')
+          .transition(duration);
+      }
+    }
+  }
+
 
   @ViewChild('slides', null) slides: IonSlides;
 
@@ -32,7 +68,9 @@ export class BannerComponent implements OnInit {
 
   ngOnInit() {
     this.getBanners();
+    this.slides.startAutoplay();
   }
+
 
   getBanners() {
     this.queryResource.findStoreBannersUsingGET({}).subscribe(
@@ -40,7 +78,6 @@ export class BannerComponent implements OnInit {
         this.logger.info('Banners got', data);
         this.banners = data;
         this.showLoading = false;
-        this.slides.startAutoplay();
       },
       err => {
         this.showLoading = false;

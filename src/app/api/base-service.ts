@@ -57,7 +57,7 @@ export class BaseService {
    */
   protected newParams(): HttpParams {
     return new HttpParams({
-      encoder: PARAMETER_CODEC
+      encoder: PARAMETER_CODEC,
     });
   }
 }

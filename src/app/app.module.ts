@@ -40,6 +40,8 @@ import { ForegroundService } from '@ionic-native/foreground-service/ngx';
 import { BannerComponent } from './components/banner/banner.component';
 import { NotificationComponent } from './components/notification/notification.component';
 import { ErrorService } from './services/error.service';
+import { DirectiveModule } from './directives/directive.module';
+import { HistoryListComponent } from './components/history-list/history-list.component';
 
 const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', options: {} };
 
@@ -47,7 +49,7 @@ const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', 
 
   declarations: [AppComponent],
 
-  entryComponents: [BannerComponent , NotificationComponent],
+  entryComponents: [BannerComponent , NotificationComponent , HistoryListComponent],
 
   imports: [
     BrowserModule,
@@ -71,6 +73,7 @@ const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', 
     LoggerModule.forRoot(environment.logging),
     BrowserAnimationsModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    DirectiveModule
   ],
 
   providers: [

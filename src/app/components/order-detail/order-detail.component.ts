@@ -46,7 +46,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
 
 
   async presentMakePayment() {
-    this.modalController.dismiss();
+    await this.modalController.dismiss();
     const modal = await this.modalController.create({
       component: MakePaymentComponent
     });
@@ -54,7 +54,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
   }
 
   completePayment() {
-    this.util.createLoader().then(loader => {
+    this.util.createLoader(100000).then(loader => {
     loader.present();
     this.orderService.order = this.order;
     this.taskDetailsSubscription = this.queryResource.getTaskDetailsUsingGET(
@@ -96,19 +96,23 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
   }
 
   getOrderLines(i) {
-    this.orderLinesByOrderIdSubscription = this.queryResource.findOrderLinesByOrderIdUsingGET(this.order.id)
+    this.orderLinesByOrderIdSubscription = this.queryResource.findAllOrderLinesByOrderIdUsingGET({
+      orderId: this.order.id
+    })
     .subscribe(orderLines => {
-      this.orderLines = orderLines;
-      this.orderLines.forEach(o => {
+      orderLines.content.forEach(o => {
+        this.orderLines.push(o);
         this.auxilariesProducts[o.productId] = [];
         this.auxilaryOrderLines[o.id] = [];
         this.getProducts(o.productId);
         this.getAuxilaryOrderLines(o,0);
       });
       i++;
-      // if(i < orderLines.totalPages) {
-
-      // }
+      if(i < orderLines.totalPages) {
+        this.getOrderLines(i);
+      } else {
+        this.logger.info('Completed Fetching OrderLines')
+      }
     });
   }
 
@@ -161,7 +165,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  addToCart() {
+  async addToCart() {
     this.cartService.addShop(this.store);
     this.orderLines.forEach(o => {
       if (this.auxilaryOrderLines[o.id] === undefined) {
@@ -170,11 +174,10 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
         o.requiedAuxilaries = this.auxilaryOrderLines[o.id];
         this.cartService.auxilaryItems[o.productId] = this.auxilariesProducts[o.productId];
       }
-      this.logger.info(o);
-      this.modalController.dismiss();
-      this.navController.navigateForward('/basket');
       this.cartService.addOrder(o);
     });
+    await this.modalController.dismiss(true);
+
   }
 
   dismiss() {

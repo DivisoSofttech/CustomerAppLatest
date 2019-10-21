@@ -23,10 +23,11 @@ export class Util {
     private alertCtrl: AlertController
   ) {}
 
-  async createLoader() {
+  async createLoader(duration?) {
     return await this.loadingController.create({
       spinner: 'bubbles',
-      duration: 5000
+      duration: duration !== undefined?duration:5000,
+      cssClass:'loader'
     });
   }
 

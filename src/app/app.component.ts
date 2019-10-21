@@ -3,7 +3,7 @@ import { Util } from './services/util';
 import { KeycloakService } from './services/security/keycloak.service';
 import { Component } from '@angular/core';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
-import { Platform, MenuController } from '@ionic/angular';
+import { Platform, MenuController, ModalController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Storage } from '@ionic/storage';
@@ -13,6 +13,7 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { NotificationService } from './services/notification.service';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { GuestUserService } from './services/security/guest-user.service';
+import { HistoryListComponent } from './components/history-list/history-list.component';
 // import { ForegroundService } from '@ionic-native/foreground-service/ngx';
 @Component({
   selector: 'app-root',
@@ -32,7 +33,7 @@ export class AppComponent {
     {
       title: 'Basket',
       url: '/basket',
-      icon: 'basket'
+      icon: 'cart'
     },
     {
       title: 'Profile',
@@ -42,6 +43,7 @@ export class AppComponent {
   ];
 
   browser = false;
+  keyCloakUser: any;
 
   constructor(
     private platform: Platform,
@@ -52,6 +54,7 @@ export class AppComponent {
     private storage: Storage,
     private keycloakService: KeycloakService,
     private menuController: MenuController,
+    private modalController: ModalController,
     private screenOrientation: ScreenOrientation,
     private backgroundMode: BackgroundMode,
     private localNotifications: LocalNotifications,
@@ -123,12 +126,23 @@ exitApp() {
       navigator['app'].exitApp();
     }, (deny) => {
     });
-  }
+}
+
+async showPreviousOrders() {
+  const modal = await this.modalController.create({
+  component: HistoryListComponent,
+  componentProps: { keyCloakUser: this.keyCloakUser , viewType: 'modal' }
+  });
+
+  await modal.present();
+
+}
 
 
 getUser() {
     this.keycloakService.getUserChangedSubscription()
     .subscribe(user => {
+      this.keyCloakUser = user;
       this.logger.info('Checking If guest : App Component');
       if (user) {
         if (user.preferred_username === 'guest') {

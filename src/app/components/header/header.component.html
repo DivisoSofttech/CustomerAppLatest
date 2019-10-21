@@ -71,7 +71,9 @@
       <ion-item color="light" class="full-width">
         <ion-label slot="start">{{storeSearchResults.length + ' Restaurant Found'}}</ion-label>
       </ion-item>
-      <app-restaurant-card *ngFor="let store of storeSearchResults" [store]="store"></app-restaurant-card>
+      <ion-col class="restaurantCol" size="12">
+        <app-restaurant-card *ngFor="let store of storeSearchResults" [store]="store"></app-restaurant-card>
+      </ion-col>
     </ion-row>
     <ion-row *ngIf="storeSearchResults.length === 0 && searchTerm !== ''" class="vertical-align-center">
       <ion-col text-center size="12">
