@@ -73,7 +73,7 @@ export class RestaurantPage implements OnInit {
         });
 
         // show stores in map
-        this.mapComponent.setStoreLocationMarkers(stores);
+        // this.mapComponent.setStoreLocationMarkers(stores);
         this.showLoading = false;
         this.toggleIonRefresher();
       },

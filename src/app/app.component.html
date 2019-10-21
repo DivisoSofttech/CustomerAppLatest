@@ -1,37 +1,41 @@
 <ion-app>
-    <ion-header class="desktop-only">
-        <app-header></app-header>
-      </ion-header>
-  <ion-split-pane class="margin-top-desktop" when="(min-width:1300px)">
+  <ion-header class="desktop-only">
+    <app-header></app-header>
+  </ion-header>
+  <ion-split-pane class="margin-top-desktop" when="(min-width:1280px)">
     <ion-menu type="overlay">
       <ion-header class="mobile-only">
         <ion-toolbar>
           <ion-title>FoodExp</ion-title>
         </ion-toolbar>
       </ion-header>
-      <ion-content>
+      <ion-content appScrollbarTheme>
         <ion-list>
           <ion-menu-toggle auto-hide="false">
-            <ion-item *ngFor="let p of appPages" [routerDirection]="'root'" [routerLink]="[p.url]">
+            <ion-item lines="full" *ngFor="let p of appPages" [routerDirection]="'root'" [routerLink]="[p.url]">
               <ion-icon slot="start" [name]="p.icon"></ion-icon>
               <ion-label>
                 {{p.title}}
-              </ion-label>  
+              </ion-label>
             </ion-item>
-            <ion-item (click)="logout()" class="pointer" *ngIf="!guest">
+            <ion-item lines="full" (click)="logout()" class="pointer" *ngIf="!guest">
               <ion-icon slot="start" name="power"></ion-icon>
               <ion-label>
                 Logout
-              </ion-label>  
+              </ion-label>
             </ion-item>
-            <ion-item (click)="login()" class="pointer" *ngIf="guest">
+            <ion-item lines="full" (click)="login()" class="pointer" *ngIf="guest">
               <ion-icon slot="start" name="power"></ion-icon>
               <ion-label>
                 Login
-              </ion-label>  
+              </ion-label>
             </ion-item>
-            <ion-item  (click)="exitApp()" *ngIf="!browser">
-                <ion-icon slot="start" name="exit"></ion-icon>
+            <ion-item class="pointer" lines="full" (click)="showPreviousOrders()" *ngIf="!browser && !guest">
+              <ion-icon slot="start" name="basket"></ion-icon>
+              <ion-label>My Orders</ion-label>
+            </ion-item>
+            <ion-item class="pointer" lines="full" (click)="exitApp()" *ngIf="!browser">
+              <ion-icon slot="start" name="exit"></ion-icon>
               <ion-label>Exit</ion-label>
             </ion-item>
           </ion-menu-toggle>
@@ -39,8 +43,5 @@
       </ion-content>
     </ion-menu>
     <ion-router-outlet main></ion-router-outlet>
-    <!-- <div class="extra desktop-only" main>
-      
-    </div> -->
   </ion-split-pane>
 </ion-app>

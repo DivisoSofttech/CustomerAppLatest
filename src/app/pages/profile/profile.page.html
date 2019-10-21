@@ -12,53 +12,57 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content appScrollbarTheme>
-  <app-loading
-    *ngIf="customer === undefined"
-    [type]="'profile'">
+<!--Desktop Version-->
+<ion-content appScrollbarTheme class="desktop-only">
+  <ion-grid class="fixed-height ion-no-padding">
+    <ion-row>
+      <ion-col class="ion-no-padding" size="12">
+        <ion-grid class="ion-no-padding">
+          <ion-row class="ion-no-padding">
+            <ion-col class="ion-no-padding">
+              <app-loading *ngIf="customer === undefined" [type]="'profile'"></app-loading>
+              <app-profile-info *ngIf="customer != undefined" [customer]="customer" [keyCloakUser]="keyCloakUser"
+                [contact]="contact"></app-profile-info>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="mg-0">
+              <ion-card class="ion-no-padding ion-no-margin">
+                <ion-card-header class="sticky heading-one ion-no-padding" color="primary">
+                  <ion-card-subtitle class="pd-10">
+                    <p class="mg-0">Favourites</p>
+                  </ion-card-subtitle>
+                </ion-card-header>
+                <ion-card-content class="ion-no-padding ion-no-margin">
+                  <app-favourite-list></app-favourite-list>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+      <!-- <ion-col size="4">
+        skjkj
+      </ion-col> -->
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+
+<!--Mobile Version-->
+<ion-content appScrollbarTheme class="mobile-only">
+  <app-loading *ngIf="customer === undefined" [type]="'profile'">
   </app-loading>
-  <app-profile-info *ngIf="customer != undefined"
-  [customer]="customer"
-  [keyCloakUser]="keyCloakUser"
-  [contact]="contact"
-  ></app-profile-info>
-
-  <ion-segment
-  (ionChange)="segmentChanged($event)"
-  [(ngModel)]="currentSegment"
-  >
-    <!-- <ion-segment-button value="frequently" checked>
-      <ion-label>
-        Frequent
-      </ion-label>
-    </ion-segment-button> -->
-    <ion-segment-button value="favourite" checked>
-      <ion-label>
-        Favourites
-      </ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="history">
-      <ion-label>History</ion-label>
-    </ion-segment-button>
-  </ion-segment>
-
-  <ion-slides 
-  [ngStyle]="{ 'height': slidesMoving ? 'auto' : (slidesHeight + 'px') }"
-  (ionSlideDidChange)="slideChanged($event)"
-  (ionSlideWillChange)="slideWillChange()"
-  >
-    <!-- <ion-slide>
-      <app-frequently-ordered-list></app-frequently-ordered-list>
-    </ion-slide> -->
+  <app-profile-info *ngIf="customer != undefined" [customer]="customer" [keyCloakUser]="keyCloakUser"
+    [contact]="contact"></app-profile-info>
+  <ion-slides [ngStyle]="{ 'height': slidesMoving ? 'auto' : (slidesHeight + 'px') }"
+    (ionSlideDidChange)="slideChanged($event)" (ionSlideWillChange)="slideWillChange()">
     <ion-slide>
       <app-favourite-list>
       </app-favourite-list>
     </ion-slide>
     <ion-slide>
-      <app-history-list
-      *ngIf="keyCloakUser !== undefined"
-      [keyCloakUser]="keyCloakUser"
-      ></app-history-list>
+      <app-history-list *ngIf="keyCloakUser !== undefined" [keyCloakUser]="keyCloakUser"></app-history-list>
     </ion-slide>
   </ion-slides>
 </ion-content>

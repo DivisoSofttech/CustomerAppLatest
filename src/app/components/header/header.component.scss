@@ -47,3 +47,17 @@ ion-icon[name='notifications-outline'] {
     width: 25px;
     height: 25px;
 }
+
+@media (min-width: 1280px) and (max-width: 2280px) {
+    //CSS
+
+    .restaurantCol {
+      transform: scale(0.98);
+    }
+
+    .restaurantCol:hover {
+      transform: scale(1.04);
+      cursor: pointer;
+      background: white;
+    }
+  }

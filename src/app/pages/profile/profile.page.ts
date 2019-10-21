@@ -27,6 +27,12 @@ export class ProfilePage implements OnInit {
 
   contact: ContactDTO;
 
+  slideOpts = {
+    slidesPerView: 2,
+    watchSlidesProgress: true,
+    spaceBetween: 0,    
+  };
+
   @ViewChild(FooterComponent , null) footer: FooterComponent;
 
   @ViewChild(IonSlides , null) slides;
