@@ -1,27 +1,28 @@
-<ion-header>
+<ion-header class="mobile-only">
   <app-header></app-header>
 </ion-header>
-<ion-content>
+<ion-content appScrollbarTheme>
 
-    <app-map></app-map>
-    <app-banner></app-banner>
+  <app-map></app-map>
+  <app-banner></app-banner>
+
+
+  <ion-item lines="none" color="light">
+      <ion-label slot="start">
+          <span class="font-20 heading-one">What's Nearby! </span> 
+      </ion-label>
+      <ion-label text-right *ngIf="currentPlaceName!==''" (click)="showPlaceSelectionModal()">
+          <p class="font-20 heading-one">{{ currentPlaceName}}</p>
+      </ion-label>
+      <ion-label slot="end" *ngIf="currentPlaceName===''">
+          <ion-spinner name="dots" ></ion-spinner>
+      </ion-label>
+      <ion-icon name="create" slot="end" *ngIf="currentPlaceName!==''" (click)="showPlaceSelectionModal()"></ion-icon>
+  </ion-item>
 
   <ion-grid no-padding no-margin>
     <ion-row no-padding no-margin>
       <ion-col size="12" no-padding>
-          <ion-item lines="none" color="light" >
-              <ion-label slot="start">
-                <span>What's Nearby! </span> 
-              </ion-label>
-              <ion-text slot="end" *ngIf="currentPlaceName!==''" (click)="showPlaceSelectionModal()">
-                  <span>{{ currentPlaceName}}
-                      <ion-icon name="create" ></ion-icon>
-                  </span>
-              </ion-text>
-              <ion-label *ngIf="currentPlaceName===''">
-                  <ion-spinner name="dots" ></ion-spinner>
-              </ion-label>
-            </ion-item>
               <ion-grid>
                 <ion-row>
                   <ion-col size="12" size-md="6" size-lg="6" *ngFor="let store of stores">

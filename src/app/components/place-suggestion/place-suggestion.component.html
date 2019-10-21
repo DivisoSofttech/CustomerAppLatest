@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
      <ion-buttons>
-    <ion-searchbar #placeSearch showCancelButton debounce="1500" placeholder="Enter Location Name"
+    <ion-searchbar #placeSearch showCancelButton="always" debounce="1500" placeholder="Enter Location Name"
       (ionCancel)="close()" (ionChange)="getPlacePredictions($event)"></ion-searchbar>
   </ion-buttons>
   </ion-toolbar>
@@ -10,8 +10,25 @@
 <ion-content>
 <!--List Of Available place Suggestions-->
 <ion-spinner name="bubbles" *ngIf="showSpinner"></ion-spinner>
+<ion-list *ngIf="searchTerm === '' && recentPlaces.length > 0">
+  <ion-list-header>
+    <ion-label>
+      <h4>Recent Place's</h4>
+    </ion-label>
+  </ion-list-header>
+  <ion-item lines="full" *ngFor="let place of recentPlaces" (click)="selectPlace(place)">
+    <ion-label>
+      {{place.description}}
+    </ion-label>
+  </ion-item>
+</ion-list>
 <ion-list *ngIf="places.length > 0 && !showSpinner">
     <ion-item *ngFor="let place of places" (click)="selectPlace(place)">
       {{ place.description }}</ion-item>
   </ion-list>
+  <ion-fab  vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="closeCurrent()">
+        <ion-icon name="locate"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

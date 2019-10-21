@@ -1,13 +1,13 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { QueryResourceService } from 'src/app/api/services';
-import { Order, OrderLine, Product, AuxilaryLineItem, ComboLineItem, Store, CommandResource } from 'src/app/api/models';
+import { Order, OrderLine, Product, Store, CommandResource, AuxilaryOrderLine } from 'src/app/api/models';
 import { CartService } from 'src/app/services/cart.service';
-import { AlertController, NavController, ModalController } from '@ionic/angular';
-import { ModalDisplayUtilService } from 'src/app/services/modal-display-util.service';
+import { ModalController, NavController } from '@ionic/angular';
 import { OrderService } from 'src/app/services/order.service';
 import { Subscription } from 'rxjs';
 import { Util } from 'src/app/services/util';
+import { MakePaymentComponent } from '../make-payment/make-payment.component';
 
 @Component({
   selector: 'app-order-detail',
@@ -19,13 +19,13 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
 
   @Input() order: Order;
 
-  orderLines: OrderLine[] = [];
-
   products: Product[] = [];
 
-  auxilaries = {};
+  auxilariesProducts = {};
 
-  comboLineItems = {};
+  orderLines: OrderLine[] = [];
+
+  auxilaryOrderLines: AuxilaryOrderLine = {};
 
   taskDetailsSubscription: Subscription;
   orderLinesByOrderIdSubscription: Subscription;
@@ -39,10 +39,19 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     private queryResource: QueryResourceService,
     private cartService: CartService,
     private modalController: ModalController,
-    private displayModalService: ModalDisplayUtilService,
     private orderService: OrderService,
+    private navController: NavController,
     private util: Util
   ) { }
+
+
+  async presentMakePayment() {
+    this.modalController.dismiss();
+    const modal = await this.modalController.create({
+      component: MakePaymentComponent
+    });
+    return await modal.present();
+  }
 
   completePayment() {
     this.util.createLoader().then(loader => {
@@ -60,59 +69,86 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
         this.orderService.resource = resource;
         loader.dismiss();
         this.dismiss();
-        this.displayModalService.presentMakePayment();
+        this.presentMakePayment();
       });
     });
   }
 
   ngOnInit() {
     this.logger.info(this.order);
-    this.getOrderLines();
+    // this.getOrderDetails();
+    this.getOrderLines(0);
   }
 
   ngOnDestroy() {
     console.log('Ng Destroy calls in orderDetail component');
-    if (this.taskDetailsSubscription !== undefined) {
-      this.taskDetailsSubscription.unsubscribe();
-    }
-    this.orderLinesByOrderIdSubscription.unsubscribe();
-    this.productByProductIdSubscrption.unsubscribe();
-    this.auxilayByProductIdSubscription.unsubscribe();
+    this.taskDetailsSubscription !== undefined?this.taskDetailsSubscription.unsubscribe():null;
+    this.orderLinesByOrderIdSubscription !== undefined?this.orderLinesByOrderIdSubscription.unsubscribe():null
+    this.productByProductIdSubscrption !== undefined?this.productByProductIdSubscrption.unsubscribe():null;
+    this.auxilayByProductIdSubscription !==undefined?this.auxilayByProductIdSubscription.unsubscribe():null;
   }
 
-  getOrderLines() {
+  getOrderDetails() {
+    this.queryResource.getOrderAggregatorUsingGET(this.order.orderId)
+    .subscribe(data => {
+      this.logger.error(data);
+    })
+  }
+
+  getOrderLines(i) {
     this.orderLinesByOrderIdSubscription = this.queryResource.findOrderLinesByOrderIdUsingGET(this.order.id)
     .subscribe(orderLines => {
       this.orderLines = orderLines;
       this.orderLines.forEach(o => {
+        this.auxilariesProducts[o.productId] = [];
+        this.auxilaryOrderLines[o.id] = [];
         this.getProducts(o.productId);
+        this.getAuxilaryOrderLines(o,0);
       });
+      i++;
+      // if(i < orderLines.totalPages) {
+
+      // }
     });
+  }
+
+  getAuxilaryOrderLines(o , i) {
+    this.queryResource.findAuxilaryOrderLineByOrderLineIdUsingGET({
+      orderLineId: o.id
+    })
+    .subscribe(auxLines => {
+      auxLines.content.forEach(auxLine => {
+        this.auxilaryOrderLines[o.id].push(auxLine);
+        this.getAuxilaryProduct(o.productId,auxLine.productId)
+      });
+      i++;
+      if(i < auxLines.totalPages) {
+        this.getAuxilaryOrderLines(o,i);
+      } else {
+        this.logger.info('Fetched All Auxilaries');
+      }
+    })
   }
 
   getProducts(id) {
    this.productByProductIdSubscrption =  this.queryResource.findProductByIdUsingGET(id)
     .subscribe(data => {
       this.products[data.id] = data;
-      this.auxilaries[data.id] = [];
-      this.getAuxilary(data , 0);
     });
   }
 
-  getAuxilary(product: Product , i) {
-    this.auxilayByProductIdSubscription = this.queryResource.findAuxilariesByProductIdUsingGET(product.id)
-    .subscribe(pauxProducts => {
-      pauxProducts.content.forEach(apr => {
-        this.auxilaries[product.id].push(apr);
-      });
-      ++i;
-      if (i < pauxProducts.totalPages) {
-        this.getAuxilary(product , i);
-      } else {
-        this.cartService.addAuxilary(product , this.auxilaries[product.id]);
-      }
+  getAuxilaryProduct(pid , id) {
+    this.queryResource.findProductByIdUsingGET(id)
+    .subscribe(auxProduct => {
+      this.logger.info(auxProduct.name , 'for' , pid);
 
-    });
+        //Hack to Make Product Usable in Places Where AuxilaryLineItem 
+      // is used Just add auxilaryItem key to the object
+
+      auxProduct['auxilaryItem']  = auxProduct;
+      this.auxilariesProducts[pid+''][id+''] = auxProduct;
+
+    })
   }
 
   reorder() {
@@ -128,9 +164,15 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
   addToCart() {
     this.cartService.addShop(this.store);
     this.orderLines.forEach(o => {
-      if (o.requiedAuxilaries === null) {
+      if (this.auxilaryOrderLines[o.id] === undefined) {
        delete o.requiedAuxilaries;
+      } else {
+        o.requiedAuxilaries = this.auxilaryOrderLines[o.id];
+        this.cartService.auxilaryItems[o.productId] = this.auxilariesProducts[o.productId];
       }
+      this.logger.info(o);
+      this.modalController.dismiss();
+      this.navController.navigateForward('/basket');
       this.cartService.addOrder(o);
     });
   }

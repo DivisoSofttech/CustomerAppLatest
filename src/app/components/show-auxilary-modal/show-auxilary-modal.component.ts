@@ -28,6 +28,7 @@ export class ShowAuxilaryModalComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.logger.info('ShowAuxModal' , this.auxilaryItems);
     if (this.type !== 'update') {
       this.orderLine = {
         pricePerUnit: this.product.sellingPrice,

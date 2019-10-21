@@ -2,10 +2,28 @@ ion-label {
     margin: 0px 5px;
 }
 
+.logo {
+    width: 100px;
+}
+
+ion-spinner {
+    margin: auto;
+    width: 100%;
+    margin-top: 25vh;
+}
+
 .container {
     height:100vh;position:fixed;
     background:white;
     opacity: 1;
+}
+
+.avatar {
+    margin: 9px;
+    border-radius: 50%;
+    overflow: hidden;
+    width: 45px;
+    height: 45px;
 }
 
 app-restaurant-card {

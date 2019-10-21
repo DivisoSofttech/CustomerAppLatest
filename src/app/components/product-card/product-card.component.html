@@ -29,7 +29,12 @@
           </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col size="10" size-md="6" size-lg="6" *ngIf="auxilaryLoadComplete" >
+          <ion-col size="8" *ngIf="!auxilaryLoadComplete">
+            <ion-text>
+                <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-text>
+          </ion-col>
+          <ion-col size="8"  *ngIf="auxilaryLoadComplete" >
             <ion-buttons>
               <ion-button (click)="remove(0, stockCurrent)" color="medium">
                 <ion-icon name="remove"></ion-icon>
@@ -40,9 +45,10 @@
               </ion-button>
             </ion-buttons>
           </ion-col>
-          <ion-col size="2" offsetLg="4" offsetMd="4">
-            <ion-buttons >
+          <ion-col size="4" >
+            <ion-buttons class="ion-justify-content-end" >
               <ion-button
+              slot="end"
                 fill="none"
                 (click)="addToFavourite(stockCurrent.product)"
                 *ngIf="!isFavourite && showFavourite"
@@ -50,6 +56,7 @@
                 <ion-icon slot="icon-only" name="heart-empty"></ion-icon>
               </ion-button>
               <ion-button
+              slot="end"
                 fill="none"
                 (click)="removeFromFavourite(stockCurrent.product)"
                 *ngIf="isFavourite && showFavourite"
@@ -95,22 +102,52 @@
   </div>
 </ion-card>
 
-  <ion-item  *ngIf="product !== undefined && type === 'minimal'">
-      <ion-thumbnail class="img-small">
-          <ion-img
-            [src]="
-              'data:' +
-              product.imageContentType +
-              ';base64,' +
-              product.image
-            "
-            class="imageShow"
-          >
-          </ion-img>
-        </ion-thumbnail>
-        <ion-label class="ion-margin" *ngIf="orderLine !== undefined">
-          <h1>{{product.name}}</h1>
-          <span>{{orderLine.quantity + ' x &#8364;' + orderLine.pricePerUnit + ' '}}</span>
-          <span>{{'Total: &#8364;' + (orderLine.total |  number: "1.1-2")}}</span>
-        </ion-label>
-  </ion-item>
+<ion-card *ngIf="product !== undefined && type === 'minimal'"
+class="ion-no-padding"> 
+  <ion-card-header class="ion-no-padding">
+      <ion-item lines="full">
+          <ion-thumbnail class="img-small">
+              <ion-img
+                [src]="
+                  'data:' +
+                  product.imageContentType +
+                  ';base64,' +
+                  product.image
+                "
+                class="imageShow"
+              >
+              </ion-img>
+            </ion-thumbnail>
+            <ion-label class="ion-margin" *ngIf="orderLine !== undefined">
+              <h1>{{product.name}}</h1>
+              <span>{{orderLine.quantity + ' x &#8364;' + orderLine.pricePerUnit + ' '}}</span>
+              <span>{{'Total: &#8364;' + (orderLine.total |  number: "1.1-2")}}</span>
+            </ion-label>   
+      </ion-item> 
+  </ion-card-header>
+  <ion-card-content *ngIf="auxilaryOrderLine.length > 0">
+      <ion-list>
+          <ion-item *ngFor="let auxLine of auxilaryOrderLine" lines="none">
+            <ion-thumbnail *ngIf="auxilariesProducts[auxLine.productId] !== null
+            && auxilariesProducts[auxLine.productId] !== undefined" class="img-small">
+              <ion-img 
+                [src]="
+                  'data:' +
+                  auxilariesProducts[auxLine.productId].imageContentType +
+                  ';base64,' +
+                  auxilariesProducts[auxLine.productId].image
+                "
+                class="imageShow"
+              >
+              </ion-img>
+            </ion-thumbnail>
+            <ion-label margin *ngIf="auxilariesProducts[auxLine.productId] !== null &&
+            auxilariesProducts[auxLine.productId] !== undefined">
+              <h1>{{auxilariesProducts[auxLine.productId].name}}</h1>
+              <span>{{auxLine.quantity + ' x &#8364;' + auxLine.pricePerUnit + ' '}}</span>
+              <span>{{'Total: &#8364;' + (auxLine.total |  number: "1.1-2")}}</span>
+            </ion-label>
+          </ion-item>
+        </ion-list>  
+  </ion-card-content>
+</ion-card>

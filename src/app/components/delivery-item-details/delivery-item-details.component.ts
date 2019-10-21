@@ -46,7 +46,7 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
 
   auxilaryItems;
 
-  currentDeliveryMode = 'collection';
+  currentDeliveryMode = 'delivery';
 
   constructor(
     private cart: CartService,
@@ -62,13 +62,17 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
     this.productBaseAuxItemsArray = this.cart.auxilaryItems;
     this.getOffers();
   }
+  
+  animateSlide() {
 
+  }
+  
   getCartDetails() {
     this.cartSubscription = this.cart.observableTickets.subscribe(data => {
       this.logger.info('Getting cart Details', data);
       this.totalPrice = this.cart.totalPrice;
       this.orders = data;
-      this.storeSetting = this.cart.currentShopSetting;
+      this.storeSetting = this.cart.currentShop.storeSettings;
       this.store = this.cart.currentShop;
       this.auxilaryItems = this.cart.auxilaryItems;
       this.getAllProductsFromOrders();
@@ -154,6 +158,7 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
   }
 
   async showAddAuxilaryPopover(p) {
+    console.warn('kjkjkjkj' , this.cart.auxilaryItems[p.id]);
     const popoverElement = await this.popover.create({
       component: ShowAuxilaryModalComponent,
       componentProps: {

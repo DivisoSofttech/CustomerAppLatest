@@ -2,7 +2,7 @@ import { CartService } from './../../services/cart.service';
 import { Router } from '@angular/router';
 import { FavouriteService } from './../../services/favourite.service';
 import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
-import { StockCurrent, AuxilaryLineItem, ComboLineItem, Discount, OrderLine } from 'src/app/api/models';
+import { StockCurrent, AuxilaryLineItem, ComboLineItem, Discount, OrderLine, AuxilaryOrderLine } from 'src/app/api/models';
 import { PopoverController, IonInput } from '@ionic/angular';
 import { QueryResourceService } from 'src/app/api/services';
 import { NGXLogger } from 'ngx-logger';
@@ -34,14 +34,21 @@ export class ProductCardComponent implements OnInit , OnDestroy {
 
   @Input() orderCount  = 0;
 
-  @Input() orderLine: OrderLine;
-
-  @Input() product;
-
   auxilaryLoadComplete = false;
   
   discount: Discount;
 
+
+
+  @Input() orderLine: OrderLine;
+
+  @Input() auxilaryOrderLine: AuxilaryOrderLine[] = [];
+
+  @Input() auxilariesProducts = [];
+
+  @Input() product;
+
+  
   @ViewChild('orderCountInput' , null) orderCountInput: IonInput;
   keycloakSubscrption: any;
 
@@ -62,7 +69,6 @@ export class ProductCardComponent implements OnInit , OnDestroy {
   }
 
   async ngOnInit() {
-
   if (this.type === 'full') {
       this.keycloakSubscrption = this.keycloakService.getUserChangedSubscription()
       .subscribe((data: any) => {
@@ -85,9 +91,6 @@ export class ProductCardComponent implements OnInit , OnDestroy {
         this.getComboItems(0);
       }
     } else {
-
-      
-
     }
   }
 
@@ -150,7 +153,10 @@ export class ProductCardComponent implements OnInit , OnDestroy {
   }
 
   add(i, stock: StockCurrent) {
-    this.cartService.addShop(this.store);
+    if(this.store.id !== this.cartService.storeId) {
+      this.cartService.addShop(this.store);
+      this.cartService.behaviourStore.next(this.store);
+    }
     if (this.auxilaries.length > 0 && this.stockCurrent.product.isAuxilaryItem === false) {
       this.logger.info('Add Auxilary Items ' , this.auxilaries);
       this.cartService.addAuxilary(this.stockCurrent.product , this.auxilaries);
@@ -172,6 +178,7 @@ export class ProductCardComponent implements OnInit , OnDestroy {
   async showAddAuxilaryPopover() {
     this.cartService.addShop(this.store);
     const popoverElement = await this.popover.create({
+
       component: ShowAuxilaryModalComponent,
       componentProps: {
           auxilaryItems: this.auxilaries,

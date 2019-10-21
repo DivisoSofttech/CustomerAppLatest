@@ -53,6 +53,8 @@ import { OrderDetailComponent } from './order-detail/order-detail.component';
 import { MaterialModule } from './material.module';
 import { NotificationCardComponent } from './notification-card/notification-card.component';
 import { PlaceSuggestionComponent } from './place-suggestion/place-suggestion.component';
+import { DirectiveModule } from '../directives/directive.module';
+import { OrderSummaryComponent } from './order-summary/order-summary.component';
 
 @NgModule({
   declarations: [
@@ -102,7 +104,8 @@ import { PlaceSuggestionComponent } from './place-suggestion/place-suggestion.co
     ErrorComponent,
     ForgetPasswordComponent,
     NotificationCardComponent,
-    PlaceSuggestionComponent
+    PlaceSuggestionComponent,
+    OrderSummaryComponent
   ],
 
   imports: [
@@ -113,6 +116,7 @@ import { PlaceSuggestionComponent } from './place-suggestion/place-suggestion.co
     IonicModule,
     RouterModule,
     MaterialModule,
+    DirectiveModule,
     CountdownModule
 
 
@@ -161,7 +165,8 @@ import { PlaceSuggestionComponent } from './place-suggestion/place-suggestion.co
     ErrorComponent,
     ForgetPasswordComponent,
     NotificationCardComponent,
-    PlaceSuggestionComponent
+    PlaceSuggestionComponent,
+    OrderSummaryComponent
   ],
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -195,7 +200,8 @@ import { PlaceSuggestionComponent } from './place-suggestion/place-suggestion.co
     OrderDetailComponent,
     ErrorComponent,
     NotificationCardComponent,
-    PlaceSuggestionComponent
+    PlaceSuggestionComponent,
+    OrderSummaryComponent
   ]
 })
 export class ComponentsModule { }

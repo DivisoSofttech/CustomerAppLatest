@@ -11,7 +11,7 @@ import { OrderService } from 'src/app/services/order.service';
 import { OrderCommandResourceService } from 'src/app/api/services';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { LoginSignupComponent } from '../login-signup/login-signup.component';
-import { Subscription } from 'rxjs';
+import { Subscription, BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-cart',
@@ -47,8 +47,14 @@ export class CartComponent implements OnInit, OnDestroy {
   storeSetting: StoreSettings;
   deliveryOk = false;
   collectionOk = false;
+  defaultDelivery = false;
 
   initiateOrderSubcription: Subscription;
+
+  // Temproary hack to fix login modal opening multiple times
+  loginModalOpen = false;
+
+  keycloakSubscription: Subscription;
 
 
   @Output() viewClick = new EventEmitter();
@@ -63,13 +69,19 @@ export class CartComponent implements OnInit, OnDestroy {
     private modalController: ModalController,
     private navController: NavController,
     private logger: NGXLogger,
-    private util: Util,
-    private orderCommandResource: OrderCommandResourceService
+    private util: Util
   ) {}
 
   ngOnInit() {
     this.getCartDetails();
     this.getCustomer();
+    if(this.viewType === 'full') {
+      this.cart.behaviourDeliveryTypes.subscribe(data => {
+        if(data !== undefined) {
+          this.checkDeliveryTypeExists();
+        } 
+      });  
+    }
   }
 
   ngOnDestroy() {
@@ -77,6 +89,7 @@ export class CartComponent implements OnInit, OnDestroy {
     if (this.initiateOrderSubcription !== undefined) {
       this.initiateOrderSubcription.unsubscribe();
     }
+    this.keycloakSubscription !== undefined?this.keycloakSubscription.unsubscribe():null;
   }
 
   routeBasket() {
@@ -85,8 +98,9 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   async loginModal(continueMethod) {
+    this.logger.info('CartComponent Login Modal');
     if (this.guest === true) {
-      const modal = await this.modalController.create({
+          const modal = await this.modalController.create({
         component: LoginSignupComponent,
         componentProps: { type: 'modal' }
       });
@@ -95,6 +109,8 @@ export class CartComponent implements OnInit, OnDestroy {
       modal.onDidDismiss().then(data => {
         if (data.data) {
           continueMethod();
+        } else {
+          this.navController.back();
         }
       });
     } else {
@@ -105,12 +121,17 @@ export class CartComponent implements OnInit, OnDestroy {
   getCustomer() {
     this.util.createLoader().then(loader => {
       loader.present();
-      this.keycloakService.getUserChangedSubscription()
+      this.keycloakSubscription = this.keycloakService.getUserChangedSubscription()
       .subscribe(user => {
         this.customer  = user;
         if (user === null || user.preferred_username === 'guest') {
           this.guest = true;
+          if(this.viewType==='full' && this.loginModalOpen === false) {
+            this.loginModalOpen = true;
+            this.loginModal(()=>{});
+          }
         } else {
+          this.loginModalOpen = true;
           this.guest = false;
         }
     });
@@ -118,6 +139,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   checkDeliveryTypeExists() {
+    this.logger.info('Checking delivery Types');
     if (this.cart.currentDeliveryTypes !== undefined) {
       if (this.cart.currentDeliveryTypes.length === 1) {
         if (this.cart.currentDeliveryTypes[0].name === 'delivery') {
@@ -126,6 +148,7 @@ export class CartComponent implements OnInit, OnDestroy {
         } else if (this.cart.currentDeliveryTypes[0].name === 'collection') {
           this.collectionOk = true;
           this.currentSegment = 'collection';
+          this.defaultDelivery = false;
         }
       } else {
         this.cart.currentDeliveryTypes.forEach(element => {
@@ -133,6 +156,7 @@ export class CartComponent implements OnInit, OnDestroy {
             this.deliveryOk = true;
           } else if (element.name === 'collection') {
             this.collectionOk = true;
+            this.defaultDelivery = false;
           }
         });
       }
@@ -150,7 +174,6 @@ export class CartComponent implements OnInit, OnDestroy {
       this.orderLines = data;
       this.storeSetting = this.cart.currentShopSetting;
       this.store = this.cart.currentShop;
-      this.checkDeliveryTypeExists();
       if (this.store !== undefined && this.store.minAmount > this.totalPrice) {
         this.neededCheckOutAmount = this.store.minAmount - this.totalPrice;
       } else {
@@ -218,7 +241,9 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   segmenChanged(event) {
-    this.delivery.currentDeliveryMode = event.detail.value;
-    this.currentSegment = event.detail.value;
+    if(this.delivery !== undefined) {
+      this.delivery.currentDeliveryMode = event.detail.value;
+      this.currentSegment = event.detail.value;  
+    }
   }
 }

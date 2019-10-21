@@ -59,27 +59,27 @@ export class FilterService {
     return this.currentFilter;
   }
 
-  public getStores(pageNumber, success) {
+  public getStores(pageNumber, success , error?) {
     switch (this.currentFilter) {
       case FILTER_TYPES.NO_FILTER:
         this.logger.info('Finding All Stores');
-        this.getStoreNoFilter(pageNumber,success);
+        this.getStoreNoFilter(pageNumber,success , error);
         break;
       case FILTER_TYPES.DELIVERY_TIME:
-        this.getStoreByDeliveryTime(pageNumber , success);
+        this.getStoreByDeliveryTime(pageNumber , success , error);
         break;
       case FILTER_TYPES.DISTANCE_WISE:
         this.logger.info('Finding Store By Distance and Location' , this.distance);
-        this.getStoreByDistance(pageNumber, success);
+        this.getStoreByDistance(pageNumber, success , error);
         break;
       case FILTER_TYPES.TOP_RATED:
         this.logger.info('Finding Store By Rating');
-        this.getStoreByRating(pageNumber, success);
+        this.getStoreByRating(pageNumber, success , error);
         break;
     }
   }
 
-  private getStoreByDistance(pageNumber, success) {
+  private getStoreByDistance(pageNumber, success , error?) {
     this.logger.info('Getting STores Via Distance Filter');
     if (this.currentCordinates !== undefined) {
       this.locationBehaviour.next(this.currentCordinates);
@@ -97,7 +97,7 @@ export class FilterService {
     }
   }
 
-  private getStoreByRating(pageNumber, success) {
+  private getStoreByRating(pageNumber, success , error?) {
     this.logger.info('Getting STores Via Rating Filter');
     this.queryResource.findStoreByRatingUsingGET(
     ).subscribe(data => {
@@ -105,10 +105,11 @@ export class FilterService {
     },
     err => {
       this.logger.error('Error Finding Store By Distance' , err);
+      error();
     });
   }
 
-  private getStoreNoFilter(pageNumber , success) {
+  private getStoreNoFilter(pageNumber , success , error?) {
     this.logger.info('Getting STores Via No Filter');
     this.queryResource.findAllStoresUsingGET({
       page: pageNumber
@@ -118,10 +119,11 @@ export class FilterService {
     },
     err => {
       this.logger.error('Error Finding Stores' , err);
+      error();
     });
   }
 
-  private getStoreByDeliveryTime(pageNumber , success) {
+  private getStoreByDeliveryTime(pageNumber , success , error?) {
     this.logger.info('Getting STores Via Delivery Time Filter');
     this.queryResource.findAndSortStoreBydeliveryTimeUsingGET({
       page: pageNumber
@@ -131,6 +133,7 @@ export class FilterService {
     },
     err => {
       this.logger.error('Error Finding Stores' , err);
+      error();
     });
   }
 

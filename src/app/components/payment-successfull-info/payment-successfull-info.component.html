@@ -1,8 +1,8 @@
-<ion-header>
+<ion-header no-border>
   <ion-toolbar>
-    <ion-buttons>
-      <ion-button (click)="dismiss()">
-        <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()" id="closeButton">
+        <ion-icon name="close-circle" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -10,10 +10,10 @@
 <ion-content>
   <ion-grid>
     <ion-row>
-      <ion-col>
+      <ion-col size="12">
         <ion-img src="assets/images/tick4.gif" class="gif"> </ion-img>
       </ion-col>
-      <ion-col *ngIf="method!='cod'">
+      <ion-col *ngIf="method!='cod'" size="12">
         <ion-item lines="none" text-center>
           <ion-label>Thank you</ion-label>
         </ion-item>
@@ -21,16 +21,16 @@
             <ion-label >Payment received</ion-label>
         </ion-item>
       </ion-col>
-      <ion-col *ngIf="method=='cod'">
+      <ion-col *ngIf="method=='cod'" size="12">
         <ion-item lines="none" text-center>
-            <ion-label class="font-bold">Keep ready &#8364;{{total}} </ion-label>
+            <ion-label class="font-bold font-20">Keep ready &#8364;{{total}} </ion-label>
         </ion-item>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
         <ion-item lines="none" text-center>
-          <ion-label class="font-bold">
+          <ion-label class="font-bold font-20">
             Order Placed for : &#8364;{{total}} 
           </ion-label>
         </ion-item>
@@ -39,24 +39,26 @@
     <ion-row>
       <ion-col>
         <ion-item lines="none" text-center>
-          <ion-label>
+          <ion-label class="font-20">
               Track your order with {{ref}}
           </ion-label>
         </ion-item>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col text-center>
-          <ion-button (click)="dismiss()">Order Details
+    <ion-row class="mr-top-20">
+      <ion-col text-center size="12">
+          <ion-button (click)="showOrderDetails()" class="custom-btn" expand="block">Order Details
               <ion-icon name="arrow-forward" class="arrow"></ion-icon>
           </ion-button>
-        <ion-button (click)="dismiss()">Order More
+      </ion-col>
+      <ion-col text-center size="12" >
+        <ion-button class="custom-btn" color="light"  expand="block" (click)="dismiss()">Order More
             <ion-icon name="arrow-forward" class="arrow"></ion-icon>
         </ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
-<ion-footer>
+<!-- <ion-footer>
   <app-footer></app-footer>
-</ion-footer>
+</ion-footer> -->

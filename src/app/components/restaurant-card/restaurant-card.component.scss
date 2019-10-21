@@ -3,13 +3,24 @@
   top: 0%;
   height: 120px;
   width: 120px;
+  border-radius: 6px !important;
+  overflow: hidden;
+
 }
+
+
 ion-card {
   margin: 0px;
 }
+
+
 ion-card-header {
   padding: 5px;
   height: 150px;
+}
+
+.closeCard {
+  border-radius:0px;
 }
 
 .overlay {
@@ -72,8 +83,7 @@ h4 , p{
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg);
   color: beige;
-  border: 1px dashed;
-  box-shadow: 0 0 0 7px #f04141, 0px 21px 5px -18px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 0 5px #f04141, 0px 21px 5px -18px rgba(0, 0, 0, 0.6);
   background: #f04141;
   text-align: center;
 }

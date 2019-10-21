@@ -1,9 +1,14 @@
-<ion-header>
+<ion-header class="mobile-only">
   <app-store-header *ngIf="store != undefined" [name]="store.name" [storeId]="store.regNo" [store]="store"
     (searchEnable)="toggleFabButton($event)"></app-store-header>
 </ion-header>
 
-<ion-content>
+<ion-header class="desktop-only" no-border>
+    <app-store-header *ngIf="store != undefined" [name]="store.name" [storeId]="store.regNo" [store]="store"
+      (searchEnable)="toggleFabButton($event)"></app-store-header>
+  </ion-header>  
+
+<ion-content appScrollbarTheme>
   <ion-fab class="animated animation-duration"
     [ngClass]="(currentSegment === 'menu' && showCatgeoryFilterFab) ? 'rotateIn' : 'rotateOut'" vertical="top"
     horizontal="end" slot="fixed">
@@ -32,10 +37,10 @@
       <ion-slide>
         <ion-grid no-padding>
           <ion-row>
-          <ion-col size-lg="6" size-md="6" size="12" *ngFor="let category of categories" no-margin no-padding>          
-            <ion-list *ngIf="store != undefined && showCategoryWiseProducts === false">
+          <ion-col size-lg="6" size-md="6" *ngIf="store !== undefined && showCategoryWiseProducts === false" size="12" no-margin no-padding>          
+            <ion-list >
               <app-product-card *ngFor="let stockCurrent of stockCurrents" [store]="store"
-                [stockCurrent]="stockCurrent"></app-product-card>
+                [stockCurrent]="stockCurrent" [type]=""></app-product-card>
             </ion-list>
             </ion-col>
           </ion-row>

@@ -83,10 +83,12 @@ export class ProcessPaymentComponent implements OnInit, OnDestroy {
   navigateToBasket() {
     this.navController.navigateForward('basket');
   }
+  
   async presentPaymentSuccessfullInfo() {
     this.modalController.dismiss();
     const modal = await this.modalController.create({
-      component: PaymentSuccessfullInfoComponent
+      component: PaymentSuccessfullInfoComponent,
+      backdropDismiss: false
     });
     return await modal.present();
   }

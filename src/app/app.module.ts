@@ -35,6 +35,11 @@ import { Sim } from '@ionic-native/sim/ngx';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { BackgroundMode } from '@ionic-native/background-mode/ngx';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { ForegroundService } from '@ionic-native/foreground-service/ngx';
+import { BannerComponent } from './components/banner/banner.component';
+import { NotificationComponent } from './components/notification/notification.component';
+import { ErrorService } from './services/error.service';
 
 const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', options: {} };
 
@@ -42,7 +47,7 @@ const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', 
 
   declarations: [AppComponent],
 
-  entryComponents: [],
+  entryComponents: [BannerComponent , NotificationComponent],
 
   imports: [
     BrowserModule,
@@ -75,7 +80,9 @@ const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', 
     Util,
     SplashScreen,
     LocalNotifications,
+    AndroidPermissions,
     BackgroundMode,
+    // ForegroundService,
     PayPal,
     Sim,
     InAppBrowser,
@@ -90,6 +97,7 @@ const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', 
     FavouriteService,
     CartService,
     OrderService,
+    ErrorService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

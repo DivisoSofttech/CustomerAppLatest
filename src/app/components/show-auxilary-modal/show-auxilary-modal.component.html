@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-        <ion-title>Add Extras</ion-title>
+      <ion-title>Add Extras</ion-title>
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button (click)="dismiss()">
@@ -12,12 +12,12 @@
 </ion-header>
 <ion-content>
   <ion-list *ngIf="auxilaryItems.length > 0">
-    <app-auxilary-product-card
-      *ngFor="let a of auxilaryItems"
-      [auxilaryItem]="a.auxilaryItem"
-      [product]="a.product"
-      (auxilaryUpdated)="auxilaryUpated($event)"
-    ></app-auxilary-product-card>
+    <div *ngFor="let a of auxilaryItems">
+      <app-auxilary-product-card 
+      *ngIf="a !== undefined"
+      [auxilaryItem]="a.auxilaryItem" [product]="a.product"
+        (auxilaryUpdated)="auxilaryUpated($event)"></app-auxilary-product-card>
+    </div>
   </ion-list>
   <div *ngIf="type=='update' && auxilaryItems.length === 0">
     All Auxilaries Added

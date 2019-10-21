@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ErrorService } from 'src/app/services/error.service';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-error',
@@ -7,8 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ErrorComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private modalController: ModalController
+  ) { }
 
   ngOnInit() {}
+
+  refresh() {
+    this.modalController.dismiss();
+  }
 
 }

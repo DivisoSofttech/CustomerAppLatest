@@ -15,6 +15,7 @@ import { RestaurantCardComponent } from 'src/app/components/restaurant-card/rest
 import { HotelMenuPopoverComponent } from 'src/app/components/hotel-menu-popover/hotel-menu-popover.component';
 import { LoadingComponent } from 'src/app/components/loading/loading.component';
 import { CategoryWiseProductsCardComponent } from 'src/app/components/category-wise-products-card/category-wise-products-card.component';
+import { DirectiveModule } from 'src/app/directives/directive.module';
 
 const routes: Routes = [
   {
@@ -29,6 +30,7 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     ComponentsModule,
+    DirectiveModule,
     RouterModule.forChild(routes)
   ],
   declarations: [StorePage],

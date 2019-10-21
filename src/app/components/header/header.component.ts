@@ -18,6 +18,7 @@ import { Util } from 'src/app/services/util';
 import { NGXLogger } from 'ngx-logger';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { NotificationService } from 'src/app/services/notification.service';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-header',
@@ -40,6 +41,8 @@ export class HeaderComponent implements OnInit {
 
   loader: HTMLIonLoadingElement;
 
+  customer;
+
   @ViewChild(IonInfiniteScroll, null) infiniteScroll: IonInfiniteScroll;
   @ViewChild('restaurantSearch', null) restaurantSearch: IonSearchbar;
   keycloakSubscription: any;
@@ -47,13 +50,12 @@ export class HeaderComponent implements OnInit {
   notificationCount = 0;
 
   constructor(
-    private locationService: LocationService,
     private queryResource: QueryResourceService,
-    private util: Util,
     private logger: NGXLogger,
     private modalController: ModalController,
     private notificationService: NotificationService,
-    private keycloakService: KeycloakService
+    private keycloakService: KeycloakService,
+    private storage: Storage
   ) {}
 
   ngOnInit() {
@@ -70,6 +72,7 @@ export class HeaderComponent implements OnInit {
         if (data.preferred_username === 'guest') {
           this.notificationsOn = false;
         } else {
+          this.getUserProfile();
           this.notificationsOn = true;
         }
       } else {
@@ -78,8 +81,21 @@ export class HeaderComponent implements OnInit {
     });
   }
 
+  getUserProfile() {
+    this.storage.get('user')
+    .then(user => {
+      this.queryResource.findCustomerByReferenceUsingGET(user.preferred_username)
+      .subscribe(customer => {
+        this.customer = customer;
+      });
+    });
+  }
+
   getNotificationCount() {
-    this.notificationCount = this.notificationService.notificationCount;
+    this.notificationService.notificationBehaviouralSubject
+      .subscribe(count => {
+        this.notificationCount = count;
+      });
   }
 
   toggleSearchBar() {
@@ -132,7 +148,11 @@ export class HeaderComponent implements OnInit {
     this.logger.info('Getting Restaurants By Name');
     this.searchTerm = event.detail.value;
     this.storeSearchResults = [];
-    this.getSearchResults(0);
+    if(this.searchTerm !=='') {
+      this.getSearchResults(0);
+    } else {
+      this.showLoading = false;
+    }
   }
 
   loadMoreData(event) {

@@ -7,6 +7,7 @@ import { IonSlides, AlertController } from '@ionic/angular';
 import { QueryResourceService } from 'src/app/api/services';
 import { NGXLogger } from 'ngx-logger';
 import { FooterComponent } from 'src/app/components/footer/footer.component';
+import { GuestUserService } from 'src/app/services/security/guest-user.service';
 
 @Component({
   selector: 'app-profile',
@@ -28,13 +29,18 @@ export class ProfilePage implements OnInit {
 
   @ViewChild(FooterComponent , null) footer: FooterComponent;
 
+  @ViewChild(IonSlides , null) slides;
+  slidesMoving: boolean;
+  slidesHeight: number;
+
 
   constructor(
     private storage: Storage,
     private queryResource: QueryResourceService,
     private logger: NGXLogger,
     private keycloak: KeycloakService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private guestUserService: GuestUserService
   ) { }
 
   ngOnInit() {
@@ -65,6 +71,9 @@ export class ProfilePage implements OnInit {
         this.currentSegment = 'history';
       }
     });
+  }
+  slideWillChange () {
+    this.slidesMoving = true;
   }
 
   getUserProfile() {
@@ -107,7 +116,7 @@ export class ProfilePage implements OnInit {
         }
       }]
     });
-
+    this.guestUserService.logInGuest();
     await alert.present();
   }
 

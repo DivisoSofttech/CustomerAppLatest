@@ -16,9 +16,9 @@
         ></ion-img>
       </ion-avatar>
       <ion-text class="mg-left" *ngIf="customer !== null && keyCloakUser !== null">
-        <h2>{{ customer.name }}</h2>
-        <p>{{ keyCloakUser.email }}</p>
-        <p *ngIf="contact !== undefined">{{contact.mobileNumber}}</p>
+        <h2 class="font-20">{{ customer.name | titlecase }}</h2>
+        <p class="col-grey">{{ keyCloakUser.email }}</p>
+        <p class="col-grey" *ngIf="contact !== undefined">{{contact.mobileNumber}}</p>
       </ion-text>
     </ion-item>
   </ion-card-content>

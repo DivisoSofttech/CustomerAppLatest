@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header class="mobile-only">
   <ion-toolbar>
     <ion-buttons>
       <ion-menu-button slot="start" auto-hide="true"></ion-menu-button>
@@ -12,7 +12,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content appScrollbarTheme>
   <app-loading
     *ngIf="customer === undefined"
     [type]="'profile'">
@@ -42,7 +42,11 @@
     </ion-segment-button>
   </ion-segment>
 
-  <ion-slides (ionSlideDidChange)="slideChanged($event)">
+  <ion-slides 
+  [ngStyle]="{ 'height': slidesMoving ? 'auto' : (slidesHeight + 'px') }"
+  (ionSlideDidChange)="slideChanged($event)"
+  (ionSlideWillChange)="slideWillChange()"
+  >
     <!-- <ion-slide>
       <app-frequently-ordered-list></app-frequently-ordered-list>
     </ion-slide> -->

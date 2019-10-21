@@ -9,6 +9,11 @@
   display: none;
 }
 
-.something {
+.extra {
   width: 25%;
+  border-left: 1px solid lightgray;
+}
+
+app-banner {
+  height: 100%;
 }
