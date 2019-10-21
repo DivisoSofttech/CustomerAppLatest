@@ -30,7 +30,7 @@
 
 <ion-list>
 
-  <ion-card *ngIf="rateReviews.length === 0">
+  <ion-card *ngIf="rateReviews.length === 0 && showReviewLoading === false">
     <ion-card-content class="mfont">
       Reviews (0)
     </ion-card-content>

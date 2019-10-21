@@ -30,3 +30,41 @@ app-category-wise-products-card {
   backface-visibility: hidden;
   background-color: white;
 }
+
+.category {
+  width: 100%;
+}
+
+ion-slides , .categories {
+  width: 100% !important;
+}
+
+.cart-row {
+  position: sticky;
+  bottom: 0px;
+  z-index: 10000;
+  color: white;
+  background: #3880ff;
+  padding: 2px
+}
+
+.br-left {
+  border-left: 1px solid lightgrey;
+}
+
+
+@media (min-width: 1280px) and (max-width: 2280px) {
+  //CSS
+
+  .categories {
+    column-count: 2;
+    column-gap: 2px;
+
+  }
+
+  .category {
+    display: inline-block;
+    margin: 0;
+    padding: 0px;
+  }
+}

@@ -1,4 +1,4 @@
-import { ModalController, IonInfiniteScroll } from '@ionic/angular';
+import { ModalController, IonInfiniteScroll, NavController } from '@ionic/angular';
 import { MakePaymentComponent } from './../make-payment/make-payment.component';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services';
@@ -17,12 +17,15 @@ import { OrderDetailComponent } from '../order-detail/order-detail.component';
 })
 export class HistoryListComponent implements OnInit {
 
+  @Input() viewType = 'minimal';
+
   orders: Order[] = [];
 
   stores = {};
 
   showHistoryLoading = true;
 
+  @Input() lineFlag = "full";
   @Input() keyCloakUser;
   @ViewChild(IonInfiniteScroll, null) inifinitScroll: IonInfiniteScroll;
 
@@ -33,6 +36,7 @@ export class HistoryListComponent implements OnInit {
     private logger: NGXLogger,
     private orderService: OrderService,
     private modalController: ModalController,
+    private navController:NavController,
     private util: Util
       ) { }
 
@@ -111,7 +115,17 @@ export class HistoryListComponent implements OnInit {
         component: OrderDetailComponent,
         componentProps: {order: porder , store: this.stores[porder.storeId]}
       });
-  
+      
+      modal.onDidDismiss()
+      .then(data => {
+        if(data.data) {
+          console.error(data);
+          // Fix to dismiss This modal
+          this.dismiss();
+          this.navController.navigateForward('/basket');
+        }
+      });
+      
       modal.present();  
     } else {
 
@@ -140,4 +154,10 @@ export class HistoryListComponent implements OnInit {
 
   }
 
+  async dismiss() {
+    await this.modalController.getTop()
+    .then(modal=> {
+      modal.dismiss();
+    });
+  }
 }

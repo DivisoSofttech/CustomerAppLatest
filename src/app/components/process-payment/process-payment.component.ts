@@ -5,6 +5,7 @@ import { Util } from 'src/app/services/util';
 import { ModalController, NavController } from '@ionic/angular';
 import { PaymentSuccessfullInfoComponent } from '../payment-successfull-info/payment-successfull-info.component';
 import { Subscription } from 'rxjs';
+import { MakePaymentComponent } from '../make-payment/make-payment.component';
 
 
 
@@ -52,10 +53,10 @@ export class ProcessPaymentComponent implements OnInit, OnDestroy {
             this.behaviouralSubjectSubscription.unsubscribe();
             this.orderService.orderResourceBehaviour.next(resource.nextTaskName);
             this.presentPaymentSuccessfullInfo();
-            this.modalController.dismiss();
             loader.dismiss();
           }, (err) => {
              loader.dismiss();
+             this.behaviouralSubjectSubscription.unsubscribe();
              console.log('Error occured cod payment');
              this.util.createToast('Something went wrong try again', 'information-circle-outline');
              this.navigateToBasket();
@@ -74,10 +75,25 @@ export class ProcessPaymentComponent implements OnInit, OnDestroy {
     }
   }
 
+  async showMakePayment() {
+    console.log('showmakepayment called');
+    this.modalController.dismiss();
+    const modal = await this.modalController.create({
+      component: MakePaymentComponent,
+      backdropDismiss: false
+    });
+    return await modal.present();
+  }
+
   ngOnDestroy() {
     console.log('Ng destroy calls process payment');
     if (this.codPaymentSubscription !== undefined) {
       this.codPaymentSubscription.unsubscribe();
+    }
+
+    if (this.behaviouralSubjectSubscription !== undefined) {
+      console.log('Ng destroy calls process payment behavioural sub');
+      this.behaviouralSubjectSubscription.unsubscribe();
     }
   }
   navigateToBasket() {

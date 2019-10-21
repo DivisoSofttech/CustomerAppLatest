@@ -43,7 +43,7 @@ lines="full"
       <ion-col justify-content-center>
         <ion-card class="vertical-align-center h35">
           <ion-card-content text-center>
-            <ion-icon class="cart" name="basket"></ion-icon>
+            <ion-icon class="cart" name="cart"></ion-icon>
           </ion-card-content>
         </ion-card>
       </ion-col>
@@ -109,7 +109,7 @@ lines="full"
     *ngIf="orderLines.length !== 0"
   >
   <ion-segment-button *ngIf="deliveryOk" value="delivery" [checked]="deliveryOk">Delivery</ion-segment-button>
-    <ion-segment-button *ngIf="collectionOk" value="collection" [checked]="collectionOk && defaultDelivery">Collection</ion-segment-button>
+    <ion-segment-button *ngIf="collectionOk" value="collection" [checked]="collectionOk">Collection</ion-segment-button>
   </ion-segment>
 
   <div>

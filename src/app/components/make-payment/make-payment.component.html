@@ -15,8 +15,8 @@
         <ion-grid>
             <ion-row class="ion-margin-vertical">
               <ion-col text-center>
-                <ion-text>
-                    <h1><b>&euro;</b>{{toBePaid | number:'1.2-2'}}</h1>
+                <ion-text color="dark">
+                    <h1><b>&euro;{{toBePaid | number:'1.1-2'}}</b></h1>
                   <p>Total amount Due</p>
                 </ion-text>
               </ion-col>
@@ -36,7 +36,7 @@
     </ion-list-header>
     <ion-item *ngFor="let paymentOption of paymentOptions" >
       <ion-label>{{paymentOption.name}}</ion-label>
-      <ion-radio slot="start" value="{{paymentOption.value}}"></ion-radio>
+      <ion-radio slot="start" value="{{paymentOption.value}}" checked="{{paymentOption.isChecked}}"></ion-radio>
     </ion-item>
   </ion-radio-group>
 </ion-list>

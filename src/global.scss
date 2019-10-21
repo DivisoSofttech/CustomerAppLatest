@@ -32,6 +32,7 @@
 
 .heading-one {
   font-family: "Montserrat", sans-serif !important;
+  font-weight: bold;
 }
 
 .pointer {
@@ -124,11 +125,12 @@ ion-modal.modal-popover {
   border-bottom: 1px solid grey;
 }
 
-.split-pane-ios.split-pane-visible > .split-pane-side,
-.split-pane-md.split-pane-visible > .split-pane-side {
-  max-width: 350px;
-  min-width: 350px;
-}
+// .split-pane-ios.split-pane-visible > .split-pane-side,
+// .split-pane-md.split-pane-visible > .split-pane-side {
+//   max-width: 350px;
+//   min-width: 350px;
+// }
+
 .height-65 {
   height: 65%;
   overflow: hidden;
@@ -154,7 +156,6 @@ ion-popover {
   }
 }
 
-
 ion-modal.full {
   &.bottom {
     align-items: flex-end;
@@ -174,8 +175,44 @@ ion-modal.full {
   }
 }
 
-@media (min-width: 1300px) and (max-width: 2280px) {
+.sticky {
+  position: sticky !important;
+  top: 0px;
+  z-index: 100;
+}
+
+.invisible-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+// ion-loading.loader {
+//   .loading-wrapper {
+//     background: rgba(0, 0, 0, 0.02);
+//     color: white;
+//     box-shadow: none;
+//   }
+// }
+
+.pointer {
+  cursor: pointer;
+}
+
+ion-item.pointer:hover {
+  --background: #f4f5f8;
+}
+
+@media (min-width: 1280px) and (max-width: 2280px) {
   //CSS
+
+  .closeCard {
+    border-radius: 0px;
+    margin: 5px 10px !important;
+  }
+
+  ion-menu {
+    max-width: 300px !important;
+    min-width: 300px !important;
+  }
 
   ion-modal.full-height {
     &.bottom {

@@ -1,4 +1,19 @@
-<ion-scroll>
+
+<ion-header *ngIf="viewType==='modal'">
+  <ion-toolbar>
+      <ion-buttons>
+          <ion-title>
+            Order History
+          </ion-title>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-button (click)="dismiss()">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>      
+  </ion-toolbar>
+</ion-header>
+<ion-content>
   <div class="vertical-align-center h30" *ngIf="orders.length === 0 && showHistoryLoading === false">
     <ion-text text-center>
       <p>No Orders</p>
@@ -8,7 +23,7 @@
   <app-loading *ngIf="showHistoryLoading === true" [type]="'history'"></app-loading>
 
   <ion-list *ngIf="orders.length > 0 && stores !== undefined && showHistoryLoading === false">
-    <ion-item lines="full" class="order" *ngFor="let order of orders" margin (click)="showOrderDetails(order)">
+    <ion-item [lines]="lineFlag" class="order" *ngFor="let order of orders" margin (click)="showOrderDetails(order)">
       <ion-thumbnail class="image" slot="start" *ngIf="stores[order.storeId] != null">
         <ion-img
           [src]="
@@ -64,4 +79,4 @@
     >
     </ion-refresher-content>
   </ion-refresher>
-</ion-scroll>
+</ion-content>

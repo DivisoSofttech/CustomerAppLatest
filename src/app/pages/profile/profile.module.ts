@@ -6,9 +6,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
-
 import { IonicModule } from '@ionic/angular';
-
 import { ProfilePage } from './profile.page';
 import { ProfileInfoComponent } from 'src/app/components/profile-info/profile-info.component';
 import { FooterComponent } from 'src/app/components/footer/footer.component';

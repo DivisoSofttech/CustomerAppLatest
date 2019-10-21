@@ -4,40 +4,48 @@
 <ion-content appScrollbarTheme>
 
   <app-map></app-map>
-  <app-banner></app-banner>
+ 
+  <ion-grid class="ion-no-padding ion-no-margin">
 
+    <ion-row class="ion-no-padding ion-no-margin">
+      <ion-col size="12" size-lg="8" class="ion-no-padding ion-no-margin">
+        <app-banner></app-banner>
+        <ion-item lines="none" color="light">
+          <ion-label slot="start">
+              <span class="font-20 heading-one">What's Nearby! </span> 
+          </ion-label>
+          <ion-label class="pointer" text-right *ngIf="currentPlaceName!==''" (click)="showPlaceSelectionModal()">
+              <p class="font-20 heading-one">{{ currentPlaceName}}</p>
+          </ion-label>
+          <ion-label slot="end" *ngIf="currentPlaceName===''">
+              <ion-spinner name="dots" ></ion-spinner>
+          </ion-label>
+          <ion-icon class="pointer" name="create" slot="end" *ngIf="currentPlaceName!==''" (click)="showPlaceSelectionModal()"></ion-icon>
+      </ion-item>    
+        <ion-grid no-padding no-margin>
+          <ion-row no-padding no-margin>
+            <ion-col size="12" no-padding>
+                    <ion-grid>
+                      <ion-row>
+                        <ion-col class="restaurantCol" size="12" size-md="6" size-lg="6" *ngFor="let store of stores">
+                            <app-restaurant-card
+                            *ngIf="store.name !== null"
+                            [store]="store"
+                          ></app-restaurant-card>      
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid>
+                    <app-loading *ngIf="showLoading === true" [type]="'restaurant'"></app-loading>
+            </ion-col>
+          </ion-row>
+        </ion-grid>      
+      </ion-col>
+      <ion-col size="12" size-lg="4" class="ion-no-padding ion-no-margin" class="desktop-only">
 
-  <ion-item lines="none" color="light">
-      <ion-label slot="start">
-          <span class="font-20 heading-one">What's Nearby! </span> 
-      </ion-label>
-      <ion-label text-right *ngIf="currentPlaceName!==''" (click)="showPlaceSelectionModal()">
-          <p class="font-20 heading-one">{{ currentPlaceName}}</p>
-      </ion-label>
-      <ion-label slot="end" *ngIf="currentPlaceName===''">
-          <ion-spinner name="dots" ></ion-spinner>
-      </ion-label>
-      <ion-icon name="create" slot="end" *ngIf="currentPlaceName!==''" (click)="showPlaceSelectionModal()"></ion-icon>
-  </ion-item>
-
-  <ion-grid no-padding no-margin>
-    <ion-row no-padding no-margin>
-      <ion-col size="12" no-padding>
-              <ion-grid>
-                <ion-row>
-                  <ion-col size="12" size-md="6" size-lg="6" *ngFor="let store of stores">
-                      <app-restaurant-card
-                      *ngIf="store.name !== null"
-                      [store]="store"
-                    ></app-restaurant-card>      
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
-              <app-loading *ngIf="showLoading === true" [type]="'restaurant'"></app-loading>
       </ion-col>
     </ion-row>
   </ion-grid>
-  
+   
 
   <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreStores($event)">
     <ion-infinite-scroll-content
