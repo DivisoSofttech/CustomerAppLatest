@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-title *ngIf="mode==='create'">Add Address</ion-title>
+      <ion-title *ngIf="mode==='update'">Update Address</ion-title>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="addressForm">
+    <ion-item>
+      <ion-label position="stacked">Name</ion-label>
+      <ion-input formControlName="name" type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Phone</ion-label>
+      <ion-input formControlName="phone" type="number"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label position="stacked">Email</ion-label>
+        <ion-input formControlName="email" type="email"></ion-input>
+      </ion-item>
+    <!-- <ion-item>
+            <ion-label position="stacked">Alternate Phone *</ion-label>
+            <ion-input formControlName="alternatePhone" type="number" disabled></ion-input>
+          </ion-item> -->
+    <ion-item>
+      <ion-label position="stacked">Address </ion-label>
+      <ion-textarea formControlName="houseNoOrBuildingName" placeholder="Address Line" type="text"></ion-textarea>
+      <ion-input formControlName="city" placeholder="City" type="text"></ion-input>
+      <ion-input formControlName="landmark" placeholder="County" type="text"></ion-input>
+      <ion-input formControlName="pincode" placeholder="Eircode" type="text"></ion-input>
+    </ion-item>
+    <!-- <ion-item>
+            <ion-label position="stacked" disabled>State</ion-label>
+            <ion-input formControlName="state" type="text" ></ion-input>
+          </ion-item> -->
+    <ion-radio-group formControlName="addressType">
+      <ion-item lines="none">
+        <ion-label>Home</ion-label>
+        <ion-radio value="home"></ion-radio>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>Work</ion-label>
+        <ion-radio value="work"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </form>
+</ion-content>
+
+<ion-footer>
+  <ion-button *ngIf="mode==='create'"
+  [disabled]="!addressForm.valid" margin expand="block" (click)="createAddress()">Add</ion-button>
+  <ion-button *ngIf="mode==='update'"
+  [disabled]="!addressForm.valid" margin expand="block" (click)="updateAddress()">Update</ion-button>
+</ion-footer>

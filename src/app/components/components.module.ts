@@ -54,6 +54,7 @@ import { NotificationCardComponent } from './notification-card/notification-card
 import { PlaceSuggestionComponent } from './place-suggestion/place-suggestion.component';
 import { DirectiveModule } from '../directives/directive.module';
 import { OrderSummaryComponent } from './order-summary/order-summary.component';
+import { AddAddressComponent } from './add-address/add-address.component';
 
 @NgModule({
   declarations: [
@@ -83,6 +84,7 @@ import { OrderSummaryComponent } from './order-summary/order-summary.component';
     FavouriteListComponent,
     HistoryListComponent,
     AddressListComponent,
+    AddAddressComponent,
     HotelMenuPopoverComponent,
     CategoryWiseProductsCardComponent,
     AuxilaryProductCardComponent,
@@ -147,6 +149,7 @@ import { OrderSummaryComponent } from './order-summary/order-summary.component';
     FavouriteListComponent,
     HistoryListComponent,
     AddressListComponent,
+    AddAddressComponent,
     HotelMenuPopoverComponent,
     CategoryWiseProductsCardComponent,
     ShowAuxilaryModalComponent,
@@ -179,6 +182,7 @@ import { OrderSummaryComponent } from './order-summary/order-summary.component';
     AllergyComponent,
     ProfileEditComponent,
     AddressListComponent,
+    AddAddressComponent,
     LoadingComponent,
     CheckoutComponent,
     ShowAuxilaryModalComponent,

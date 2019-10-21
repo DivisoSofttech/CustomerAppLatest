@@ -1,22 +1,3 @@
-
-.addressListContainer {
-  height: 85vh;
-  width: 100vw;
-  overflow-x:scroll;
-  position: fixed;
-  z-index: 999;
-  background: white;
-}
-
-.addressListFooter {
-  position: fixed;
-  bottom: -11vh;
-  height: 18vh;
-  z-index: 10000;
-  width: 100%;
-  background: white;
-}
-
-.modificationIcon {
- margin: 10px;
+p {
+  font-size: 14px;
 }

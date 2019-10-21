@@ -8,6 +8,7 @@ import { NGXLogger } from 'ngx-logger';
 import { ModalController, PopoverController } from '@ionic/angular';
 import { ModalDisplayUtilService } from 'src/app/services/modal-display-util.service';
 import { Subscription } from 'rxjs';
+import { AddressListComponent } from '../address-list/address-list.component';
 
 @Component({
   selector: 'app-checkout',
@@ -69,6 +70,21 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.order = this.orderService.order;
   }
 
+  async showAddresses() {
+    const modal = await this.modalController.create({
+    component: AddressListComponent
+    });
+  
+    modal.onDidDismiss()
+    .then(data => {
+      if(data.data !== undefined) {
+        this.selectedAddress = data.data;
+      }
+    });
+    await modal.present();
+  
+  }
+
   setNote() {
     this.orderService.setNote(this.note);
   }
@@ -78,10 +94,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.orderService.setAddress(this.selectedAddress);
   }
 
-  addressSelectedEvent(event) {
-    this.logger.info(event);
-    this.setAddress(event);
-  }
+
 
   checkOut() {
     this.setNote();

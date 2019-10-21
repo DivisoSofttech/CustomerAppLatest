@@ -44,6 +44,7 @@
     "@ionic/storage": "^2.2.0",
     "@ng-bootstrap/ng-bootstrap": "^5.1.1",
     "@ngx-loading-bar/core": "^4.2.0",
+    "@ngx-loading-bar/http-client": "^4.2.0",
     "angular-oauth2-oidc": "^8.0.4",
     "braintree-web": "^3.51.0",
     "card.io.cordova.mobilesdk": "^2.1.0",

@@ -2,7 +2,7 @@ import { StoreDTO } from './../../api/models/store-dto';
 import { FilterService } from './../../services/filter.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Util } from 'src/app/services/util';
-import { IonInfiniteScroll, IonRefresher, ModalController } from '@ionic/angular';
+import { IonInfiniteScroll, IonRefresher, ModalController, IonProgressBar } from '@ionic/angular';
 import { NGXLogger } from 'ngx-logger';
 import { MapComponent } from 'src/app/components/map/map.component';
 import { FooterComponent } from 'src/app/components/footer/footer.component';
@@ -32,6 +32,7 @@ export class RestaurantPage implements OnInit {
   @ViewChild(IonRefresher , null) IonRefresher: IonRefresher;
   @ViewChild(MapComponent , null) mapComponent: MapComponent;
   @ViewChild(FooterComponent , null) footer: FooterComponent;
+  @ViewChild(IonProgressBar , null) progressBar: IonProgressBar;
 
 
 
@@ -58,7 +59,7 @@ export class RestaurantPage implements OnInit {
   getStores() {
     this.filter.getSubscription().subscribe(data => {
       this.stores = [];
-      this.showLoading = true;
+      this.progressBar.buffer = 1;
       this.toggleInfiniteScroll();
       this.filter.getStores(0, (totalElements, totalPages, stores) => {
 

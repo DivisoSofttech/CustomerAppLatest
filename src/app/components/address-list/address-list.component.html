@@ -1,110 +1,52 @@
+<ion-header *ngIf="mode==='modal'">
 
-<ion-header *ngIf="showAddressLists === true && showAddressPanel === false">
-    <ion-toolbar color="primary">
-      <ion-buttons>
-          <ion-button (click)="toggleShowAddressList()">
-              <ion-icon name="arrow-back"></ion-icon>
-            </ion-button>
-            <ion-title>Select Address</ion-title>      
-      </ion-buttons>
-    </ion-toolbar>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-title>Select Address</ion-title>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
 </ion-header>
 
-<ion-list *ngIf="!showAddressPanel">
-  <ion-item *ngIf="showAddressLists === false">
-    <ion-text (click)="toggleShowAddressList()" *ngIf="addresses.length > 0">
-      <p>
-        Selected Address :
-      </p>
-    </ion-text>
-    <ion-text *ngIf="selectedAddress !== undefined" (click)="toggleShowAddressList()">{{selectedAddress.name}}
-    </ion-text>
-    <ion-label *ngIf="selectedAddress === undefined && addresses.length === 0" (click)="addNewAddressModal()">Add
-      Address</ion-label>
-  </ion-item>
-  <ion-item lines="full" *ngIf="addresses.length > 0">
-    <ion-label (click)="addNewAddressModal()">Add Address</ion-label>
-  </ion-item>
-</ion-list>
-
-
-<div *ngIf="showAddressLists === true && showAddressPanel === false" class="addressListContainer">
-  <ion-item *ngFor="let address of addresses" value="{{address.id}}">
-    <ion-label (click)="addressChanged(address)">
-      <p>{{address.name}}</p>
-      <p>{{address.houseNoOrBuildingName}}</p>
-      <p>{{address.landmark}}</p>
-      <p>{{address.roadNameAreaOrStreet}}</p>
-      <p>{{address.postCode}}</p>
-    </ion-label>
-    <ion-icon class="modificationIcon" name="create" (click)="updateAddressModal(address)"></ion-icon>
-    <!-- <ion-icon class="modificationIcon" name="trash" (click)="deleteAddress(address.id)"></ion-icon> -->
-  </ion-item>
-</div>
-
-<ion-header *ngIf="showAddressPanel">
-    <ion-toolbar color="primary">
-      <ion-buttons>
-        <ion-button (click)="dismiss(undefined)">
-          <ion-icon name="close"></ion-icon>
-        </ion-button>
-        <ion-title>Add New Address</ion-title>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
-
-<ion-content *ngIf="showAddressPanel">
-  <form [formGroup]="addressForm">
-      <ion-item>
-          <ion-label position="floating">Name</ion-label>
-          <ion-input formControlName="name" type="text" ></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Phone</ion-label>
-          <ion-input formControlName="phone" type="number" ></ion-input>
-        </ion-item>
-        <!-- <ion-item>
-          <ion-label position="floating">Alternate Phone *</ion-label>
-          <ion-input formControlName="alternatePhone" type="number" disabled></ion-input>
-        </ion-item> -->
-        <ion-item>
-          <ion-label position="floating">House address </ion-label>
-          <ion-input formControlName="houseNoOrBuildingName" type="text" ></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Road Name Area Or Street</ion-label>
-          <ion-input formControlName="roadNameAreaOrStreet" type="text" ></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">City</ion-label>
-          <ion-input formControlName="city" type="text" ></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">County</ion-label>
-          <ion-input formControlName="landmark" type="text" ></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Eircode</ion-label>
-          <ion-input formControlName="pincode" type="text" ></ion-input>
-        </ion-item>
-        <!-- <ion-item>
-          <ion-label position="floating" disabled>State</ion-label>
-          <ion-input formControlName="state" type="text" ></ion-input>
-        </ion-item> -->
-        <ion-radio-group  formControlName="addressType">
-          <ion-item lines="none">
-            <ion-label>Home</ion-label>
-            <ion-radio value="home"></ion-radio>
-          </ion-item>
-          <ion-item lines="none">
-            <ion-label>Work</ion-label>
-            <ion-radio value="work"></ion-radio>
-          </ion-item>
-        </ion-radio-group>      
-  </form>
+<ion-content *ngIf="mode==='modal'">
+  <ion-list *ngIf="addresses !== undefined">
+    <ion-item line="full" *ngFor="let address of addresses" value="{{address.id}}" (click)="dismissData(address)">
+      <ion-label>
+        <h2>{{address.name}}</h2>
+        <h2>{{address.houseNoOrBuildingName}}</h2>
+        <h2>{{address.landmark}}</h2>
+        <h2>{{address.pincode}}</h2>
+      </ion-label>
+      <ion-icon class="modificationIcon" name="create"></ion-icon>
+      <ion-icon class="modificationIcon" name="trash" (click)="deleteAddress(address.id)"></ion-icon>
+    </ion-item>
+  </ion-list>
+  <ion-button expand="block" class="ion-margin" (click)="addAddressModal()" color="primary">
+    Add Address
+    <ion-icon name="add"></ion-icon>
+  </ion-button>
 </ion-content>
 
-  <ion-footer *ngIf="showAddressPanel">
-    <ion-button *ngIf="type==='add'" margin expand="block" (click)="saveAddress()">Add</ion-button>
-    <ion-button *ngIf="type==='update'" margin expand="block" (click)="updateAddress()">Update</ion-button>
-  </ion-footer>
+<div *ngIf="mode==='component'">
+  <ion-list *ngIf="addresses !== undefined">
+    <ion-item line="full" *ngFor="let address of addresses" value="{{address.id}}" (click)="dismissData(address)">
+      <ion-label>
+        <h2>{{address.name}}</h2>
+        <h2>{{address.houseNoOrBuildingName}}</h2>
+        <h2>{{address.landmark}}</h2>
+        <h2>{{address.pincode}}</h2>
+      </ion-label>
+      <ion-icon class="modificationIcon" name="create"></ion-icon>
+      <ion-icon class="modificationIcon" name="trash" (click)="deleteAddress(address.id)"></ion-icon>
+    </ion-item>
+  </ion-list>
+  <ion-button expand="block" class="ion-margin" (click)="addAddressModal()" color="primary">
+    Add Address
+    <ion-icon name="add"></ion-icon>
+  </ion-button>
+</div>

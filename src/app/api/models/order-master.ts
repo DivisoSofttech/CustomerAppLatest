@@ -16,7 +16,7 @@ export interface OrderMaster {
   notes?: string;
   orderAcceptedAt?: string;
   orderFromCustomer?: number;
-  orderLine?: Array<OrderLine>;
+  orderLines?: Array<OrderLine>;
   orderNumber?: string;
   orderPlaceAt?: string;
   orderStatus?: string;

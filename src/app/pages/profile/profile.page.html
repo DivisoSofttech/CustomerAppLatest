@@ -13,7 +13,7 @@
 </ion-header>
 
 <!--Desktop Version-->
-<ion-content appScrollbarTheme class="desktop-only">
+<ion-content appScrollbarTheme>
   <ion-grid class="fixed-height ion-no-padding">
     <ion-row>
       <ion-col class="ion-no-padding" size="12">
@@ -41,30 +41,11 @@
           </ion-row>
         </ion-grid>
       </ion-col>
-      <!-- <ion-col size="4">
-        skjkj
-      </ion-col> -->
+      <ion-col size="12">
+        <app-address-list [mode]="'component'"></app-address-list>
+      </ion-col>
     </ion-row>
   </ion-grid>
-</ion-content>
-
-
-<!--Mobile Version-->
-<ion-content appScrollbarTheme class="mobile-only">
-  <app-loading *ngIf="customer === undefined" [type]="'profile'">
-  </app-loading>
-  <app-profile-info *ngIf="customer != undefined" [customer]="customer" [keyCloakUser]="keyCloakUser"
-    [contact]="contact"></app-profile-info>
-  <ion-slides [ngStyle]="{ 'height': slidesMoving ? 'auto' : (slidesHeight + 'px') }"
-    (ionSlideDidChange)="slideChanged($event)" (ionSlideWillChange)="slideWillChange()">
-    <ion-slide>
-      <app-favourite-list>
-      </app-favourite-list>
-    </ion-slide>
-    <ion-slide>
-      <app-history-list *ngIf="keyCloakUser !== undefined" [keyCloakUser]="keyCloakUser"></app-history-list>
-    </ion-slide>
-  </ion-slides>
 </ion-content>
 <ion-footer>
   <app-footer [filterHide]="'true'"></app-footer>

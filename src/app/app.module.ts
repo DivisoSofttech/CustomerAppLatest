@@ -42,7 +42,8 @@ import { NotificationComponent } from './components/notification/notification.co
 import { ErrorService } from './services/error.service';
 import { DirectiveModule } from './directives/directive.module';
 import { HistoryListComponent } from './components/history-list/history-list.component';
-
+import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
+ 
 const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', options: {} };
 
 @NgModule({
@@ -59,6 +60,7 @@ const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', 
     SocketIoModule.forRoot(config),
     // Extra Modules
     ImageCropperModule,
+    LoadingBarHttpClientModule,
     ConfigsModule,
     IonicStorageModule.forRoot({
       name: '__mydb',

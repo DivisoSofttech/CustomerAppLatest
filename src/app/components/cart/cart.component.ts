@@ -148,7 +148,7 @@ export class CartComponent implements OnInit, OnDestroy {
         } else if (this.cart.currentDeliveryTypes[0].name === 'collection') {
           this.collectionOk = true;
           this.currentSegment = 'collection';
-          this.defaultDelivery = false;
+          this.defaultDelivery = true;
         }
       } else {
         this.cart.currentDeliveryTypes.forEach(element => {
@@ -156,7 +156,7 @@ export class CartComponent implements OnInit, OnDestroy {
             this.deliveryOk = true;
           } else if (element.name === 'collection') {
             this.collectionOk = true;
-            this.defaultDelivery = false;
+            this.defaultDelivery = true;
           }
         });
       }

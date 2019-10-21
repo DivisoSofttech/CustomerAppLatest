@@ -14,7 +14,7 @@
 
   <ion-grid class="ion-no-padding">
     <ion-row>
-      <ion-col size="8" class="ion-no-padding">
+      <ion-col size="12" size-lg="8" class="ion-no-padding">
         <ion-row>
           <ion-header class="desktop-only" no-border>
             <app-store-header *ngIf="store != undefined" [name]="store.name" [storeId]="store.regNo" [store]="store"
@@ -102,7 +102,7 @@
           <app-cart (viewClick)="navigateBasket()"></app-cart>
         </ion-row>
       </ion-col>
-      <ion-col size="4" class="desktop-only br-left ion-no-padding">
+      <ion-col size="12" size-lg="4" class="desktop-only br-left ion-no-padding">
         <ion-item color="light" lines="full">
           <ion-label>Reviews</ion-label>
         </ion-item>
