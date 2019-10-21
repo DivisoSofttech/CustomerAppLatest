@@ -1,3 +1,4 @@
+import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { RazorpayPaymentComponent } from './razorpay-payment/razorpay-payment.component';
 import { BraintreeCardPaymentComponent } from './braintree-card-payment/braintree-card-payment.component';
 import { NotificationComponent } from './notification/notification.component';
@@ -103,6 +104,7 @@ import { AddAddressComponent } from './add-address/add-address.component';
     PhoneNumberVerficationComponent,
     IntlNumberInputComponent,
     ErrorComponent,
+    ForgetPasswordComponent,
     NotificationCardComponent,
     PlaceSuggestionComponent,
     OrderSummaryComponent
@@ -164,6 +166,7 @@ import { AddAddressComponent } from './add-address/add-address.component';
     PhoneNumberVerficationComponent,
     IntlNumberInputComponent,
     ErrorComponent,
+    ForgetPasswordComponent,
     NotificationCardComponent,
     PlaceSuggestionComponent,
     OrderSummaryComponent
@@ -196,6 +199,8 @@ import { AddAddressComponent } from './add-address/add-address.component';
     PhoneNumberVerficationComponent,
     IntlNumberInputComponent,
     CountdownComponent,
+    ErrorComponent,
+    ForgetPasswordComponent,
     OrderDetailComponent,
     ErrorComponent,
     NotificationCardComponent,

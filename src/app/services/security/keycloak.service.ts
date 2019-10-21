@@ -9,7 +9,6 @@ import { map, first } from 'rxjs/operators';
 import { HttpHeaders } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
 import { BehaviorSubject } from 'rxjs';
-import { GuestUserService } from './guest-user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +28,7 @@ export class KeycloakService {
     private logger: NGXLogger,
     private util: Util,
     private notificationService: NotificationService
+
   ) {
     this.logger.info('Created Keycloak Service');
     this.getCurrentUserDetails()
@@ -221,6 +221,40 @@ export class KeycloakService {
             err(e);
           });
       });
+    });
+  }
+
+  getUser(userId) {
+    console.log('entered');
+    this.keycloakConfig.refreshClient().then(() => {
+      this.keycloakAdmin = this.keycloakConfig.kcAdminClient;
+      this.keycloakAdmin.users.findOne({id: userId}).then(user => {
+        console.log('user', userId);
+        console.log('userA', user);
+      });
+    });
+  }
+
+  ForgetPassword(user, newPassword, success, err) {
+    console.log('user', user);
+    this.keycloakConfig.refreshClient().then(() => {
+      this.keycloakAdmin = this.keycloakConfig.kcAdminClient;
+      this.keycloakAdmin.users
+        .resetPassword({
+          realm: 'graeshoppe',
+          id: user.searchKey,
+          credential: {
+            temporary: false,
+            type: 'password',
+            value: newPassword
+          }
+        })
+        .then(data => {
+          success(data);
+        })
+        .catch(e => {
+          err(e);
+        });
     });
   }
 

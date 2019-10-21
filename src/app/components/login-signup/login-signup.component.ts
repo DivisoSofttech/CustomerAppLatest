@@ -8,6 +8,7 @@ import { Util } from 'src/app/services/util';
 import { ApiConfiguration } from 'src/app/api/api-configuration';
 import { Storage } from '@ionic/storage';
 import { PhoneNumberVerficationComponent } from '../phone-number-verfication/phone-number-verfication.component';
+import { ForgetPasswordComponent } from '../forget-password/forget-password.component';
 
 @Component({
   selector: 'app-login-signup',
@@ -81,6 +82,13 @@ export class LoginSignupComponent implements OnInit {
         }
     });
 
+    modal.present();
+  }
+
+  async forgetPasswordModal() {
+    const modal = await this.modalController.create({
+      component: ForgetPasswordComponent
+    });
     modal.present();
   }
 
