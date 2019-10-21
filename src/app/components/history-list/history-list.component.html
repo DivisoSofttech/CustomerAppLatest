@@ -8,7 +8,7 @@
   <app-loading *ngIf="showHistoryLoading === true" [type]="'history'"></app-loading>
 
   <ion-list *ngIf="orders.length > 0 && stores !== undefined && showHistoryLoading === false">
-    <ion-item lines="full" class="order" *ngFor="let order of orders" margin>
+    <ion-item lines="full" class="order" *ngFor="let order of orders" margin (click)="showOrderDetails(order)">
       <ion-thumbnail slot="start" *ngIf="stores[order.storeId] != null">
         <ion-img
           [src]="
@@ -24,14 +24,27 @@
         <ion-text color="primary">
           <h2><b>Date :</b> {{ order.date | date: "short" }}</h2>
           <h3 class="fnt-big">Grand Total {{ order.grandTotal | number: "1.1-2" }}</h3>
-          <h3 class="fnt-medium">Order status: {{ order.status.name }}</h3>
+          <ion-badge color="secondary" *ngIf="order.status.name.toLowerCase() ==='created'">
+            <p>Ordered</p>
+        </ion-badge>
+          <ion-badge color="success" *ngIf="order.status.name.toLowerCase() ==='approved'">
+              <p>{{ order.status.name | titlecase }}</p>
+          </ion-badge>
+          <ion-badge color="warning" *ngIf="order.status.name.toLowerCase() ==='payment-processed'">
+            <p>Payment Processed</p>
+        </ion-badge>
+          <ion-badge color="danger" *ngIf="order.status.name.toLowerCase() ==='unapproved'">
+              <p>{{ order.status.name | titlecase }}</p>
+          </ion-badge>
+          <ion-badge color="medium" *ngIf="order.status.name.toLowerCase() ==='delivered'">
+            <p>{{ order.status.name | titlecase }}</p>
+        </ion-badge>
         </ion-text>
         <p *ngIf="stores[order.storeId] != null">
           <b>Store Name : </b>{{ stores[order.storeId].name }}
         </p>
         <h3><b>Order id :</b> {{ order.orderId }}</h3>
       </ion-label><br>
-      <ion-button *ngIf="order.status.name == 'approved'" (click)="confirmOrder(order)">Confirm</ion-button>
     </ion-item>
   </ion-list>
 

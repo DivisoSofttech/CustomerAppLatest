@@ -134,19 +134,22 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
 
   getOffers() {
     this.logger.info('Checking offer eligibility using price ', this.totalPrice);
-    this.orderService.claimMyOffer(this.totalPrice).subscribe(response => {
-      this.logger.info('response for cliam offer ' , response);
-      if (response.orderDiscountAmount === null) {
-        this.logger.info('No offers available');
-      } else {
-        this.logger.info('One offer available ', response.promoCode);
-        this.offer = response;
-        this.totalPrice = response.orderDiscountTotal;
-        const myOffer: Offer = {
-          offerRef : response.promoCode
-        };
-        this.orderService.setOffer(myOffer);
-      }
+    this.orderService.claimMyOffer(this.totalPrice)
+    .then(orderBehaviour => {
+      orderBehaviour.subscribe(response => {
+        this.logger.info('response for cliam offer ' , response);
+        if (response.orderDiscountAmount === null) {
+          this.logger.info('No offers available');
+        } else {
+          this.logger.info('One offer available ', response.promoCode);
+          this.offer = response;
+          this.totalPrice = response.orderDiscountTotal;
+          const myOffer: Offer = {
+            offerRef : response.promoCode
+          };
+          this.orderService.setOffer(myOffer);
+        }
+      });
     });
   }
 

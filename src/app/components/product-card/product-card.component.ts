@@ -2,7 +2,7 @@ import { CartService } from './../../services/cart.service';
 import { Router } from '@angular/router';
 import { FavouriteService } from './../../services/favourite.service';
 import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
-import { StockCurrent, AuxilaryLineItem, ComboLineItem, Discount } from 'src/app/api/models';
+import { StockCurrent, AuxilaryLineItem, ComboLineItem, Discount, OrderLine } from 'src/app/api/models';
 import { PopoverController, IonInput } from '@ionic/angular';
 import { QueryResourceService } from 'src/app/api/services';
 import { NGXLogger } from 'ngx-logger';
@@ -22,16 +22,24 @@ export class ProductCardComponent implements OnInit , OnDestroy {
 
   @Input() showDescription = false;
 
-  auxilaries: AuxilaryLineItem[] = [];
+  @Input() type = 'full';
 
-  comboLineItems: ComboLineItem[] = [];
+  @Input() auxilaries: AuxilaryLineItem[] = [];
+
+  @Input() comboLineItems: ComboLineItem[] = [];
 
   isFavourite = false;
 
   showFavourite = false;
 
-  orderCount  = 0;
+  @Input() orderCount  = 0;
+
+  @Input() orderLine: OrderLine;
+
+  @Input() product;
+
   auxilaryLoadComplete = false;
+  
   discount: Discount;
 
   @ViewChild('orderCountInput' , null) orderCountInput: IonInput;
@@ -48,29 +56,38 @@ export class ProductCardComponent implements OnInit , OnDestroy {
   ) { }
 
   ngOnDestroy() {
-    this.keycloakSubscrption.unsubscribe();
+    if(this.keycloakSubscrption) {
+      this.keycloakSubscrption.unsubscribe();
+    }
   }
 
   async ngOnInit() {
-   this.keycloakSubscrption = this.keycloakService.getUserChangedSubscription()
-    .subscribe((data: any) => {
-      this.logger.info('Checking If guest : RestaurantCardComponet');
-      if (data !== null) {
-        if (data.preferred_username === 'guest') {
-          this.showFavourite = false;
+
+  if (this.type === 'full') {
+      this.keycloakSubscrption = this.keycloakService.getUserChangedSubscription()
+      .subscribe((data: any) => {
+        this.logger.info('Checking If guest : RestaurantCardComponet');
+        if (data !== null) {
+          if (data.preferred_username === 'guest') {
+            this.showFavourite = false;
+          } else {
+            this.showFavourite = true;
+          }
         } else {
-          this.showFavourite = true;
+          this.showFavourite = false;
         }
-      } else {
-        this.showFavourite = false;
+      });
+      this.checkIfAlreadyFavourite();
+      this.checkIfOrdered();
+      this.getAuxilaries(0);
+      this.getProductDiscount();
+      if (this.stockCurrent.product.isAuxilaryItem === false) {
+        this.getComboItems(0);
       }
-    });
-   this.checkIfAlreadyFavourite();
-   this.checkIfOrdered();
-   this.getAuxilaries(0);
-   this.getProductDiscount();
-   if (this.stockCurrent.product.isAuxilaryItem === false) {
-      this.getComboItems(0);
+    } else {
+
+      
+
     }
   }
 

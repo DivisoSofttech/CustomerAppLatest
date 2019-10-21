@@ -23,6 +23,7 @@ export class LoginSignupComponent implements OnInit {
   numberValid = false;
   loginTab = true;
   value = 'login';
+  keycloakUserid;
 
   @ViewChild('slides', null) slides: IonSlides;
 
@@ -51,7 +52,7 @@ export class LoginSignupComponent implements OnInit {
         this.keycloakService.authenticate({ username: this.username, password: this.password },
           () => {
             loader.dismiss();
-            this.util.createToast('Logged in successfully');
+            this.util.createToast('Logged in successfully', 'checkmark-circle-outline');
             this.createUserIfNotExists(this.username);
           }, () => {
             loader.dismiss();
@@ -97,6 +98,8 @@ export class LoginSignupComponent implements OnInit {
         this.keycloakService.createAccount(user, this.password,
           (res) => {
             loader.dismiss();
+            alert(res.id);
+            this.keycloakUserid = res.id;
             this.login();
           },
           (err) => {
@@ -156,7 +159,9 @@ export class LoginSignupComponent implements OnInit {
                   reference: this.username,
                   name: this.username,
                   email: this.email,
-                  mobileNumber: this.phone
+                  mobileNumber: this.phone,
+                  phoneCode: 91,
+                  searchKey: this.keycloakUserid
                 })
                 .subscribe(
                   customer => {

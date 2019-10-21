@@ -89,5 +89,5 @@
 </ion-content>
 
 <ion-footer class="animated animation-duration" [ngClass]="currentSegment === 'menu' ? 'slideInUp': 'slideOutDown'">
-  <app-cart></app-cart>
+  <app-cart (viewClick) ="navigateBasket()" ></app-cart>
 </ion-footer>

@@ -24,7 +24,7 @@ export class FavouriteListComponent implements OnInit {
     this.favourite.getFavourites()
     .subscribe(fav => {
       if(fav !== undefined && fav !== null) {
-        this.favourites = fav;
+        this.favourites = fav.reverse();
       }
     });
   }

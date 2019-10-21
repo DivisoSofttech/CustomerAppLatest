@@ -4,6 +4,7 @@ import { Address, AddressDTO } from 'src/app/api/models';
 import { ModalController } from '@ionic/angular';
 import { OrderCommandResourceService } from 'src/app/api/services';
 import { NGXLogger } from 'ngx-logger';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-address-list',
@@ -11,6 +12,11 @@ import { NGXLogger } from 'ngx-logger';
   styleUrls: ['./address-list.component.scss']
 })
 export class AddressListComponent implements OnInit {
+
+
+  addressForm: FormGroup;
+
+
 
   @Output() addressSelected = new EventEmitter();
 
@@ -33,6 +39,23 @@ export class AddressListComponent implements OnInit {
   currentId = 1;
 
   ngOnInit() {
+
+    this.addressForm = this.form.group({
+      landmark: [this.address.landmark , Validators.compose([Validators.required])],
+      addressType: [this.address.addressType , Validators.compose([Validators.required])],
+      city: [this.address.city , Validators.compose([Validators.required])],
+      houseNoOrBuildingName: [this.address.houseNoOrBuildingName , Validators.compose([Validators.required])],
+      alternatePhone: [this.address.alternatePhone , Validators.compose([Validators.required])],
+      name: [this.address.name , Validators.compose([Validators.required])],
+      phone: [this.address.phone , Validators.compose([Validators.required])],
+      pincode: [this.address.pincode , Validators.compose([Validators.required])],
+      roadNameAreaOrStreet: [this.address.roadNameAreaOrStreet , Validators.compose([Validators.required])],
+      state: [this.address.state , Validators.compose([Validators.required])],
+      customerId: [this.address.customerId],
+      id: [this.address.id]
+    });
+
+
     this.logger.info('Address List' , this.customer);
     if (this.showAddressPanel === false) {
       this.getAllAdress(0);
@@ -43,6 +66,7 @@ export class AddressListComponent implements OnInit {
     private modalController: ModalController,
     private logger: NGXLogger,
     private orderCommandResource: OrderCommandResourceService,
+    private form: FormBuilder,
     private util: Util
   ) {}
 
@@ -63,7 +87,7 @@ export class AddressListComponent implements OnInit {
         this.addresses.push(a);
       });
       ++i;
-      if(i < paddress.totalPages) {
+      if (i < paddress.totalPages) {
         this.getAllAdress(i);
       } else {
         this.logger.info('All Address Fetched');
@@ -72,39 +96,51 @@ export class AddressListComponent implements OnInit {
   }
 
   saveAddress() {
-    this.util.createLoader()
-    .then(loader => {
-      loader.present();
-      this.address.customerId = this.customer.preferred_username;
-      this.logger.info('Address To Be Saved', this.address);
-      this.orderCommandResource
-      .createAddressUsingPOST(this.address)
-      .subscribe(address => {
-        this.logger.info('Address Saved', address);
-        this.address = address;
-        loader.dismiss();
-        this.dismiss(this.address);
-      }, err => {
-        loader.dismiss();
+    if (this.addressForm.valid) {
+      this.util.createLoader()
+      .then(loader => {
+        loader.present();
+        this.addressForm.value.customerId = this.customer.preferred_username;
+        this.logger.info('Address To Be Saved', this.addressForm.value);
+        this.orderCommandResource
+        .createAddressUsingPOST(this.addressForm.value)
+        .subscribe(address => {
+          this.logger.info('Address Saved', address);
+          this.address = address;
+          loader.dismiss();
+          this.dismiss(this.address);
+        }, err => {
+          loader.dismiss();
+        });
       });
-    });
+    } else {
+      this.logger.info(this.addressForm.value);
+      this.util.createToast('Fill in the required Fields');
+    }
   }
 
   updateAddress() {
+    if (this.addressForm.valid) {
     this.util.createLoader()
     .then(loader => {
       loader.present();
-      this.logger.info('Address To Be Updated', this.address);
-      this.orderCommandResource.updateAddressUsingPUT(this.address)
+      this.addressForm.value.customerId = this.address.customerId;
+      this.addressForm.value.id = this.address.id;
+      this.logger.info('Address To Be Updated', this.addressForm.value);
+      this.orderCommandResource.updateAddressUsingPUT(this.addressForm.value)
       .subscribe(data => {
-        this.logger.info('Address Updated ' , this.address);
+        this.logger.info('Address Updated ' , data);
         loader.dismiss();
-        this.dismiss(this.address);
+        this.dismiss(data);
       },
       err => {
         loader.dismiss();
       });
     });
+    } else {
+      this.logger.info(this.addressForm.value);
+      this.util.createToast('Fill in the required Fields');
+    }
   }
 
 
@@ -154,11 +190,9 @@ export class AddressListComponent implements OnInit {
     modal.onDidDismiss().then((data: any) => {
       if (data.data !== undefined) {
         this.logger.info(data.data.name);
-        this.addresses.forEach((add , i) => {
-          if(add.id === data.data.id) {
-            this.address[i] = data.data;
-          }
-        });
+        this.addresses = this.addresses.filter(add  => add.id !== data.data.id);
+        this.logger.info('Address Replaced '  , this.addresses);
+        this.addresses.push(data.data);
         this.selectedAddress = data.data;
         this.addressSelected.emit(data.data);
         this.currentId = data.data.id;

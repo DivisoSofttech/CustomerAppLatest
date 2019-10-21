@@ -44,6 +44,8 @@ export class FavouriteService {
 
     this.keycloakService.getUserChangedSubscription()
       .subscribe(user => {
+        this.favourites = [];
+        this.favouriteSubject.next(this.favourites);
         this.storage.get('customer')
         .then(data => {
           if (data !== null) {
@@ -52,7 +54,7 @@ export class FavouriteService {
               if (user.preferred_username === 'guest') {
                 this.username = '';
                 this.favouriteDisabled = true;
-              } else {
+              } else if(user.preferred_username !== undefined) {
                 this.username = user.preferred_username;
                 this.favouriteDisabled = false;
                 this.retrieveStoresFav(0);

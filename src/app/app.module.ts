@@ -32,6 +32,11 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { Sim } from '@ionic-native/sim/ngx';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { BackgroundMode } from '@ionic-native/background-mode/ngx';
+
+const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', options: {} };
 
 @NgModule({
 
@@ -44,6 +49,7 @@ import { Sim } from '@ionic-native/sim/ngx';
     HttpClientModule,
     IonicModule.forRoot(),
     AppRoutingModule,
+    SocketIoModule.forRoot(config),
     // Extra Modules
     ImageCropperModule,
     ConfigsModule,
@@ -68,6 +74,8 @@ import { Sim } from '@ionic-native/sim/ngx';
     ScreenOrientation,
     Util,
     SplashScreen,
+    LocalNotifications,
+    BackgroundMode,
     PayPal,
     Sim,
     InAppBrowser,

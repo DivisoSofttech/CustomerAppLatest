@@ -7,6 +7,10 @@ import { Platform, MenuController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Storage } from '@ionic/storage';
+import { BackgroundMode } from '@ionic-native/background-mode/ngx';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { NotificationService } from './services/notification.service';
 
 @Component({
   selector: 'app-root',
@@ -46,26 +50,26 @@ export class AppComponent {
     private storage: Storage,
     private keycloakService: KeycloakService,
     private menuController: MenuController,
-    private screenOrientation: ScreenOrientation
-  ) {
+    private screenOrientation: ScreenOrientation,
+    private backgroundMode: BackgroundMode,
+    private localNotifications: LocalNotifications,
+    private oauthService: OAuthService,
+    private notificationService: NotificationService
+      ) {
     this.getUser();
-    // if (typeof Worker !== 'undefined') {
-    //   // Create a new
-    //   const worker = new Worker('./user.worker', { type: 'module' });
-    //   worker.onmessage = ({ data }) => {
-    //     console.log(`page got message: ${data}`);
-    //   };
-    //   worker.postMessage('hello');
-    // } else {
-    //   // Web Workers are not supported in this environment.
-    //   // You should add a fallback so that your program still executes correctly.
-    // }
     this.initializeApp();
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
-      if(this.platform.is('pwa')) {
+      if (this.localNotifications.hasPermission()) {
+        console.log('Local Notifications has permission');
+      } else {
+        this.localNotifications.requestPermission().then(permission => {
+          console.log('Permission has been granted', permission);
+        });
+      }
+      if (this.platform.is('pwa')) {
         console.log('Browser');
         this.browser = true;
       }
@@ -74,6 +78,10 @@ export class AppComponent {
       // Set orientation to portrait
       if (this.platform.is('cordova')) {
         this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+        this.backgroundMode.enable();
+        this.backgroundMode.on('activate').subscribe(() => {
+           console.log('activate background mode');
+         });
       }
       this.splashScreen.hide();
       this.getUser();
@@ -94,7 +102,7 @@ export class AppComponent {
     this.keycloakService.getUserChangedSubscription()
     .subscribe(user => {
       this.logger.info('Checking If guest : App Component');
-      if (user !== null) {
+      if (user) {
         if (user.preferred_username === 'guest') {
           this.logger.info('Show Login');
           this.guest = true;

@@ -19,6 +19,8 @@ import { PageOfFavouriteStore } from '../models/page-of-favourite-store';
 import { PageOfCategory } from '../models/page-of-category';
 import { PageOfCustomer } from '../models/page-of-customer';
 import { Entry } from '../models/entry';
+import { ElasticDataEntry } from '../models/elastic-data-entry';
+import { OrderLine } from '../models/order-line';
 import { PageOfProduct } from '../models/page-of-product';
 import { Product } from '../models/product';
 import { PageOfRatingReview } from '../models/page-of-rating-review';
@@ -26,6 +28,7 @@ import { PageOfStockCurrent } from '../models/page-of-stock-current';
 import { StockCurrent } from '../models/stock-current';
 import { PageOfStore } from '../models/page-of-store';
 import { Store } from '../models/store';
+import { PageOfNotification } from '../models/page-of-notification';
 import { PageOfOrder } from '../models/page-of-order';
 import { Order } from '../models/order';
 import { ProductDTO } from '../models/product-dto';
@@ -63,6 +66,7 @@ class QueryResourceService extends __BaseService {
   static readonly findCategoryAndCountUsingGETPath = '/api/query/findCategoryAndCount';
   static readonly findCategoryAndCountBystoreIdUsingGETPath = '/api/query/findCategoryAndCountBystoreId/{storeId}';
   static readonly findByMobileNumberUsingGETPath = '/api/query/findCustomerByMobileNumber/{mobileNumber}';
+  static readonly findOrderLinesByOrderIdUsingGETPath = '/api/query/findOrderLinesByOrderId/{orderId}';
   static readonly findProductByCategoryIdAndUserIdUsingGETPath = '/api/query/findProductByCategoryIdAndUserId/{categoryId}/{userId}';
   static readonly findProductByIdUsingGETPath = '/api/query/findProductById/{id}';
   static readonly findAllProductBySearchTermUsingGETPath = '/api/query/findProductBySearchTerm/{searchTerm}';
@@ -75,6 +79,8 @@ class QueryResourceService extends __BaseService {
   static readonly findStoreByIdUsingGETPath = '/api/query/findStoreById/{id}';
   static readonly findStoreByTypeNameUsingGETPath = '/api/query/findStoreByTypeName/{name}';
   static readonly findStoreAndCountUsingGETPath = '/api/query/findStoreTypeAndCount';
+  static readonly findNotificationByReceiverIdUsingGETPath = '/api/query/findnotificationbyreceiverid/{receiverId}';
+  static readonly findNotificationCountByReceiverIdAndStatusNameUsingGETPath = '/api/query/findnotificationcount/{receiverId}/{status}';
   static readonly findAllProductByStoreIdUsingGETPath = '/api/query/findproducts/{storeId}';
   static readonly headerUsingGETPath = '/api/query/header/{searchTerm}';
   static readonly findOrderByDatebetweenAndStoreIdUsingGETPath = '/api/query/order/{from}/{to}/{storeId}';
@@ -106,6 +112,7 @@ class QueryResourceService extends __BaseService {
   static readonly getAllStoreTypesUsingGETPath = '/api/query/stores/storeTypes';
   static readonly findStoresByDeliveryTypeUsingGETPath = '/api/query/storesByDeliveryType/{deliveryType}';
   static readonly findStoreByStoreTypeUsingGETPath = '/api/query/storesByStoreType/{storeType}';
+  static readonly getTaskDetailsUsingGETPath = '/api/query/taskDetails/{taskName}/{orderId}/{storeId}';
   static readonly getTasksUsingGETPath = '/api/query/tasks';
   static readonly findUserRatingByRegNoUsingGETPath = '/api/query/user-rating/{regNo}';
   static readonly findAllUserRatingsUsingGETPath = '/api/query/user-ratings';
@@ -714,7 +721,7 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  findCategoryAndCountBystoreIdUsingGETResponse(params: QueryResourceService.FindCategoryAndCountBystoreIdUsingGETParams): __Observable<__StrictHttpResponse<Array<Entry>>> {
+  findCategoryAndCountBystoreIdUsingGETResponse(params: QueryResourceService.FindCategoryAndCountBystoreIdUsingGETParams): __Observable<__StrictHttpResponse<Array<ElasticDataEntry>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -735,7 +742,7 @@ class QueryResourceService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Array<Entry>>;
+        return _r as __StrictHttpResponse<Array<ElasticDataEntry>>;
       })
     );
   }
@@ -752,9 +759,9 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  findCategoryAndCountBystoreIdUsingGET(params: QueryResourceService.FindCategoryAndCountBystoreIdUsingGETParams): __Observable<Array<Entry>> {
+  findCategoryAndCountBystoreIdUsingGET(params: QueryResourceService.FindCategoryAndCountBystoreIdUsingGETParams): __Observable<Array<ElasticDataEntry>> {
     return this.findCategoryAndCountBystoreIdUsingGETResponse(params).pipe(
-      __map(_r => _r.body as Array<Entry>)
+      __map(_r => _r.body as Array<ElasticDataEntry>)
     );
   }
 
@@ -791,6 +798,42 @@ class QueryResourceService extends __BaseService {
   findByMobileNumberUsingGET(mobileNumber: number): __Observable<CustomerDTO> {
     return this.findByMobileNumberUsingGETResponse(mobileNumber).pipe(
       __map(_r => _r.body as CustomerDTO)
+    );
+  }
+
+  /**
+   * @param orderId orderId
+   * @return OK
+   */
+  findOrderLinesByOrderIdUsingGETResponse(orderId?: number): __Observable<__StrictHttpResponse<Array<OrderLine>>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    if (orderId != null) __params = __params.set('orderId', orderId.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/findOrderLinesByOrderId/${orderId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<Array<OrderLine>>;
+      })
+    );
+  }
+  /**
+   * @param orderId orderId
+   * @return OK
+   */
+  findOrderLinesByOrderIdUsingGET(orderId?: number): __Observable<Array<OrderLine>> {
+    return this.findOrderLinesByOrderIdUsingGETResponse(orderId).pipe(
+      __map(_r => _r.body as Array<OrderLine>)
     );
   }
 
@@ -1448,6 +1491,110 @@ class QueryResourceService extends __BaseService {
   findStoreAndCountUsingGET(params: QueryResourceService.FindStoreAndCountUsingGETParams): __Observable<Array<Entry>> {
     return this.findStoreAndCountUsingGETResponse(params).pipe(
       __map(_r => _r.body as Array<Entry>)
+    );
+  }
+
+  /**
+   * @param params The `QueryResourceService.FindNotificationByReceiverIdUsingGETParams` containing the following parameters:
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `receiverId`: receiverId
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findNotificationByReceiverIdUsingGETResponse(params: QueryResourceService.FindNotificationByReceiverIdUsingGETParams): __Observable<__StrictHttpResponse<PageOfNotification>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
+    if (params.size != null) __params = __params.set('size', params.size.toString());
+    if (params.receiverId != null) __params = __params.set('receiverId', params.receiverId.toString());
+    if (params.page != null) __params = __params.set('page', params.page.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/findnotificationbyreceiverid/${params.receiverId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PageOfNotification>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.FindNotificationByReceiverIdUsingGETParams` containing the following parameters:
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `receiverId`: receiverId
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findNotificationByReceiverIdUsingGET(params: QueryResourceService.FindNotificationByReceiverIdUsingGETParams): __Observable<PageOfNotification> {
+    return this.findNotificationByReceiverIdUsingGETResponse(params).pipe(
+      __map(_r => _r.body as PageOfNotification)
+    );
+  }
+
+  /**
+   * @param params The `QueryResourceService.FindNotificationCountByReceiverIdAndStatusNameUsingGETParams` containing the following parameters:
+   *
+   * - `status`: status
+   *
+   * - `receiverId`: receiverId
+   *
+   * @return OK
+   */
+  findNotificationCountByReceiverIdAndStatusNameUsingGETResponse(params: QueryResourceService.FindNotificationCountByReceiverIdAndStatusNameUsingGETParams): __Observable<__StrictHttpResponse<number>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    if (params.status != null) __params = __params.set('status', params.status.toString());
+    if (params.receiverId != null) __params = __params.set('receiverId', params.receiverId.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/findnotificationcount/${params.receiverId}/${params.status}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'text'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return (_r as HttpResponse<any>).clone({ body: parseFloat((_r as HttpResponse<any>).body as string) }) as __StrictHttpResponse<number>
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.FindNotificationCountByReceiverIdAndStatusNameUsingGETParams` containing the following parameters:
+   *
+   * - `status`: status
+   *
+   * - `receiverId`: receiverId
+   *
+   * @return OK
+   */
+  findNotificationCountByReceiverIdAndStatusNameUsingGET(params: QueryResourceService.FindNotificationCountByReceiverIdAndStatusNameUsingGETParams): __Observable<number> {
+    return this.findNotificationCountByReceiverIdAndStatusNameUsingGETResponse(params).pipe(
+      __map(_r => _r.body as number)
     );
   }
 
@@ -2831,6 +2978,58 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
+   * @param params The `QueryResourceService.GetTaskDetailsUsingGETParams` containing the following parameters:
+   *
+   * - `taskName`: taskName
+   *
+   * - `storeId`: storeId
+   *
+   * - `orderId`: orderId
+   *
+   * @return OK
+   */
+  getTaskDetailsUsingGETResponse(params: QueryResourceService.GetTaskDetailsUsingGETParams): __Observable<__StrictHttpResponse<OpenTask>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/taskDetails/${params.taskName}/${params.orderId}/${params.storeId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<OpenTask>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.GetTaskDetailsUsingGETParams` containing the following parameters:
+   *
+   * - `taskName`: taskName
+   *
+   * - `storeId`: storeId
+   *
+   * - `orderId`: orderId
+   *
+   * @return OK
+   */
+  getTaskDetailsUsingGET(params: QueryResourceService.GetTaskDetailsUsingGETParams): __Observable<OpenTask> {
+    return this.getTaskDetailsUsingGETResponse(params).pipe(
+      __map(_r => _r.body as OpenTask)
+    );
+  }
+
+  /**
    * @param params The `QueryResourceService.GetTasksUsingGETParams` containing the following parameters:
    *
    * - `nameLike`: nameLike
@@ -3459,6 +3658,48 @@ module QueryResourceService {
   }
 
   /**
+   * Parameters for findNotificationByReceiverIdUsingGET
+   */
+  export interface FindNotificationByReceiverIdUsingGETParams {
+
+    /**
+     * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     */
+    sort?: Array<string>;
+
+    /**
+     * Size of a page
+     */
+    size?: number;
+
+    /**
+     * receiverId
+     */
+    receiverId?: string;
+
+    /**
+     * Page number of the requested page
+     */
+    page?: number;
+  }
+
+  /**
+   * Parameters for findNotificationCountByReceiverIdAndStatusNameUsingGET
+   */
+  export interface FindNotificationCountByReceiverIdAndStatusNameUsingGETParams {
+
+    /**
+     * status
+     */
+    status?: string;
+
+    /**
+     * receiverId
+     */
+    receiverId?: string;
+  }
+
+  /**
    * Parameters for headerUsingGET
    */
   export interface HeaderUsingGETParams {
@@ -3802,6 +4043,27 @@ module QueryResourceService {
      * Page number of the requested page
      */
     page?: number;
+  }
+
+  /**
+   * Parameters for getTaskDetailsUsingGET
+   */
+  export interface GetTaskDetailsUsingGETParams {
+
+    /**
+     * taskName
+     */
+    taskName: string;
+
+    /**
+     * storeId
+     */
+    storeId: string;
+
+    /**
+     * orderId
+     */
+    orderId: string;
   }
 
   /**

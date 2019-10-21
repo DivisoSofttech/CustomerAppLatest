@@ -1,3 +1,4 @@
+import { NotificationService } from './../notification.service';
 import { NGXLogger } from 'ngx-logger';
 import { Util } from './../util';
 import { KeycloakAdminConfig } from './../../configs/keycloak.admin.config';
@@ -19,17 +20,25 @@ export class KeycloakService {
 
   keycloakAdmin: KeycloakAdminClient;
   customer;
+  realm = 'graeshoppe';
   constructor(
     private oauthService: OAuthService,
     private keycloakConfig: KeycloakAdminConfig,
     private storage: Storage,
     private logger: NGXLogger,
-    private util: Util
+    private util: Util,
+    private notificationService: NotificationService
+
   ) {
     this.logger.info('Created Keycloak Service');
     this.getCurrentUserDetails()
-    .then(data => {
+    .then((data: any ) => {
       this.getUserChangedSubscription().next(data);
+      if (!this.isGuest(data.preferred_username)) {
+        console.log('Subscribing to notifications for the user from KC Cons ', data.preferred_username);
+        this.notificationService.connectToNotification();
+        this.notificationService.subscribeToMyNotifications(data.preferred_username);
+      }
     });
   }
 
@@ -40,11 +49,10 @@ export class KeycloakService {
   createAccount(user: any, password: string, success: any, err: any) {
     this.keycloakConfig.refreshClient().then(() => {
       this.keycloakAdmin = this.keycloakConfig.kcAdminClient;
-      user.realm = 'graeshoppe';
+      user.realm = this.realm;
       user.credentials = [{ type: 'password', value: password }];
       user.attributes = map;
       user.enabled = true;
-
       this.keycloakAdmin.users
         .create(user)
         .then(async res => {
@@ -52,13 +60,13 @@ export class KeycloakService {
           await this.keycloakAdmin.roles
             .findOneByName({
               name: 'customer',
-              realm: 'graeshoppe'
+              realm: this.realm
             })
             .then(async role => {
               this.logger.info('Role findonebyname ', role);
               await this.keycloakAdmin.users.addRealmRoleMappings({
                 id: res.id,
-                realm: 'graeshoppe',
+                realm: this.realm,
                 roles: [
                   {
                     id: role.id,
@@ -87,7 +95,7 @@ export class KeycloakService {
           await this.keycloakConfig.kcAdminClient.users
             .listRoleMappings({
               id: user,
-              realm: 'graeshoppe'
+              realm: this.realm
             })
             .then(async roles => {
               this.logger.info('Available roles for the user are ', roles);
@@ -128,18 +136,37 @@ export class KeycloakService {
             if (hasRoleCustomer) {
               this.logger.info('Success callback');
               success();
+              if (!this.isGuest(credentials.username)) {
+                 console.log('IsNotGuest');
+                 this.notificationService.connectToNotification();
+                 this.notificationService.subscribeToMyNotifications(credentials.username);
+              }
             } else {
               this.oauthService.logOut();
               this.logger.info('Failure callback');
               failure();
             }
           })
-          .catch(() => failure());
+          .catch(error => {
+            failure();
+            console.log('Error in authenticate', error);
+            });
       });
   }
 
+  isGuest(user): boolean {
+    console.log('Checking is guest');
+    if (user === 'guest') {
+      return true;
+    }
+    return false;
+  }
   async getCurrentUserDetails() {
-    return await this.oauthService.loadUserProfile();
+    if (this.oauthService.hasValidAccessToken()) {
+      return await this.oauthService.loadUserProfile();
+    } else {
+      return;
+    }
   }
 
   async updateCurrentUserDetails(
@@ -156,7 +183,7 @@ export class KeycloakService {
         .update(
           {
             id: keycloakUser.sub,
-            realm: 'graeshoppe'
+            realm: this.realm
           },
           {
             firstName: firstN,
@@ -179,7 +206,7 @@ export class KeycloakService {
         this.keycloakAdmin = this.keycloakConfig.kcAdminClient;
         this.keycloakAdmin.users
           .resetPassword({
-            realm: 'graeshoppe',
+            realm: this.realm,
             id: user.sub,
             credential: {
               temporary: false,
@@ -236,5 +263,6 @@ export class KeycloakService {
     this.storage.clear();
     this.userChangedBehaviour.next(null);
     this.util.navigateHome();
+    this.notificationService.disconnectToMyNotifications();
   }
 }

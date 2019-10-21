@@ -17,6 +17,8 @@ export class IntlNumberInputComponent implements OnInit {
 
   countryList = [];
 
+  supportedCountries  = ['IN', 'IE'];
+
   selectedCountry = {numberCode: '0' , name: '' , code: ''};
 
   putil =  googleLibphonenumber.PhoneNumberUtil.getInstance();
@@ -27,9 +29,12 @@ export class IntlNumberInputComponent implements OnInit {
 
   codeValid = true;
 
+  searchTerm = '';
+
   @Output() validEvent = new EventEmitter<any>();
 
   sim: Sim;
+  tmpCountryList: any[];
 
   constructor(
     private modalController: ModalController,
@@ -84,20 +89,22 @@ export class IntlNumberInputComponent implements OnInit {
 
   getCountryList(success) {
     const tmpArray = [];
-    this.storage.get('countryList')
+    this.storage.get('countries')
     .then(data => {
       if (data === null || data.length === 0) {
         this.putil.getSupportedRegions()
         .forEach(cc => {
-          const cd = this.putil.getCountryCodeForRegion(cc);
-          const cn = countryList.getName(cc);
-          console.log(cc , cd , cn);
-          if (cn !== undefined) {
-            tmpArray.push({numberCode: cd , name: cn , code: cc});
+          if(this.supportedCountries.includes(cc,0)) {
+            const cd = this.putil.getCountryCodeForRegion(cc);
+            const cn = countryList.getName(cc);
+            if (cn !== undefined) {
+              tmpArray.push({numberCode: cd , name: cn , code: cc});
+            }
           }
         });
+        this.tmpCountryList = tmpArray;  
         this.countryList = tmpArray;
-        this.storage.set('countryList' , this.countryList);
+        this.storage.set('countries' , this.countryList);
         success();
       } else {
         this.countryList = data;
@@ -160,6 +167,15 @@ export class IntlNumberInputComponent implements OnInit {
     } catch (e) {
       console.log('Not a Phone Number');
       this.numberValid = false;
+    }
+  }
+
+  searchCountry() {
+    this.logger.info('Searching...' , this.searchTerm);
+    if(this.searchTerm === '') {
+      this.countryList = this.tmpCountryList;
+    } else {
+      this.countryList = this.tmpCountryList.filter(c => c.name.includes(this.searchTerm ));  
     }
   }
 
