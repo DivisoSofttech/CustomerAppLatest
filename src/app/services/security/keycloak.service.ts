@@ -9,7 +9,6 @@ import { map, first } from 'rxjs/operators';
 import { HttpHeaders } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
 import { BehaviorSubject } from 'rxjs';
-import { GuestUserService } from './guest-user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +28,7 @@ export class KeycloakService {
     private logger: NGXLogger,
     private util: Util,
     private notificationService: NotificationService
+
   ) {
     this.logger.info('Created Keycloak Service');
     this.getCurrentUserDetails()
@@ -242,7 +242,7 @@ export class KeycloakService {
       this.keycloakAdmin.users
         .resetPassword({
           realm: 'graeshoppe',
-          id: user.sub,
+          id: user.searchKey,
           credential: {
             temporary: false,
             type: 'password',

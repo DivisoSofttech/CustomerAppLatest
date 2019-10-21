@@ -97,7 +97,7 @@ export class ForgetPasswordComponent implements OnInit {
         this.keycloakService.getUser(user.searchKey);
         this.user = user;
         console.log(this.user);
-        //this.initSMSSender();
+        this.initSMSSender();
         this.showOtp = true;
       }, err => {
         if (err.status === '500') {
