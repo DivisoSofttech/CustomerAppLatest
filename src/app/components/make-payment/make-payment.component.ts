@@ -54,7 +54,7 @@ export class MakePaymentComponent implements OnInit {
       this.paymentOptions.push({ name: 'Paypal Wallet/Card', value: 'paypal' , isChecked: false });
     } else if (this.platform.is('desktop') || this.platform.is('pwa')) {
       console.log('This is a browser platform ');
-      this.paymentOptions.push({name: 'Paypal Wallet', value: 'paypal'});
+      this.paymentOptions.push({name: 'Paypal Wallet', value: 'paypal', isChecked: false});
     }
   }
 
