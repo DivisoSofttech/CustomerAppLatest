@@ -13,6 +13,7 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { NotificationService } from './services/notification.service';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { GuestUserService } from './services/security/guest-user.service';
+import { ApiConfiguration } from './api/api-configuration';
 // import { ForegroundService } from '@ionic-native/foreground-service/ngx';
 @Component({
   selector: 'app-root',
@@ -57,6 +58,7 @@ export class AppComponent {
     private localNotifications: LocalNotifications,
     private androidPermissions: AndroidPermissions,
     private guestUserService: GuestUserService
+    // private apiConfiguraton: ApiConfiguration
    // public foregroundService: ForegroundService
       ) {
     this.getUser();
@@ -75,6 +77,7 @@ export class AppComponent {
   //   this.foregroundService.start('Foodexp', 'Background Service', 'drawable/fsicon');
   //  }
   initializeApp() {
+    // this.apiConfiguraton.rootUrl = 'https//dev.ci2.divisosofttech.com:8070';
     // this.startService();
     this.platform.ready().then(() => {
       if (this.localNotifications.hasPermission()) {

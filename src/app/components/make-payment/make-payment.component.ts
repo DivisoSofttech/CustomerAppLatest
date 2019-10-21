@@ -15,9 +15,9 @@ export class MakePaymentComponent implements OnInit {
   toBePaid;
 
   paymentOptions = [
-    { name: 'Cash On Delivery', value: 'cod' },
+    { name: 'Cash On Delivery', value: 'cod' , isChecked: false},
     // {name: 'Debit/Credit Cards', value: 'card'},
-    { name: 'Credit/Debit Card', value: 'braintree' }
+    { name: 'Credit/Debit Card', value: 'braintree' , isChecked: true}
   ];
 
   constructor(
@@ -42,13 +42,19 @@ export class MakePaymentComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.toBePaid = this.orderService.order.grandTotal;
-    if (this.platform.is('android') || this.platform.is('ios')) {
+     if (this.orderService.paymentMethod === 'braintree') {
+      this.paymentMethod = this.orderService.paymentMethod;
+      this.paymentOptions = [];
+      this.paymentOptions.push( { name: 'Cash On Delivery', value: 'cod' , isChecked: false});
+      this.paymentOptions.push({ name: 'Credit/Debit Card', value: 'braintree' , isChecked: true});
+    }
+     this.toBePaid = this.orderService.order.grandTotal;
+     if (this.platform.is('android') || this.platform.is('ios')) {
       this.logger.info(' android ios platform');
-      this.paymentOptions.push({ name: 'Paypal Wallet/Card', value: 'paypal' });
+      this.paymentOptions.push({ name: 'Paypal Wallet/Card', value: 'paypal' , isChecked: false });
     } else if (this.platform.is('desktop') || this.platform.is('pwa')) {
       console.log('This is a browser platform ');
-      // this.paymentOptions.push({name: 'Paypal Wallet', value: 'paypal'});
+      this.paymentOptions.push({name: 'Paypal Wallet', value: 'paypal'});
     }
   }
 

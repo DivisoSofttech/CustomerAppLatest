@@ -23,7 +23,7 @@
       </ion-col>
       <ion-col *ngIf="method=='cod'" size="12">
         <ion-item lines="none" text-center>
-            <ion-label class="font-bold font-20">Keep ready &#8364;{{total}} </ion-label>
+            <ion-label class="font-bold font-20">Keep ready &#8364;{{total | number:'1.1-2'}} </ion-label>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -31,7 +31,7 @@
       <ion-col>
         <ion-item lines="none" text-center>
           <ion-label class="font-bold font-20">
-            Order Placed for : &#8364;{{total}} 
+            Order Placed for : &#8364;{{total | number:'1.1-2'}} 
           </ion-label>
         </ion-item>
       </ion-col>
@@ -52,7 +52,7 @@
           </ion-button>
       </ion-col>
       <ion-col text-center size="12" >
-        <ion-button class="custom-btn" color="light"  expand="block" (click)="dismiss()">Order More
+        <ion-button class="custom-btn" color="light"  expand="block" (click)="dismiss()">Continue Shopping
             <ion-icon name="arrow-forward" class="arrow"></ion-icon>
         </ion-button>
       </ion-col>

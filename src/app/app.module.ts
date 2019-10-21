@@ -40,6 +40,7 @@ import { ForegroundService } from '@ionic-native/foreground-service/ngx';
 import { BannerComponent } from './components/banner/banner.component';
 import { NotificationComponent } from './components/notification/notification.component';
 import { ErrorService } from './services/error.service';
+import { ApiModule } from './api/api.module';
 
 const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', options: {} };
 
@@ -71,6 +72,7 @@ const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', 
     LoggerModule.forRoot(environment.logging),
     BrowserAnimationsModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    // ApiModule.forRoot({rootUrl: '//dev.ci2.divisosofttech.com:8070'})
   ],
 
   providers: [
@@ -87,7 +89,6 @@ const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', 
     Sim,
     InAppBrowser,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-
     // Extra Services
     LocationService,
     { provide: LocationStrategy, useClass: HashLocationStrategy },

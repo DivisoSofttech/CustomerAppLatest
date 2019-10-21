@@ -22,8 +22,8 @@ export class AuthInterceptor implements HttpInterceptor {
         if (oauthService.hasValidAccessToken()) {
             request = request.clone({
                 setHeaders: {
-                    Authorization: oauthService.authorizationHeader()
-                }
+                    Authorization: oauthService.authorizationHeader(),
+                },
             });
         }
 

@@ -43,14 +43,14 @@ export class PaymentSuccessfullInfoComponent implements OnInit , OnDestroy {
 
   ngOnInit() {
     this.getOrder();
-    this.total = Math.round(this.orderService.order.grandTotal);
+    this.total = this.orderService.order.grandTotal;
     this.method = this.orderService.paymentMethod;
     this.ref = this.orderService.order.orderId;
     this.logger.info('Order in OrderService', this.orderService.order);
   }
 
   ngOnDestroy(): void {
-    this.logger.info('PaymentSuccessFull Destroyed');    
+    this.logger.info('PaymentSuccessFull Destroyed');
   }
 
   getOrder() {
