@@ -1,18 +1,18 @@
 /* tslint:disable */
+import { Label } from './label';
 import { AuxilaryLineItem } from './auxilary-line-item';
-import { Brand } from './brand';
 import { Category } from './category';
 import { ComboLineItem } from './combo-line-item';
 import { Discount } from './discount';
-import { Label } from './label';
+import { Brand } from './brand';
 import { Location } from './location';
 import { Manufacturer } from './manufacturer';
 import { Supplier } from './supplier';
 import { TaxCategory } from './tax-category';
 import { UOM } from './uom';
 export interface Product {
+  labels?: Array<Label>;
   auxilaryLineItems?: Array<AuxilaryLineItem>;
-  brand?: Brand;
   buyPrice?: number;
   category?: Category;
   comboLineItems?: Array<ComboLineItem>;
@@ -25,7 +25,7 @@ export interface Product {
   isActive?: boolean;
   isAuxilaryItem?: boolean;
   isServiceItem?: boolean;
-  labels?: Array<Label>;
+  brand?: Brand;
   location?: Location;
   manufacturer?: Manufacturer;
   maxQuantityLevel?: number;

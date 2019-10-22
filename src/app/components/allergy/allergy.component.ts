@@ -9,7 +9,8 @@ import { Store } from 'src/app/api/models';
 })
 export class AllergyComponent implements OnInit {
 
-  store:Store;
+  store: Store;
+  msg: string;
 
   constructor(private modalController: ModalController) { }
 
@@ -17,6 +18,10 @@ export class AllergyComponent implements OnInit {
 
   dismiss() {
     this.modalController.dismiss();
+  }
+
+  dismissData() {
+    this.modalController.dismiss(this.msg);
   }
 
 }

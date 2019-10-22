@@ -5,15 +5,15 @@ import { FavouriteProduct } from './favourite-product';
 import { FavouriteStore } from './favourite-store';
 import { Note } from './note';
 export interface Customer {
+  id?: number;
   addresses?: Array<Address>;
-  card?: string;
   contact?: Contact;
   curDebt?: number;
   debtDate?: string;
   discount?: number;
   favouriteproducts?: Array<FavouriteProduct>;
   favouritestores?: Array<FavouriteStore>;
-  id?: number;
+  card?: string;
   maxDebt?: number;
   name?: string;
   notes?: Array<Note>;
