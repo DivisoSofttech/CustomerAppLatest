@@ -44,6 +44,7 @@ export class CartService {
     this.observableTickets.subscribe(data => {
       if(data.length !== 0)
       this.sharedData.saveToStorage('cart' , {
+        storeId: this.storeId,
         orderLines: this.orderLines,
         currentShop: this.currentShop,
         currentShopSetting: this.currentShopSetting,
@@ -56,6 +57,7 @@ export class CartService {
     .then(data => {
       if(data.orderLines.length !== 0) {
         console.error(data);
+        this.storeId = data.storeId,
         this.orderLines = data.orderLines;
         this.currentShop = data.currentShop;
         this.currentShopSetting = data.currentShopSetting;

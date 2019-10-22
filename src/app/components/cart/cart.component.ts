@@ -214,6 +214,7 @@ export class CartComponent implements OnInit, OnDestroy {
         storeId: this.cart.storeId,
         customerId: this.customer.preferred_username
       };
+      console.error(order);
       this.orderService.setOrder(order);
       this.orderService.order.allergy_note = this.allergyNote;
       console.log('Delivery type is ', deliveryType);
@@ -222,6 +223,7 @@ export class CartComponent implements OnInit, OnDestroy {
       } else {
         console.log('update the order' , this.orderService.resource);
       }
+
       this.initiateOrderSubcription =  this.orderService.initiateOrder().subscribe(
         resource => {
           this.orderService.setResource(resource);

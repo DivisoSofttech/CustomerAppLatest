@@ -42,15 +42,6 @@ export class OrderService implements OnInit {
   }
 
   ngOnInit() {
-    this.sharedData.getData('cart')
-      .then(cartDetails => {
-        if(cartDetails.orderLines.length > 0) {
-          this.sharedData.getData('order')
-          .then(o => {
-            this.order = o;
-          })
-        }
-      });
   }
 
   isTask(taskName: string): boolean {
