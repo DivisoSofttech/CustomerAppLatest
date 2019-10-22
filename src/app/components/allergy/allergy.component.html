@@ -9,5 +9,14 @@
   </ion-toolbar>
 </ion-header>
 <div class="container">
-    <h4>If you or someone you're ordering for has a food allergy or intolerance , call {{store.contactNo}}</h4>
+  <ion-item>
+    <ion-label position="floating">Allergy Message</ion-label>
+      <ion-textarea aria-placeholder="enter you allergy message here..." [(ngModel)]="msg">
+
+      </ion-textarea>
+  </ion-item>
+  <ion-button (click)="dismissData()">
+    Submit
+  </ion-button>
+  
 </div>

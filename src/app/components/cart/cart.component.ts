@@ -42,6 +42,8 @@ export class CartComponent implements OnInit, OnDestroy {
 
   customer;
 
+  allergyNote;
+
   neededCheckOutAmount = 0;
 
   storeSetting: StoreSettings;
@@ -75,12 +77,12 @@ export class CartComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getCartDetails();
     this.getCustomer();
-    if(this.viewType === 'full') {
+    if (this.viewType === 'full') {
       this.cart.behaviourDeliveryTypes.subscribe(data => {
-        if(data !== undefined) {
+        if (data !== undefined) {
           this.checkDeliveryTypeExists();
-        } 
-      });  
+        }
+      });
     }
   }
 
@@ -89,7 +91,7 @@ export class CartComponent implements OnInit, OnDestroy {
     if (this.initiateOrderSubcription !== undefined) {
       this.initiateOrderSubcription.unsubscribe();
     }
-    this.keycloakSubscription !== undefined?this.keycloakSubscription.unsubscribe():null;
+    this.keycloakSubscription !== undefined ? this.keycloakSubscription.unsubscribe() : null;
   }
 
   routeBasket() {
@@ -105,8 +107,8 @@ export class CartComponent implements OnInit, OnDestroy {
         componentProps: { type: 'modal' }
       });
 
-      modal.present();
-      modal.onDidDismiss().then(data => {
+          modal.present();
+          modal.onDidDismiss().then(data => {
         if (data.data) {
           continueMethod();
         } else {
@@ -126,9 +128,9 @@ export class CartComponent implements OnInit, OnDestroy {
         this.customer  = user;
         if (user === null || user.preferred_username === 'guest') {
           this.guest = true;
-          if(this.viewType==='full' && this.loginModalOpen === false) {
+          if (this.viewType === 'full' && this.loginModalOpen === false) {
             this.loginModalOpen = true;
-            this.loginModal(()=>{});
+            this.loginModal(() => {});
           }
         } else {
           this.loginModalOpen = true;
@@ -161,7 +163,7 @@ export class CartComponent implements OnInit, OnDestroy {
         });
       }
     } else {
-      if(this.cart.currentShop !== undefined) {
+      if (this.cart.currentShop !== undefined) {
         this.cart.getStoreSettings();
       }
     }
@@ -189,6 +191,10 @@ export class CartComponent implements OnInit, OnDestroy {
       cssClass: 'modal-popover'
     });
     modal.present();
+    modal.onDidDismiss().then(data => {
+      console.log(data.data);
+      this.allergyNote = data.data;
+    });
   }
 
   continue(deliveryType) {
@@ -207,6 +213,7 @@ export class CartComponent implements OnInit, OnDestroy {
         customerId: this.customer.preferred_username
       };
       this.orderService.setOrder(order);
+      this.orderService.order.allergy_note = this.allergyNote;
       console.log('Delivery type is ', deliveryType);
       if (this.orderService.resource.nextTaskName === undefined) {
           console.log('create new order');
@@ -243,9 +250,9 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   segmenChanged(event) {
-    if(this.delivery !== undefined) {
+    if (this.delivery !== undefined) {
       this.delivery.currentDeliveryMode = event.detail.value;
-      this.currentSegment = event.detail.value;  
+      this.currentSegment = event.detail.value;
     }
   }
 }

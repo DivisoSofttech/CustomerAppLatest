@@ -3421,14 +3421,11 @@ module QueryResourceService {
   export interface FindFavouriteStoresByCustomerReferenceUsingGETParams {
 
     /**
-<<<<<<< HEAD
-=======
      * reference
      */
     reference: string;
 
     /**
->>>>>>> 69506dfa5ba8a0c16721c9b4ed061d6756b046d3
      * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
      */
     sort?: Array<string>;

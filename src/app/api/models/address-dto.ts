@@ -1,11 +1,12 @@
 /* tslint:disable */
 export interface AddressDTO {
+  id?: number;
   addressType?: string;
-  alternatePhone?: number;
   city?: string;
   customerId?: string;
+  email?: string;
   houseNoOrBuildingName?: string;
-  id?: number;
+  alternatePhone?: number;
   landmark?: string;
   name?: string;
   phone?: number;

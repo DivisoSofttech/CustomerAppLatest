@@ -1,12 +1,12 @@
 /* tslint:disable */
 export interface PaymentDTO {
+  provider?: string;
   amount?: number;
-  dateAndTime?: string;
   id?: number;
   payee?: string;
   payer?: string;
   paymentType?: string;
-  provider?: string;
+  dateAndTime?: string;
   ref?: string;
   status?: string;
   targetId?: string;

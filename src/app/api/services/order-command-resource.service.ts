@@ -8,11 +8,13 @@ import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
 import { AddressDTO } from '../models/address-dto';
-import { NotificationDTO } from '../models/notification-dto';
-import { CommandResource } from '../models/command-resource';
-import { Order } from '../models/order';
-import { PageOfAddress } from '../models/page-of-address';
+import { DeliveryInfoDTO } from '../models/delivery-info-dto';
 import { DeliveryInfo } from '../models/delivery-info';
+import { NotificationDTO } from '../models/notification-dto';
+import { OrderDTO } from '../models/order-dto';
+import { Order } from '../models/order';
+import { CommandResource } from '../models/command-resource';
+import { PageOfAddress } from '../models/page-of-address';
 
 /**
  * Order Command Resource
@@ -23,7 +25,9 @@ import { DeliveryInfo } from '../models/delivery-info';
 class OrderCommandResourceService extends __BaseService {
   static readonly updateAddressUsingPUTPath = '/api/command/addresses';
   static readonly deleteAddressUsingDELETEPath = '/api/command/addresses/{id}';
+  static readonly editDeliveryInfoUsingPUTPath = '/api/command/delivery-info';
   static readonly updateNotificationUsingPUTPath = '/api/command/notifications';
+  static readonly editOrderUsingPUTPath = '/api/command/order';
   static readonly initiateOrderUsingPOSTPath = '/api/command/order/initiateOrder';
   static readonly createAddressUsingPOSTPath = '/api/command/orders/addresses';
   static readonly getAllSavedAddressUsingGETPath = '/api/command/orders/addresses/{customerId}';
@@ -108,6 +112,42 @@ class OrderCommandResourceService extends __BaseService {
   }
 
   /**
+   * @param deliveryInfo deliveryInfo
+   * @return OK
+   */
+  editDeliveryInfoUsingPUTResponse(deliveryInfo: DeliveryInfo): __Observable<__StrictHttpResponse<DeliveryInfoDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = deliveryInfo;
+    let req = new HttpRequest<any>(
+      'PUT',
+      this.rootUrl + `/api/command/delivery-info`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<DeliveryInfoDTO>;
+      })
+    );
+  }
+  /**
+   * @param deliveryInfo deliveryInfo
+   * @return OK
+   */
+  editDeliveryInfoUsingPUT(deliveryInfo: DeliveryInfo): __Observable<DeliveryInfoDTO> {
+    return this.editDeliveryInfoUsingPUTResponse(deliveryInfo).pipe(
+      __map(_r => _r.body as DeliveryInfoDTO)
+    );
+  }
+
+  /**
    * @param notificationDTO notificationDTO
    * @return OK
    */
@@ -140,6 +180,42 @@ class OrderCommandResourceService extends __BaseService {
   updateNotificationUsingPUT(notificationDTO: NotificationDTO): __Observable<NotificationDTO> {
     return this.updateNotificationUsingPUTResponse(notificationDTO).pipe(
       __map(_r => _r.body as NotificationDTO)
+    );
+  }
+
+  /**
+   * @param order order
+   * @return OK
+   */
+  editOrderUsingPUTResponse(order: Order): __Observable<__StrictHttpResponse<OrderDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = order;
+    let req = new HttpRequest<any>(
+      'PUT',
+      this.rootUrl + `/api/command/order`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<OrderDTO>;
+      })
+    );
+  }
+  /**
+   * @param order order
+   * @return OK
+   */
+  editOrderUsingPUT(order: Order): __Observable<OrderDTO> {
+    return this.editOrderUsingPUTResponse(order).pipe(
+      __map(_r => _r.body as OrderDTO)
     );
   }
 

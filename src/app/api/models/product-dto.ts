@@ -1,7 +1,7 @@
 /* tslint:disable */
 export interface ProductDTO {
+  locationId?: number;
   brandId?: number;
-  buyPrice?: number;
   categoryId?: number;
   discountId?: number;
   iDPcode?: string;
@@ -12,7 +12,7 @@ export interface ProductDTO {
   isActive?: boolean;
   isAuxilaryItem?: boolean;
   isServiceItem?: boolean;
-  locationId?: number;
+  buyPrice?: number;
   manufacturerId?: number;
   maxQuantityLevel?: number;
   minQuantityLevel?: number;
