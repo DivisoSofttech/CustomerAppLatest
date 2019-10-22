@@ -12,6 +12,7 @@ import { OrderCommandResourceService } from 'src/app/api/services';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { LoginSignupComponent } from '../login-signup/login-signup.component';
 import { Subscription, BehaviorSubject } from 'rxjs';
+import { SharedDataService } from 'src/app/services/shared-data.service';
 
 @Component({
   selector: 'app-cart',
@@ -139,32 +140,33 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   checkDeliveryTypeExists() {
-    this.logger.info('Checking delivery Types');
-    if (this.cart.currentDeliveryTypes !== undefined) {
-      if (this.cart.currentDeliveryTypes.length === 1) {
-        if (this.cart.currentDeliveryTypes[0].name === 'delivery') {
+
+    this.cart.behaviourDeliveryTypes.subscribe(currentDeliveryTypes => {
+      if(currentDeliveryTypes !== undefined) {
+
+      }
+      this.logger.info('Checking delivery Types');
+      if (currentDeliveryTypes !== undefined) {
+        if (currentDeliveryTypes.length === 1) {
+          if (currentDeliveryTypes[0].name === 'delivery') {
+            this.deliveryOk = true;
+            this.currentSegment = 'delivery';
+            this.defaultDelivery = true;
+          } else if (currentDeliveryTypes[0].name === 'collection') {
+            this.collectionOk = true;
+            this.currentSegment = 'collection';
+          }
+        } else {
+          this.defaultDelivery=true;
           this.deliveryOk = true;
-          this.currentSegment = 'delivery';
-        } else if (this.cart.currentDeliveryTypes[0].name === 'collection') {
           this.collectionOk = true;
-          this.currentSegment = 'collection';
-          this.defaultDelivery = true;
         }
       } else {
-        this.cart.currentDeliveryTypes.forEach(element => {
-          if (element.name === 'delivery') {
-            this.deliveryOk = true;
-          } else if (element.name === 'collection') {
-            this.collectionOk = true;
-            this.defaultDelivery = true;
-          }
-        });
-      }
-    } else {
-      if(this.cart.currentShop !== undefined) {
-        this.cart.getStoreSettings();
-      }
-    }
+        if(this.cart.currentShop !== undefined) {
+          this.cart.getStoreSettings();
+        }
+      }  
+    })
   }
 
   getCartDetails() {

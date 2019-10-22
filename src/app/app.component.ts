@@ -14,7 +14,11 @@ import { NotificationService } from './services/notification.service';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { GuestUserService } from './services/security/guest-user.service';
 import { HistoryListComponent } from './components/history-list/history-list.component';
+import { SharedDataService } from './services/shared-data.service';
+import { Router, NavigationStart } from '@angular/router';
 // import { ForegroundService } from '@ionic-native/foreground-service/ngx';
+
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -59,11 +63,12 @@ export class AppComponent {
     private backgroundMode: BackgroundMode,
     private localNotifications: LocalNotifications,
     private androidPermissions: AndroidPermissions,
-    private guestUserService: GuestUserService
-      ) {
+    private guestUserService: GuestUserService,
+  ) {
+   
     this.getUser();
     this.initializeApp();
-    if(this.platform.is('pwa') || this.platform.is('cordova')) {
+    if (this.platform.is('pwa') || this.platform.is('cordova')) {
       this.browser = true;
     } else {
     }
@@ -117,52 +122,52 @@ export class AppComponent {
     });
   }
 
-exitApp() {
+  exitApp() {
     this.util.createAlert('Exit App', 'Are you sure?',
-    (confirm) => {
-      // tslint:disable-next-line: no-string-literal
-      navigator['app'].exitApp();
-    }, (deny) => {
-    });
-}
-
-async showPreviousOrders() {
-  const modal = await this.modalController.create({
-  component: HistoryListComponent,
-  componentProps: { keyCloakUser: this.keyCloakUser , viewType: 'modal' }
-  });
-
-  await modal.present();
-
-}
-
-
-getUser() {
-    this.keycloakService.getUserChangedSubscription()
-    .subscribe(user => {
-      this.keyCloakUser = user;
-      this.logger.info('Checking If guest : App Component');
-      if (user) {
-        if (user.preferred_username === 'guest') {
-          this.logger.info('Show Login');
-          this.guest = true;
-        } else {
-          this.logger.info('Show Logout');
-          this.guest = false;
-        }
-      } else {
-        this.guest = true;
-      }
-    });
+      (confirm) => {
+        // tslint:disable-next-line: no-string-literal
+        navigator['app'].exitApp();
+      }, (deny) => {
+      });
   }
 
-logout() {
+  async showPreviousOrders() {
+    const modal = await this.modalController.create({
+      component: HistoryListComponent,
+      componentProps: { keyCloakUser: this.keyCloakUser, viewType: 'modal' }
+    });
+
+    await modal.present();
+
+  }
+
+
+  getUser() {
+    this.keycloakService.getUserChangedSubscription()
+      .subscribe(user => {
+        this.keyCloakUser = user;
+        this.logger.info('Checking If guest : App Component');
+        if (user) {
+          if (user.preferred_username === 'guest') {
+            this.logger.info('Show Login');
+            this.guest = true;
+          } else {
+            this.logger.info('Show Logout');
+            this.guest = false;
+          }
+        } else {
+          this.guest = true;
+        }
+      });
+  }
+
+  logout() {
     this.keycloakService.logout();
     this.util.createToast('You\'ve been logged out');
     this.guestUserService.logInGuest();
   }
 
-login() {
+  login() {
     this.util.navigateToLogin();
   }
 }

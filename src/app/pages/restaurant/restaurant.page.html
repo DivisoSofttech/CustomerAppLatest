@@ -5,11 +5,10 @@
 
   <!-- <app-map></app-map> -->
  
-  <ion-grid class="ion-no-padding ion-no-margin">
+  <ion-grid class="ion-no-padding ion-no-margin full-height">
 
-    <ion-row class="ion-no-padding ion-no-margin">
+    <ion-row class="ion-no-padding ion-no-margin full-height">
       <ion-col size="12" size-lg="8" class="ion-no-padding ion-no-margin">
-        <ion-progress-bar type="indeterminate"></ion-progress-bar>
         <app-banner></app-banner>
         <ion-item lines="none" color="light">
           <ion-label slot="start">
@@ -18,7 +17,7 @@
           <ion-label class="pointer" text-right *ngIf="currentPlaceName!==''" (click)="showPlaceSelectionModal()">
               <p class="font-20 heading-one">{{ currentPlaceName}}</p>
           </ion-label>
-          <ion-label slot="end" *ngIf="currentPlaceName===''">
+          <ion-label slot="end" class="ion-text-center" *ngIf="currentPlaceName===''">
               <ion-spinner name="dots" ></ion-spinner>
           </ion-label>
           <ion-icon class="pointer" name="create" slot="end" *ngIf="currentPlaceName!==''" (click)="showPlaceSelectionModal()"></ion-icon>
@@ -41,7 +40,7 @@
           </ion-row>
         </ion-grid>      
       </ion-col>
-      <ion-col size="12" size-lg="4" class="ion-no-padding ion-no-margin" class="desktop-only">
+      <ion-col size="12" size-lg="4" class="ion-no-padding ion-no-margin border-left desktop-only">
 
       </ion-col>
     </ion-row>

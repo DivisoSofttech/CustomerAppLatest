@@ -15,8 +15,8 @@
 
 <ion-content>
 
-  <ion-spinner color="primary" name="circles" *ngIf="showLoading"></ion-spinner>
-  <ion-list class="ion-text-center margin-20">
+  <ion-spinner color="primary" name="dots" *ngIf="showLoading"></ion-spinner>
+  <ion-list class="ion-text-center ion-no-padding">
       <ion-text *ngIf="!showLoading && notifications.length === 0">No Notifications</ion-text>
     <app-notification-card
     *ngFor="let notification of notifications"

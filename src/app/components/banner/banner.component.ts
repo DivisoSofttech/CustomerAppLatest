@@ -15,7 +15,7 @@ export class BannerComponent implements OnInit {
   @Input() direction = 'horizontal';
 
   slideOpts = {
-    slidesPerView: 3,
+    slidesPerView: this.platform.width() < 1280?1:2,
     on: {
       beforeInit() {
         const swiper = this;

@@ -10,12 +10,13 @@ export interface Address {
   country?: string;
   customer?: Customer;
   customerId?: string;
+  email?: string;
   houseNoOrBuildingName?: string;
   id?: number;
   landmark?: string;
   name?: string;
   phone?: number;
-  pincode?: number;
+  pincode?: string;
   postCode?: string;
   roadNameAreaOrStreet?: string;
   state?: string;

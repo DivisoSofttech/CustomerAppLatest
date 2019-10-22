@@ -25,7 +25,8 @@ export class Util {
 
   async createLoader(duration?) {
     return await this.loadingController.create({
-      spinner: 'bubbles',
+      spinner: 'lines',
+      message: 'Please wait',
       duration: duration !== undefined?duration:5000,
       cssClass:'loader'
     });
@@ -33,7 +34,7 @@ export class Util {
 
   async createCustomLoader(spinner, message) {
     return await this.loadingController.create({
-      spinner,
+      spinner:spinner === undefined?'circles':spinner,
       duration: 5000,
       message
     });

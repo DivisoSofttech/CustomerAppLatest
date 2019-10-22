@@ -18,6 +18,7 @@ ion-card {
 ion-card-header {
   padding: 5px;
   height: 150px;
+  border-bottom: 1px solid lightgray;
 }
 
 .closeCard {
@@ -29,8 +30,7 @@ ion-card-header {
   bottom: 0;
   width: 100%;
   height:auto;
-  padding-left: 25px;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0,0,0,0.7);
 }
 
 
@@ -102,4 +102,17 @@ h4 , p{
   color: white;
 }
 
- 
+.overlay-item {
+  --background: rgba(0, 0, 0, 0.0);
+  padding: 21px 0px;
+  color: white;
+}
+
+.rating {
+  display: flex;
+  align-content: center;
+  margin-top: 10px;
+  font-size: 28px;
+  color: yellow;
+}
+

@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Product, StockCurrent, OrderLine, Store, AuxilaryLineItem } from '../api/models';
 import { BehaviorSubject } from 'rxjs';
 import { AlertController, NavController } from '@ionic/angular';
 import { QueryResourceService } from '../api/services';
 import { Util } from './util';
 import { NGXLogger } from 'ngx-logger';
+import { SharedDataService } from './shared-data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -30,13 +31,39 @@ export class CartService {
     private navController: NavController,
     private queryResource: QueryResourceService,
     private util: Util,
-    private logger: NGXLogger
+    private logger: NGXLogger,
+    private sharedData: SharedDataService
   ) {
     this.observableTickets = new BehaviorSubject<OrderLine[]>(this.orderLines);
     this.observablePrice = new BehaviorSubject<number>(this.totalPrice);
     this.logger.info('Cart Service Created');
     this.behaviourStore.subscribe(data => {
       this.getStoreSettings();
+    });
+
+    this.observableTickets.subscribe(data => {
+      if(data.length !== 0)
+      this.sharedData.saveToStorage('cart' , {
+        orderLines: this.orderLines,
+        currentShop: this.currentShop,
+        currentShopSetting: this.currentShopSetting,
+        auxilaryItems: this.auxilaryItems,
+        currentDeliveryTypes: this.currentDeliveryTypes
+      });
+    });
+
+    this.sharedData.getData('cart')
+    .then(data => {
+      if(data.orderLines.length !== 0) {
+        console.error(data);
+        this.orderLines = data.orderLines;
+        this.currentShop = data.currentShop;
+        this.currentShopSetting = data.currentShopSetting;
+        this.currentDeliveryTypes = data.currentDeliveryTypes;
+        this.auxilaryItems = data.auxilaryItems;
+        this.behaviourDeliveryTypes.next(data.currentDeliveryTypes);
+        this.updateCart();          
+      }
     })
   }
 
@@ -199,6 +226,7 @@ export class CartService {
     this.orderLines = [];
     this.currentShopId = 0;
     this.currentShop = undefined;
+    this.sharedData.deleteData('cart');
     this.updateCart();
   }
 

@@ -4,6 +4,7 @@ export interface AddressDTO {
   alternatePhone?: number;
   city?: string;
   customerId?: string;
+  email?: string;
   houseNoOrBuildingName?: string;
   id?: number;
   landmark?: string;

@@ -41,6 +41,8 @@ export class StorePage implements OnInit {
   @ViewChild(IonSlides, null) ionSlides: IonSlides;
   @ViewChild(IonRefresher, null) IonRefresher: IonRefresher;
   @ViewChild(MapComponent, null) map: MapComponent;
+  slidesMoving: boolean;
+  slidesHeight: number;
 
   constructor(
     private queryResource: QueryResourceService,
@@ -168,8 +170,10 @@ export class StorePage implements OnInit {
   }
 
   slideChanged(event) {
+  
     let index: any;
     this.ionSlides.getActiveIndex().then(num => {
+      this.ionSlides.updateAutoHeight();
       index = num;
       if (index === 0) {
         this.currentSegment = 'menu';

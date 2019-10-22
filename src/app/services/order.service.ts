@@ -10,6 +10,7 @@ import { ModalController } from '@ionic/angular';
 import { MakePaymentComponent } from '../components/make-payment/make-payment.component';
 import { BehaviorSubject } from 'rxjs';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { SharedDataService } from './shared-data.service';
 
 
 @Injectable({
@@ -19,7 +20,7 @@ export class OrderService implements OnInit {
 
   order: Order;
   resource: CommandResource = {};
-  orderResourceBehaviour: BehaviorSubject<string> =  new BehaviorSubject(this.resource.nextTaskName);
+  orderResourceBehaviour: BehaviorSubject<string> = new BehaviorSubject(this.resource.nextTaskName);
   deliveryInfo: DeliveryInfo = {};
   customer;
   paymentMethod;
@@ -34,35 +35,45 @@ export class OrderService implements OnInit {
     private oauthService: OAuthService,
     private offerCommandService: OfferCommandResourceService,
     private paymentCommandService: PaymentCommandResourceService,
-    private util: Util
-    ) {
-      this.getCustomer();
-    }
+    private util: Util,
+    private sharedData: SharedDataService
+  ) {
+    this.getCustomer();
+  }
 
-    ngOnInit() {
-    }
+  ngOnInit() {
+    this.sharedData.getData('cart')
+      .then(cartDetails => {
+        if(cartDetails.orderLines.length > 0) {
+          this.sharedData.getData('order')
+          .then(o => {
+            this.order = o;
+          })
+        }
+      });
+  }
 
   isTask(taskName: string): boolean {
     return this.resource.nextTaskName === taskName;
   }
 
-   initiateOrder() {
-     if ( this.offer !== undefined) {
-       this.order.appliedOffers.push(this.offer);
-     }
-     return this.orderCommandService.initiateOrderUsingPOST(this.order);
+  initiateOrder() {
+    if (this.offer !== undefined) {
+      this.order.appliedOffers.push(this.offer);
+    }
+    return this.orderCommandService.initiateOrderUsingPOST(this.order);
   }
 
   async getCustomer() {
-   await this.util.createLoader().then( async loader => {
-     loader.dismiss();
-     if (this.oauthService.hasValidAccessToken()) {
+    await this.util.createLoader().then(async loader => {
+      loader.dismiss();
+      if (this.oauthService.hasValidAccessToken()) {
         await this.storage.get('user')
           .then(data => {
             this.customer = data;
-            this.logger.info('Got Customer ' , data);
+            this.logger.info('Got Customer ', data);
             loader.dismiss();
-        });
+          });
       }
     });
   }
@@ -70,36 +81,40 @@ export class OrderService implements OnInit {
   collectDeliveryInfo() {
     this.logger.info('DeliveryInfo is' + this.deliveryInfo);
     return this.orderCommandService.collectDeliveryDetailsUsingPOST(
-      {taskId: this.resource.nextTaskId, orderId: this.resource.orderId, deliveryInfo: this.deliveryInfo});
+      { taskId: this.resource.nextTaskId, orderId: this.resource.orderId, deliveryInfo: this.deliveryInfo });
   }
 
   async claimMyOffer(totalPrice) {
     if (!this.customer) {
       await this.getCustomer();
     }
-    return this.offerCommandService.checkOfferEligibilityUsingPOST({orderModel: {
-      orderTotal: totalPrice
-    }, customerId: this.customer.preferred_username});
+    return this.offerCommandService.checkOfferEligibilityUsingPOST({
+      orderModel: {
+        orderTotal: totalPrice
+      }, customerId: this.customer.preferred_username
+    });
   }
 
-   processPayment(ref: string, status: string, provider) {
+  processPayment(ref: string, status: string, provider) {
     if (!this.customer) {
       this.getCustomer();
     }
     console.log('Payment reference is ' + ref);
-    return  this.paymentCommandService.processPaymentUsingPOST(
-      {taskId: this.resource.nextTaskId,
-      status, paymentDTO: {
-        amount: this.order.grandTotal,
-        payee: this.order.storeId,
-        payer: this.customer.preferred_username,
-        paymentType: this.paymentMethod,
-        provider,
-        status,
-        targetId: this.order.orderId,
-        total: this.order.grandTotal,
-        ref
-      }}
+    return this.paymentCommandService.processPaymentUsingPOST(
+      {
+        taskId: this.resource.nextTaskId,
+        status, paymentDTO: {
+          amount: this.order.grandTotal,
+          payee: this.order.storeId,
+          payer: this.customer.preferred_username,
+          paymentType: this.paymentMethod,
+          provider,
+          status,
+          targetId: this.order.orderId,
+          total: this.order.grandTotal,
+          ref
+        }
+      }
     );
 
   }
@@ -116,7 +131,7 @@ export class OrderService implements OnInit {
   initiatePaypalPayment() {
     return this.paymentCommandService.initiatePaymentUsingPOST({
       intent: 'sale',
-      payer: { payment_method: 'paypal'},
+      payer: { payment_method: 'paypal' },
       transactions: [
         {
           amount: {
@@ -161,7 +176,7 @@ export class OrderService implements OnInit {
   setDeliveryCharge(deliveryCharge) {
     this.deliveryInfo.deliveryCharge = deliveryCharge;
   }
-  setAddress(address)  {
+  setAddress(address) {
     this.deliveryInfo.deliveryAddress = address;
   }
 
@@ -170,7 +185,7 @@ export class OrderService implements OnInit {
   }
 
   setShop(shop) {
-    this.logger.info('Shop Added to Order Service ' , shop);
+    this.logger.info('Shop Added to Order Service ', shop);
     this.shop = shop;
   }
 

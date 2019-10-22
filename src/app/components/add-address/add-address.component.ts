@@ -44,14 +44,27 @@ export class AddAddressComponent implements OnInit {
       addressType: [this.address.addressType],
       landmark: [this.address.landmark],
       city: [this.address.city],
-      email: [this.address.email ],
+      email: [this.address.email , Validators.email],
       customerId: [this.address.customerId],
       id: [this.address.id]
     });
   
   }
 
-  updateAddress() {}
+  updateAddress() {
+    this.util.createLoader()
+    .then(loader => {
+      loader.present();
+      this.orderCommandResource.updateAddressUsingPUT(this.addressForm.value)
+      .subscribe(address => {
+        this.logger.info('Address Saved', address);
+        loader.dismiss();
+        this.dismissData(address);
+      }, err => {
+        loader.dismiss();
+      })
+    })
+  }
 
   createAddress() {
     this.util.createLoader()

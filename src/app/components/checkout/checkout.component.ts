@@ -9,6 +9,7 @@ import { ModalController, PopoverController } from '@ionic/angular';
 import { ModalDisplayUtilService } from 'src/app/services/modal-display-util.service';
 import { Subscription } from 'rxjs';
 import { AddressListComponent } from '../address-list/address-list.component';
+import { OrderCommandResourceService } from 'src/app/api/services';
 
 @Component({
   selector: 'app-checkout',
@@ -21,6 +22,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   behaviouralSubjectSubscription: Subscription;
 
+  addresses:[] =[];
 
   loader: Promise<HTMLIonLoadingElement>;
 
@@ -38,7 +40,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     private util: Util,
     private modalController: ModalController,
     private popoverController: PopoverController,
-    private displayModalService: ModalDisplayUtilService
+    private displayModalService: ModalDisplayUtilService,
+    private orderCommandResource: OrderCommandResourceService,
       ) { }
 
   ngOnInit() {
@@ -61,9 +64,20 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.behaviouralSubjectSubscription.unsubscribe();
     }
   }
+
+  getAllAdress() {
+    this.orderCommandResource.getAllSavedAddressUsingGET({
+      customerId: this.customer.preferred_username,
+    })
+    .subscribe(paddress => {
+      this.selectedAddress = paddress.content[0];
+    });
+  }
+
   getCustomer() {
     this.logger.info(this.orderService.customer);
     this.customer = this.orderService.customer;
+    this.getAllAdress();
   }
 
   getOrderDetails() {
@@ -79,6 +93,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     .then(data => {
       if(data.data !== undefined) {
         this.selectedAddress = data.data;
+        this.setAddress();
       }
     });
     await modal.present();
@@ -89,8 +104,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.orderService.setNote(this.note);
   }
 
-  setAddress(event) {
-    this.selectedAddress = event;
+  setAddress() {
     this.orderService.setAddress(this.selectedAddress);
   }
 

@@ -3,13 +3,12 @@
     <ion-buttons>
       <ion-back-button></ion-back-button>
       <ion-title>Checkout</ion-title>
-
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-grid>
-    <ion-row>
+  <ion-grid class="ion-no-padding">
+    <ion-row *ngIf="deliveryType==='delivery'">
       <ion-col style="padding: 25px;" size="12" *ngIf="selectedAddress !== undefined">
           <ion-label>
               <h1>{{selectedAddress.name}}</h1>
@@ -19,14 +18,14 @@
               <h2>{{selectedAddress.postCode}}</h2>
             </ion-label>
       </ion-col>
-      <ion-col size="12">
+      <ion-col size="12" *ngIf="deliveryType==='delivery'">
         <ion-button expand="block" (click)="showAddresses()" class="ion-margin">Change Or Add Address</ion-button>
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col text-left size="12">
+      <ion-col text-left size="12" class="ion-no-padding col-border-top">
         <ion-text color="medium">
-          <p>
+          <p class="ion-padding">
             Leave a note for the restaurant with anything they need to know
             (e.g. the doorbell doesn't work). Do not include any details about
             allergy.

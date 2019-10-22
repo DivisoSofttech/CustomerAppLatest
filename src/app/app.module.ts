@@ -43,6 +43,7 @@ import { ErrorService } from './services/error.service';
 import { DirectiveModule } from './directives/directive.module';
 import { HistoryListComponent } from './components/history-list/history-list.component';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
+import { SharedDataService } from './services/shared-data.service';
  
 const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', options: {} };
 
@@ -106,7 +107,8 @@ const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', 
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }
+    },
+    SharedDataService
   ],
 
   bootstrap: [AppComponent]

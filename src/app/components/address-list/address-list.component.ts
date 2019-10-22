@@ -60,6 +60,28 @@ export class AddressListComponent implements OnInit {
     });
   }
 
+  async editAddress(address) {
+    const modal = await this.modalController.create({
+    component: AddAddressComponent,
+    componentProps: { address: address , mode:'update'}
+    });
+
+    modal.onDidDismiss()
+    .then(data=> {
+      console.error(data.data);
+      this.addresses.forEach((element , index)=> {
+        if(element.id === data.data.id) {
+          console.log(element , index);
+          this.addresses[index] = data.data;
+          console.log(this.addresses);
+        }
+      })
+    })
+  
+    await modal.present();
+  
+  }
+
   deleteAddress(id) {
     this.util.createLoader()
     .then(loader => {

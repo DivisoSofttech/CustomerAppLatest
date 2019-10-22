@@ -14,15 +14,16 @@
 </ion-header>
 
 <ion-content *ngIf="mode==='modal'">
-  <ion-list *ngIf="addresses !== undefined">
-    <ion-item line="full" *ngFor="let address of addresses" value="{{address.id}}" (click)="dismissData(address)">
-      <ion-label>
-        <h2>{{address.name}}</h2>
-        <h2>{{address.houseNoOrBuildingName}}</h2>
-        <h2>{{address.landmark}}</h2>
-        <h2>{{address.pincode}}</h2>
-      </ion-label>
-      <ion-icon class="modificationIcon" name="create"></ion-icon>
+  <ion-list  *ngIf="addresses !== undefined">
+    <ion-item class="ion-no-padding" line="full" *ngFor="let address of addresses" value="{{address.id}}">
+        <ion-label class="ion-padding" (click)="dismissData(address)">
+            <h1>{{address.name}}</h1>
+            <h2>{{address.houseNoOrBuildingName}}</h2>
+            <h2>{{address.landmark}}</h2>
+            <h2>{{address.roadNameAreaOrStreet}}</h2>
+            <h2>{{address.postCode}}</h2>
+          </ion-label>
+      <ion-icon class="modificationIcon" name="create" (click)="editAddress(address)"></ion-icon>
       <ion-icon class="modificationIcon" name="trash" (click)="deleteAddress(address.id)"></ion-icon>
     </ion-item>
   </ion-list>
@@ -45,7 +46,7 @@
       <ion-icon class="modificationIcon" name="trash" (click)="deleteAddress(address.id)"></ion-icon>
     </ion-item>
   </ion-list>
-  <ion-button expand="block" class="ion-margin" (click)="addAddressModal()" color="primary">
+  <ion-button expand="block" *ngIf="mode === 'modal'" class="ion-margin" (click)="addAddressModal()" color="primary">
     Add Address
     <ion-icon name="add"></ion-icon>
   </ion-button>

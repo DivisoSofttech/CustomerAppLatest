@@ -108,8 +108,8 @@ lines="full"
     (ionChange)="segmenChanged($event)"
     *ngIf="orderLines.length !== 0"
   >
-  <ion-segment-button *ngIf="deliveryOk" value="delivery" [checked]="deliveryOk">Delivery</ion-segment-button>
-    <ion-segment-button *ngIf="collectionOk" value="collection" [checked]="collectionOk && defaultDelivery">Collection</ion-segment-button>
+  <ion-segment-button *ngIf="deliveryOk" value="delivery" [checked]="deliveryOk && defaultDelivery">Delivery</ion-segment-button>
+    <ion-segment-button *ngIf="collectionOk" value="collection" [checked]="collectionOk && !defaultDelivery">Collection</ion-segment-button>
   </ion-segment>
 
   <div>
@@ -121,14 +121,14 @@ lines="full"
 <ion-footer *ngIf="viewType === 'full'
 && orderLines.length > 0">
 <ion-button
-class="ion-margin" *ngIf="currentSegment==='delivery' && deliveryOk"
+class="ion-margin round-button" *ngIf="currentSegment==='delivery' && deliveryOk"
 [disabled]="neededCheckOutAmount !== 0"
 color="primary" expand="full" (click)="continue('delivery')"
 >Continue</ion-button
 >
 <ion-button *ngIf="currentSegment==='collection' && collectionOk"
 color="primary" expand="full" (click)="continue('collection')"
-class="ion-margin"
+class="ion-margin round-button"
 >Continue</ion-button
 >
 </ion-footer>

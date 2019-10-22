@@ -12,8 +12,8 @@
     </ion-fab-button>
   </ion-fab>
 
-  <ion-grid class="ion-no-padding">
-    <ion-row>
+  <ion-grid class="ion-no-padding full-height">
+    <ion-row class="ion-no-padding full-height">
       <ion-col size="12" size-lg="8" class="ion-no-padding">
         <ion-row>
           <ion-header class="desktop-only" no-border>
@@ -39,7 +39,7 @@
                 </ion-segment-button>
               </ion-segment>
 
-              <ion-slides (ionSlideDidChange)="slideChanged($event)">
+              <ion-slides [options]="{autoHeight: true}" (ionSlideDidChange)="slideChanged($event)">
                 <ion-slide>
                   <ion-row class="categories" *ngIf="store !== undefined && showCategoryWiseProducts === false"
                      no-margin no-padding>
@@ -98,13 +98,13 @@
             </div>
           </ion-col>
         </ion-row>
-        <ion-row class="desktop-only cart-row">
+        <!-- <ion-row class="desktop-only cart-row">
           <app-cart (viewClick)="navigateBasket()"></app-cart>
-        </ion-row>
+        </ion-row> -->
       </ion-col>
       <ion-col size="12" size-lg="4" class="desktop-only br-left ion-no-padding">
         <ion-item color="light" lines="full">
-          <ion-label>Reviews</ion-label>
+          <ion-label *ngIf="store !== undefined">Reviews <span *ngIf="store.reviews !== null">({{store.reviews.length}})</span></ion-label>
         </ion-item>
         <app-review *ngIf="store != undefined" [store]="store"></app-review>
       </ion-col>

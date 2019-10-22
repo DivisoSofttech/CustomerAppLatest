@@ -103,6 +103,7 @@ export class FavouriteService {
           data.content.forEach(fs => {
             this.queryResource.findStoreByIdUsingGET(fs.storeId)
             .subscribe(store => {
+              if(store !== null)
               this.favourites.push({data: store , route:  '/store/' + store.regNo , type: 'store'});
               this.favouriteSubject.next(this.favourites);
             });

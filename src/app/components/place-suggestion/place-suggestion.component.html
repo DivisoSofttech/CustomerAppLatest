@@ -9,7 +9,7 @@
 
 <ion-content>
 <!--List Of Available place Suggestions-->
-<ion-spinner name="bubbles" *ngIf="showSpinner"></ion-spinner>
+<ion-spinner color="primary" name="dots" *ngIf="showSpinner"></ion-spinner>
 <ion-list *ngIf="searchTerm === '' && recentPlaces.length > 0">
   <ion-list-header>
     <ion-label>
