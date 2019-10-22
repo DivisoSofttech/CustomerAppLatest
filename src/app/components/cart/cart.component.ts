@@ -54,16 +54,13 @@ export class CartComponent implements OnInit, OnDestroy {
 
   initiateOrderSubcription: Subscription;
 
-  // Temproary hack to fix login modal opening multiple times
-  loginModalOpen = false;
-
   keycloakSubscription: Subscription;
 
 
   @Output() viewClick = new EventEmitter();
 
 
-  @ViewChild(DeliveryItemDetailsComponent , null) delivery: DeliveryItemDetailsComponent;
+  @ViewChild(DeliveryItemDetailsComponent, null) delivery: DeliveryItemDetailsComponent;
 
   constructor(
     private cart: CartService,
@@ -73,7 +70,7 @@ export class CartComponent implements OnInit, OnDestroy {
     private navController: NavController,
     private logger: NGXLogger,
     private util: Util
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.getCartDetails();
@@ -97,56 +94,59 @@ export class CartComponent implements OnInit, OnDestroy {
 
   routeBasket() {
     this.logger.info('Firing event');
-    this.viewClick.emit({});
+    this.loginModal(() => {
+        this.logger.info('Emitting View Click');
+        this.viewClick.emit();
+    } , ()=>{});
   }
 
-  async loginModal(continueMethod) {
+  async loginModal(success , error) {
     this.logger.info('CartComponent Login Modal');
     if (this.guest === true) {
-          const modal = await this.modalController.create({
+      const modal = await this.modalController.create({
         component: LoginSignupComponent,
         componentProps: { type: 'modal' }
       });
-
-          modal.present();
-          modal.onDidDismiss().then(data => {
-        if (data.data) {
-          continueMethod();
-        } else {
-          this.navController.back();
-        }
+      modal.present();
+      modal.onDidDismiss().then(data => {
+        if(data.data) {
+          success();
+          this.getCustomer();
+        } 
+        else error();
       });
     } else {
-      continueMethod();
+      success();
     }
   }
 
   getCustomer() {
     this.util.createLoader().then(loader => {
-      loader.present();
       this.keycloakSubscription = this.keycloakService.getUserChangedSubscription()
-      .subscribe(user => {
-        this.customer  = user;
-        if (user === null || user.preferred_username === 'guest') {
-          this.guest = true;
-          if (this.viewType === 'full' && this.loginModalOpen === false) {
-            this.loginModalOpen = true;
-            this.loginModal(() => {});
+        .subscribe(user => {
+          this.customer = user;
+          if ((user === null || user.preferred_username === 'guest')) {
+            this.guest = true;
+            if(this.viewType==='full') {
+              this.loginModal(
+                ()=>{
+                },
+                ()=>{
+                  this.keycloakSubscription.unsubscribe();
+                  this.navController.back();
+              });
+            }
+          } else {
+            this.guest = false;
           }
-        } else {
-          this.loginModalOpen = true;
-          this.guest = false;
-        }
+          this.keycloakSubscription.unsubscribe();
+        });
     });
-  });
   }
 
   checkDeliveryTypeExists() {
 
     this.cart.behaviourDeliveryTypes.subscribe(currentDeliveryTypes => {
-      if(currentDeliveryTypes !== undefined) {
-
-      }
       this.logger.info('Checking delivery Types');
       if (currentDeliveryTypes !== undefined) {
         if (currentDeliveryTypes.length === 1) {
@@ -159,15 +159,15 @@ export class CartComponent implements OnInit, OnDestroy {
             this.currentSegment = 'collection';
           }
         } else {
-          this.defaultDelivery=true;
+          this.defaultDelivery = true;
           this.deliveryOk = true;
           this.collectionOk = true;
         }
       } else {
-        if(this.cart.currentShop !== undefined) {
+        if (this.cart.currentShop !== undefined) {
           this.cart.getStoreSettings();
         }
-      }  
+      }
     })
   }
 
@@ -219,12 +219,12 @@ export class CartComponent implements OnInit, OnDestroy {
       this.orderService.order.allergy_note = this.allergyNote;
       console.log('Delivery type is ', deliveryType);
       if (this.orderService.resource.nextTaskName === undefined) {
-          console.log('create new order');
+        console.log('create new order');
       } else {
-        console.log('update the order' , this.orderService.resource);
+        console.log('update the order', this.orderService.resource);
       }
 
-      this.initiateOrderSubcription =  this.orderService.initiateOrder().subscribe(
+      this.initiateOrderSubcription = this.orderService.initiateOrder().subscribe(
         resource => {
           this.orderService.setResource(resource);
           this.orderService.orderResourceBehaviour.next(resource.nextTaskName);
@@ -232,13 +232,13 @@ export class CartComponent implements OnInit, OnDestroy {
           this.orderService.order.orderId = resource.orderId;
           console.log(
             'Next task name is ' +
-              resource.nextTaskId +
-              ' Next task name ' +
-              resource.nextTaskName +
-              ' selfid ' +
-              resource.selfId +
-              ' order id is ' +
-              resource.orderId
+            resource.nextTaskId +
+            ' Next task name ' +
+            resource.nextTaskName +
+            ' selfid ' +
+            resource.selfId +
+            ' order id is ' +
+            resource.orderId
           );
         },
         error => {
@@ -249,7 +249,7 @@ export class CartComponent implements OnInit, OnDestroy {
           );
         }
       );
-    });
+    },()=>{});
     this.navController.navigateForward('/checkout');
   }
 

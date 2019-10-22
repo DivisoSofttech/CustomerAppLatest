@@ -12,6 +12,7 @@ import { ProfileInfoComponent } from 'src/app/components/profile-info/profile-in
 import { FooterComponent } from 'src/app/components/footer/footer.component';
 import { DirectiveModule } from 'src/app/directives/directive.module';
 import { AddressListComponent } from 'src/app/components/address-list/address-list.component';
+import { AddAddressComponent } from 'src/app/components/add-address/add-address.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,6 @@ const routes: Routes = [
   ],
   declarations: [ProfilePage],
   entryComponents: [ProfileInfoComponent,FrequentlyOrderedListComponent,FavouriteListComponent,
-  HistoryListComponent,FooterComponent, AddressListComponent]
+  HistoryListComponent,FooterComponent, AddressListComponent, AddAddressComponent]
 })
 export class ProfilePageModule {}

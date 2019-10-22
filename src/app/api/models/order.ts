@@ -1,18 +1,18 @@
 /* tslint:disable */
+import { Offer } from './offer';
 import { ApprovalDetails } from './approval-details';
 import { DeliveryInfo } from './delivery-info';
-import { Offer } from './offer';
 import { OrderLine } from './order-line';
 import { Status } from './status';
 export interface Order {
-  grandTotal?: number;
   allergy_note?: string;
+  appliedOffers?: Array<Offer>;
   approvalDetails?: ApprovalDetails;
   customerId?: string;
   date?: string;
   deliveryInfo?: DeliveryInfo;
   email?: string;
-  appliedOffers?: Array<Offer>;
+  grandTotal?: number;
   id?: number;
   orderId?: string;
   orderLines?: Array<OrderLine>;

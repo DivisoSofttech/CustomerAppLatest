@@ -153,7 +153,7 @@ export class ProductCardComponent implements OnInit , OnDestroy {
   }
 
   add(i, stock: StockCurrent) {
-    if(this.store.id !== this.cartService.storeId) {
+    if(this.store.regNo !== this.cartService.storeId) {
       this.cartService.addShop(this.store);
       this.cartService.behaviourStore.next(this.store);
     }

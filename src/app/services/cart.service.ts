@@ -40,33 +40,42 @@ export class CartService {
     this.behaviourStore.subscribe(data => {
       this.getStoreSettings();
     });
+    this.stateSaveChangeListener();
+  }
 
+  stateSaveChangeListener() {
     this.observableTickets.subscribe(data => {
-      if(data.length !== 0)
-      this.sharedData.saveToStorage('cart' , {
-        storeId: this.storeId,
-        orderLines: this.orderLines,
-        currentShop: this.currentShop,
-        currentShopSetting: this.currentShopSetting,
-        auxilaryItems: this.auxilaryItems,
-        currentDeliveryTypes: this.currentDeliveryTypes
-      });
+      if (data !== undefined && data !== null) {
+        if (data.length !== 0)
+          console.error(this.currentDeliveryTypes);
+        // this.sharedData.saveToStorage('cart', {
+        //   storeId: this.storeId,
+        //   orderLines: this.orderLines,
+        //   currentShop: this.currentShop,
+        //   currentShopSetting: this.currentShopSetting,
+        //   auxilaryItems: this.auxilaryItems,
+        //   currentDeliveryTypes: this.currentDeliveryTypes
+        // });
+      }
     });
 
     this.sharedData.getData('cart')
-    .then(data => {
-      if(data.orderLines.length !== 0) {
-        console.error(data);
-        this.storeId = data.storeId,
-        this.orderLines = data.orderLines;
-        this.currentShop = data.currentShop;
-        this.currentShopSetting = data.currentShopSetting;
-        this.currentDeliveryTypes = data.currentDeliveryTypes;
-        this.auxilaryItems = data.auxilaryItems;
-        this.behaviourDeliveryTypes.next(data.currentDeliveryTypes);
-        this.updateCart();          
-      }
-    })
+      .then(data => {
+        if (data !== undefined && data !== null) {
+          if (data.orderLines.length !== 0) {
+            console.error(data);
+            this.storeId = data.storeId,
+              this.orderLines = data.orderLines;
+            this.currentShop = data.currentShop;
+            this.currentShopSetting = data.currentShopSetting;
+            this.currentDeliveryTypes = data.currentDeliveryTypes;
+            this.auxilaryItems = data.auxilaryItems;
+            this.behaviourDeliveryTypes.next(data.currentDeliveryTypes);
+            this.updateCart();
+          }
+
+        }
+      })
   }
 
   async presentAlert() {
@@ -77,7 +86,7 @@ export class CartService {
         {
           text: 'Cancel',
           cssClass: 'secondary',
-          handler: ()=> {
+          handler: () => {
             this.alertController.dismiss();
           }
         },
@@ -134,31 +143,31 @@ export class CartService {
   }
 
   getStoreSettings() {
-    if(this.currentShop !== undefined) {
+    if (this.currentShop !== undefined) {
       this.currentShopSetting = this.currentShop.storeSettings;
-      this.getStoreDeliveryType();  
+      this.getStoreDeliveryType();
     }
   }
 
   getStoreDeliveryType() {
     this.util.createLoader()
-    .then(loader => {
-      this.queryResource
-      .findAllDeliveryTypesByStoreIdUsingGET({
-        storeId: this.currentShopId
-      })
-      .subscribe(
-        success => {
-          loader.dismiss();
-          this.logger.info('Got Store Delivery Types ' , success.content);
-          this.currentDeliveryTypes = success.content;
-          this.behaviourDeliveryTypes.next(this.currentDeliveryTypes);
-        },
-        err => {
-          loader.dismiss();
-        }
-      );
-    });
+      .then(loader => {
+        this.queryResource
+          .findAllDeliveryTypesByStoreIdUsingGET({
+            storeId: this.currentShopId
+          })
+          .subscribe(
+            success => {
+              loader.dismiss();
+              this.logger.info('Got Store Delivery Types ', success.content);
+              this.currentDeliveryTypes = success.content;
+              this.behaviourDeliveryTypes.next(this.currentDeliveryTypes);
+            },
+            err => {
+              loader.dismiss();
+            }
+          );
+      });
   }
 
   add(product: Product) {
@@ -233,15 +242,15 @@ export class CartService {
   }
 
   removeOrder(order: OrderLine) {
-    console.warn('Previous Length' , this.orderLines.length);
+    console.warn('Previous Length', this.orderLines.length);
     this.orderLines = this.orderLines.filter(ol => ol !== order);
-    console.warn('After Filter Length' , this.orderLines.length);
+    console.warn('After Filter Length', this.orderLines.length);
     this.updateCart();
   }
 
-  addAuxilary(p: Product , a: AuxilaryLineItem[]) {
+  addAuxilary(p: Product, a: AuxilaryLineItem[]) {
     if (a !== undefined) {
-      this.auxilaryItems[p.id]  = a;
+      this.auxilaryItems[p.id] = a;
     }
   }
 
@@ -269,8 +278,8 @@ export class CartService {
     });
   }
 
-  increase(o , p) {
-    this.orderLines.forEach((ol , i) => {
+  increase(o, p) {
+    this.orderLines.forEach((ol, i) => {
       if (ol === o) {
         if (this.orderLines[i].quantity < this.MAX_ORDERS) {
           this.orderLines[i].quantity++;
@@ -282,8 +291,8 @@ export class CartService {
     });
   }
 
-  decrease(o , p) {
-    this.orderLines.forEach((ol , i) => {
+  decrease(o, p) {
+    this.orderLines.forEach((ol, i) => {
       if (ol === o) {
         if (this.orderLines[i].quantity > 1) {
           this.orderLines[i].quantity--;
@@ -295,12 +304,12 @@ export class CartService {
 
   increaseAuxilary(auxilaryItem: AuxilaryLineItem, orderLine: OrderLine) {
 
-    this.orderLines.forEach( ol => {
+    this.orderLines.forEach(ol => {
       if (ol === orderLine) {
-        ol.requiedAuxilaries.forEach( al => {
+        ol.requiedAuxilaries.forEach(al => {
           if (auxilaryItem.id === al.productId) {
             al.quantity++;
-            console.error('OrderLine ' , ol);
+            console.error('OrderLine ', ol);
           }
         });
       }
@@ -308,10 +317,10 @@ export class CartService {
     this.updateCart();
   }
 
-  decreaseAuxilary(auxilaryItem , orderLine) {
-    this.orderLines.forEach( ol => {
+  decreaseAuxilary(auxilaryItem, orderLine) {
+    this.orderLines.forEach(ol => {
       if (ol === orderLine) {
-        ol.requiedAuxilaries.forEach( al => {
+        ol.requiedAuxilaries.forEach(al => {
           if (auxilaryItem.id === al.productId) {
             if (al.quantity > 1) {
               al.quantity--;
@@ -323,8 +332,8 @@ export class CartService {
     this.updateCart();
   }
 
-  removeAuxilary(auxilaryItem , orderLine) {
-    this.orderLines.forEach( ol => {
+  removeAuxilary(auxilaryItem, orderLine) {
+    this.orderLines.forEach(ol => {
       if (ol === orderLine) {
         ol.requiedAuxilaries = ol.requiedAuxilaries.filter(aux => aux.productId !== auxilaryItem.id);
       }

@@ -1,8 +1,8 @@
 /* tslint:disable */
 import { OrderLine } from './order-line';
 export interface OrderMaster {
-  orderAcceptedAt?: string;
   addressType?: string;
+  alternatePhone?: number;
   city?: string;
   customerId?: string;
   customersOrder?: number;
@@ -14,7 +14,7 @@ export interface OrderMaster {
   methodOfOrder?: string;
   name?: string;
   notes?: string;
-  alternatePhone?: number;
+  orderAcceptedAt?: string;
   orderFromCustomer?: number;
   orderLines?: Array<OrderLine>;
   orderNumber?: string;

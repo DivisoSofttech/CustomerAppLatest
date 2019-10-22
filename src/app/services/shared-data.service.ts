@@ -12,17 +12,7 @@ export class SharedDataService {
 
   constructor(
     private storage: Storage,
-    private router: Router,
   ) { 
-    router.events.subscribe((event) => {
-      if (event instanceof NavigationStart) {
-        browserRefresh = !router.navigated;
-        this.storage.get('cart')
-        .then(data => {
-          console.log(data);
-        })
-      }
-    });
   }
 
   saveToStorage(key,service) {

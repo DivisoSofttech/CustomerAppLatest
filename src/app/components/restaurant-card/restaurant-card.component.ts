@@ -11,7 +11,7 @@ import { KeycloakService } from 'src/app/services/security/keycloak.service';
   templateUrl: './restaurant-card.component.html',
   styleUrls: ['./restaurant-card.component.scss'],
 })
-export class RestaurantCardComponent implements OnInit , OnDestroy {
+export class RestaurantCardComponent implements OnInit, OnDestroy {
 
   @Input() store: Store = {};
 
@@ -19,7 +19,7 @@ export class RestaurantCardComponent implements OnInit , OnDestroy {
 
   categories;
 
-  rateReview =  0;
+  rateReview = 0;
 
   reviewCount = 0;
 
@@ -34,6 +34,10 @@ export class RestaurantCardComponent implements OnInit , OnDestroy {
   timeNow;
   deliveryOk: boolean;
   keycloakSubscription: any;
+  reviewSubscription: any;
+  storeTypeSubscription: any;
+  storeDeliveryTypeSubscription: any;
+  deliveryInfoSubscription: any;
 
   constructor(
     private favourite: FavouriteService,
@@ -45,25 +49,29 @@ export class RestaurantCardComponent implements OnInit , OnDestroy {
 
   ngOnDestroy() {
     this.keycloakSubscription.unsubscribe();
+    this.keycloakSubscription.unsubscribe();
+    this.reviewSubscription.unsubscribe();
+    this.storeTypeSubscription.unsubscribe();
+    this.storeDeliveryTypeSubscription.unsubscribe()
   }
 
   ngOnInit() {
 
     this.keycloakSubscription = this.keycloakService.getUserChangedSubscription()
-    .subscribe((data: any) => {
-      this.logger.info('Checking If guest : RestaurantCardComponet');
-      if(data !== null) {
-        if(data.preferred_username === 'guest') {
-          this.showFavourite = false;
+      .subscribe((data: any) => {
+        this.logger.info('Checking If guest : RestaurantCardComponet');
+        if (data !== null) {
+          if (data.preferred_username === 'guest') {
+            this.showFavourite = false;
+          } else {
+            this.showFavourite = true;
+          }
         } else {
-          this.showFavourite = true;
-        }  
-      } else {
-        this.showFavourite = false;
-      }
-    });
+          this.showFavourite = false;
+        }
+      });
     this.timeNow = new Date();
-    this.queryResource.findReviewCountByStoreIdUsingGET(this.store.regNo).subscribe(
+    this.reviewSubscription = this.queryResource.findReviewCountByStoreIdUsingGET(this.store.regNo).subscribe(
       res => {
         this.reviewCount = res;
       }
@@ -78,41 +86,41 @@ export class RestaurantCardComponent implements OnInit , OnDestroy {
 
   getStoreCategory() {
     this.logger.info('Getting Category', this.store.regNo);
-    this.queryResource
+    this.storeTypeSubscription = this.queryResource
       .findStoreTypeByStoreIdUsingGET({ storeId: this.store.regNo })
       .subscribe(
         success => {
-          this.logger.info('Got Categories ' , this.store.regNo , success.content);
+          this.logger.info('Got Categories ', this.store.regNo, success.content);
           this.categories = success.content;
         },
         err => {
-          this.logger.fatal('Error getting Store category' , this.store.regNo , err);
+          this.logger.fatal('Error getting Store category', this.store.regNo, err);
         }
       );
   }
 
   getStoreDeliveryType() {
-    this.queryResource
-    .findAllDeliveryTypesByStoreIdUsingGET({
-      storeId: this.store.id
-    })
-    .subscribe(
-      success => {
-        this.deliveryTypes = success.content;
-        this.checkDeliveryExists();
-      },
-      err => {}
-    );
+    this.storeDeliveryTypeSubscription = this.queryResource
+      .findAllDeliveryTypesByStoreIdUsingGET({
+        storeId: this.store.id
+      })
+      .subscribe(
+        success => {
+          this.deliveryTypes = success.content;
+          this.checkDeliveryExists();
+        },
+        err => { }
+      );
   }
 
   getStoreDeliveryInfo() {
-    this.queryResource.findDeliveryInfoByStoreIdUsingGET(this.store.regNo)
-    .subscribe(
-      success => {
-        this.deliveryInfos = success.content;
-      },
-      err => {}
-    );
+    this.deliveryInfoSubscription = this.queryResource.findDeliveryInfoByStoreIdUsingGET(this.store.regNo)
+      .subscribe(
+        success => {
+          this.deliveryInfos = success.content;
+        },
+        err => { }
+      );
   }
 
   getStoreRating() {
@@ -139,12 +147,12 @@ export class RestaurantCardComponent implements OnInit , OnDestroy {
 
   checkIfAlreadyFavourite() {
     this.favourite.getFavourites()
-    .subscribe(data => {
-      if (this.favourite.getFavouriteStoresID()
-      .includes(this.store.id)) {
-        this.isFavourite = true;
-      }
-    });
+      .subscribe(data => {
+        if (this.favourite.getFavouriteStoresID()
+          .includes(this.store.id)) {
+          this.isFavourite = true;
+        }
+      });
   }
 
   showHotelMenu(regno) {

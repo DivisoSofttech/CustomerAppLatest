@@ -1,8 +1,8 @@
 /* tslint:disable */
 import { Customer } from './customer';
 export interface Address {
-  houseNoOrBuildingName?: string;
   addressLine1?: string;
+  addressLine2?: string;
   addressType?: string;
   alternatePhone?: number;
   city?: string;
@@ -11,7 +11,7 @@ export interface Address {
   customer?: Customer;
   customerId?: string;
   email?: string;
-  addressLine2?: string;
+  houseNoOrBuildingName?: string;
   id?: number;
   landmark?: string;
   name?: string;

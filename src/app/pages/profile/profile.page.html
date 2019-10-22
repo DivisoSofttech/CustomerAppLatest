@@ -16,7 +16,7 @@
 <ion-content appScrollbarTheme>
   <ion-grid class="fixed-height ion-no-padding">
     <ion-row>
-      <ion-col class="ion-no-padding" size="12">
+      <ion-col class="ion-no-padding" size="6">
         <ion-grid class="ion-no-padding">
           <ion-row class="ion-no-padding">
             <ion-col class="ion-no-padding">
@@ -39,11 +39,25 @@
               </ion-card>
             </ion-col>
           </ion-row>
+          <ion-row>
+              <ion-col class="mg-0">
+                  <ion-card class="ion-no-padding ion-no-margin">
+                      <ion-card-header class="sticky heading-one ion-no-padding" color="primary">
+                        <ion-card-subtitle class="pd-10">
+                          <p class="mg-0">Saved Addresses</p>
+                        </ion-card-subtitle>
+                      </ion-card-header>
+                      <ion-card-content>
+                          <app-address-list [mode]="'component'"></app-address-list>
+                      </ion-card-content>
+                    </ion-card>
+              </ion-col>
+          </ion-row>
         </ion-grid>
       </ion-col>
-      <ion-col size="12">
-        <app-address-list [mode]="'component'"></app-address-list>
-      </ion-col>
+      <!-- <ion-col size="4">
+       
+      </ion-col> -->
     </ion-row>
   </ion-grid>
 </ion-content>

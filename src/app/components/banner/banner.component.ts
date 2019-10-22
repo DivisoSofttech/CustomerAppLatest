@@ -1,7 +1,7 @@
 import { BannerDTO } from './../../api/models/banner-dto';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { IonSlides, Platform } from '@ionic/angular';
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 
 @Component({
@@ -9,7 +9,7 @@ import { NGXLogger } from 'ngx-logger';
   templateUrl: './banner.component.html',
   styleUrls: ['./banner.component.scss']
 })
-export class BannerComponent implements OnInit {
+export class BannerComponent implements OnInit , OnDestroy {
 
   showLoading = true;
   @Input() direction = 'horizontal';
@@ -59,6 +59,7 @@ export class BannerComponent implements OnInit {
   @ViewChild('slides', null) slides: IonSlides;
 
   banners: BannerDTO[] = [];
+  bannerSubscription: any;
 
   constructor(
     private platform: Platform,
@@ -71,9 +72,13 @@ export class BannerComponent implements OnInit {
     this.slides.startAutoplay();
   }
 
+  ngOnDestroy() {
+    this.bannerSubscription.unsubscribe();
+  }
+
 
   getBanners() {
-    this.queryResource.findStoreBannersUsingGET({}).subscribe(
+    this.bannerSubscription = this.queryResource.findStoreBannersUsingGET({}).subscribe(
       data => {
         this.logger.info('Banners got', data);
         this.banners = data;

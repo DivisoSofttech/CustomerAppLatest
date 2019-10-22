@@ -12,7 +12,8 @@ import {
   OnInit,
   Output,
   EventEmitter,
-  ViewChild
+  ViewChild,
+  OnDestroy
 } from '@angular/core';
 import { Util } from 'src/app/services/util';
 import { NGXLogger } from 'ngx-logger';
@@ -25,7 +26,7 @@ import { Storage } from '@ionic/storage';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit , OnDestroy {
 
   storeSearchResults: Store[] = [];
 
@@ -62,6 +63,10 @@ export class HeaderComponent implements OnInit {
     this.logger.info('Initializing', HeaderComponent.name);
     this.getNotificationCount();
     this.checkUser();
+  }
+
+  ngOnDestroy(): void {
+    this.keycloakSubscription.unsubscribe();
   }
 
   checkUser() {

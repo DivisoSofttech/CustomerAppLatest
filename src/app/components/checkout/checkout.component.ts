@@ -51,6 +51,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.logger.info(this.orderService.customer);
     this.getCustomer();
     this.getOrderDetails();
+    this.getAllAdress();
     console.log('elivery type is ', this.deliveryType);
   }
 
