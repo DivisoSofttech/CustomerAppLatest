@@ -51,6 +51,11 @@ export class ProductCardComponent implements OnInit , OnDestroy {
   
   @ViewChild('orderCountInput' , null) orderCountInput: IonInput;
   keycloakSubscrption: any;
+  auxilariesSubscription: any;
+  comboSusbcription: any;
+  favouriteSubscription: any;
+  checkOrderedSubscription: any;
+  productDiscountSubscription: any;
 
   constructor(
     private favourite: FavouriteService,
@@ -66,6 +71,12 @@ export class ProductCardComponent implements OnInit , OnDestroy {
     if(this.keycloakSubscrption) {
       this.keycloakSubscrption.unsubscribe();
     }
+    this.keycloakSubscrption.unsubscribe();;
+    this.auxilariesSubscription.unsubscribe();;
+    this.comboSusbcription.unsubscribe();;
+    this.favouriteSubscription.unsubscribe();;
+    this.checkOrderedSubscription.unsubscribe();;
+    this.productDiscountSubscription.unsubscribe();
   }
 
   async ngOnInit() {
@@ -105,7 +116,7 @@ export class ProductCardComponent implements OnInit , OnDestroy {
   }
 
   getAuxilaries(i) {
-    this.queryResource.findAuxilariesByProductIdUsingGET(this.stockCurrent.product.id)
+    this.auxilariesSubscription = this.queryResource.findAuxilariesByProductIdUsingGET(this.stockCurrent.product.id)
     .subscribe(data => {
       i++;
       data.content.forEach(a => {
@@ -124,7 +135,7 @@ export class ProductCardComponent implements OnInit , OnDestroy {
 
 
   getComboItems(i) {
-    this.queryResource.findComboByProductIdUsingGET(this.stockCurrent.product.id)
+    this.comboSusbcription = this.queryResource.findComboByProductIdUsingGET(this.stockCurrent.product.id)
     .subscribe(data => {
       i++;
       data.content.forEach(a => {
@@ -139,7 +150,7 @@ export class ProductCardComponent implements OnInit , OnDestroy {
   }
 
   checkIfAlreadyFavourite() {
-    this.favourite.getFavourites()
+    this.favouriteSubscription = this.favourite.getFavourites()
     .subscribe(data => {
       if (this.favourite.getFavouriteProductsID()
       .includes(this.stockCurrent.product.id)) {
@@ -189,7 +200,7 @@ export class ProductCardComponent implements OnInit , OnDestroy {
   }
 
   checkIfOrdered() {
-    this.cartService.observableTickets
+    this.checkOrderedSubscription = this.cartService.observableTickets
     .subscribe(data => {
       const ol = data.filter(o => o.productId === this.stockCurrent.product.id);
       this.orderCount = 0;
@@ -208,7 +219,7 @@ export class ProductCardComponent implements OnInit , OnDestroy {
   }
 
   getProductDiscount() {
-    this.queryResource.findDiscountByProductIdUsingGET(this.stockCurrent.product.id)
+    this.productDiscountSubscription = this.queryResource.findDiscountByProductIdUsingGET(this.stockCurrent.product.id)
       .subscribe(discount => {
         this.discount = discount;
         if (this.discount && this.discount.rate) {
