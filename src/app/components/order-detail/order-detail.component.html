@@ -46,7 +46,7 @@
           Subtotal
         </ion-text>
         <ion-text slot="start" slot="end" class="ion-text-right">
-          &#8364;{{ order.grandTotal |  number: "1.1-2"}}
+          &#8364;{{ (order.grandTotal-order.deliveryInfo.deliveryCharge) |  number: "1.1-2"}}
         </ion-text>
       </ion-item>
       <ion-item lines="none" *ngIf=" order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='delivery'">

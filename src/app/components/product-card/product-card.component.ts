@@ -14,7 +14,7 @@ import { KeycloakService } from 'src/app/services/security/keycloak.service';
   templateUrl: './product-card.component.html',
   styleUrls: ['./product-card.component.scss'],
 })
-export class ProductCardComponent implements OnInit , OnDestroy {
+export class ProductCardComponent implements OnInit, OnDestroy {
 
   @Input() stockCurrent: StockCurrent;
 
@@ -32,10 +32,10 @@ export class ProductCardComponent implements OnInit , OnDestroy {
 
   showFavourite = false;
 
-  @Input() orderCount  = 0;
+  @Input() orderCount = 0;
 
   auxilaryLoadComplete = false;
-  
+
   discount: Discount;
 
 
@@ -48,8 +48,8 @@ export class ProductCardComponent implements OnInit , OnDestroy {
 
   @Input() product;
 
-  
-  @ViewChild('orderCountInput' , null) orderCountInput: IonInput;
+
+  @ViewChild('orderCountInput', null) orderCountInput: IonInput;
   keycloakSubscrption: any;
   auxilariesSubscription: any;
   comboSusbcription: any;
@@ -68,32 +68,29 @@ export class ProductCardComponent implements OnInit , OnDestroy {
   ) { }
 
   ngOnDestroy() {
-    if(this.keycloakSubscrption) {
-      this.keycloakSubscrption.unsubscribe();
-    }
-    this.keycloakSubscrption.unsubscribe();;
-    this.auxilariesSubscription.unsubscribe();;
-    this.comboSusbcription.unsubscribe();;
-    this.favouriteSubscription.unsubscribe();;
-    this.checkOrderedSubscription.unsubscribe();;
-    this.productDiscountSubscription.unsubscribe();
+    this.keycloakSubscrption ? this.keycloakSubscrption.unsubscribe():null;
+    this.auxilariesSubscription ? this.auxilariesSubscription.unsubscribe() : null;
+    this.comboSusbcription ? this.comboSusbcription.unsubscribe() : null;
+    this.favouriteSubscription ? this.favouriteSubscription.unsubscribe() : null;
+    this.checkOrderedSubscription ? this.checkOrderedSubscription.unsubscribe() : null;
+    this.productDiscountSubscription ? this.productDiscountSubscription.unsubscribe() : null;
   }
 
   async ngOnInit() {
-  if (this.type === 'full') {
+    if (this.type === 'full') {
       this.keycloakSubscrption = this.keycloakService.getUserChangedSubscription()
-      .subscribe((data: any) => {
-        this.logger.info('Checking If guest : RestaurantCardComponet');
-        if (data !== null) {
-          if (data.preferred_username === 'guest') {
-            this.showFavourite = false;
+        .subscribe((data: any) => {
+          this.logger.info('Checking If guest : RestaurantCardComponet');
+          if (data !== null) {
+            if (data.preferred_username === 'guest') {
+              this.showFavourite = false;
+            } else {
+              this.showFavourite = true;
+            }
           } else {
-            this.showFavourite = true;
+            this.showFavourite = false;
           }
-        } else {
-          this.showFavourite = false;
-        }
-      });
+        });
       this.checkIfAlreadyFavourite();
       this.checkIfOrdered();
       this.getAuxilaries(0);
@@ -117,46 +114,46 @@ export class ProductCardComponent implements OnInit , OnDestroy {
 
   getAuxilaries(i) {
     this.auxilariesSubscription = this.queryResource.findAuxilariesByProductIdUsingGET(this.stockCurrent.product.id)
-    .subscribe(data => {
-      i++;
-      data.content.forEach(a => {
-        this.auxilaries.push(a);
+      .subscribe(data => {
+        i++;
+        data.content.forEach(a => {
+          this.auxilaries.push(a);
+        });
+        this.logger.info('Got Auxilary For Product ', this.stockCurrent.product.name, data.content);
+        ++i;
+        if (i < data.totalPages) {
+          this.getAuxilaries(i);
+        } else {
+          this.auxilaryLoadComplete = true;
+          this.cartService.auxilaryItems[this.stockCurrent.product.id] = this.auxilaries;
+        }
       });
-      this.logger.info('Got Auxilary For Product ' , this.stockCurrent.product.name , data.content);
-      ++i;
-      if (i < data.totalPages) {
-        this.getAuxilaries(i);
-      } else {
-        this.auxilaryLoadComplete = true;
-        this.cartService.auxilaryItems[this.stockCurrent.product.id] = this.auxilaries;
-      }
-    });
   }
 
 
   getComboItems(i) {
     this.comboSusbcription = this.queryResource.findComboByProductIdUsingGET(this.stockCurrent.product.id)
-    .subscribe(data => {
-      i++;
-      data.content.forEach(a => {
-        this.comboLineItems.push(a);
+      .subscribe(data => {
+        i++;
+        data.content.forEach(a => {
+          this.comboLineItems.push(a);
+        });
+        this.logger.info('Got ComboLineItem For Product ', this.stockCurrent.product.name, data.content);
+        ++i;
+        if (i < data.totalPages) {
+          this.getComboItems(i);
+        }
       });
-      this.logger.info('Got ComboLineItem For Product ' , this.stockCurrent.product.name , data.content);
-      ++i;
-      if (i < data.totalPages) {
-        this.getComboItems(i);
-      }
-    });
   }
 
   checkIfAlreadyFavourite() {
     this.favouriteSubscription = this.favourite.getFavourites()
-    .subscribe(data => {
-      if (this.favourite.getFavouriteProductsID()
-      .includes(this.stockCurrent.product.id)) {
-        this.isFavourite = true;
-      }
-    });
+      .subscribe(data => {
+        if (this.favourite.getFavouriteProductsID()
+          .includes(this.stockCurrent.product.id)) {
+          this.isFavourite = true;
+        }
+      });
   }
 
   customAdd(stock) {
@@ -164,26 +161,26 @@ export class ProductCardComponent implements OnInit , OnDestroy {
   }
 
   add(i, stock: StockCurrent) {
-    if(this.store.regNo !== this.cartService.storeId) {
+    if (this.store.regNo !== this.cartService.storeId) {
       this.cartService.addShop(this.store);
       this.cartService.behaviourStore.next(this.store);
     }
     if (this.auxilaries.length > 0 && this.stockCurrent.product.isAuxilaryItem === false) {
-      this.logger.info('Add Auxilary Items ' , this.auxilaries);
-      this.cartService.addAuxilary(this.stockCurrent.product , this.auxilaries);
+      this.logger.info('Add Auxilary Items ', this.auxilaries);
+      this.cartService.addAuxilary(this.stockCurrent.product, this.auxilaries);
       if (this.cartService.currentShopId === this.store.id) {
         this.showAddAuxilaryPopover();
       } else {
         this.cartService.presentAlert();
       }
     } else {
-      this.logger.info('No Auxilary Items ' , this.auxilaries);
-      this.cartService.addProduct(stock.product, stock , this.store);
+      this.logger.info('No Auxilary Items ', this.auxilaries);
+      this.cartService.addProduct(stock.product, stock, this.store);
     }
   }
 
   remove(i, stock: StockCurrent) {
-      this.cartService.removeProduct(stock);
+    this.cartService.removeProduct(stock);
   }
 
   async showAddAuxilaryPopover() {
@@ -192,29 +189,28 @@ export class ProductCardComponent implements OnInit , OnDestroy {
 
       component: ShowAuxilaryModalComponent,
       componentProps: {
-          auxilaryItems: this.auxilaries,
-          product: this.stockCurrent.product
-        }
+        auxilaryItems: this.auxilaries,
+        product: this.stockCurrent.product
+      }
     });
     return await popoverElement.present();
   }
 
   checkIfOrdered() {
     this.checkOrderedSubscription = this.cartService.observableTickets
-    .subscribe(data => {
-      const ol = data.filter(o => o.productId === this.stockCurrent.product.id);
-      this.orderCount = 0;
-      ol.forEach(o => {
-        this.orderCount = this.orderCount + o.quantity;
-      });
-      if (ol.length === 0) {
+      .subscribe(data => {
+        const ol = data.filter(o => o.productId === this.stockCurrent.product.id);
         this.orderCount = 0;
-      }
-    });
+        ol.forEach(o => {
+          this.orderCount = this.orderCount + o.quantity;
+        });
+        if (ol.length === 0) {
+          this.orderCount = 0;
+        }
+      });
   }
 
   toggleDescription() {
-    console.log('sjhsjhsjhjs');
     this.showDescription = !this.showDescription;
   }
 
@@ -224,7 +220,7 @@ export class ProductCardComponent implements OnInit , OnDestroy {
         this.discount = discount;
         if (this.discount && this.discount.rate) {
           this.stockCurrent.sellPrice =
-           Math.round((this.stockCurrent.sellPrice - (this.stockCurrent.product.sellingPrice * this.discount.rate / 100)) * 100) / 100;
+            Math.round((this.stockCurrent.sellPrice - (this.stockCurrent.product.sellingPrice * this.discount.rate / 100)) * 100) / 100;
         }
       });
   }

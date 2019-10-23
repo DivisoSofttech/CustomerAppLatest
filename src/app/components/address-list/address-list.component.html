@@ -14,7 +14,7 @@
 </ion-header>
 
 <ion-content *ngIf="mode==='modal'">
-  <ion-list *ngIf="addresses !== undefined || addresses.length !== 0">
+  <ion-list lines="full" *ngIf="addresses !== undefined || addresses.length !== 0">
     <ion-item class="ion-no-padding" line="full" *ngFor="let address of addresses" value="{{address.id}}">
       <ion-label class="ion-padding" (click)="dismissData(address)">
         <h1>{{address.name}}</h1>

@@ -36,7 +36,7 @@
       </ion-thumbnail>
       <ion-icon slot="start" name="image" class="icon-big" *ngIf="stores[order.storeId] == null"></ion-icon>
       <ion-label>
-          <h2 *ngIf="stores[order.storeId] != null">
+          <h2 *ngIf="stores[order.storeId] !== null">
               {{ stores[order.storeId].name }}
           </h2>
           <p>{{ order.date | date: "short" }}</p>

@@ -31,15 +31,22 @@ export class KeycloakService {
 
   ) {
     this.logger.info('Created Keycloak Service');
-    this.getCurrentUserDetails()
-    .then((data: any ) => {
-      this.getUserChangedSubscription().next(data);
-      if (!this.isGuest(data.preferred_username)) {
-        console.log('Subscribing to notifications for the user from KC Cons ', data.preferred_username);
-        this.notificationService.connectToNotification();
-        this.notificationService.subscribeToMyNotifications(data.preferred_username);
+    this.storage.get('user')
+    .then(storedUser => {
+      if(storedUser === null ) {
+        this.getCurrentUserDetails()
+        .then((data: any ) => {
+          this.getUserChangedSubscription().next(data);
+          if (!this.isGuest(data.preferred_username)) {
+            console.log('Subscribing to notifications for the user from KC Cons ', data.preferred_username);
+            this.notificationService.connectToNotification();
+            this.notificationService.subscribeToMyNotifications(data.preferred_username);
+          }
+        });    
+      } else {
+        this.getUserChangedSubscription().next(storedUser);
       }
-    });
+    })
   }
 
   public getUserChangedSubscription() {

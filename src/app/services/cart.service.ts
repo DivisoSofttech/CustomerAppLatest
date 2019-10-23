@@ -39,23 +39,22 @@ export class CartService {
     this.logger.info('Cart Service Created');
     this.behaviourStore.subscribe(data => {
       this.getStoreSettings();
+      this.stateSaveChangeListener(); 
     });
-    this.stateSaveChangeListener();
   }
 
   stateSaveChangeListener() {
     this.observableTickets.subscribe(data => {
       if (data !== undefined && data !== null) {
-        if (data.length !== 0)
-          console.error(this.currentDeliveryTypes);
-        // this.sharedData.saveToStorage('cart', {
-        //   storeId: this.storeId,
-        //   orderLines: this.orderLines,
-        //   currentShop: this.currentShop,
-        //   currentShopSetting: this.currentShopSetting,
-        //   auxilaryItems: this.auxilaryItems,
-        //   currentDeliveryTypes: this.currentDeliveryTypes
-        // });
+        if (data.length !== 0)          
+        this.sharedData.saveToStorage('cart', {
+          storeId: this.storeId,
+          orderLines: this.orderLines,
+          currentShop: this.currentShop,
+          currentShopSetting: this.currentShopSetting,
+          auxilaryItems: this.auxilaryItems,
+          currentDeliveryTypes: this.currentDeliveryTypes
+        });
       }
     });
 
@@ -63,7 +62,6 @@ export class CartService {
       .then(data => {
         if (data !== undefined && data !== null) {
           if (data.orderLines.length !== 0) {
-            console.error(data);
             this.storeId = data.storeId,
               this.orderLines = data.orderLines;
             this.currentShop = data.currentShop;
@@ -162,6 +160,11 @@ export class CartService {
               this.logger.info('Got Store Delivery Types ', success.content);
               this.currentDeliveryTypes = success.content;
               this.behaviourDeliveryTypes.next(this.currentDeliveryTypes);
+              this.sharedData.getData('cart')
+              .then(data => {
+                data.currentDeliveryTypes  = success.content;
+                this.sharedData.saveToStorage('cart' , data);
+              })
             },
             err => {
               loader.dismiss();
@@ -309,7 +312,6 @@ export class CartService {
         ol.requiedAuxilaries.forEach(al => {
           if (auxilaryItem.id === al.productId) {
             al.quantity++;
-            console.error('OrderLine ', ol);
           }
         });
       }
