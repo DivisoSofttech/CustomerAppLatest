@@ -139,6 +139,7 @@ export class CartComponent implements OnInit, OnDestroy {
           } else {
             this.guest = false;
           }
+          if(this.keycloakSubscription !== undefined)
           this.keycloakSubscription.unsubscribe();
         });
     });
@@ -147,7 +148,6 @@ export class CartComponent implements OnInit, OnDestroy {
   checkDeliveryTypeExists() {
 
     this.cart.behaviourDeliveryTypes.subscribe(currentDeliveryTypes => {
-      this.logger.info('Checking delivery Types');
       if (currentDeliveryTypes !== undefined) {
         if (currentDeliveryTypes.length === 1) {
           if (currentDeliveryTypes[0].name === 'delivery') {
@@ -214,7 +214,7 @@ export class CartComponent implements OnInit, OnDestroy {
         storeId: this.cart.storeId,
         customerId: this.customer.preferred_username
       };
-      console.error(order);
+
       this.orderService.setOrder(order);
       this.orderService.order.allergy_note = this.allergyNote;
       console.log('Delivery type is ', deliveryType);

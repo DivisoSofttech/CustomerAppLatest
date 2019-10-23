@@ -48,11 +48,10 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnDestroy() {
-    this.keycloakSubscription.unsubscribe();
-    this.keycloakSubscription.unsubscribe();
-    this.reviewSubscription.unsubscribe();
-    this.storeTypeSubscription.unsubscribe();
-    this.storeDeliveryTypeSubscription.unsubscribe()
+    this.keycloakSubscription?this.keycloakSubscription.unsubscribe():null;
+    this.reviewSubscription?this.reviewSubscription.unsubscribe():null;
+    this.storeTypeSubscription?this.storeTypeSubscription.unsubscribe():null;
+    this.storeDeliveryTypeSubscription?this.storeDeliveryTypeSubscription.unsubscribe():null;
   }
 
   ngOnInit() {

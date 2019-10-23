@@ -36,24 +36,24 @@
       </ion-thumbnail>
       <ion-icon slot="start" name="image" class="icon-big" *ngIf="stores[order.storeId] == null"></ion-icon>
       <ion-label>
-          <h2 *ngIf="stores[order.storeId] != null">
+          <h2 *ngIf="stores[order.storeId] !== null">
               {{ stores[order.storeId].name }}
           </h2>
           <p>{{ order.date | date: "short" }}</p>
           <p>Grand Total &#8364;{{ order.grandTotal | number: "1.1-2" }}</p>
-          <ion-badge color="secondary" *ngIf="order.status.name.toLowerCase() ==='created'">
+          <ion-badge color="secondary" *ngIf="order.status.name ==='created'">
             <p>Ordered</p>
         </ion-badge>
-          <ion-badge color="success" *ngIf="order.status.name.toLowerCase() ==='approved'">
+          <ion-badge color="success" *ngIf="order.status.name ==='approved'">
               <p>{{ order.status.name | titlecase }}</p>
           </ion-badge>
-          <ion-badge color="warning" *ngIf="order.status.name.toLowerCase() ==='payment-processed'">
+          <ion-badge color="warning" *ngIf="order.status.name ==='payment-processed'">
             <p>Payment Processed</p>
         </ion-badge>
-          <ion-badge color="danger" *ngIf="order.status.name.toLowerCase() ==='unapproved'">
+          <ion-badge color="danger" *ngIf="order.status.name ==='unapproved'">
               <p>{{ order.status.name | titlecase }}</p>
           </ion-badge>
-          <ion-badge color="medium" *ngIf="order.status.name.toLowerCase() ==='delivered'">
+          <ion-badge color="medium" *ngIf="order.status.name ==='delivered'">
             <p>{{ order.status.name | titlecase }}</p>
         </ion-badge>
       

@@ -100,6 +100,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
       orderId: this.order.id
     })
     .subscribe(orderLines => {
+      console.error(orderLines);
       orderLines.content.forEach(o => {
         this.orderLines.push(o);
         this.auxilariesProducts[o.productId] = [];

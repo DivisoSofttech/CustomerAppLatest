@@ -35,7 +35,6 @@ export class Util {
   async createCustomLoader(spinner, message) {
     return await this.loadingController.create({
       spinner:spinner === undefined?'circles':spinner,
-      duration: 5000,
       message
     });
   }
