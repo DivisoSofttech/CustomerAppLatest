@@ -152,6 +152,9 @@ export class OrderService implements OnInit {
     });
   }
 
+  updateOrder(order: Order) {
+    return this.orderCommandService.editOrderUsingPUT(order);
+  }
   setResource(resource: CommandResource) {
     this.resource = resource;
   }

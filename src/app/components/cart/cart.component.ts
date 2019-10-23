@@ -221,6 +221,9 @@ export class CartComponent implements OnInit, OnDestroy {
         console.log('create new order');
       } else {
         console.log('update the order', this.orderService.resource);
+        this.orderService.updateOrder(order).subscribe(orderDTO => {
+          console.log('Order DTO Updated is ', orderDTO);
+        });
       }
 
       this.initiateOrderSubcription = this.orderService.initiateOrder().subscribe(
