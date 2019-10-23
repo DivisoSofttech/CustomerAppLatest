@@ -97,7 +97,7 @@ export class CartComponent implements OnInit, OnDestroy {
     this.loginModal(() => {
         this.logger.info('Emitting View Click');
         this.viewClick.emit();
-    } , ()=>{});
+    } , () => {});
   }
 
   async loginModal(success , error) {
@@ -109,11 +109,10 @@ export class CartComponent implements OnInit, OnDestroy {
       });
       modal.present();
       modal.onDidDismiss().then(data => {
-        if(data.data) {
+        if (data.data) {
           success();
           this.getCustomer();
-        } 
-        else error();
+        } else { error(); }
       });
     } else {
       success();
@@ -127,11 +126,11 @@ export class CartComponent implements OnInit, OnDestroy {
           this.customer = user;
           if ((user === null || user.preferred_username === 'guest')) {
             this.guest = true;
-            if(this.viewType==='full') {
+            if (this.viewType === 'full') {
               this.loginModal(
-                ()=>{
+                () => {
                 },
-                ()=>{
+                () => {
                   this.keycloakSubscription.unsubscribe();
                   this.navController.back();
               });
@@ -168,7 +167,7 @@ export class CartComponent implements OnInit, OnDestroy {
           this.cart.getStoreSettings();
         }
       }
-    })
+    });
   }
 
   getCartDetails() {
@@ -212,11 +211,11 @@ export class CartComponent implements OnInit, OnDestroy {
         grandTotal: grandtotal,
         email: this.customer.email,
         storeId: this.cart.storeId,
-        customerId: this.customer.preferred_username
+        customerId: this.customer.preferred_username,
+        allergy_note: this.allergyNote
       };
 
       this.orderService.setOrder(order);
-      this.orderService.order.allergy_note = this.allergyNote;
       console.log('Delivery type is ', deliveryType);
       if (this.orderService.resource.nextTaskName === undefined) {
         console.log('create new order');
@@ -249,7 +248,7 @@ export class CartComponent implements OnInit, OnDestroy {
           );
         }
       );
-    },()=>{});
+    }, () => {});
     this.navController.navigateForward('/checkout');
   }
 
