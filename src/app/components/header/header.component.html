@@ -77,7 +77,9 @@
     </ion-row>
     <ion-row *ngIf="storeSearchResults.length === 0 && searchTerm !== ''" class="vertical-align-center">
       <ion-col text-center size="12">
-        <p>No Results Found(0)</p>
+        <ion-text class="medium-text">
+          <p>No Results Found(0)</p>
+        </ion-text>
       </ion-col>
     </ion-row>
 

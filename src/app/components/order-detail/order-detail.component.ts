@@ -100,7 +100,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
       orderId: this.order.id
     })
     .subscribe(orderLines => {
-      console.error(orderLines);
       orderLines.content.forEach(o => {
         this.orderLines.push(o);
         this.auxilariesProducts[o.productId] = [];
@@ -162,11 +161,13 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     } else if (this.cartService.currentShopId === this.store.id) {
       this.addToCart();
     } else {
-      this.cartService.presentAlert();
+      this.cartService.presentRestaurantCheckout({
+        actionSuccess:this.addToCart()
+      });
     }
   }
 
-  async addToCart() {
+  addToCart() {
     this.cartService.addShop(this.store);
     this.orderLines.forEach(o => {
       if (this.auxilaryOrderLines[o.id] === undefined) {
@@ -177,7 +178,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
       }
       this.cartService.addOrder(o);
     });
-    await this.modalController.dismiss(true);
+    this.modalController.dismiss(true);
 
   }
 

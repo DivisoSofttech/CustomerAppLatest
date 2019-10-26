@@ -14,6 +14,9 @@
 </ion-header>
 
 <ion-content *ngIf="mode==='modal'">
+  <ion-list *ngIf="showLoading" class="ion-text-center">
+      <ion-spinner name="crescent" ></ion-spinner>
+  </ion-list>
   <ion-list lines="full" *ngIf="addresses !== undefined || addresses.length !== 0">
     <ion-item class="ion-no-padding" line="full" *ngFor="let address of addresses" value="{{address.id}}">
       <ion-label class="ion-padding" (click)="dismissData(address)">
@@ -27,7 +30,7 @@
       <ion-icon class="modificationIcon" name="trash" (click)="deleteAddress(address.id)"></ion-icon>
     </ion-item>
   </ion-list>
-  <ion-list *ngIf="addresses === undefined || addresses.length === 0">
+  <ion-list *ngIf="(addresses === undefined || addresses.length === 0 ) && !showLoading ">
     <ion-text class="ion-text-center ion-padding">
       <p>No Saved Addresses</p>
     </ion-text>
@@ -40,7 +43,7 @@
 </ion-content>
 
 <div *ngIf="mode==='component'">
-  <ion-list *ngIf="addresses !== undefined || addresses.length !== 0">
+  <ion-list *ngIf="addresses !== undefined && addresses.length !== 0">
     <ion-item line="full" *ngFor="let address of addresses" value="{{address.id}}">
       <ion-label>
         <h2>{{address.name}}</h2>

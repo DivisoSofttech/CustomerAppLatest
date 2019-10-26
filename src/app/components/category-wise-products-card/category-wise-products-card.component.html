@@ -1,8 +1,8 @@
 
-<app-loading
+<ion-spinner
 *ngIf="showLoading === true"
-[type]="'product'"
-></app-loading>
+ name="dots"
+></ion-spinner>
 <ion-list *ngIf="stockCurrents.length > 0">
   <app-product-card
   *ngFor="let stockCurrent of stockCurrents"

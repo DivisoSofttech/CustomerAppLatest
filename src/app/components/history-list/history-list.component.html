@@ -35,7 +35,7 @@
         ></ion-img>
       </ion-thumbnail>
       <ion-icon slot="start" name="image" class="icon-big" *ngIf="stores[order.storeId] == null"></ion-icon>
-      <ion-label>
+      <ion-label *ngIf="order.status">
           <h2 *ngIf="stores[order.storeId] !== null">
               {{ stores[order.storeId].name }}
           </h2>

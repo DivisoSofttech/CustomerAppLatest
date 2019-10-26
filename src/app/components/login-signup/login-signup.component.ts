@@ -143,7 +143,12 @@ export class LoginSignupComponent implements OnInit {
             });
             loader.dismiss();
             if (this.type === 'page') {
-              this.util.navigateRoot();
+              try {
+                this.util.navigateRoot();
+                this.dismissTrue();                  
+              } catch (error) {
+                
+              }
             } else {
               this.dismissTrue();
             }

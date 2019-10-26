@@ -1,11 +1,7 @@
 {
     "android": {
         "debug": {
-            "keystore": "foodexp.keystore",
-            "storePassword": "password",
-            "alias": "foodexp.ie",
-            "password" : "123456",
-            "keystoreType": ""
+
         },
         "release": {
             "keystore": "foodexp.keystore",

@@ -46,7 +46,7 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
 
   auxilaryItems;
 
-  currentDeliveryMode = 'delivery';
+  @Input() currentDeliveryMode = 'delivery';
 
   constructor(
     private cart: CartService,

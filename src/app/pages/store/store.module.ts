@@ -16,6 +16,7 @@ import { HotelMenuPopoverComponent } from 'src/app/components/hotel-menu-popover
 import { LoadingComponent } from 'src/app/components/loading/loading.component';
 import { CategoryWiseProductsCardComponent } from 'src/app/components/category-wise-products-card/category-wise-products-card.component';
 import { DirectiveModule } from 'src/app/directives/directive.module';
+import { ClosedPipe } from 'src/app/pipes/closed.pipe';
 
 const routes: Routes = [
   {

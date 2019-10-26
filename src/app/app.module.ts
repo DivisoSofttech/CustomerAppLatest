@@ -27,7 +27,7 @@ import { OrderService } from './services/order.service';
 import { LoggerModule } from 'ngx-logger';
 import {environment} from '../environments/environment';
 import { PayPal } from '@ionic-native/paypal/ngx';
-import { LocationStrategy, HashLocationStrategy, Location } from '@angular/common';
+import { LocationStrategy, HashLocationStrategy, Location, DecimalPipe } from '@angular/common';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -85,6 +85,7 @@ const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', 
     ScreenOrientation,
     Util,
     SplashScreen,
+    DecimalPipe,
     LocalNotifications,
     AndroidPermissions,
     BackgroundMode,

@@ -27,7 +27,7 @@ export class Util {
     return await this.loadingController.create({
       spinner: 'lines',
       message: 'Please wait',
-      duration: duration !== undefined?duration:5000,
+      duration: duration !== undefined?duration:100000,
       cssClass:'loader'
     });
   }

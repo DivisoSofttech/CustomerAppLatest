@@ -1,70 +1,113 @@
 <div *ngIf="type === 'restaurant'">
-  <ion-grid>
-    <ion-row>
-      <ion-col size="12" size-md="6" size-lg="6" *ngFor="let store of [1, 2, 3, 4, 5]">
-          <ion-card no-padding >
-              <ion-card-header>
-                <ion-item lines="full">
-                  <ion-thumbnail slot="start">
-                    <ion-skeleton-text animated></ion-skeleton-text>
-                  </ion-thumbnail>
-                  <ion-label>
-                    <ion-text word-wrap text-wrap class="category">
-                      <ion-skeleton-text animated></ion-skeleton-text>
-                      <ion-skeleton-text animated></ion-skeleton-text>
-                      <ion-skeleton-text animated></ion-skeleton-text>
-                      <ion-skeleton-text animated></ion-skeleton-text>
-                    </ion-text>
-                  </ion-label>
-                </ion-item>
-              </ion-card-header>
-              <ion-card-content>
-                <ion-grid no-padding>
-                  <ion-row>
-                    <ion-col size="7" text-center no-padding>
-                      <rating [rate]="'5'" [readonly]="true"></rating>
-                    </ion-col>
-                    <ion-col size="3" text-center no-padding>
-                      <ion-buttons>
-                        <ion-button fill="none" disabled>
-                          <ion-skeleton-text animated></ion-skeleton-text>
-                        </ion-button>
-                      </ion-buttons>
-                    </ion-col>
-                    <ion-col size="2" text-center no-padding>
-                      <ion-buttons justify-content-center>
-                        <ion-button fill="none">
-                          <ion-skeleton-text animated></ion-skeleton-text>
-                        </ion-button>
-                      </ion-buttons>
-                    </ion-col>
-                  </ion-row>
-                </ion-grid>
-              </ion-card-content>
-            </ion-card>
+  <ion-grid class="ion-no-padding ion-no-margin">
+    <ion-row class="ion-no-padding ion-no-margin">
+      <ion-col class="ion-no-padding ion-no-margin margin-adjust" size="12" size-md="6" size-lg="4"
+        *ngFor="let store of [1, 2, 3, 4, 5]">
+        <ion-card class="ion-no-padding ">
+          <ion-card-header>
+            <ion-item lines="full">
+              <ion-thumbnail slot="start">
+                <ion-skeleton-text></ion-skeleton-text>
+              </ion-thumbnail>
+              <ion-label>
+                <ion-text word-wrap text-wrap class="category">
+                  <ion-skeleton-text></ion-skeleton-text>
+                  <ion-skeleton-text></ion-skeleton-text>
+                  <ion-skeleton-text></ion-skeleton-text>
+                  <ion-skeleton-text></ion-skeleton-text>
+                </ion-text>
+              </ion-label>
+            </ion-item>
+          </ion-card-header>
+          <ion-card-content class="ion-no-padding">
+            <ion-grid class="ion-no-padding">
+              <ion-row>
+                <ion-col size="7" class="ion-no-padding ion-text-center">
+                  <rating [rate]="'5'" [readonly]="true"></rating>
+                </ion-col>
+                <ion-col size="3" text-center class="ion-no-padding ion-text-center">
+                  <ion-buttons>
+                    <ion-button fill="none" disabled>
+                      <ion-skeleton-text></ion-skeleton-text>
+                    </ion-button>
+                  </ion-buttons>
+                </ion-col>
+                <ion-col size="2" class="ion-no-padding ion-text-center">
+                  <ion-buttons class="ion-justify-content-center">
+                    <ion-button fill="none">
+                      <ion-skeleton-text></ion-skeleton-text>
+                    </ion-button>
+                  </ion-buttons>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>
-
 </div>
+
+<div *ngIf="type === 'restaurant-detail'" class="restaurantCard">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-card>
+    <ion-card-subtitle>
+      <ion-thumbnail>
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-thumbnail>
+    </ion-card-subtitle>
+    <ion-card-content>
+      <ion-skeleton-text animated></ion-skeleton-text>
+      <ion-skeleton-text animated></ion-skeleton-text>
+    </ion-card-content>
+    <ion-footer>
+      <ion-skeleton-text class="height-100" animated></ion-skeleton-text>
+    </ion-footer>
+  </ion-card>
+</div>
+
+<!-- <div *ngIf="type==='product-minimal'" >
+  <ion-card class="ion-no-padding" *ngFor="let a of [1,2,3]">
+    <ion-card-content class="ion-no-padding">
+      <ion-item lines="full">
+        <ion-thumbnail >
+            <ion-icon class="img-full" name="image"></ion-icon>
+        </ion-thumbnail>
+        <ion-text class="ion-margin">
+          <h2>
+              <ion-skelton-text animated></ion-skelton-text>
+          </h2>
+          <p>
+              <ion-skelton-text animated></ion-skelton-text>
+          </p>
+        </ion-text>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+</div> -->
 
 <div *ngIf="type === 'product'">
   <ion-card no-padding *ngFor="let store of productLoadingCount">
     <ion-item lines="none">
       <ion-thumbnail>
-        <ion-skeleton-text animated></ion-skeleton-text>
+        <ion-skeleton-text></ion-skeleton-text>
       </ion-thumbnail>
       <ion-card-content>
         <ion-grid>
           <ion-row>
             <ion-col class="title-card" margin-top padding-top>
               <ion-card-title>
-                <ion-skeleton-text animated></ion-skeleton-text>
+                <ion-skeleton-text></ion-skeleton-text>
               </ion-card-title>
-              <ion-text
-                ><strong>
-                  <ion-skeleton-text animated></ion-skeleton-text> </strong
-              ></ion-text>
+              <ion-text><strong>
+                  <ion-skeleton-text></ion-skeleton-text>
+                </strong></ion-text>
             </ion-col>
           </ion-row>
           <ion-row>
@@ -74,8 +117,8 @@
                   <ion-icon name="remove"></ion-icon>
                 </ion-button>
                 <ion-button fill="none" disabled>
-                  <ion-skeleton-text animated></ion-skeleton-text
-                ></ion-button>
+                  <ion-skeleton-text></ion-skeleton-text>
+                </ion-button>
                 <ion-button color="medium">
                   <ion-icon name="add"></ion-icon>
                 </ion-button>
@@ -88,82 +131,59 @@
   </ion-card>
 </div>
 
-
-<div *ngIf="type === 'restaurant-detail'" class="restaurantCard">
-  <ion-header>
-    <ion-toolbar>
-      <ion-title>
-          <ion-skeleton-text></ion-skeleton-text>
-      </ion-title>
-    </ion-toolbar>
-  </ion-header>
-  <ion-card>
-    <ion-card-subtitle>
-      <ion-thumbnail>
-          <ion-skeleton-text animated></ion-skeleton-text>
-      </ion-thumbnail>
-    </ion-card-subtitle>
-    <ion-card-content>
-        <ion-skeleton-text animated></ion-skeleton-text>
-        <ion-skeleton-text animated></ion-skeleton-text>
+<div *ngIf="type === 'review'">
+  <ion-card no-padding *ngFor="let store of [1, 2, 3, 4, 5]">
+    <ion-card-content no-padding>
+      <ion-item>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12">
+              <ion-text>
+                <ion-skeleton-text></ion-skeleton-text>
+              </ion-text>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <rating [readonly]="true"></rating>
+            </ion-col>
+            <ion-col class="reviews">
+              <ion-text>
+                <ion-skeleton-text></ion-skeleton-text>
+              </ion-text>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
     </ion-card-content>
   </ion-card>
 </div>
 
-<div *ngIf="type === 'review'">
-    <ion-card no-padding *ngFor="let store of [1, 2, 3, 4, 5]">
-        <ion-card-content no-padding>
-           <ion-item>
-               <ion-grid>
-                 <ion-row>
-                   <ion-col size="12">
-                     <ion-text>
-                        <ion-skeleton-text animated></ion-skeleton-text>
-                     </ion-text>
-                   </ion-col>
-                 </ion-row>
-                 <ion-row>
-                   <ion-col>
-                       <rating
-                       [readonly]="true"
-                     ></rating>
-                   </ion-col>
-                   <ion-col class="reviews">
-                     <ion-text>
-                        <ion-skeleton-text animated></ion-skeleton-text>                     </ion-text>
-                   </ion-col>
-                 </ion-row>
-               </ion-grid>
-             </ion-item>
-        </ion-card-content>
-      </ion-card>
-</div>
-
 <div *ngIf="type==='delivery'">
   <ion-item lines="full" *ngFor="let a of [1,2,3,4,5]">
-      <ion-skeleton-text animated></ion-skeleton-text>
-      <ion-skeleton-text animated></ion-skeleton-text>
-      <ion-skeleton-text animated></ion-skeleton-text>
+    <ion-skeleton-text animated></ion-skeleton-text>
+    <ion-skeleton-text animated></ion-skeleton-text>
+    <ion-skeleton-text animated></ion-skeleton-text>
   </ion-item>
 </div>
 
 <div *ngIf="type==='notification'">
-    <ion-card padding>
-        <ion-item lines="none">
-          <ion-thumbnail slot="start">
-                <ion-skeleton-text animated></ion-skeleton-text>
-          </ion-thumbnail>
-          <ion-text class="notificaton-iontext">
-            <ion-skeleton-text animated></ion-skeleton-text>
-            <ion-skeleton-text animated></ion-skeleton-text>
-            <ion-skeleton-text animated></ion-skeleton-text>
-                <ion-skeleton-text animated></ion-skeleton-text>
-                <ion-skeleton-text animated></ion-skeleton-text>
-          </ion-text>
-        </ion-item>
-        <ion-card-footer style="background: grey">
-        </ion-card-footer>
-      </ion-card>
+  <ion-card padding>
+    <ion-item lines="none">
+      <ion-thumbnail slot="start">
+        <ion-skeleton-text></ion-skeleton-text>
+      </ion-thumbnail>
+      <ion-text class="notificaton-iontext">
+        <ion-skeleton-text></ion-skeleton-text>
+        <ion-skeleton-text></ion-skeleton-text>
+        <ion-skeleton-text></ion-skeleton-text>
+        <ion-skeleton-text></ion-skeleton-text>
+        <ion-skeleton-text></ion-skeleton-text>
+      </ion-text>
+    </ion-item>
+    <ion-card-footer style="background: grey">
+    </ion-card-footer>
+  </ion-card>
 </div>
 
 <div *ngIf="type === 'profile'">
@@ -171,12 +191,12 @@
     <ion-card-content>
       <ion-item lines="none">
         <ion-avatar class="profileLoader">
-          <ion-skeleton-text animated></ion-skeleton-text>
+          <ion-skeleton-text></ion-skeleton-text>
         </ion-avatar>
         <ion-text class="mg-left" class="profileTextLoader">
-          <ion-skeleton-text animated></ion-skeleton-text>
-          <ion-skeleton-text animated></ion-skeleton-text>
-          <ion-skeleton-text animated></ion-skeleton-text>
+          <ion-skeleton-text></ion-skeleton-text>
+          <ion-skeleton-text></ion-skeleton-text>
+          <ion-skeleton-text></ion-skeleton-text>
         </ion-text>
       </ion-item>
     </ion-card-content>
@@ -189,25 +209,24 @@
         </ion-buttons>
       </ion-item>
     </ion-card-footer>
-  </ion-card>  
+  </ion-card>
 </div>
 
 <div *ngIf="type === 'history'">
   <ion-list>
     <ion-item lines="full" margin *ngFor="let r of [1,2,3,4,5]">
       <ion-thumbnail slot="start">
-        <ion-skeleton-text animated></ion-skeleton-text>
+        <ion-skeleton-text></ion-skeleton-text>
       </ion-thumbnail>
       <ion-label>
         <ion-text color="primary">
-          <ion-skeleton-text animated></ion-skeleton-text>
-          <ion-skeleton-text animated></ion-skeleton-text>
-          <ion-skeleton-text animated></ion-skeleton-text>
+          <ion-skeleton-text></ion-skeleton-text>
+          <ion-skeleton-text></ion-skeleton-text>
+          <ion-skeleton-text></ion-skeleton-text>
         </ion-text>
-        <ion-skeleton-text animated></ion-skeleton-text>
-        <ion-skeleton-text animated></ion-skeleton-text>
+        <ion-skeleton-text></ion-skeleton-text>
+        <ion-skeleton-text></ion-skeleton-text>
       </ion-label><br>
     </ion-item>
   </ion-list>
 </div>
-

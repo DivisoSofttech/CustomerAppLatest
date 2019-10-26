@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { QueryResourceService } from 'src/app/api/services';
-import { Order, OrderLine, Product, Store, CommandResource } from 'src/app/api/models';
+import { Order, OrderLine, Product, Store, CommandResource, AuxilaryOrderLine } from 'src/app/api/models';
 import { CartService } from 'src/app/services/cart.service';
 import { ModalController, NavController } from '@ionic/angular';
 import { OrderService } from 'src/app/services/order.service';
@@ -21,9 +21,12 @@ export class OrderSummaryComponent implements OnInit, OnDestroy {
 
   products: Product[] = [];
 
-  auxilaries = {};
-
   comboLineItems = {};
+
+  auxilariesProducts = {};
+
+
+  auxilaryOrderLines: AuxilaryOrderLine = {};
 
   taskDetailsSubscription: Subscription;
   orderLinesByOrderIdSubscription: Subscription;
@@ -41,75 +44,85 @@ export class OrderSummaryComponent implements OnInit, OnDestroy {
     private orderService: OrderService,
     private util: Util
   ) { }
-
   ngOnInit() {
     this.logger.info(this.order);
-    this.getOrderLines();
+    // this.getOrderDetails();
+    this.getOrderLines(0);
   }
 
   ngOnDestroy() {
     console.log('Ng Destroy calls in orderDetail component');
-    if (this.taskDetailsSubscription !== undefined) {
-      this.taskDetailsSubscription.unsubscribe();
-    }
-    this.orderLinesByOrderIdSubscription !== undefined?this.orderLinesByOrderIdSubscription.unsubscribe():null;
+    this.taskDetailsSubscription !== undefined?this.taskDetailsSubscription.unsubscribe():null;
+    this.orderLinesByOrderIdSubscription !== undefined?this.orderLinesByOrderIdSubscription.unsubscribe():null
     this.productByProductIdSubscrption !== undefined?this.productByProductIdSubscrption.unsubscribe():null;
-    this.auxilayByProductIdSubscription !== undefined?this.auxilayByProductIdSubscription.unsubscribe():null;
+    this.auxilayByProductIdSubscription !==undefined?this.auxilayByProductIdSubscription.unsubscribe():null;
   }
 
-  getOrderLines() {
-    this.orderLinesByOrderIdSubscription = this.queryResource.findOrderLinesByOrderIdUsingGET(this.order.id)
+  getOrderDetails() {
+    this.queryResource.getOrderAggregatorUsingGET(this.order.orderId)
+    .subscribe(data => {
+      this.logger.error(data);
+    })
+  }
+
+  getOrderLines(i) {
+    this.orderLinesByOrderIdSubscription = this.queryResource.findAllOrderLinesByOrderIdUsingGET({
+      orderId: this.order.id
+    })
     .subscribe(orderLines => {
-      this.orderLines = orderLines;
-      this.orderLines.forEach(o => {
+      orderLines.content.forEach(o => {
+        this.orderLines.push(o);
+        this.auxilariesProducts[o.productId] = [];
+        this.auxilaryOrderLines[o.id] = [];
         this.getProducts(o.productId);
+        this.getAuxilaryOrderLines(o,0);
       });
+      i++;
+      if(i < orderLines.totalPages) {
+        this.getOrderLines(i);
+      } else {
+        this.logger.info('Completed Fetching OrderLines')
+      }
     });
+  }
+
+  getAuxilaryOrderLines(o , i) {
+    this.queryResource.findAuxilaryOrderLineByOrderLineIdUsingGET({
+      orderLineId: o.id
+    })
+    .subscribe(auxLines => {
+      auxLines.content.forEach(auxLine => {
+        this.auxilaryOrderLines[o.id].push(auxLine);
+        this.getAuxilaryProduct(o.productId,auxLine.productId)
+      });
+      i++;
+      if(i < auxLines.totalPages) {
+        this.getAuxilaryOrderLines(o,i);
+      } else {
+        this.logger.info('Fetched All Auxilaries');
+      }
+    })
   }
 
   getProducts(id) {
    this.productByProductIdSubscrption =  this.queryResource.findProductByIdUsingGET(id)
     .subscribe(data => {
       this.products[data.id] = data;
-      this.auxilaries[data.id] = [];
-      this.getAuxilary(data , 0);
     });
   }
 
-  getAuxilary(product: Product , i) {
-    this.auxilayByProductIdSubscription = this.queryResource.findAuxilariesByProductIdUsingGET(product.id)
-    .subscribe(pauxProducts => {
-      pauxProducts.content.forEach(apr => {
-        this.auxilaries[product.id].push(apr);
-      });
-      ++i;
-      if (i < pauxProducts.totalPages) {
-        this.getAuxilary(product , i);
-      } else {
-        this.cartService.addAuxilary(product , this.auxilaries[product.id]);
-      }
+  getAuxilaryProduct(pid , id) {
+    this.queryResource.findProductByIdUsingGET(id)
+    .subscribe(auxProduct => {
+      this.logger.info(auxProduct.name , 'for' , pid);
 
-    });
-  }
+        //Hack to Make Product Usable in Places Where AuxilaryLineItem 
+      // is used Just add auxilaryItem key to the object
 
-  reorder() {
-    if (this.cartService.currentShopId === 0) {
-      this.addToCart();
-    } else if (this.cartService.currentShopId === this.store.id) {
-      this.addToCart();
-    } else {
-      this.cartService.presentAlert();
-    }
-  }
+      auxProduct['auxilaryItem']  = auxProduct;
+      this.auxilariesProducts[pid+''][id+''] = auxProduct;
 
-  addToCart() {
-    this.cartService.addShop(this.store);
-    this.orderLines.forEach(o => {
-      if (o.requiedAuxilaries === null) {
-       delete o.requiedAuxilaries;
-      }
-      this.cartService.addOrder(o);
-    });
+    })
   }
 
   dismiss(value) {

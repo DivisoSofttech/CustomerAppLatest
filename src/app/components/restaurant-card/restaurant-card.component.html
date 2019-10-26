@@ -1,6 +1,6 @@
 <!--Normal View-->
 
-<ion-card no-padding *ngIf="viewType === 'normal'">
+<ion-card class="ion-no-padding" *ngIf="viewType === 'normal'">
   <span class="ribbon6" *ngIf="!(timeNow | closed: store.openingTime:store.closingTime)">Closed</span>
   <ion-card-header (click)="showHotelMenu(store.regNo)">
     <ion-item lines="none">
@@ -22,7 +22,7 @@
             <span *ngIf="store.storeSettings.deliveryCharge > 0"> Delivery Charge
               &#8364;{{store.storeSettings.deliveryCharge}}</span>
           </h3>
-          <ion-badge color="warning" *ngIf="store.storeSettings.deliveryCharge === 0"> Free delivery</ion-badge>
+          <ion-badge color="warning" *ngIf="store.storeSettings.deliveryCharge === 0 && deliveryOk"> Free delivery</ion-badge>
           <h5 class="medium fnt-sserif cl-grey" class="no-wrap"
             *ngIf="store.openingTime != undefined && store.closingTime != undefined">
             {{store.openingTime | date: 'shortTime' }} to {{ store.closingTime |  date: 'shortTime'}}</h5>
@@ -30,10 +30,10 @@
       </ion-label>
     </ion-item>
   </ion-card-header>
-  <ion-card-content *ngIf="store.name" no-padding>
+  <ion-card-content *ngIf="store.name" class="ion-no-padding">
     <ion-grid no-padding>
       <ion-row>
-        <ion-col size="10" text-center no-padding *ngIf="store != undefined">
+        <ion-col size="10" text-center class="ion-no-padding" *ngIf="store != undefined">
           <ion-buttons>
             <rating [rate]="store.totalRating" [readonly]="true"></rating>
             <ion-button *ngIf="reviewCount" disabled>{{'(' + reviewCount + ')'}}</ion-button>
@@ -55,7 +55,6 @@
 </ion-card>
 
 <!--Detailed View-->
-
 <div class="container" *ngIf="viewType === 'detailedCard'">
   <ion-card color="danger" class="closeCard" *ngIf="!(timeNow | closed: store.openingTime:store.closingTime)">
     <ion-card-content>

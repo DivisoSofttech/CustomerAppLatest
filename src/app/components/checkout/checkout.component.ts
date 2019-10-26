@@ -33,6 +33,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   order: Order;
   deliveryType: any;
 
+  showLoading = true;
+
 
   constructor(
     private orderService: OrderService,
@@ -71,7 +73,11 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       customerId: this.customer.preferred_username,
     })
     .subscribe(paddress => {
+      this.showLoading = false;
       this.selectedAddress = paddress.content[0];
+      this.setAddress();
+    },err=> {
+      this.showLoading = false;
     });
   }
 
@@ -92,9 +98,14 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   
     modal.onDidDismiss()
     .then(data => {
-      if(data.data !== undefined) {
+      console.log(data);
+      if(data.data !== undefined && data.data.deleted === undefined) {
         this.selectedAddress = data.data;
         this.setAddress();
+      } else if(data.data.deleted === true) {
+        if(this.selectedAddress.id === data.data.deletedId) {
+          this.selectedAddress = undefined;
+        }
       }
     });
     await modal.present();

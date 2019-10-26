@@ -1,5 +1,5 @@
 import { OrderService } from 'src/app/services/order.service';
-import { IonSlides, IonRefresher, PopoverController, NavController } from '@ionic/angular';
+import { IonSlides, IonRefresher, PopoverController, NavController, Platform } from '@ionic/angular';
 import { ViewChild } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { Component, OnInit } from '@angular/core';
@@ -16,6 +16,9 @@ import { MapComponent } from 'src/app/components/map/map.component';
   styleUrls: ['./store.page.scss']
 })
 export class StorePage implements OnInit {
+
+  slideOptions = {autoHeight: true};
+
   storeId;
 
   store: Store;
@@ -43,6 +46,7 @@ export class StorePage implements OnInit {
   @ViewChild(MapComponent, null) map: MapComponent;
   slidesMoving: boolean;
   slidesHeight: number;
+  timeNow: Date;
 
   constructor(
     private queryResource: QueryResourceService,
@@ -50,6 +54,7 @@ export class StorePage implements OnInit {
     private popover: PopoverController,
     private logger: NGXLogger,
     private util: Util,
+    private platform: Platform,
     private orderService: OrderService,
     private navController: NavController
   ) {}
@@ -59,6 +64,8 @@ export class StorePage implements OnInit {
     this.getStore();
     this.getCategories(0);
     this.getCategoriesEntry(0);
+    this.timeNow = new Date();
+    this.ionSlides.updateAutoHeight(100000);
   }
 
   getStoreId() {
@@ -122,6 +129,7 @@ export class StorePage implements OnInit {
 
   async categoryListPopOver(ev: any) {
     this.tempStockCurrents = this.stockCurrents;
+    this.platform.width() >= 1280?null:ev=null;
     const popover = await this.popover.create({
       component: HotelMenuPopoverComponent,
       componentProps: {
@@ -146,6 +154,7 @@ export class StorePage implements OnInit {
             this.selectedCategory,
             this.stockCurrents
           );
+          this.ionSlides.updateAutoHeight();
           this.showCategoryWiseProducts = false;
         }
       }
@@ -173,7 +182,7 @@ export class StorePage implements OnInit {
   
     let index: any;
     this.ionSlides.getActiveIndex().then(num => {
-      this.ionSlides.updateAutoHeight();
+      this.ionSlides.updateAutoHeight(1000);
       index = num;
       if (index === 0) {
         this.currentSegment = 'menu';

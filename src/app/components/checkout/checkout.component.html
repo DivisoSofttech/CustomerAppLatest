@@ -9,6 +9,9 @@
 <ion-content>
   <ion-grid class="ion-no-padding">
     <ion-row *ngIf="deliveryType==='delivery'">
+      <ion-col class="ion-text-center ion-padding" *ngIf="selectedAddress === undefined && showLoading">
+        <ion-spinner name="crescent"></ion-spinner>
+      </ion-col>
       <ion-col style="padding: 25px;" size="12" *ngIf="selectedAddress !== undefined">
           <ion-label>
               <h1>{{selectedAddress.name}}</h1>

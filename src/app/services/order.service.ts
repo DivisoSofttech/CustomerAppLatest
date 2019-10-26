@@ -1,5 +1,5 @@
 import { CartService } from 'src/app/services/cart.service';
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable, OnInit, OnDestroy } from '@angular/core';
 import { OrderCommandResourceService, OfferCommandResourceService, PaymentCommandResourceService } from '../api/services';
 import { CommandResource, Order, DeliveryInfo, Address, Offer } from '../api/models';
 import { Storage } from '@ionic/storage';
@@ -11,12 +11,13 @@ import { MakePaymentComponent } from '../components/make-payment/make-payment.co
 import { BehaviorSubject } from 'rxjs';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { SharedDataService } from './shared-data.service';
+import { KeycloakService } from './security/keycloak.service';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class OrderService implements OnInit {
+export class OrderService implements OnInit , OnDestroy {
 
   order: Order;
   resource: CommandResource = {};
@@ -27,6 +28,7 @@ export class OrderService implements OnInit {
   acceptType = 'automatic';
   shop;
   offer: Offer;
+  keycloakSubscription: any;
   constructor(
     private orderCommandService: OrderCommandResourceService,
     private storage: Storage,
@@ -36,12 +38,17 @@ export class OrderService implements OnInit {
     private offerCommandService: OfferCommandResourceService,
     private paymentCommandService: PaymentCommandResourceService,
     private util: Util,
-    private sharedData: SharedDataService
+    private sharedData: SharedDataService,
+    private keycloakService: KeycloakService
   ) {
     this.getCustomer();
   }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy(): void {
+    this.keycloakSubscription.unsubscribe();
   }
 
   isTask(taskName: string): boolean {
@@ -57,15 +64,19 @@ export class OrderService implements OnInit {
 
   async getCustomer() {
     await this.util.createLoader().then(async loader => {
-      loader.dismiss();
-      if (this.oauthService.hasValidAccessToken()) {
-        await this.storage.get('user')
-          .then(data => {
-            this.customer = data;
-            this.logger.info('Got Customer ', data);
-            loader.dismiss();
-          });
-      }
+      // loader.dismiss();
+      // if (this.oauthService.hasValidAccessToken()) {
+      //   await this.storage.get('user')
+      //     .then(data => {
+      //       this.customer = data;
+      //       this.logger.info('Got Customer ', data);
+      //       loader.dismiss();
+      //     });
+      // }
+      this.keycloakSubscription = this.keycloakService.getUserChangedSubscription()
+      .subscribe(data => {
+        this.customer = data;
+      })
     });
   }
 

@@ -21,6 +21,6 @@ export const environment = {
   production: false,
   logging: {
     level: NgxLoggerLevel.INFO,
-    enableSourceMaps: true
+    enableSourceMaps: false
   }
 };

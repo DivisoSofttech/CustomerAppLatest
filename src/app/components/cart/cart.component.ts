@@ -61,6 +61,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
 
   @ViewChild(DeliveryItemDetailsComponent, null) delivery: DeliveryItemDetailsComponent;
+  deliveryMode: any;
 
   constructor(
     private cart: CartService,
@@ -153,14 +154,17 @@ export class CartComponent implements OnInit, OnDestroy {
             this.deliveryOk = true;
             this.currentSegment = 'delivery';
             this.defaultDelivery = true;
+            this.deliveryMode = 'delivery';
           } else if (currentDeliveryTypes[0].name === 'collection') {
             this.collectionOk = true;
             this.currentSegment = 'collection';
+            this.deliveryMode = 'collection';
           }
         } else {
           this.defaultDelivery = true;
           this.deliveryOk = true;
           this.collectionOk = true;
+          this.deliveryMode = 'delivery';
         }
       } else {
         if (this.cart.currentShop !== undefined) {
@@ -254,7 +258,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
   segmenChanged(event) {
     if (this.delivery !== undefined) {
-      this.delivery.currentDeliveryMode = event.detail.value;
+      this.deliveryMode = event.detail.value;
       this.currentSegment = event.detail.value;
     }
   }
