@@ -43,10 +43,10 @@
 </ion-content>
 
 <div *ngIf="mode==='component'">
-  <ion-list *ngIf="addresses !== undefined && addresses.length !== 0">
-    <ion-item line="full" *ngFor="let address of addresses" value="{{address.id}}">
+  <ion-list lines="none" *ngIf="addresses !== undefined && addresses.length !== 0">
+    <ion-item line="none" *ngFor="let address of addresses" value="{{address.id}}">
       <ion-label>
-        <h2>{{address.name}}</h2>
+        <h1>{{address.name}}</h1>
         <h2>{{address.houseNoOrBuildingName}}</h2>
         <h2>{{address.landmark}}</h2>
         <h2>{{address.pincode}}</h2>

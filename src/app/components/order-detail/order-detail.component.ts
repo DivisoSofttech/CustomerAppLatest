@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ViewChild } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { QueryResourceService } from 'src/app/api/services';
 import { Order, OrderLine, Product, Store, CommandResource, AuxilaryOrderLine } from 'src/app/api/models';
@@ -8,11 +8,16 @@ import { OrderService } from 'src/app/services/order.service';
 import { Subscription } from 'rxjs';
 import { Util } from 'src/app/services/util';
 import { MakePaymentComponent } from '../make-payment/make-payment.component';
+import { MatStepper } from '@angular/material';
+import { MAT_STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-order-detail',
   templateUrl: './order-detail.component.html',
   styleUrls: ['./order-detail.component.scss'],
+  providers: [{
+    provide: MAT_STEPPER_GLOBAL_OPTIONS, useValue: {displayDefaultIndicatorType: false}
+  }]
 })
 export class OrderDetailComponent implements OnInit, OnDestroy {
  
@@ -44,6 +49,28 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     private util: Util
   ) { }
 
+  @ViewChild('stepper' , null) stepper: MatStepper;
+
+  ngAfterViewInit() {
+    if(this.order.status.name === 'created') {
+      this.stepper.next();
+    } else if(this.order.status.name === 'approved' || this.order.status.name === 'payment-processed') {
+      this.stepper.next();
+      this.stepper.next();
+    } else if(this.order.status.name === 'delivered') {
+      this.stepper.next();
+      this.stepper.next();
+      this.stepper.next();
+    }  
+  }
+
+
+  ngOnInit() {
+    this.logger.info(this.order);
+    // this.getOrderDetails();
+    this.getOrderLines(0);
+  }
+
 
   async presentMakePayment() {
     await this.modalController.dismiss();
@@ -72,12 +99,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
         this.presentMakePayment();
       });
     });
-  }
-
-  ngOnInit() {
-    this.logger.info(this.order);
-    // this.getOrderDetails();
-    this.getOrderLines(0);
   }
 
   ngOnDestroy() {

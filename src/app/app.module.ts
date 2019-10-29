@@ -44,6 +44,7 @@ import { DirectiveModule } from './directives/directive.module';
 import { HistoryListComponent } from './components/history-list/history-list.component';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { SharedDataService } from './services/shared-data.service';
+import { RecentService } from './services/recent.service';
  
 const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', options: {} };
 
@@ -103,6 +104,7 @@ const config: SocketIoConfig = { url: 'http://dev.ci2.divisosofttech.com:9999', 
     FavouriteService,
     CartService,
     OrderService,
+    RecentService,
     ErrorService,
     {
       provide: HTTP_INTERCEPTORS,

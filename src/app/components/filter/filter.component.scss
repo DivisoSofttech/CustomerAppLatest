@@ -6,8 +6,20 @@ ion-list-header {
 }
 
 ion-content {
-    height: 66vh;
+    height: 55vh;
 }
+
+.full-height , .full-height ion-row {
+    height: 100%;
+}
+
+.full-height ion-row ion-col:first-child
+{
+    background: #e6dcdc45;
+    border-right: 1px solid grey;
+}
+
+
 
 .icon-grid {
     border-bottom: 1px solid #f3e4e4;

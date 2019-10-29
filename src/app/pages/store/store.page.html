@@ -1,11 +1,10 @@
 <ion-header class="mobile-only">
   <app-store-header *ngIf="store != undefined" [name]="store.name" [storeId]="store.regNo" [store]="store"
-    (searchEnable)="toggleFabButton($event)"></app-store-header>
+    (searchEnable)="toggleFabButton($event)" (categoryfilterClicked)="categoryListPopOver($event)"></app-store-header>
 </ion-header>
-<!-- <div class="overlay"
-*ngIf="!(timeNow | closed: store.openingTime:store.closingTime)"></div> -->
+
 <ion-content appScrollbarTheme>
-  <ion-fab class="animated animation-duration"
+  <ion-fab class="animated animation-duration mobile-only"
     [ngClass]="(currentSegment === 'menu' && showCatgeoryFilterFab) ? 'rotateIn' : 'rotateOut'" vertical="bottom"
     horizontal="end" slot="fixed">
     <ion-fab-button (click)="categoryListPopOver($event)">
@@ -28,7 +27,8 @@
           </ion-col>
           <ion-col size="12" size-lg="12" class="ion-no-padding">
             <div class="bg-white">
-              <ion-segment color="success" (ionChange)="segmentChanged($event)" [(ngModel)]="currentSegment" class="slider-tabs">
+              <ion-segment color="success" (ionChange)="segmentChanged($event)" [(ngModel)]="currentSegment"
+                class="slider-tabs">
                 <ion-segment-button value="menu" checked>
                   <ion-label>Menu</ion-label>
                 </ion-segment-button>
@@ -43,17 +43,16 @@
               <ion-slides [options]="slideOptions" (ionSlideDidChange)="slideChanged($event)">
                 <ion-slide>
                   <ion-row class="categories" *ngIf="store !== undefined && showCategoryWiseProducts === false"
-                     no-margin no-padding>
-                     <ion-col size="12" class="ion-no-padding">
-                       <ion-item color="primary">
+                    no-margin no-padding>
+                    <ion-col size="12" class="ion-no-padding">
+                      <ion-item color="primary">
                         <ion-text>
                           {{selectedCategory}}
                         </ion-text>
-                       </ion-item>
-                     </ion-col>
+                      </ion-item>
+                    </ion-col>
                     <ion-col size="12" size-lg="6" *ngFor="let stockCurrent of stockCurrents">
-                      <app-product-card  [store]="store"
-                      [stockCurrent]="stockCurrent" [type]=""></app-product-card>
+                      <app-product-card [store]="store" [stockCurrent]="stockCurrent" [type]=""></app-product-card>
                     </ion-col>
                   </ion-row>
 
@@ -80,6 +79,7 @@
                     </div>
                   </div>
                 </ion-slide>
+
                 <ion-slide>
                   <app-review *ngIf="store != undefined" [store]="store"></app-review>
                 </ion-slide>
@@ -113,7 +113,8 @@
       </ion-col>
       <ion-col size="12" size-lg="4" class="desktop-only br-left ion-no-padding">
         <ion-item color="light" lines="full">
-          <ion-label *ngIf="store !== undefined">Reviews <span *ngIf="store.reviews !== null">({{store.reviews.length}})</span></ion-label>
+          <ion-label *ngIf="store !== undefined">Reviews <span
+              *ngIf="store.reviews !== null">({{store.reviews.length}})</span></ion-label>
         </ion-item>
         <app-review *ngIf="store != undefined" [store]="store"></app-review>
       </ion-col>
@@ -121,6 +122,7 @@
   </ion-grid>
 </ion-content>
 
-<ion-footer class="animated animation-duration mobile-only" [ngClass]="currentSegment === 'menu' ? 'slideInUp': 'slideOutDown'">
+<ion-footer class="animated animation-duration mobile-only"
+  [ngClass]="currentSegment === 'menu' ? 'slideInUp': 'slideOutDown'">
   <app-cart (viewClick)="navigateBasket()"></app-cart>
 </ion-footer>

@@ -18,8 +18,8 @@ export class ForgetPasswordComponent implements OnInit {
   user;
   password;
   rePassword;
-  showOtp = false;
-  numberValid = false;
+  showOtp = true;
+  numberValid = true;
   otpVerification;
 
   passwordMatch = true;

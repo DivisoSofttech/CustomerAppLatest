@@ -9,6 +9,7 @@ import { HotelMenuPopoverComponent } from 'src/app/components/hotel-menu-popover
 import { Util } from 'src/app/services/util';
 import { NGXLogger } from 'ngx-logger';
 import { MapComponent } from 'src/app/components/map/map.component';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-store',
@@ -65,7 +66,14 @@ export class StorePage implements OnInit {
     this.getCategories(0);
     this.getCategoriesEntry(0);
     this.timeNow = new Date();
-    this.ionSlides.updateAutoHeight(100000);
+
+    //temp Fix for sliderHeight
+    setInterval(()=> {
+      if(this.ionSlides !== undefined) {
+        this.ionSlides.updateAutoHeight();
+      }
+    },5000)
+
   }
 
   getStoreId() {
@@ -182,7 +190,7 @@ export class StorePage implements OnInit {
   
     let index: any;
     this.ionSlides.getActiveIndex().then(num => {
-      this.ionSlides.updateAutoHeight(1000);
+      this.ionSlides.updateAutoHeight();
       index = num;
       if (index === 0) {
         this.currentSegment = 'menu';

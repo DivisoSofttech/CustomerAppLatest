@@ -35,7 +35,7 @@ export class FilterService {
   constructor(
     private queryResource: QueryResourceService,
     private logger: NGXLogger
-  ) {}
+  ) { }
 
   public getSubscription() {
     return this.filterBehaviour;
@@ -59,27 +59,30 @@ export class FilterService {
     return this.currentFilter;
   }
 
-  public getStores(pageNumber, success , error?) {
-    switch (this.currentFilter) {
-      case FILTER_TYPES.NO_FILTER:
-        this.logger.info('Finding All Stores');
-        this.getStoreNoFilter(pageNumber,success , error);
-        break;
-      case FILTER_TYPES.DELIVERY_TIME:
-        this.getStoreByDeliveryTime(pageNumber , success , error);
-        break;
-      case FILTER_TYPES.DISTANCE_WISE:
-        this.logger.info('Finding Store By Distance and Location' , this.distance);
-        this.getStoreByDistance(pageNumber, success , error);
-        break;
-      case FILTER_TYPES.TOP_RATED:
-        this.logger.info('Finding Store By Rating');
-        this.getStoreByRating(pageNumber, success , error);
-        break;
+  public getStores(pageNumber, success, error?) {
+    console.log(this.currentFilter == FILTER_TYPES.TOP_RATED.valueOf());
+    if (this.currentFilter == FILTER_TYPES.NO_FILTER.valueOf()) {
+      this.logger.info('Finding All Stores');
+      this.getStoreNoFilter(pageNumber, success, error);
     }
+    else if (this.currentFilter == FILTER_TYPES.DELIVERY_TIME.valueOf()) {
+      this.getStoreByDeliveryTime(pageNumber, success, error);
+    }
+    else if (this.currentFilter == FILTER_TYPES.DISTANCE_WISE.valueOf()) {
+      this.logger.info('Finding Store By Distance and Location', this.distance);
+      this.getStoreByDistance(pageNumber, success, error);
+    }
+    else if (this.currentFilter == FILTER_TYPES.TOP_RATED.valueOf()) {
+      this.logger.info('Finding Store By Rating');
+      this.getStoreByRating(pageNumber, success, error);
+    } 
+    else {
+
+    }
+
   }
 
-  private getStoreByDistance(pageNumber, success , error?) {
+  private getStoreByDistance(pageNumber, success, error?) {
     this.logger.info('Getting STores Via Distance Filter');
     if (this.currentCordinates !== undefined) {
       this.locationBehaviour.next(this.currentCordinates);
@@ -97,44 +100,44 @@ export class FilterService {
     }
   }
 
-  private getStoreByRating(pageNumber, success , error?) {
+  private getStoreByRating(pageNumber, success, error?) {
     this.logger.info('Getting STores Via Rating Filter');
     this.queryResource.findStoreByRatingUsingGET(
     ).subscribe(data => {
       success(data.totalElements, data.totalPages, data.content);
     },
-    err => {
-      this.logger.error('Error Finding Store By Distance' , err);
-      error();
-    });
+      err => {
+        this.logger.error('Error Finding Store By Distance', err);
+        error();
+      });
   }
 
-  private getStoreNoFilter(pageNumber , success , error?) {
+  private getStoreNoFilter(pageNumber, success, error?) {
     this.logger.info('Getting STores Via No Filter');
     this.queryResource.findAllStoresUsingGET({
       page: pageNumber
     })
-    .subscribe(data => {
-      success(data.totalElements , data.totalPages , data.content);
-    },
-    err => {
-      this.logger.error('Error Finding Stores' , err);
-      error();
-    });
+      .subscribe(data => {
+        success(data.totalElements, data.totalPages, data.content);
+      },
+        err => {
+          this.logger.error('Error Finding Stores', err);
+          error();
+        });
   }
 
-  private getStoreByDeliveryTime(pageNumber , success , error?) {
+  private getStoreByDeliveryTime(pageNumber, success, error?) {
     this.logger.info('Getting STores Via Delivery Time Filter');
     this.queryResource.findAndSortStoreBydeliveryTimeUsingGET({
       page: pageNumber
     })
-    .subscribe(data => {
-      success(data.totalElements , data.totalPages , data.content);
-    },
-    err => {
-      this.logger.error('Error Finding Stores' , err);
-      error();
-    });
+      .subscribe(data => {
+        success(data.totalElements, data.totalPages, data.content);
+      },
+        err => {
+          this.logger.error('Error Finding Stores', err);
+          error();
+        });
   }
 
 }

@@ -2,7 +2,7 @@
 <ion-slides #slides [options]="slideOpts" autoplayDisableOnInteraction="false" >
 <ion-slide *ngFor="let banner of banners">
   <ion-card class="full-width">
-      <ion-img slot="start" *ngIf="banner.file" [src]="'data:' + banner.fileContentType + ';base64,' + banner.file"></ion-img>   
+      <img *ngIf="banner.file" [src]="'data:' + banner.fileContentType + ';base64,' + banner.file"/>   
   </ion-card>
 </ion-slide>
 </ion-slides>

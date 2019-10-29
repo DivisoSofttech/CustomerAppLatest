@@ -4,11 +4,7 @@
 
         },
         "release": {
-            "keystore": "foodexp.keystore",
-            "storePassword": "password",
-            "alias": "foodexp.ie",
-            "password" : "123456",
-            "keystoreType": ""
+			"debug":"false"
         }
     }
 }

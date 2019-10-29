@@ -45,7 +45,7 @@
                 "input": "src/global.scss"
               }
             ],
-            "scripts": [],
+            "scripts": ["./node_modules/jquery/dist/jquery.min.js"],
             "webWorkerTsConfig": "tsconfig.worker.json"
           },
           "configurations": {
