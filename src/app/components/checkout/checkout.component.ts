@@ -53,7 +53,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.logger.info(this.orderService.customer);
     this.getCustomer();
     this.getOrderDetails();
-    this.getAllAdress();
+    if(this.deliveryType === 'delivery') {
+      this.getAllAdress();
+    }
     console.log('elivery type is ', this.deliveryType);
   }
 
@@ -69,6 +71,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   getAllAdress() {
+    this.logger.info('Getting all Addresses');
     this.orderCommandResource.getAllSavedAddressUsingGET({
       customerId: this.customer.preferred_username,
     })
@@ -84,6 +87,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   getCustomer() {
     this.logger.info(this.orderService.customer);
     this.customer = this.orderService.customer;
+    if(this.deliveryType === 'delivery')
     this.getAllAdress();
   }
 
@@ -117,12 +121,14 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   setAddress() {
+    this.logger.info(this.selectedAddress)
     this.orderService.setAddress(this.selectedAddress);
   }
 
 
 
   checkOut() {
+    this.logger.info('Order is ' , this.order)
     this.setNote();
     this.util.createLoader().then(  loader => {
       this.behaviouralSubjectSubscription = this.orderService.orderResourceBehaviour.subscribe(resources => {

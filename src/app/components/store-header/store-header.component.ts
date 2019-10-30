@@ -114,6 +114,11 @@ export class StoreHeaderComponent implements OnInit {
  
   }
 
+  textCleared() {
+    this.searchBar.debounce = 100;
+    this.searchBar.debounce = 1500;
+  }
+
   searchProducts(event) {
     this.stockCurrents = [];
     this.showLoading = true;

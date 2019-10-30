@@ -17,7 +17,7 @@ export class BannerComponent implements OnInit , OnDestroy {
   slideOpts = {
     preloadImages:true,
     lazy:false,
-    slidesPerView: this.platform.width() < 1280?this.platform.width()<400?2:1:3,
+    slidesPerView: this.platform.width() < 1280?this.platform.width()<400?1:2:3,
     on: {
       beforeInit() {
         const swiper = this;

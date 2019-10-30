@@ -72,25 +72,6 @@
   </ion-card>
 </div>
 
-<!-- <div *ngIf="type==='product-minimal'" >
-  <ion-card class="ion-no-padding" *ngFor="let a of [1,2,3]">
-    <ion-card-content class="ion-no-padding">
-      <ion-item lines="full">
-        <ion-thumbnail >
-            <ion-icon class="img-full" name="image"></ion-icon>
-        </ion-thumbnail>
-        <ion-text class="ion-margin">
-          <h2>
-              <ion-skelton-text animated></ion-skelton-text>
-          </h2>
-          <p>
-              <ion-skelton-text animated></ion-skelton-text>
-          </p>
-        </ion-text>
-      </ion-item>
-    </ion-card-content>
-  </ion-card>
-</div> -->
 
 <div *ngIf="type === 'product'">
   <ion-card no-padding *ngFor="let store of productLoadingCount">

@@ -25,8 +25,9 @@
     <ion-searchbar #restaurantSearch showCancelButton="always" debounce="1500"
       placeholder="Search Restaurants"
       [(ngModel)]="searchTerm"
-      (ionCancel)="toggleSearchBar()" (ionChange)="search($event)"
-      (search)="search($event)"
+      (ionCancel)="toggleSearchBar()"
+      (ionChange)="search($event)"
+      (ionClear)="textCleared()"
       class="header-search"
       ></ion-searchbar>
   </ion-buttons>

@@ -52,22 +52,26 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
   @ViewChild('stepper' , null) stepper: MatStepper;
 
   ngAfterViewInit() {
+
     if(this.order.status.name === 'created') {
-      this.stepper.next();
+      this.stepper.selected.state = 'done';
     } else if(this.order.status.name === 'approved' || this.order.status.name === 'payment-processed') {
+      this.stepper.selected.state = 'done';
       this.stepper.next();
-      this.stepper.next();
+      this.stepper.selected.state = 'done';
     } else if(this.order.status.name === 'delivered') {
+      this.stepper.selected.state = 'done';
       this.stepper.next();
+      this.stepper.selected.state = 'done';
       this.stepper.next();
-      this.stepper.next();
+      this.stepper.selected.completed = true;
     }  
+
   }
 
 
   ngOnInit() {
     this.logger.info(this.order);
-    // this.getOrderDetails();
     this.getOrderLines(0);
   }
 

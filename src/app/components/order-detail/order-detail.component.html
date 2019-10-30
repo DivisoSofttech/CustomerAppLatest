@@ -12,16 +12,20 @@
 <ion-content appScrollbarTheme>
     
   <mat-horizontal-stepper labelPosition="bottom" #stepper>
-      <ng-template matStepperIcon="assignment">
-          <mat-icon>bubble_chart</mat-icon>
+      <ng-template matStepperIcon="waiting">
+          <mat-icon>done</mat-icon>
         </ng-template>
+
+      <ng-template matStepperIcon="edit">
+        <mat-icon>done</mat-icon>
+       </ng-template>
         <ng-template matStepperIcon="last">
             <mat-icon>done_all</mat-icon>
           </ng-template>
-    <mat-step state="done">
+    <mat-step>
         <ng-template matStepLabel>Ordered</ng-template>
     </mat-step>
-    <mat-step state="done">
+    <mat-step state="waiting">
         <ng-template matStepLabel>Approved</ng-template>
     </mat-step>
     <mat-step state="last">

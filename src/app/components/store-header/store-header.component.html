@@ -19,8 +19,8 @@
     debounce="1500"
     [(ngModel)]="searchTerm"
     (ionCancel)="toggleSearchBar()"
+    (ionClear)="textCleared()"
     (ionChange)="searchProducts($event)"
-    (search)="searchProducts($event)"
   ></ion-searchbar>
 </ion-toolbar>
 

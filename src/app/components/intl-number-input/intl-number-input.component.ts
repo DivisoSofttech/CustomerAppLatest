@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import * as googleLibphonenumber from 'google-libphonenumber';
 import * as countryList from 'country-list';
-import { ModalController, LoadingController, Platform } from '@ionic/angular';
+import { ModalController, LoadingController, Platform, PopoverController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { Sim } from '@ionic-native/sim/ngx';
 import { NGXLogger } from 'ngx-logger';
@@ -39,6 +39,7 @@ export class IntlNumberInputComponent implements OnInit {
 
   constructor(
     private modalController: ModalController,
+    private popoverController:PopoverController,
     private storage: Storage,
     private loadingController: LoadingController,
     private logger: NGXLogger,
@@ -95,6 +96,7 @@ export class IntlNumberInputComponent implements OnInit {
   }
 
   getCurrentCountryCode() {
+    this.logger.info('Getting Current Country Code');
     this.locationService.getCurrentLoactionAddress((results, data) => {
 
       let address_components = results[0].address_components;
@@ -135,12 +137,13 @@ export class IntlNumberInputComponent implements OnInit {
       });
   }
 
-  async countrySelectModal() {
-    const modal = await this.modalController.create({
+  async countrySelectPopover() {
+    const popover = await this.popoverController.create({
       component: IntlNumberInputComponent,
       componentProps: { viewType: 'list' }
     });
-    modal.onDidDismiss()
+
+    popover.onDidDismiss()
       .then(data => {
         if (data.data !== undefined) {
           this.selectedCountry = data.data;
@@ -148,15 +151,15 @@ export class IntlNumberInputComponent implements OnInit {
         }
         this.checkIfValid();
       });
-    modal.present();
+      popover.present();
   }
 
   dismissData() {
-    this.modalController.dismiss(this.selectedCountry);
+    this.popoverController.dismiss(this.selectedCountry);
   }
 
   dismiss() {
-    this.modalController.dismiss();
+    this.popoverController.dismiss();
   }
 
   selectCountry(country) {
@@ -187,7 +190,6 @@ export class IntlNumberInputComponent implements OnInit {
         extra: this.selectedCountry
       });
     } catch (e) {
-      console.log('Not a Phone Number');
       this.numberValid = false;
     }
   }

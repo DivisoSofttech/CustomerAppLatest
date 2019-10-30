@@ -234,10 +234,9 @@ export class LoginSignupComponent implements OnInit {
   }
 
   checkNumber(event) {
-    console.log(event.extra.numberCode);
     this.numberValid = event.valid;
     this.numberCode = event.extra.numberCode;
-    this.phone = event.value;
+    this.phone = event.value.slice(event.extra.numberCode.toString().length , event.value.length);
   }
 
   setSlideValue(): number {

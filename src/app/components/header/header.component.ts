@@ -72,6 +72,11 @@ export class HeaderComponent implements OnInit , OnDestroy {
     })
   }
 
+  textCleared() {
+    this.restaurantSearch.debounce = 100;
+    this.restaurantSearch.debounce = 1500;
+  }
+
   selectSerachTerm(searchTerm) {
     this.restaurantSearch.debounce = 100;
     this.restaurantSearch.value = searchTerm;

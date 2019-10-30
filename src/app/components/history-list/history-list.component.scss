@@ -1,30 +1,46 @@
 ion-list {
-    width: 100%;
+  width: 100%;
 }
 
 ion-scroll {
-    overflow-y: scroll;
+  overflow-y: scroll;
 }
 
 .fnt-big {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 .fnt-medium {
-    font-size: 17px;
+  font-size: 17px;
 }
 
 .icon-big {
-    font-size: 60px;
+  font-size: 60px;
 }
 
 .order {
-    margin: 0 !important;
+  margin: 0 !important;
 }
 
 .image {
-    width: 116px;
-    height: 116px;
-    border-radius: 10px !important;
-    overflow: hidden
+  width: 60px;
+  height: 60px;
+  border-radius: 10px !important;
+  overflow: hidden;
+}
+
+.custom-span {
+  display: flex;
+  align-items: center;
+}
+.custom-span::before {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  -moz-border-radius: 7.5px;
+  -webkit-border-radius: 7.5px;
+  border-radius: 7.5px;
+  background-color: #69b6d5;
+  margin-right: 5px;
 }

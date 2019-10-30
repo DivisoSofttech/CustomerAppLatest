@@ -6,6 +6,7 @@ import { Storage } from '@ionic/storage';
 import { ModalController } from '@ionic/angular';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CountdownTimer, CountdownComponent } from 'ngx-countdown';
+import { NGXLogger } from 'ngx-logger';
 declare var SMSReceive: any;
 
 @Component({
@@ -18,7 +19,7 @@ export class ForgetPasswordComponent implements OnInit {
   user;
   password;
   rePassword;
-  showOtp = true;
+  showOtp = false;
   numberValid = true;
   otpVerification;
 
@@ -42,7 +43,8 @@ export class ForgetPasswordComponent implements OnInit {
     private commandResource: CommandResourceService,
     private util: Util,
     private query: QueryResourceService,
-    private keycloakService: KeycloakService
+    private keycloakService: KeycloakService,
+    private logger: NGXLogger
     ) { }
 
   ngOnInit() {
@@ -92,6 +94,7 @@ export class ForgetPasswordComponent implements OnInit {
   }
 
   sendOtp() {
+    this.logger.info('Senfing OTP');
     if (this.numberValid === true) {
       this.query.findByMobileNumberUsingGET(this.number).subscribe(user => {
         this.keycloakService.getUser(user.searchKey);
