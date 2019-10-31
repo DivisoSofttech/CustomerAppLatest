@@ -22,7 +22,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   behaviouralSubjectSubscription: Subscription;
 
-  addresses:[] =[];
+  addresses: [] = [];
 
   loader: Promise<HTMLIonLoadingElement>;
 
@@ -89,16 +89,16 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     const modal = await this.modalController.create({
     component: AddressListComponent
     });
-  
+
     modal.onDidDismiss()
     .then(data => {
-      if(data.data !== undefined) {
+      if (data.data !== undefined) {
         this.selectedAddress = data.data;
         this.setAddress();
       }
     });
     await modal.present();
-  
+
   }
 
   setNote() {
@@ -113,24 +113,37 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   checkOut() {
     this.setNote();
+    if ( this.orderService.resource.nextTaskName === 'Process Payment' ) {
+      this.logger.info('In for updating the deliveryinfo >>>>>>>>>>> ', this.orderService.deliveryInfo);
+      this.orderService.updateDeliveryInfo().subscribe(response => {
+          this.logger.info('Update deliveryInfo result is ', response);
+          this.orderService.updateDeliveryInfo();
+        });
+      if ( this.orderService.acceptType === 'manual') {
+          this.displayModalService.presentWaitInfoPopover();
+         } else {
+          this.displayModalService.presentMakePayment();
+         }
+    } else {
+    this.logger.info('In for creating new deliveryInfo >>>>>>>>>>>>>>');
     this.util.createLoader().then(  loader => {
       this.behaviouralSubjectSubscription = this.orderService.orderResourceBehaviour.subscribe(resources => {
-      console.log('Subscription called');
-      if (this.orderService.resource.nextTaskName === 'Collect Delivery Info&Place Order') {
-        console.log('In  if success');
+        this.logger.info('Subscription called');
+        if (this.orderService.resource.nextTaskName === 'Collect Delivery Info&Place Order') {
+        this.logger.info('In  if success');
         loader.dismiss();
-        console.log('loader is dismissed');
+        this.logger.info('loader is dismissed');
         this.collectDeliveryInfoSubscription =  this.orderService.collectDeliveryInfo().subscribe((resource) => {
           this.orderService.setResource(resource);
           this.behaviouralSubjectSubscription.unsubscribe();
           this.orderService.orderResourceBehaviour.next(resource.nextTaskName);
-          console.log('Next task name is ' + resource.nextTaskId + ' Next task name '
+          this.logger.info('Next task name is ' + resource.nextTaskId + ' Next task name '
           + resource.nextTaskName + ' selfid ' + resource.selfId + ' order id is ' + resource.orderId);
         }, (err) => {
-        console.log('oops something went wrong while collecting deliveryinfo ', err);
-        this.behaviouralSubjectSubscription.unsubscribe();
-        this.util.createToast('Something went wrong try again', 'information-circle-outline');
-        this.displayModalService.navigateToBasket();
+          this.logger.error('oops something went wrong while collecting deliveryinfo ', err);
+          this.behaviouralSubjectSubscription.unsubscribe();
+          this.util.createToast('Something went wrong try again', 'information-circle-outline');
+          this.displayModalService.navigateToBasket();
       });
         if ( this.orderService.acceptType === 'manual') {
         this.displayModalService.presentWaitInfoPopover();
@@ -138,13 +151,14 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.displayModalService.presentMakePayment();
        }
       } else {
-        console.log('In else fail loader present');
+        this.logger.info('In else fail loader present');
         loader.present();
       }
     }, (err) => {
       this.displayModalService.navigateToBasket();
     });
   });
+}
   }
 
   toggleBackButtonType(value) {

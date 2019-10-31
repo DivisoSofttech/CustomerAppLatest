@@ -3,7 +3,15 @@ import { DeliveryItemDetailsComponent } from './../delivery-item-details/deliver
 import { Order } from './../../api/models/order';
 import { AllergyComponent } from './../allergy/allergy.component';
 import { CartService } from './../../services/cart.service';
-import { Component, OnInit, Input, ViewChild, Output, EventEmitter, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  ViewChild,
+  Output,
+  EventEmitter,
+  OnDestroy
+} from '@angular/core';
 import { OrderLine, Store, StoreSettings } from 'src/app/api/models';
 import { ModalController, NavController } from '@ionic/angular';
 import { Util } from 'src/app/services/util';
@@ -13,6 +21,7 @@ import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { LoginSignupComponent } from '../login-signup/login-signup.component';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { SharedDataService } from 'src/app/services/shared-data.service';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-cart',
@@ -20,7 +29,6 @@ import { SharedDataService } from 'src/app/services/shared-data.service';
   styleUrls: ['./cart.component.scss']
 })
 export class CartComponent implements OnInit, OnDestroy {
-
   @Input() viewType = 'minimal';
 
   @Input() store: Store;
@@ -56,11 +64,10 @@ export class CartComponent implements OnInit, OnDestroy {
 
   keycloakSubscription: Subscription;
 
-
   @Output() viewClick = new EventEmitter();
 
-
-  @ViewChild(DeliveryItemDetailsComponent, null) delivery: DeliveryItemDetailsComponent;
+  @ViewChild(DeliveryItemDetailsComponent, null)
+  delivery: DeliveryItemDetailsComponent;
 
   constructor(
     private cart: CartService,
@@ -69,8 +76,9 @@ export class CartComponent implements OnInit, OnDestroy {
     private modalController: ModalController,
     private navController: NavController,
     private logger: NGXLogger,
-    private util: Util
-  ) { }
+    private util: Util,
+    private decimalPipe: DecimalPipe
+  ) {}
 
   ngOnInit() {
     this.getCartDetails();
@@ -89,18 +97,23 @@ export class CartComponent implements OnInit, OnDestroy {
     if (this.initiateOrderSubcription !== undefined) {
       this.initiateOrderSubcription.unsubscribe();
     }
-    this.keycloakSubscription !== undefined ? this.keycloakSubscription.unsubscribe() : null;
+    this.keycloakSubscription !== undefined
+      ? this.keycloakSubscription.unsubscribe()
+      : null;
   }
 
   routeBasket() {
     this.logger.info('Firing event');
-    this.loginModal(() => {
+    this.loginModal(
+      () => {
         this.logger.info('Emitting View Click');
         this.viewClick.emit();
-    } , () => {});
+      },
+      () => {}
+    );
   }
 
-  async loginModal(success , error) {
+  async loginModal(success, error) {
     this.logger.info('CartComponent Login Modal');
     if (this.guest === true) {
       const modal = await this.modalController.create({
@@ -112,7 +125,9 @@ export class CartComponent implements OnInit, OnDestroy {
         if (data.data) {
           success();
           this.getCustomer();
-        } else { error(); }
+        } else {
+          error();
+        }
       });
     } else {
       success();
@@ -121,31 +136,32 @@ export class CartComponent implements OnInit, OnDestroy {
 
   getCustomer() {
     this.util.createLoader().then(loader => {
-      this.keycloakSubscription = this.keycloakService.getUserChangedSubscription()
+      this.keycloakSubscription = this.keycloakService
+        .getUserChangedSubscription()
         .subscribe(user => {
           this.customer = user;
-          if ((user === null || user.preferred_username === 'guest')) {
+          if (user === null || user.preferred_username === 'guest') {
             this.guest = true;
             if (this.viewType === 'full') {
               this.loginModal(
-                () => {
-                },
+                () => {},
                 () => {
                   this.keycloakSubscription.unsubscribe();
                   this.navController.back();
-              });
+                }
+              );
             }
           } else {
             this.guest = false;
           }
-          if(this.keycloakSubscription !== undefined)
-          this.keycloakSubscription.unsubscribe();
+          if (this.keycloakSubscription !== undefined) {
+            this.keycloakSubscription.unsubscribe();
+          }
         });
     });
   }
 
   checkDeliveryTypeExists() {
-
     this.cart.behaviourDeliveryTypes.subscribe(currentDeliveryTypes => {
       if (currentDeliveryTypes !== undefined) {
         if (currentDeliveryTypes.length === 1) {
@@ -199,59 +215,82 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   continue(deliveryType) {
+    this.logger.info('In Continue');
     this.orderService.setShop(this.store);
     this.orderService.setDeliveryType(deliveryType);
     this.orderService.setDeliveryCharge(this.storeSetting.deliveryCharge);
-    this.loginModal(() => {
-      let grandtotal = 0;
-      grandtotal =
-        grandtotal + this.storeSetting.deliveryCharge + this.cart.totalPrice;
-      const order: Order = {
-        orderLines: this.orderLines,
-        grandTotal: grandtotal,
-        email: this.customer.email,
-        storeId: this.cart.storeId,
-        customerId: this.customer.preferred_username,
-        allergy_note: this.allergyNote
-      };
-
-      this.orderService.setOrder(order);
-      console.log('Delivery type is ', deliveryType);
-      if (this.orderService.resource.nextTaskName === undefined) {
-        console.log('create new order');
-      } else {
-        console.log('update the order', this.orderService.resource);
-        this.orderService.updateOrder(order).subscribe(orderDTO => {
-          console.log('Order DTO Updated is ', orderDTO);
-        });
-      }
-
-      this.initiateOrderSubcription = this.orderService.initiateOrder().subscribe(
-        resource => {
-          this.orderService.setResource(resource);
-          this.orderService.orderResourceBehaviour.next(resource.nextTaskName);
-          // order.id = resource.selfId;
-          this.orderService.order.orderId = resource.orderId;
-          console.log(
-            'Next task name is ' +
-            resource.nextTaskId +
-            ' Next task name ' +
-            resource.nextTaskName +
-            ' selfid ' +
-            resource.selfId +
-            ' order id is ' +
-            resource.orderId
-          );
-        },
-        error => {
-          this.orderService.orderResourceBehaviour.thrownError();
-          this.logger.info(
-            'An error has occured while initiating the order ',
-            error
-          );
+    this.loginModal(
+      () => {
+        if (this.orderService.resource.nextTaskName === undefined) {
+          this.logger.info('creating new order >>>>>>>>>>>>>');
+          let grandtotal = 0;
+          grandtotal =
+            grandtotal +
+            this.storeSetting.deliveryCharge +
+            this.cart.totalPrice;
+          const order: Order = {
+            orderLines: this.orderLines,
+            // tslint:disable-next-line: radix
+            grandTotal: parseFloat(
+              this.decimalPipe.transform(grandtotal, '1.1-2')
+            ),
+            email: this.customer.email,
+            storeId: this.cart.storeId,
+            customerId: this.customer.preferred_username,
+            allergyNote: this.allergyNote
+          };
+          console.log('The grandtotal is exactly after piping', this.decimalPipe.transform(grandtotal, '1.1-2'));
+          this.orderService.setOrder(order);
+          this.logger.info('Delivery type is ', deliveryType);
+          this.initiateOrderSubcription = this.orderService
+            .initiateOrder()
+            .subscribe(
+              resource => {
+                this.orderService.setResource(resource);
+                this.orderService.orderResourceBehaviour.next(
+                  resource.nextTaskName
+                );
+                this.logger.info('Resultant resource is ', resource);
+                this.logger.info('Order is ', this.orderService.order);
+              },
+              error => {
+                this.orderService.orderResourceBehaviour.thrownError();
+                this.logger.error(
+                  'An error has occured while initiating the order ',
+                  error
+                );
+                this.util.createToast(
+                  'Something went wrong try again',
+                  'information-circle-outline'
+                );
+              }
+            );
+        } else {
+          this.orderService.order.orderLines = this.cart.orderLines;
+          this.orderService.order.allergyNote = this.allergyNote;
+          if (this.orderService.deliveryInfo !== undefined) {
+            this.logger.info('Deliveryinfo exists ');
+            this.orderService.order.deliveryInfo = this.orderService.deliveryInfo;
+          }
+          let grandtotal = 0;
+          grandtotal =
+            grandtotal +
+            this.storeSetting.deliveryCharge +
+            this.cart.totalPrice;
+          grandtotal = parseFloat(
+            this.decimalPipe.transform(grandtotal, '1.1-2')
+          ),
+          this.orderService.order.grandTotal = grandtotal;
+          this.logger.info('Update Order id is', this.orderService.order);
+          this.orderService
+            .updateOrder(this.orderService.order)
+            .subscribe(orderDTO => {
+              this.logger.info('Order DTO Updated is ', orderDTO);
+            });
         }
-      );
-    }, () => {});
+      },
+      err => this.logger.error('An Error occured during sign in ', err)
+    );
     this.navController.navigateForward('/checkout');
   }
 

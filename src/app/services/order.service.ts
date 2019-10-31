@@ -155,7 +155,17 @@ export class OrderService implements OnInit {
   updateOrder(order: Order) {
     return this.orderCommandService.editOrderUsingPUT(order);
   }
+
+  updateDeliveryInfo() {
+    return this.orderCommandService.editDeliveryInfoUsingPUT(this.deliveryInfo);
+  }
   setResource(resource: CommandResource) {
+    if (resource.nextTaskName === 'Collect Delivery Info&Place Order') {
+      this.order.id = resource.selfId;
+      this.order.orderId = resource.orderId;
+    } else if (resource.nextTaskName === 'Process Payment') {
+      this.deliveryInfo.id = resource.selfId;
+    }
     this.resource = resource;
   }
 

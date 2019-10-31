@@ -6,6 +6,7 @@ import { QueryResourceService } from '../api/services';
 import { Util } from './util';
 import { NGXLogger } from 'ngx-logger';
 import { SharedDataService } from './shared-data.service';
+import { OrderService } from './order.service';
 
 @Injectable({
   providedIn: 'root'
@@ -33,20 +34,20 @@ export class CartService {
     private util: Util,
     private logger: NGXLogger,
     private sharedData: SharedDataService
-  ) {
+    ) {
     this.observableTickets = new BehaviorSubject<OrderLine[]>(this.orderLines);
     this.observablePrice = new BehaviorSubject<number>(this.totalPrice);
     this.logger.info('Cart Service Created');
     this.behaviourStore.subscribe(data => {
       this.getStoreSettings();
-      this.stateSaveChangeListener(); 
+      this.stateSaveChangeListener();
     });
   }
 
   stateSaveChangeListener() {
     this.observableTickets.subscribe(data => {
       if (data !== undefined && data !== null) {
-        if (data.length !== 0)          
+        if (data.length !== 0) {
         this.sharedData.saveToStorage('cart', {
           storeId: this.storeId,
           orderLines: this.orderLines,
@@ -55,6 +56,7 @@ export class CartService {
           auxilaryItems: this.auxilaryItems,
           currentDeliveryTypes: this.currentDeliveryTypes
         });
+        }
       }
     });
 
@@ -73,7 +75,7 @@ export class CartService {
           }
 
         }
-      })
+      });
   }
 
   async presentAlert() {
@@ -164,7 +166,7 @@ export class CartService {
               .then(data => {
                 data.currentDeliveryTypes  = success.content;
                 this.sharedData.saveToStorage('cart' , data);
-              })
+              });
             },
             err => {
               loader.dismiss();
@@ -199,6 +201,7 @@ export class CartService {
 
   removeTicket(index) {
     this.orderLines.splice(index, 1);
+    // this.orderService.order.orderLines.splice(index, 1);
     this.updateCart();
   }
 

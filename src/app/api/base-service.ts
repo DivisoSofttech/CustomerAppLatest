@@ -42,18 +42,14 @@ export class BaseService {
    * Returns the root url for API operations. If not set directly in this
    * service, will fallback to ApiConfiguration.rootUrl.
    */
-  get rootUrl(): string {
-    console.log('Get url is ', this._rootUrl);
-    
+  get rootUrl(): string {    
     return this._rootUrl;
   }
 
   /**
    * Sets the root URL for API operations in this service.
    */
-  set rootUrl(rootUrl: string) {
-    console.log('Set url ', rootUrl);
-    
+  set rootUrl(rootUrl: string) {    
     this._rootUrl = rootUrl;
   }
 

@@ -5,7 +5,7 @@ import { DeliveryInfo } from './delivery-info';
 import { OrderLine } from './order-line';
 import { Status } from './status';
 export interface Order {
-  allergy_note?: string;
+  allergyNote?: string;
   appliedOffers?: Array<Offer>;
   approvalDetails?: ApprovalDetails;
   customerId?: string;
@@ -17,7 +17,7 @@ export interface Order {
   orderId?: string;
   orderLines?: Array<OrderLine>;
   paymentRef?: string;
-  pre_order_date?: string;
+  preOrderDate?: string;
   status?: Status;
   storeId?: string;
 }
