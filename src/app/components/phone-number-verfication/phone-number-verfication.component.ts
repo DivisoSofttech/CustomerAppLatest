@@ -43,7 +43,7 @@ export class PhoneNumberVerficationComponent implements OnInit {
       loader.dismiss();
       this.util.createToast('OTP has been sent to your mobile');
       if (this.platform.is('android' || 'ios')) {
-      this.startSMSListener();
+          this.startSMSListener();
       }
     }, () => loader.dismiss());
   });

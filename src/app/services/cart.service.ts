@@ -255,7 +255,7 @@ export class CartService {
     }
     this.calculatePrice();
     this.orderLines.forEach(o => {
-      o.total = parseFloat(this.decimalPipe.transform(o.total ,'1.2-2'));
+      o.total = parseFloat(this.decimalPipe.transform(o.total , '1.2-2'));
     });
     this.observableTickets.next(this.orderLines);
     this.observablePrice.next(this.totalPrice);

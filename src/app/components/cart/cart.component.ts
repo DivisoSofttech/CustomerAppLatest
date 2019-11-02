@@ -230,7 +230,6 @@ export class CartComponent implements OnInit, OnDestroy {
           let grandtotal = 0;
           grandtotal =
             grandtotal +
-            this.storeSetting.deliveryCharge +
             this.cart.totalPrice;
           const order: Order = {
             orderLines: this.orderLines,

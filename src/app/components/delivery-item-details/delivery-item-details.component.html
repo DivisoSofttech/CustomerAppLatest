@@ -43,7 +43,7 @@
                   </ion-text>
                 </ion-col>
                 <ion-col text-center (click)="increaseProductCount(products[orderLine.productId], orderLine)">
-                    <ion-icon name="add"></ion-icon>
+                    <ion-icon name="add" ></ion-icon>
                 </ion-col>
               </ion-row>
             </ion-grid>
@@ -109,6 +109,15 @@
             </h3>
       </ion-label>
     </ion-item>
+    <ion-item *ngIf="offer" lines="full">
+      <ion-icon name="checkmark-circle" slot="start" no-margin color="success"></ion-icon>
+      <ion-text word-wrap text-left no-margin color="success">
+        <p>
+          10% discount applied
+       </p>
+     </ion-text>
+     <ion-text text-end slot="end">- &euro;{{offer.orderDiscountAmount | number: "1.1-2"}}</ion-text> 
+    </ion-item>
     <ion-item
      lines="full"
      *ngIf="storeSetting !== undefined && orders.length > 0 && currentDeliveryMode !== 'collection'">
@@ -117,15 +126,6 @@
       <ion-label text-end *ngIf="storeSetting.deliveryCharge === 0">Free</ion-label>
       <ion-label text-end *ngIf="storeSetting.deliveryCharge !== 0">+ &euro;{{ storeSetting.deliveryCharge | number: "1.1-2" }}</ion-label>
     </ion-item>
-    <ion-item *ngIf="offer" lines="full">
-      <ion-icon name="ribbon" slot="start" no-margin color="success"></ion-icon>
-      <ion-text word-wrap text-left no-margin color="success">
-        <p>
-          10% discount on {{offer.promoCode | lowercase}}
-       </p>
-     </ion-text>
-     <ion-text text-end slot="end">- &euro;{{offer.orderDiscountAmount}}</ion-text> 
-    </ion-item>
     <ion-item *ngIf="storeSetting !== undefined" lines="full">
        <ion-label text-start>
         <h3> <strong>Total</strong></h3>
@@ -133,12 +133,12 @@
       <ion-label text-end>
         <h3 *ngIf="currentDeliveryMode === 'delivery'">
           <strong>
-            &euro;{{ totalPrice  | number: "1.1-2" }}
+            &euro;{{ total  | number: "1.1-2" }}
          </strong>
         </h3>
         <h3 *ngIf="currentDeliveryMode === 'collection'">
          <strong>
-           &euro;{{ totalPrice | number: "1.1-2" }}
+           &euro;{{ total | number: "1.1-2" }}
          </strong>
         </h3>
       </ion-label>
