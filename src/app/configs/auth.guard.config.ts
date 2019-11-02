@@ -7,7 +7,7 @@ export const authConfig: AuthConfig = {
   redirectUri: window.location.origin,
   clientId: 'account',
   scope: 'openid profile email voucher offline_access',
-  dummyClientSecret: '61aed705-1f70-4955-ad23-94bc15c09c29',
+  dummyClientSecret: 'd4f03412-cdad-45b0-9ccc-beddd8399ac5',
   tokenEndpoint: 'https://dev.servers.divisosofttech.com/auth/realms/graeshoppe/protocol/openid-connect/token',
   userinfoEndpoint: 'https://dev.servers.divisosofttech.com/auth/realms/graeshoppe/protocol/openid-connect/userinfo',
   oidc: false,

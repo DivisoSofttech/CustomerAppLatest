@@ -1,10 +1,11 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import * as googleLibphonenumber from 'google-libphonenumber';
 import * as countryList from 'country-list';
-import { ModalController, LoadingController, Platform } from '@ionic/angular';
+import { ModalController, LoadingController, Platform, PopoverController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { Sim } from '@ionic-native/sim/ngx';
 import { NGXLogger } from 'ngx-logger';
+import { LocationService } from 'src/app/services/location-service';
 
 @Component({
   selector: 'app-intl-number-input',
@@ -17,11 +18,11 @@ export class IntlNumberInputComponent implements OnInit {
 
   countryList = [];
 
-  supportedCountries  = ['IN', 'IE'];
+  supportedCountries = ['IN', 'IE'];
 
-  selectedCountry = {numberCode: '0' , name: '' , code: ''};
+  selectedCountry = { numberCode: '0', name: '', code: '' };
 
-  putil =  googleLibphonenumber.PhoneNumberUtil.getInstance();
+  putil = googleLibphonenumber.PhoneNumberUtil.getInstance();
 
   phoneNumber = '';
 
@@ -38,27 +39,34 @@ export class IntlNumberInputComponent implements OnInit {
 
   constructor(
     private modalController: ModalController,
+    private popoverController: PopoverController,
     private storage: Storage,
     private loadingController: LoadingController,
     private logger: NGXLogger,
-    private platform: Platform
+    private platform: Platform,
+    private locationService: LocationService
   ) {
     if (!this.platform.is('pwa')) {
-    this.sim = new Sim();
+      this.sim = new Sim();
     }
-   }
+  }
 
   ngOnInit() {
-   if (this.viewType === 'list') {
-     this.createLoader()
-     .then(loader => {
-       loader.present();
-       this.getCountryList(() => {
-         loader.dismiss();
-         this.getSimInfo();
-       });
-     });
-   }
+    if (this.viewType === 'list') {
+      this.createLoader()
+        .then(loader => {
+          loader.present();
+          this.getCountryList(() => {
+            loader.dismiss();
+            this.getSimInfo();
+            this.getCurrentCountryCode();
+          });
+        });
+    } else {
+      this.getCountryList(() => {
+        this.getCurrentCountryCode();
+      });
+    }
   }
 
   async createLoader() {
@@ -87,54 +95,71 @@ export class IntlNumberInputComponent implements OnInit {
     );
   }
 
+  getCurrentCountryCode() {
+    this.logger.info('Getting Current Country Code');
+    this.locationService.getCurrentLoactionAddress((results, data) => {
+
+      let address_components = results[0].address_components;
+      let address = address_components.filter(r => {
+        if (r.types[0] == 'country') {
+          return r;
+        }
+      }).map(r => {
+        return r.short_name;
+      })
+      this.selectedCountry = this.countryList.filter(cl => cl.code === address[0])[0];
+    })
+  }
+
   getCountryList(success) {
     const tmpArray = [];
     this.storage.get('countries')
-    .then(data => {
-      if (data === null || data.length === 0) {
-        this.putil.getSupportedRegions()
-        .forEach(cc => {
-          if(this.supportedCountries.includes(cc,0)) {
-            const cd = this.putil.getCountryCodeForRegion(cc);
-            const cn = countryList.getName(cc);
-            if (cn !== undefined) {
-              tmpArray.push({numberCode: cd , name: cn , code: cc});
-            }
-          }
-        });
-        this.tmpCountryList = tmpArray;  
-        this.countryList = tmpArray;
-        this.storage.set('countries' , this.countryList);
-        success();
-      } else {
-        this.countryList = data;
-        success();
-      }
-    });
+      .then(data => {
+        if (data === null || data.length === 0) {
+          this.putil.getSupportedRegions()
+            .forEach(cc => {
+              if (this.supportedCountries.includes(cc, 0)) {
+                const cd = this.putil.getCountryCodeForRegion(cc);
+                const cn = countryList.getName(cc);
+                if (cn !== undefined) {
+                  tmpArray.push({ numberCode: cd, name: cn, code: cc });
+                }
+              }
+            });
+          this.tmpCountryList = tmpArray;
+          this.countryList = tmpArray;
+          this.storage.set('countries', this.countryList);
+          success();
+        } else {
+          this.countryList = data;
+          success();
+        }
+      });
   }
 
-  async countrySelectModal() {
-    const modal = await this.modalController.create({
+  async countrySelectPopover() {
+    const popover = await this.popoverController.create({
       component: IntlNumberInputComponent,
-      componentProps: {viewType: 'list'}
+      componentProps: { viewType: 'list' }
     });
-    modal.onDidDismiss()
-    .then(data => {
-      if (data.data !== undefined) {
-        this.selectedCountry = data.data ;
-        console.log('Selected' , data);
-      }
-      this.checkIfValid();
-    });
-    modal.present();
+
+    popover.onDidDismiss()
+      .then(data => {
+        if (data.data !== undefined) {
+          this.selectedCountry = data.data;
+          console.log('Selected', data);
+        }
+        this.checkIfValid();
+      });
+      popover.present();
   }
 
   dismissData() {
-    this.modalController.dismiss(this.selectedCountry);
+    this.popoverController.dismiss(this.selectedCountry);
   }
 
   dismiss() {
-    this.modalController.dismiss();
+    this.popoverController.dismiss();
   }
 
   selectCountry(country) {
@@ -143,9 +168,10 @@ export class IntlNumberInputComponent implements OnInit {
   }
 
   checkIfValid() {
+    console.log('checking number', this.selectedCountry.code);
     try {
       if (this.selectedCountry.code !== '') {
-        const pnumb = this.putil.parseAndKeepRawInput(this.phoneNumber, this.selectedCountry.code);
+        const pnumb = this.putil.parseAndKeepRawInput(this.phoneNumber.toString(), this.selectedCountry.code);
         if (this.putil.isValidNumber(pnumb)) {
           console.log('Valid Number');
           this.numberValid = true;
@@ -159,23 +185,23 @@ export class IntlNumberInputComponent implements OnInit {
         this.codeValid = false;
       }
 
+      console.log('Here');
       this.validEvent.emit({
         valid: this.numberValid && this.codeValid,
-        value: this.selectedCountry.numberCode + this.phoneNumber,
+        value: this.selectedCountry.numberCode + this.phoneNumber.toString(),
         extra: this.selectedCountry
       });
     } catch (e) {
-      console.log('Not a Phone Number');
       this.numberValid = false;
     }
   }
 
   searchCountry() {
-    this.logger.info('Searching...' , this.searchTerm);
-    if(this.searchTerm === '') {
+    this.logger.info('Searching...', this.searchTerm);
+    if (this.searchTerm === '') {
       this.countryList = this.tmpCountryList;
     } else {
-      this.countryList = this.tmpCountryList.filter(c => c.name.includes(this.searchTerm ));  
+      this.countryList = this.tmpCountryList.filter(c => c.name.includes(this.searchTerm));
     }
   }
 

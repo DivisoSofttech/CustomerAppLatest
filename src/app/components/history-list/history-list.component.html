@@ -1,16 +1,15 @@
-
 <ion-header *ngIf="viewType==='modal'">
   <ion-toolbar>
-      <ion-buttons>
-          <ion-title>
-            Order History
-          </ion-title>
-        </ion-buttons>
-        <ion-buttons slot="end">
-          <ion-button (click)="dismiss()">
-            <ion-icon name="close"></ion-icon>
-          </ion-button>
-        </ion-buttons>      
+    <ion-buttons>
+      <ion-title>
+        Order History
+      </ion-title>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -24,59 +23,40 @@
 
   <ion-list *ngIf="orders.length > 0 && stores !== undefined && showHistoryLoading === false">
     <ion-item [lines]="lineFlag" class="order" *ngFor="let order of orders" margin (click)="showOrderDetails(order)">
-      <ion-thumbnail class="image" slot="start" *ngIf="stores[order.storeId] != null">
-        <ion-img
-          [src]="
+      <ion-thumbnail class="image" slot="start" *ngIf="stores[order.storeId] !== null && stores[order.storeId].imageContentType !== undefined">
+        <ion-img [src]="
             'data:' +
             stores[order.storeId].imageContentType +
             ';base64,' +
             stores[order.storeId].image
-          "
-        ></ion-img>
+          "></ion-img>
       </ion-thumbnail>
-      <ion-icon slot="start" name="image" class="icon-big" *ngIf="stores[order.storeId] == null"></ion-icon>
-      <ion-label>
-          <h2 *ngIf="stores[order.storeId] !== null">
-              {{ stores[order.storeId].name }}
-          </h2>
-          <p>{{ order.date | date: "short" }}</p>
-          <p>Grand Total &#8364;{{ order.grandTotal | number: "1.1-2" }}</p>
-          <ion-badge color="secondary" *ngIf="order.status.name ==='created'">
-            <p>Ordered</p>
-        </ion-badge>
-          <ion-badge color="success" *ngIf="order.status.name ==='approved'">
-              <p>{{ order.status.name | titlecase }}</p>
-          </ion-badge>
-          <ion-badge color="warning" *ngIf="order.status.name ==='payment-processed'">
-            <p>Payment Processed</p>
-        </ion-badge>
-          <ion-badge color="danger" *ngIf="order.status.name ==='unapproved'">
-              <p>{{ order.status.name | titlecase }}</p>
-          </ion-badge>
-          <ion-badge color="medium" *ngIf="order.status.name ==='delivered'">
-            <p>{{ order.status.name | titlecase }}</p>
-        </ion-badge>
-      
-        <h3><b>Order id :</b> {{ order.orderId }}</h3>
-      </ion-label><br>
+      <ion-icon slot="start" name="image" class="icon-big" *ngIf="stores[order.storeId] === null || stores[order.storeId].imageContentType === undefined"></ion-icon>
+      <ion-label *ngIf="order.status">
+        <h2 *ngIf="stores[order.storeId] !== null">
+          {{ stores[order.storeId].name }}
+        </h2>
+        <p>
+          <span class="custom-span" *ngIf="order.status.name ==='created'">Order Placed</span>
+          <span class="custom-span" *ngIf="order.status.name ==='approved'">Order Placed</span>
+          <span class="custom-span" *ngIf="order.status.name ==='unapproved'">Order Placed</span>
+          <span class="custom-span" *ngIf="order.status.name ==='payment-processed'">Order Placed</span>
+          <span class="custom-span" *ngIf="order.status.name ==='delivered'">Delivered</span>
+        </p>
+        <p>{{ order.date | date: "medium" }}</p>
+        <p>&#8364;{{ order.grandTotal | number: "1.1-2" }}</p>
+      </ion-label>
+      <ion-badge slot="end">{{ order.orderId }}</ion-badge>
     </ion-item>
   </ion-list>
 
-  <ion-infinite-scroll
-    threshold="500px"
-    (ionInfinite)="loadMoreData($event)"
-    loadingSpinner="bubbles"
-    loadingText="Loading Users..."
-  >
+  <ion-infinite-scroll threshold="500px" (ionInfinite)="loadMoreData($event)" loadingSpinner="bubbles"
+    loadingText="Loading Users...">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 
   <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
-    <ion-refresher-content
-      pullingIcon="arrow-dropdown"
-      pullingText="Pull to refresh"
-      refreshingSpinner="circles"
-    >
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles">
     </ion-refresher-content>
   </ion-refresher>
 </ion-content>

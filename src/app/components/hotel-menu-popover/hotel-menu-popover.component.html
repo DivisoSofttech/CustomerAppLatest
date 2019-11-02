@@ -1,6 +1,22 @@
-<ion-list>
-  <ion-item (click)="dismiss()" [ngClass]="{'selected': selectedCategory=== 'All'}">All</ion-item>
-  <ion-item (click)="selectCategory(category)" *ngFor="let category of categories">
-    <ion-label [ngClass]="{'selected': category.key === selectedCategory}">{{category.key + '(' + category.count + ')'}}</ion-label>
-  </ion-item>
-</ion-list>
+<ion-header class="position-sticky-top">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-title>
+        Select Category
+      </ion-title>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-list>
+        <ion-item (click)="dismiss()" [ngClass]="{'selected': selectedCategory=== 'All'}">All</ion-item>
+        <ion-item (click)="selectCategory(category)" *ngFor="let category of categories">
+          <ion-label [ngClass]="{'selected': category.key === selectedCategory}">{{category.key + '(' + category.count + ')'}}</ion-label>
+        </ion-item>
+      </ion-list>    
+</ion-content>

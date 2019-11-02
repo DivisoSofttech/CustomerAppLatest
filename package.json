@@ -51,6 +51,7 @@
     "com.paypal.cordova.mobilesdk": "^3.5.0",
     "com.razorpay.cordova": "^1.4.8",
     "cordova": "^7.1.0",
+    "cordova-android": "^8.0.0",
     "cordova-android-support-gradle-release": "^3.0.1",
     "cordova-browser": "^5.0.4",
     "cordova-ios": "4.5.5",
@@ -81,6 +82,8 @@
     "hammerjs": "^2.0.8",
     "http-server": "^0.9.0",
     "imagesloaded": "^4.1.4",
+    "ionic-stepper": "^1.1.0",
+    "jquery": "^3.4.1",
     "keycloak-admin": "^1.12.0",
     "masonry-layout": "^4.2.2",
     "moment": "^2.24.0",
@@ -146,7 +149,10 @@
       "cordova-plugin-sms-receive": {},
       "cordova-plugin-local-notification": {},
       "cordova-plugin-background-mode": {},
-      "cordova-plugin-googlemaps": {},
+      "cordova-plugin-googlemaps": {
+        "API_KEY_FOR_ANDROID": "AIzaSyDgCo5uoS1ziWYwxC_urPwZBIP-pO2geRY",
+        "API_KEY_FOR_IOS": "AIzaSyDgCo5uoS1ziWYwxC_urPwZBIP-pO2geRY"
+      },
       "cordova-plugin-android-permissions": {},
       "cordova-plugin-foreground-service": {},
       "cordova-android-support-gradle-release": {
@@ -155,7 +161,8 @@
     },
     "platforms": [
       "browser",
-      "ios"
+      "ios",
+      "android"
     ]
   }
 }

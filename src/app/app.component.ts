@@ -146,7 +146,7 @@ export class AppComponent {
     this.keycloakService.getUserChangedSubscription()
       .subscribe(user => {
         this.keyCloakUser = user;
-        this.logger.info('Checking If guest : App Component');
+        this.logger.info('Checking If guest : App Component', user );
         if (user) {
           if (user.preferred_username === 'guest') {
             this.logger.info('Show Login');

@@ -21,6 +21,8 @@ export class AddressListComponent implements OnInit {
 
   addresses: any = [];
 
+  showLoading = true;
+
   constructor(
     private modalController: ModalController,
     private logger: NGXLogger,
@@ -43,11 +45,13 @@ export class AddressListComponent implements OnInit {
   }
 
   getAllAdress(i) {
+    
     this.orderCommandResource.getAllSavedAddressUsingGET({
       customerId: this.customer.preferred_username,
       page: i
     })
     .subscribe(paddress => {
+      this.showLoading = false;
       paddress.content.forEach(a => {
         this.addresses.push(a);
       });
@@ -87,9 +91,16 @@ export class AddressListComponent implements OnInit {
     .then(loader => {
       loader.present();
       this.orderCommandResource.deleteAddressUsingDELETE(id)
-      .subscribe(data => {
-        this.util.createToast('Address Deleted');
+      .subscribe((data:any) => {
+        this.util.createToast('Address Deleted' , data);
         this.addresses = this.addresses.filter(ad => ad.id !== id);
+        this.modalController.getTop()
+        .then(element => {
+          this.dismissData({
+            deleted:true,
+            deletedId: id
+          });
+        });  
         loader.dismiss();
       },
       err => {

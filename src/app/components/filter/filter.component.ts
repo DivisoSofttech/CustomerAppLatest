@@ -19,9 +19,11 @@ export class FilterComponent implements OnInit , OnDestroy {
 
   deliveryType = 'Both';
 
-  currentFilterType = FILTER_TYPES.NO_FILTER;
+  currentFilterType: FILTER_TYPES = FILTER_TYPES.NO_FILTER;
 
   filterServiceSubscription;
+
+  type='sort';
 
   constructor(
     private filter: FilterService,
@@ -39,9 +41,18 @@ export class FilterComponent implements OnInit , OnDestroy {
     this.closeFilter.emit('close');
   }
 
-  setFilterType(type) {
-      this.filter.setFilter(type);
-      this.closeEvent();
+  clearFiter(filter) {
+    this.filter.setFilter(FILTER_TYPES.NO_FILTER);
+    this.closeEvent();
+  }
+
+  setFilterCategoryType(type) {
+    this.type = type;
+  }
+
+  setFilterType() {
+    this.filter.setFilter(this.currentFilterType);
+    this.closeEvent();
   }
 
   // Api Does not Work

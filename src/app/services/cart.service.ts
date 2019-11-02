@@ -7,6 +7,7 @@ import { Util } from './util';
 import { NGXLogger } from 'ngx-logger';
 import { SharedDataService } from './shared-data.service';
 import { OrderService } from './order.service';
+import { DecimalPipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -33,33 +34,38 @@ export class CartService {
     private queryResource: QueryResourceService,
     private util: Util,
     private logger: NGXLogger,
-    private sharedData: SharedDataService
-    ) {
+    private sharedData: SharedDataService,
+    private decimalPipe: DecimalPipe
+  ) {
     this.observableTickets = new BehaviorSubject<OrderLine[]>(this.orderLines);
     this.observablePrice = new BehaviorSubject<number>(this.totalPrice);
     this.logger.info('Cart Service Created');
+    if (this.currentShopId === 0) {
+      this.getCartDetailsFromSharedMemory();
+    }
     this.behaviourStore.subscribe(data => {
-      this.getStoreSettings();
-      this.stateSaveChangeListener();
     });
   }
 
-  stateSaveChangeListener() {
+  saveCartDetailsToSharedMemory() {
     this.observableTickets.subscribe(data => {
       if (data !== undefined && data !== null) {
         if (data.length !== 0) {
-        this.sharedData.saveToStorage('cart', {
-          storeId: this.storeId,
-          orderLines: this.orderLines,
-          currentShop: this.currentShop,
-          currentShopSetting: this.currentShopSetting,
-          auxilaryItems: this.auxilaryItems,
-          currentDeliveryTypes: this.currentDeliveryTypes
-        });
+          this.sharedData.saveToStorage('cart', {
+            storeId: this.storeId,
+            orderLines: this.orderLines,
+            currentShop: this.currentShop,
+            currentShopId: this.currentShopId,
+            currentShopSetting: this.currentShopSetting,
+            auxilaryItems: this.auxilaryItems,
+            currentDeliveryTypes: this.currentDeliveryTypes
+          });
         }
       }
     });
+  }
 
+  getCartDetailsFromSharedMemory() {
     this.sharedData.getData('cart')
       .then(data => {
         if (data !== undefined && data !== null) {
@@ -67,21 +73,23 @@ export class CartService {
             this.storeId = data.storeId,
               this.orderLines = data.orderLines;
             this.currentShop = data.currentShop;
+            this.currentShopId = data.currentShopId;
             this.currentShopSetting = data.currentShopSetting;
             this.currentDeliveryTypes = data.currentDeliveryTypes;
             this.auxilaryItems = data.auxilaryItems;
             this.behaviourDeliveryTypes.next(data.currentDeliveryTypes);
             this.updateCart();
           }
-
         }
       });
   }
 
-  async presentAlert() {
+
+
+  async presentRestaurantCheckout(details) {
     const alert = await this.alertController.create({
-      header: 'Checkout First',
-      message: 'Checkout From ' + this.currentShop.name,
+      header: 'Clear Cart',
+      message: 'Are You sure',
       buttons: [
         {
           text: 'Cancel',
@@ -91,10 +99,15 @@ export class CartService {
           }
         },
         {
-          text: 'Go To Cart',
+          text: 'Ok',
           cssClass: 'secondary',
           handler: (blah) => {
-            this.navController.navigateForward('/basket');
+            this.emptyCart();
+            if (details.product && details.stockCurrent && details.shop) {
+              this.addProduct(details.product, details.stockCurrent, details.shop);
+            } else if (details.actionSuccess) {
+              details.actionSuccess();
+            }
           }
         }
       ]
@@ -110,6 +123,7 @@ export class CartService {
       this.storeId = this.currentShop.regNo;
       this.getStoreSettings();
       this.getStoreDeliveryType();
+      this.saveCartDetailsToSharedMemory();
     }
 
     if (this.currentShopId === shop.id) {
@@ -133,11 +147,14 @@ export class CartService {
         this.orderLines.push(orderLine);
         this.updateCart();
       }
+      this.saveCartDetailsToSharedMemory();
 
       return true;
 
     } else {
-      this.presentAlert();
+      this.presentRestaurantCheckout({
+        product: product, stockCurrent: stockCurrent, shop: shop
+      });
       return false;
     }
   }
@@ -163,10 +180,12 @@ export class CartService {
               this.currentDeliveryTypes = success.content;
               this.behaviourDeliveryTypes.next(this.currentDeliveryTypes);
               this.sharedData.getData('cart')
-              .then(data => {
-                data.currentDeliveryTypes  = success.content;
-                this.sharedData.saveToStorage('cart' , data);
-              });
+                .then(data => {
+                  if(data !== null) {
+                  data.currentDeliveryTypes = success.content;
+                  }
+                  this.saveCartDetailsToSharedMemory();
+                });
             },
             err => {
               loader.dismiss();
@@ -235,6 +254,9 @@ export class CartService {
       this.currentShopId = 0;
     }
     this.calculatePrice();
+    this.orderLines.forEach(o => {
+      o.total = parseFloat(this.decimalPipe.transform(o.total ,'1.2-2'));
+    });
     this.observableTickets.next(this.orderLines);
     this.observablePrice.next(this.totalPrice);
   }

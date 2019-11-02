@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, Platform } from '@ionic/angular';
 import { Util } from 'src/app/services/util';
 import { QueryResourceService, CommandResourceService } from 'src/app/api/services';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
@@ -28,7 +28,8 @@ export class PhoneNumberVerficationComponent implements OnInit {
     private queryResource: QueryResourceService,
     private commandResource: CommandResourceService,
     private keycloakService: KeycloakService,
-    private logger: NGXLogger
+    private logger: NGXLogger,
+    private platform: Platform
   ) { }
 
   ngOnInit() {
@@ -36,9 +37,16 @@ export class PhoneNumberVerficationComponent implements OnInit {
   }
 
   initSMSSender() {
-    this.commandResource.sendSMSUsingPOST(this.number).subscribe(data => {
+    this.util.createCustomLoader('circles', 'Sending OTP').then(loader => {
+      loader.present();
+      this.commandResource.sendSMSUsingPOST(this.number).subscribe(data => {
+      loader.dismiss();
+      this.util.createToast('OTP has been sent to your mobile');
+      if (this.platform.is('android' || 'ios')) {
       this.startSMSListener();
-    });
+      }
+    }, () => loader.dismiss());
+  });
   }
 
   startSMSListener() {
@@ -65,17 +73,22 @@ export class PhoneNumberVerficationComponent implements OnInit {
   }
 
   manualProcess() {
-    this.commandResource.verifyOTPUsingPOST({
-      numbers: this.number,
-      code: this.OTP
-    }).subscribe(d => {
-      if (d.status === 'success') {
-        this.dismissData(true);
-      } else {
-        this.util.createToast('Invalid OTP');
-      }
-    } , err => {
-      this.util.createToast('Error Validating OTP ');
+    this.util.createCustomLoader('circles', 'Verfying OTP').then(loader => {
+      loader.present();
+      this.commandResource.verifyOTPUsingPOST({
+        numbers: this.number,
+        code: this.OTP
+      }).subscribe(d => {
+        loader.dismiss();
+        if (d.status === 'success') {
+          this.dismissData(true);
+        } else {
+          this.util.createToast('Invalid OTP');
+        }
+      } , err => {
+        loader.dismiss();
+        this.util.createToast('Error Validating OTP ');
+      });
     });
   }
 
@@ -83,21 +96,26 @@ export class PhoneNumberVerficationComponent implements OnInit {
     const message = data.body;
     const sender = data.address;
     console.log('The sender of sms is ', data.address);
-    if (sender === 'VK-040060' || 'VM-040060' || 'AD-040060' || 'Foodexp' ) {
-      this.OTP = data.body.slice((message.length - 7), message.length - 1);
+    if (sender === 'VK-040060' || 'VM-040060' || 'AD-040060' || 'Foodexp' || 'BP-080001' ) {
+      this.OTP = data.body.slice((message.length - 5), message.length);
       console.log('OTP is readed is ', this.OTP);
+      this.util.createCustomLoader('circles', 'Verfying OTP').then(loader => {
+      loader.present();
       this.commandResource.verifyOTPUsingPOST({
         numbers: this.number,
         code: this.OTP
       }).subscribe(d => {
+        loader.dismiss();
         if (d.status === 'success') {
           this.dismissData(true);
         } else {
           this.util.createToast('Invalid OTP');
         }
       } , err => {
+        loader.dismiss();
         this.util.createToast('Error Validating OTP ');
       });
+    });
 
       this.OTPmessage = 'OTP received. Proceed to register';
       this.stopSMSListener();

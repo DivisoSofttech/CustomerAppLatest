@@ -119,10 +119,16 @@ export class HistoryListComponent implements OnInit {
       modal.onDidDismiss()
       .then(data => {
         if(data.data) {
-          console.error(data);
           // Fix to dismiss This modal
-          this.dismiss();
-          this.navController.navigateForward('/basket');
+          this.modalController.getTop()
+          .then(mod => {
+            mod.dismiss();
+            this.modalController.getTop()
+            .then((mod2)=> {
+              mod2.dismiss();
+              this.navController.navigateForward('/basket');
+            });
+          })
         }
       });
       

@@ -4,6 +4,9 @@
     <ion-title class="heading-one">{{ name  | uppercase }}</ion-title>
   </ion-buttons>
   <ion-buttons slot="end">
+    <ion-button color="primary" class="desktop-only" (click)="emitFilterClick()">
+        <ion-icon name="pizza" slot="icon-only"></ion-icon>
+    </ion-button>
     <ion-button (click)="toggleSearchBar()">
       <ion-icon name="search" slot="icon-only"></ion-icon>
     </ion-button>
@@ -13,8 +16,10 @@
 <ion-toolbar [ngClass]="showSearchBar === true?'':'hidden'">
   <ion-searchbar
     showCancelButton="always"
-    debounce="500"
+    debounce="1500"
+    [(ngModel)]="searchTerm"
     (ionCancel)="toggleSearchBar()"
+    (ionClear)="textCleared()"
     (ionChange)="searchProducts($event)"
   ></ion-searchbar>
 </ion-toolbar>
@@ -22,18 +27,35 @@
 <ion-content class="container " 
   [style.display]="(showSearchPane === true && showSearchBar === true) ? 'block' : 'none'">
 
-  <app-loading [type]="'product'" *ngIf="showLoading"></app-loading>
-
-  <ion-list *ngIf="stockCurrents.length > 0 && !showLoading">
-    <app-product-card
-      *ngFor="let stockCurrent of stockCurrents"
-      [store]="store"
-      [stockCurrent]="stockCurrent"
-    ></app-product-card>
+  <ion-list *ngIf="recents.length>0 && searchTerm === ''">
+    <ion-list-header>Recent Searches</ion-list-header>
+    <ion-item *ngFor="let st of recents" (click)="selectSerachTerm(st.data)">
+      {{st.data}}
+    </ion-item>
   </ion-list>
-  <div *ngIf="stockCurrents.length === 0 && searchTerm !== '' && !showLoading" class="vertical-align-center">
-    <p>No Results Found(0)</p>
-  </div>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" class="ion-text-center mg-top-30" *ngIf="showLoading">
+        <ion-spinner color="primary" name="dots"></ion-spinner>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="stockCurrents.length > 0 && !showLoading">
+      <ion-col size="12" size-lg="6"  *ngFor="let stockCurrent of stockCurrents">
+        <app-product-card
+        [store]="store"
+        [stockCurrent]="stockCurrent"
+      ></app-product-card>  
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="stockCurrents.length === 0 && searchTerm !== '' && !showLoading" class="vertical-align-center">
+      <ion-col size="12" class="ion-text-center">
+        <ion-text class="ion-text-center" class="medium-text">
+            <p>No Results Found(0)</p>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
   <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreData()">
     <ion-infinite-scroll-content

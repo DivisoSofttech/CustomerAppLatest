@@ -1,6 +1,6 @@
 import { OrderService } from 'src/app/services/order.service';
-import { IonSlides, IonRefresher, PopoverController, NavController } from '@ionic/angular';
-import { ViewChild } from '@angular/core';
+import { IonSlides, IonRefresher, PopoverController, NavController, Platform } from '@ionic/angular';
+import { ViewChild, OnDestroy } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -15,7 +15,11 @@ import { MapComponent } from 'src/app/components/map/map.component';
   templateUrl: './store.page.html',
   styleUrls: ['./store.page.scss']
 })
-export class StorePage implements OnInit {
+export class StorePage implements OnInit , OnDestroy {
+
+
+  slideOptions = {autoHeight: true};
+
   storeId;
 
   store: Store;
@@ -43,6 +47,8 @@ export class StorePage implements OnInit {
   @ViewChild(MapComponent, null) map: MapComponent;
   slidesMoving: boolean;
   slidesHeight: number;
+  timeNow: Date;
+  slideWidthChecker;
 
   constructor(
     private queryResource: QueryResourceService,
@@ -50,6 +56,7 @@ export class StorePage implements OnInit {
     private popover: PopoverController,
     private logger: NGXLogger,
     private util: Util,
+    private platform: Platform,
     private orderService: OrderService,
     private navController: NavController
   ) {}
@@ -59,6 +66,19 @@ export class StorePage implements OnInit {
     this.getStore();
     this.getCategories(0);
     this.getCategoriesEntry(0);
+    this.timeNow = new Date();
+
+    // temp Fix for sliderHeight
+    this.slideWidthChecker =  setInterval(() => {
+      if (this.ionSlides !== undefined) {
+        this.ionSlides.updateAutoHeight();
+      }
+    }, 5000);
+
+  }
+
+  ngOnDestroy(): void {
+   clearInterval(this.slideWidthChecker);
   }
 
   getStoreId() {
@@ -75,7 +95,7 @@ export class StorePage implements OnInit {
           this.showRestaurantLoading = false;
 
           // Show the Store In Map
-          if(this.map !== undefined) {
+          if (this.map !== undefined) {
             this.map.loadMap(this.store.location);
           }
         },
@@ -122,6 +142,7 @@ export class StorePage implements OnInit {
 
   async categoryListPopOver(ev: any) {
     this.tempStockCurrents = this.stockCurrents;
+    this.platform.width() >= 1280 ? null : ev = null;
     const popover = await this.popover.create({
       component: HotelMenuPopoverComponent,
       componentProps: {
@@ -146,6 +167,7 @@ export class StorePage implements OnInit {
             this.selectedCategory,
             this.stockCurrents
           );
+          this.ionSlides.updateAutoHeight();
           this.showCategoryWiseProducts = false;
         }
       }
@@ -170,7 +192,7 @@ export class StorePage implements OnInit {
   }
 
   slideChanged(event) {
-  
+
     let index: any;
     this.ionSlides.getActiveIndex().then(num => {
       this.ionSlides.updateAutoHeight();

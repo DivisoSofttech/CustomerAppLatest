@@ -1,3 +1,4 @@
+import { SharedDataService } from 'src/app/services/shared-data.service';
 import { OrderService } from './../../services/order.service';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ModalController, NavController, IonButton } from '@ionic/angular';
@@ -27,7 +28,8 @@ export class PaymentSuccessfullInfoComponent implements OnInit , OnDestroy {
     private orderService: OrderService,
     private logger: NGXLogger,
     private queryResource: QueryResourceService,
-    private util: Util
+    private util: Util,
+    private sharedData: SharedDataService
   ) { }
 
   async dismiss() {
@@ -48,6 +50,7 @@ export class PaymentSuccessfullInfoComponent implements OnInit , OnDestroy {
     this.method = this.orderService.paymentMethod;
     this.ref = this.orderService.order.orderId;
     this.logger.info('Order in OrderService', this.orderService.order);
+    this.sharedData.deleteData('checkout');
   }
 
   ngOnDestroy(): void {

@@ -31,11 +31,12 @@
                 Login
               </ion-label>
             </ion-item>
-            <ion-item class="pointer" lines="full" (click)="showPreviousOrders()" *ngIf="!browser && !guest">
+            <ion-item class="pointer" lines="full" (click)="showPreviousOrders()" *ngIf="!guest">
               <ion-icon slot="start" name="basket"></ion-icon>
               <ion-label>My Orders</ion-label>
             </ion-item>
-            <ion-item class="pointer" lines="full" (click)="exitApp()" *ngIf="!browser">
+            <!--*ngIf="!browser"-->
+            <ion-item class="pointer" lines="full" (click)="exitApp()">
               <ion-icon slot="start" name="exit"></ion-icon>
               <ion-label>Exit</ion-label>
             </ion-item>

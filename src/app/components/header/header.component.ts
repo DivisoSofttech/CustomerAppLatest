@@ -1,25 +1,13 @@
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
-import {
-  IonInfiniteScroll,
-  IonSearchbar,
-  ModalController
-} from '@ionic/angular';
+import { IonInfiniteScroll,IonSearchbar,ModalController} from '@ionic/angular';
 import { Store } from './../../api/models/store';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
-import { LocationService } from './../../services/location-service';
-import {
-  Component,
-  OnInit,
-  Output,
-  EventEmitter,
-  ViewChild,
-  OnDestroy
-} from '@angular/core';
-import { Util } from 'src/app/services/util';
+import {Component,OnInit,ViewChild,OnDestroy} from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { Storage } from '@ionic/storage';
+import { RecentService, RecentType } from 'src/app/services/recent.service';
 
 @Component({
   selector: 'app-header',
@@ -44,6 +32,10 @@ export class HeaderComponent implements OnInit , OnDestroy {
 
   customer;
 
+  recents:any[] = [];
+
+  searchDebounceTime = 1500;
+
   @ViewChild(IonInfiniteScroll, null) infiniteScroll: IonInfiniteScroll;
   @ViewChild('restaurantSearch', null) restaurantSearch: IonSearchbar;
   keycloakSubscription: any;
@@ -56,28 +48,50 @@ export class HeaderComponent implements OnInit , OnDestroy {
     private modalController: ModalController,
     private notificationService: NotificationService,
     private keycloakService: KeycloakService,
-    private storage: Storage
+    private storage: Storage,
+    private recentService: RecentService
   ) {}
 
   ngOnInit() {
     this.logger.info('Initializing', HeaderComponent.name);
     this.getNotificationCount();
     this.checkUser();
+    this.getRecents();
   }
 
   ngOnDestroy(): void {
     this.keycloakSubscription.unsubscribe();
   }
 
+  getRecents() {
+    this.recentService.getRecentRestaurantSearchTerms()
+    .subscribe(data => {
+      if(data !== null) {
+        this.recents = data;
+      }
+    })
+  }
+
+  textCleared() {
+    this.restaurantSearch.debounce = 100;
+    this.restaurantSearch.debounce = 1500;
+  }
+
+  selectSerachTerm(searchTerm) {
+    this.restaurantSearch.debounce = 100;
+    this.restaurantSearch.value = searchTerm;
+    this.restaurantSearch.debounce = this.searchDebounceTime;
+  }
+
   checkUser() {
     this.keycloakSubscription = this.keycloakService.getUserChangedSubscription()
     .subscribe((data: any) => {
-      this.logger.info('Checking If guest : HeaderComponet');
-      if (data !== null) {
+      this.logger.info('Checking If guest : HeaderComponet' , data);
+      if (data !== null && data !== undefined ) {
         if (data.preferred_username === 'guest') {
           this.notificationsOn = false;
         } else {
-          this.getUserProfile();
+          // this.getUserProfile();
           this.notificationsOn = true;
         }
       } else {
@@ -122,6 +136,10 @@ export class HeaderComponent implements OnInit , OnDestroy {
   // Get Current Location
 
   getSearchResults(i) {
+    const found = this.recents.some(el => el.data === this.searchTerm);
+    if(!found) {
+      this.recentService.saveRecent({data:this.searchTerm , type:RecentType.STORE});
+    }
     this.queryResource
       .headerUsingGET({
         searchTerm: this.searchTerm,
@@ -151,7 +169,6 @@ export class HeaderComponent implements OnInit , OnDestroy {
   search(event) {
     this.showLoading = true;
     this.logger.info('Getting Restaurants By Name');
-    this.searchTerm = event.detail.value;
     this.storeSearchResults = [];
     if(this.searchTerm !=='') {
       this.getSearchResults(0);

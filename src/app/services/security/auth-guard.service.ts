@@ -1,3 +1,4 @@
+import { log } from 'util';
 import { KeycloakService } from './keycloak.service';
 import { NavController } from '@ionic/angular';
 import { OAuthService } from 'angular-oauth2-oidc';
@@ -62,6 +63,7 @@ export class AuthGuardService implements CanActivate {
         this.navController.navigateRoot('/login');
         reject(false);
       } else {
+        console.log('Login in as guest%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% auth gue-ard');
         await this.guestUserService.logInGuest();
         resolve(true);
       }

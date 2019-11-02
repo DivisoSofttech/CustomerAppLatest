@@ -70,7 +70,7 @@ export class LoginSignupComponent implements OnInit {
 
     const modal = await this.modalController.create({
       component: PhoneNumberVerficationComponent,
-      componentProps: {number: this.phone},
+      componentProps: {number: this.numberCode + this.phone},
       cssClass: 'full-height'
     });
 
@@ -143,7 +143,12 @@ export class LoginSignupComponent implements OnInit {
             });
             loader.dismiss();
             if (this.type === 'page') {
-              this.util.navigateRoot();
+              try {
+                this.util.navigateRoot();
+                this.dismissTrue();                  
+              } catch (error) {
+                
+              }
             } else {
               this.dismissTrue();
             }
@@ -229,10 +234,10 @@ export class LoginSignupComponent implements OnInit {
   }
 
   checkNumber(event) {
-    console.log(event.extra.numberCode);
+    console.log('Event', event);
     this.numberValid = event.valid;
     this.numberCode = event.extra.numberCode;
-    this.phone = event.value;
+    this.phone = event.value.slice(event.extra.numberCode.toString().length , event.value.length);
   }
 
   setSlideValue(): number {

@@ -4,6 +4,7 @@ import { LocationService } from 'src/app/services/location-service';
 import { ModalController, Platform } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { Subscription } from 'rxjs';
+import { RecentService, RecentType } from 'src/app/services/recent.service';
 
 @Component({
   selector: 'app-place-suggestion',
@@ -12,17 +13,15 @@ import { Subscription } from 'rxjs';
 })
 export class PlaceSuggestionComponent implements OnInit , OnDestroy {
 
-  recentPlaces = [];
-
   places: any[] = [];
 
   @Input() currentPlaceName;
 
   showSpinner = false;
 
-  recentPlaceKey = 'recentPlaces';
-
   searchTerm = '';
+
+  recents = [];
 
   private unregisterBackAction: Subscription;
 
@@ -31,20 +30,12 @@ export class PlaceSuggestionComponent implements OnInit , OnDestroy {
     private locationService: LocationService,
     private modalController: ModalController,
     private storage: Storage,
-    private platform: Platform
+    private platform: Platform,
+    private recentService: RecentService
   ) { }
 
   ngOnInit() {
-
-    this.storage.get(this.recentPlaceKey)
-    .then(data => {
-      if(data !== null) {
-        this.recentPlaces = data.reverse();
-      } else {
-        this.logger.info('Adding Recent Places');
-        this.storage.set(this.recentPlaceKey , []);
-      }
-    });
+    this.getRecents();
   }
 
   // closeModalOnBack() {
@@ -52,6 +43,20 @@ export class PlaceSuggestionComponent implements OnInit , OnDestroy {
   //     this.modalController.dismiss();
   // })
   // }
+
+  getRecents() {
+    this.recentService.getRecentLocations()
+    .subscribe(data => {
+      this.logger.info('Found Recent Locations ' , data);
+      if(data !== null) {
+        this.recents = data;
+      }
+    })
+  }
+
+  saveToRecent(data) {
+    this.recentService.saveRecent(data);
+  }
 
   close() {
     this.modalController.dismiss();
@@ -85,18 +90,11 @@ export class PlaceSuggestionComponent implements OnInit , OnDestroy {
   selectPlace(place) {
     this.logger.info('Place Selected', place);
     this.places = [];
-    this.storage.get(this.recentPlaceKey)
-    .then((data: any[]) => {
-      if(!data.some(p => p.id === place.id)) {
-        this.logger.info('Adding To Recnet Places' , data.some(p => p.id === place.id));
-        data.push(place);
-        this.recentPlaces = data.reverse();
-        this.storage.set(this.recentPlaceKey , data);
-      } else {
-        this.logger.info('Already Exists On Recnet Places');
-      }
-    });
     this.currentPlaceName = place.description;
+    const found = this.recents.some(el => el.data.description === place.description);
+    if(!found) {
+      this.saveToRecent({data:place , type:RecentType.LOCATION});
+    }
     this.logger.info('Getting LatLon for selected Location');
     this.locationService
       .geocodeAddress(place.place_id)

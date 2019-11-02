@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ViewChild } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { QueryResourceService } from 'src/app/api/services';
 import { Order, OrderLine, Product, Store, CommandResource, AuxilaryOrderLine } from 'src/app/api/models';
@@ -8,11 +8,16 @@ import { OrderService } from 'src/app/services/order.service';
 import { Subscription } from 'rxjs';
 import { Util } from 'src/app/services/util';
 import { MakePaymentComponent } from '../make-payment/make-payment.component';
+import { MatStepper } from '@angular/material';
+import { MAT_STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-order-detail',
   templateUrl: './order-detail.component.html',
   styleUrls: ['./order-detail.component.scss'],
+  providers: [{
+    provide: MAT_STEPPER_GLOBAL_OPTIONS, useValue: {displayDefaultIndicatorType: false}
+  }]
 })
 export class OrderDetailComponent implements OnInit, OnDestroy {
  
@@ -44,6 +49,32 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     private util: Util
   ) { }
 
+  @ViewChild('stepper' , null) stepper: MatStepper;
+
+  ngAfterViewInit() {
+
+    if(this.order.status.name === 'created') {
+      this.stepper.selected.state = 'done';
+    } else if(this.order.status.name === 'approved' || this.order.status.name === 'payment-processed') {
+      this.stepper.selected.state = 'done';
+      this.stepper.next();
+      this.stepper.selected.state = 'done';
+    } else if(this.order.status.name === 'delivered') {
+      this.stepper.selected.state = 'done';
+      this.stepper.next();
+      this.stepper.selected.state = 'done';
+      this.stepper.next();
+      this.stepper.selected.completed = true;
+    }  
+
+  }
+
+
+  ngOnInit() {
+    this.logger.info(this.order);
+    this.getOrderLines(0);
+  }
+
 
   async presentMakePayment() {
     await this.modalController.dismiss();
@@ -74,12 +105,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
-    this.logger.info(this.order);
-    // this.getOrderDetails();
-    this.getOrderLines(0);
-  }
-
   ngOnDestroy() {
     console.log('Ng Destroy calls in orderDetail component');
     this.taskDetailsSubscription !== undefined?this.taskDetailsSubscription.unsubscribe():null;
@@ -100,7 +125,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
       orderId: this.order.id
     })
     .subscribe(orderLines => {
-      console.error(orderLines);
       orderLines.content.forEach(o => {
         this.orderLines.push(o);
         this.auxilariesProducts[o.productId] = [];
@@ -162,11 +186,13 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     } else if (this.cartService.currentShopId === this.store.id) {
       this.addToCart();
     } else {
-      this.cartService.presentAlert();
+      this.cartService.presentRestaurantCheckout({
+        actionSuccess:this.addToCart()
+      });
     }
   }
 
-  async addToCart() {
+  addToCart() {
     this.cartService.addShop(this.store);
     this.orderLines.forEach(o => {
       if (this.auxilaryOrderLines[o.id] === undefined) {
@@ -177,7 +203,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
       }
       this.cartService.addOrder(o);
     });
-    await this.modalController.dismiss(true);
+    this.modalController.dismiss(true);
 
   }
 

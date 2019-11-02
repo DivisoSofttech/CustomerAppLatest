@@ -9,40 +9,53 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
- 
+
   <ion-card>
     <ion-card-content>
-        <ion-grid>
-            <ion-row class="ion-margin-vertical">
-              <ion-col text-center>
-                <ion-text color="dark">
-                    <h1 class="font-big"><b>&euro;{{toBePaid | number:'1.1-2'}}</b></h1>
-                  <p class="font-medium">Total amount Due</p>
-                </ion-text>
-              </ion-col>
-            </ion-row>
-            <ion-row>
-            </ion-row>
-          </ion-grid>
+      <ion-grid>
+        <ion-row class="ion-margin-vertical">
+          <ion-col text-center>
+            <ion-text color="dark">
+              <h1 class="font-big"><b>&euro;{{toBePaid | number:'1.1-2'}}</b></h1>
+              <p class="font-medium cl-grey">Total amount Due</p>
+            </ion-text>
+            <!-- <ion-col  size="12">
+                  <ion-item lines="none" text-center>
+                    <ion-label>Thank you</ion-label>
+                  </ion-item>
+                  <ion-item lines="none" text-center>
+                      <ion-label >Payment received</ion-label>
+                  </ion-item>
+                </ion-col>
+                <ion-col *ngIf="method=='cod'" size="12">
+                  <ion-item lines="none" text-center>
+                      <ion-label class="font-bold font-20">Keep ready &#8364;{{total | number:'1.1-2'}} </ion-label>
+                  </ion-item>
+                </ion-col> -->
+
+          </ion-col>
+        </ion-row>
+        <ion-row>
+        </ion-row>
+      </ion-grid>
     </ion-card-content>
   </ion-card>
 
   <ion-list lines="none">
-  <ion-radio-group [(ngModel)]="paymentMethod">
     <ion-list-header>
       <ion-label>
-        <h2>Choose A Payment Method</h2>
+        <h1>Choose A Payment Method</h1>
       </ion-label>
     </ion-list-header>
-    <ion-item *ngFor="let paymentOption of paymentOptions" >
-      <ion-label>{{paymentOption.name}}</ion-label>
-      <ion-radio slot="start" value="{{paymentOption.value}}" checked="{{paymentOption.isChecked}}"></ion-radio>
-    </ion-item>
-  </ion-radio-group>
-</ion-list>
+    <ion-radio-group [(ngModel)]="paymentMethod">
+      <ion-item lines="full" *ngFor="let paymentOption of paymentOptions">
+        <ion-label>{{paymentOption.name}}</ion-label>
+        <ion-radio slot="start" value="{{paymentOption.value}}" checked="{{paymentOption.isChecked}}"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
 </ion-content>
 <ion-footer>
-    <ion-button expand="block"  class="ion-margin" 
-    [disabled]="paymentMethod==undefined" (click)="presentModal()"
-    >Continue</ion-button>
+  <ion-button expand="block" class="ion-margin" [disabled]="paymentMethod==undefined" (click)="presentModal()">Continue
+  </ion-button>
 </ion-footer>

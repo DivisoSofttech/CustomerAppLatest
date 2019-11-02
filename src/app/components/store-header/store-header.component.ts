@@ -4,7 +4,7 @@ import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angu
 import { StockCurrent } from 'src/app/api/models';
 import { IonInfiniteScroll, IonSearchbar } from '@ionic/angular';
 import { NGXLogger } from 'ngx-logger';
-import { Storage } from '@ionic/storage';
+import { RecentService, RecentType } from 'src/app/services/recent.service';
 
 @Component({
   selector: 'app-store-header',
@@ -16,6 +16,8 @@ export class StoreHeaderComponent implements OnInit {
   @Input() name = '';
 
   @Output() searchEnable = new EventEmitter();
+
+  @Output() categoryfilterClicked = new EventEmitter();
 
   showSearchBar = false;
 
@@ -29,6 +31,8 @@ export class StoreHeaderComponent implements OnInit {
 
   pageCount = 0;
 
+  recents = [];
+
   @Input() storeId;
 
   @Input() store;
@@ -40,9 +44,28 @@ export class StoreHeaderComponent implements OnInit {
     private queryResource: QueryResourceService,
     private util: Util,
     private logger: NGXLogger,
+    private recentService: RecentService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getRecents();
+  }
+
+  
+  getRecents() {
+    this.recentService.getRecentProductSearchTerms()
+    .subscribe(data => {
+      if(data !== null) {
+        this.recents = data;
+      }
+    })
+  }
+
+  selectSerachTerm(searchTerm) {
+    this.searchBar.debounce = 100;
+    this.searchBar.value = searchTerm;
+    this.searchBar.debounce = 1500;
+  }
 
   toggleSearchBar() {
     this.logger.info('Hiding SearchBar and Emitting Event');
@@ -91,11 +114,23 @@ export class StoreHeaderComponent implements OnInit {
  
   }
 
+  textCleared() {
+    this.searchBar.debounce = 100;
+    this.searchBar.debounce = 1500;
+  }
+
   searchProducts(event) {
-    this.searchTerm = event.detail.value;
     this.stockCurrents = [];
     this.showLoading = true;
+    const found = this.recents.some(el => el.data === this.searchTerm);
+    if(!found) {
+      this.recentService.saveRecent({data:this.searchTerm , type: RecentType.PRODUCT})
+    }
     this.getProductsByName(0);
+  }
+
+  emitFilterClick() {
+    this.categoryfilterClicked.emit(null);
   }
 
   loadMoreData() {

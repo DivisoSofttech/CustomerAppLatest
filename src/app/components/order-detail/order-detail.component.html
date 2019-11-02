@@ -10,20 +10,29 @@
 </ion-header>
 
 <ion-content appScrollbarTheme>
-  <mat-horizontal-stepper labelPosition="bottom">
-    <mat-step completed editable="false">
-      <ng-template matStepLabel>Placed</ng-template>
+    
+  <mat-horizontal-stepper labelPosition="bottom" #stepper>
+      <ng-template matStepperIcon="waiting">
+          <mat-icon>done</mat-icon>
+        </ng-template>
+
+      <ng-template matStepperIcon="edit">
+        <mat-icon>done</mat-icon>
+       </ng-template>
+        <ng-template matStepperIcon="last">
+            <mat-icon>done_all</mat-icon>
+          </ng-template>
+    <mat-step>
+        <ng-template matStepLabel>Ordered</ng-template>
     </mat-step>
-    <!-- <mat-step>
-        <ng-template matStepLabel>Placed</ng-template>
-    </mat-step> -->
-    <mat-step completed editable="false">
-      <ng-template matStepLabel>Approved</ng-template>
+    <mat-step state="waiting">
+        <ng-template matStepLabel>Approved</ng-template>
     </mat-step>
-    <mat-step editable="false">
-      <ng-template matStepLabel>Delivered</ng-template>
+    <mat-step state="last">
+        <ng-template matStepLabel>Delivered</ng-template>
     </mat-step>
   </mat-horizontal-stepper>
+
   <ion-item *ngIf="store" lines="full">
     <ion-avatar>
       <ion-img [src]="
@@ -42,26 +51,29 @@
   <ion-card class="ion-no-padding">
     <ion-card-header class="ion-no-padding">
       <ion-item lines="none">
-        <ion-text slot="start">
+        <ion-text slot="start" class="font-small">
           Subtotal
         </ion-text>
-        <ion-text slot="start" slot="end" class="ion-text-right">
+        <ion-text *ngIf="order.deliveryInfo !== null" slot="start" slot="end" class="ion-text-right font-small">
           &#8364;{{ (order.grandTotal-order.deliveryInfo.deliveryCharge) |  number: "1.1-2"}}
+        </ion-text>
+        <ion-text *ngIf="order.deliveryInfo === null" slot="start" slot="end" class="ion-text-right font-small">
+          &#8364;{{ order.grandTotal |  number: "1.1-2"}}
         </ion-text>
       </ion-item>
       <ion-item lines="none" *ngIf=" order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='delivery'">
-        <ion-text slot="start">
+        <ion-text slot="start" class="font-small">
           Delivery
         </ion-text>
-        <ion-text slot="start" slot="end" class="ion-text-right">
+        <ion-text slot="start" slot="end" class="ion-text-right font-small">
           &#8364;{{order.deliveryInfo.deliveryCharge |  number: "1.1-2"}}
         </ion-text>
       </ion-item>
       <ion-item lines="none" *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='collection'">
-        <ion-text slot="start">
+        <ion-text slot="start" class="font-small">
           Collection
         </ion-text>
-        <ion-text slot="start" slot="end" class="ion-text-right">
+        <ion-text slot="start" slot="end" class="font-small ion-text-right">
           &#8364; 0
         </ion-text>
       </ion-item>
@@ -69,17 +81,21 @@
     </ion-card-header>
     <ion-card-content class="ion-no-padding">
       <ion-item lines="none">
-        <ion-text slot="start">
+        <ion-text slot="start" class="font-small">
           <b>Total</b>
         </ion-text>
-        <ion-text slot="start" slot="end" class="ion-text-right">
+        <ion-text slot="start" slot="end" class="ion-text-right font-small">
           <b>&#8364;{{order.grandTotal |  number: "1.1-2"}}</b>
         </ion-text>
       </ion-item>
     </ion-card-content>
   </ion-card>
 
-
+  <ion-card *ngIf="orderLines.length === 0">
+    <ion-card-content class="ion-text-center">
+      <ion-spinner name="dots"></ion-spinner>
+    </ion-card-content>
+  </ion-card>
   <app-product-card *ngFor="let orderLine of orderLines" [type]="'minimal'"
     [auxilariesProducts]="auxilariesProducts[orderLine.productId]" [product]="products[orderLine.productId]"
     [orderLine]="orderLine" [auxilaryOrderLine]="auxilaryOrderLines[orderLine.id]"></app-product-card>
@@ -94,11 +110,33 @@
       <ion-item lines="none" *ngIf="order.deliveryInfo !== null">
         <p>
           <b>
-            {{order.deliveryInfo.deliveryAddress.name + ',' + order.deliveryInfo.deliveryAddress.houseNoOrBuildingName + ',' | titlecase}}
-            {{order.deliveryInfo.deliveryAddress.city + ',' + order.deliveryInfo.deliveryAddress.roadNameAreaOrStreet + ',' | titlecase}}
-            {{order.deliveryInfo.deliveryAddress.landmark + ',' + order.deliveryInfo.deliveryAddress.pincode + ' ' | titlecase}}
-            {{order.deliveryInfo.deliveryAddress.state + ',' + order.deliveryInfo.deliveryAddress.pincode + ' ' | titlecase}}
-            {{order.deliveryInfo.deliveryAddress.phone + ',' + order.deliveryInfo.deliveryAddress.alternatePhone + ' ' | titlecase}}
+            <span *ngIf="order.deliveryInfo.deliveryAddress.name !== null">
+              {{order.deliveryInfo.deliveryAddress.name | titlecase}} ,
+            </span>
+            <span *ngIf="order.deliveryInfo.deliveryAddress.houseNoOrBuildingName !== null">
+              {{order.deliveryInfo.deliveryAddress.houseNoOrBuildingName | titlecase}} ,
+            </span>
+            <span *ngIf="order.deliveryInfo.deliveryAddress.city !== null">
+              {{order.deliveryInfo.deliveryAddress.city | titlecase}}
+            </span>
+            <span *ngIf="order.deliveryInfo.deliveryAddress.roadNameAreaOrStreet !== null">
+              {{order.deliveryInfo.deliveryAddress.roadNameAreaOrStreet | titlecase}}
+            </span>
+            <span *ngIf="order.deliveryInfo.deliveryAddress.landmark !== null">
+              {{order.deliveryInfo.deliveryAddress.landmark | titlecase}}
+            </span>
+            <span *ngIf="order.deliveryInfo.deliveryAddress.pincode !== null">
+              {{order.deliveryInfo.deliveryAddress.pincode | titlecase}}
+            </span>
+            <span *ngIf="order.deliveryInfo.deliveryAddress.state  !== null">
+              {{order.deliveryInfo.deliveryAddress.state | titlecase}} ,
+            </span>
+            <span *ngIf="order.deliveryInfo.deliveryAddress.phone !== null">
+              {{order.deliveryInfo.deliveryAddress.phone }} ,
+            </span>
+            <span *ngIf="order.deliveryInfo.deliveryAddress.alternatePhone !== null">
+              {{order.deliveryInfo.deliveryAddress.alternatePhone }}
+            </span>
           </b>
         </p>
       </ion-item>

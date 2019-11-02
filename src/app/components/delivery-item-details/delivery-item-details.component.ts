@@ -19,6 +19,7 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
 
   totalPrice;
 
+  subTotal;
   deliveryCharge;
 
   products = {
@@ -46,7 +47,7 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
 
   auxilaryItems;
 
-  currentDeliveryMode = 'delivery';
+  @Input() currentDeliveryMode = 'delivery';
 
   constructor(
     private cart: CartService,
@@ -70,9 +71,10 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
   getCartDetails() {
     this.cartSubscription = this.cart.observableTickets.subscribe(data => {
       this.logger.info('Getting cart Details', data);
-      this.totalPrice = this.cart.totalPrice;
       this.orders = data;
       this.storeSetting = this.cart.currentShop.storeSettings;
+      this.totalPrice = this.cart.totalPrice + this.storeSetting.deliveryCharge;
+      this.subTotal = this.cart.totalPrice;
       this.store = this.cart.currentShop;
       this.auxilaryItems = this.cart.auxilaryItems;
       this.getAllProductsFromOrders();

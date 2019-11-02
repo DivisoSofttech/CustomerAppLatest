@@ -1,3 +1,4 @@
+import { SharedDataService } from 'src/app/services/shared-data.service';
 import { WaitInformatonPopoverComponent } from './../wait-informaton-popover/wait-informaton-popover.component';
 import { MakePaymentComponent } from './../make-payment/make-payment.component';
 import { Util } from 'src/app/services/util';
@@ -33,6 +34,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   order: Order;
   deliveryType: any;
 
+  showLoading = true;
+
 
   constructor(
     private orderService: OrderService,
@@ -42,6 +45,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     private popoverController: PopoverController,
     private displayModalService: ModalDisplayUtilService,
     private orderCommandResource: OrderCommandResourceService,
+    private sharedData: SharedDataService
       ) { }
 
   ngOnInit() {
@@ -51,8 +55,26 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.logger.info(this.orderService.customer);
     this.getCustomer();
     this.getOrderDetails();
-    this.getAllAdress();
+    if (this.deliveryType === 'delivery') {
+      this.getAllAdress();
+    }
+    this.getDataFromStorage();
     console.log('elivery type is ', this.deliveryType);
+  }
+
+  saveDataToStorage() {
+    this.sharedData.saveToStorage('checkout' , {
+      note: this.note
+    });
+  }
+
+  getDataFromStorage() {
+    this.sharedData.getData('checkout')
+    .then(data => {
+      if(data !== null) {
+        this.note = data.note;
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -67,18 +89,25 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   getAllAdress() {
+    this.logger.info('Getting all Addresses');
     this.orderCommandResource.getAllSavedAddressUsingGET({
       customerId: this.customer.preferred_username,
     })
     .subscribe(paddress => {
+      this.showLoading = false;
       this.selectedAddress = paddress.content[0];
+      this.setAddress();
+    }, err => {
+      this.showLoading = false;
     });
   }
 
   getCustomer() {
     this.logger.info(this.orderService.customer);
     this.customer = this.orderService.customer;
+    if (this.deliveryType === 'delivery') {
     this.getAllAdress();
+    }
   }
 
   getOrderDetails() {
@@ -92,9 +121,14 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
     modal.onDidDismiss()
     .then(data => {
-      if (data.data !== undefined) {
+      console.log(data);
+      if (data.data !== undefined && data.data.deleted === undefined) {
         this.selectedAddress = data.data;
         this.setAddress();
+      } else if (data.data.deleted === true) {
+        if (this.selectedAddress.id === data.data.deletedId) {
+          this.selectedAddress = undefined;
+        }
       }
     });
     await modal.present();
@@ -106,12 +140,12 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   setAddress() {
+    this.logger.info(this.selectedAddress);
     this.orderService.setAddress(this.selectedAddress);
   }
 
-
-
   checkOut() {
+    this.logger.info('Order is ' , this.order);
     this.setNote();
     if ( this.orderService.resource.nextTaskName === 'Process Payment' ) {
       this.logger.info('In for updating the deliveryinfo >>>>>>>>>>> ', this.orderService.deliveryInfo);

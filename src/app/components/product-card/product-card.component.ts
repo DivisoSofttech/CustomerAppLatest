@@ -171,7 +171,9 @@ export class ProductCardComponent implements OnInit, OnDestroy {
       if (this.cartService.currentShopId === this.store.id) {
         this.showAddAuxilaryPopover();
       } else {
-        this.cartService.presentAlert();
+        this.cartService.presentRestaurantCheckout({
+          'product':stock.product, 'stockCurrent':stock, 'shop':this.store
+        });
       }
     } else {
       this.logger.info('No Auxilary Items ', this.auxilaries);

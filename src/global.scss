@@ -35,6 +35,12 @@
   font-weight: bold;
 }
 
+.medium-text {
+  font-family: "Montserrat", sans-serif !important;
+  font-weight: bold;
+
+}
+
 .pointer {
   cursor: pointer;
 }
@@ -76,7 +82,7 @@ ion-modal.modal-popover {
   .modal-wrapper {
     position: absolute;
     bottom: 36vh;
-    height: 29vh;
+    height: auto;
     width: 90vw;
   }
 

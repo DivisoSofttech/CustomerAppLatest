@@ -2,10 +2,22 @@ h2 , h1 {
     margin: 0px;
 }
 
-ion-text {
-    font-size: 25px !important;
-}
+// ion-text {
+//     font-size: 25px !important;
+// }
 
 .pd-10 {
     padding: 10px;
 }
+
+.font-small {
+    font-size: 18px !important;
+}
+
+::ng-deep .mat-horizontal-stepper-header{
+    pointer-events: none !important;
+}
+
+::ng-deep .material-icons {
+    font-family: 'Material Icons' !important;
+  }

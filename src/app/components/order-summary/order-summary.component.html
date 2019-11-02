@@ -1,97 +1,83 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons>
-      <ion-button (click)="dismiss(false)">
-        <ion-icon name="arrow-back"></ion-icon>
-      </ion-button>
-      <ion-title>Order Details</ion-title>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-  <mat-horizontal-stepper labelPosition="bottom">
-    <mat-step completed editable="false">
-        <ng-template matStepLabel>Placed</ng-template>
-    </mat-step>
-    <!-- <mat-step>
-        <ng-template matStepLabel>Placed</ng-template>
-    </mat-step> -->
-    <mat-step completed editable="false">
-        <ng-template matStepLabel >Approved</ng-template>
-    </mat-step>
-    <mat-step   editable="false">
-        <ng-template matStepLabel>Delivered</ng-template>
-    </mat-step>
-  </mat-horizontal-stepper>
-  <ion-item *ngIf="store" lines="full">
-    <ion-avatar>
-        <ion-img
-        [src]="
-          'data:' +
-          store.imageContentType +
-          ';base64,' +
-          store.image
-        "
-      ></ion-img>
-    </ion-avatar>
-    <ion-text class="ion-margin">
-      {{store.name}}
-    </ion-text>
-    <ion-badge slot="end" padding>{{'Order ' +  order.orderId}}</ion-badge>
-  </ion-item>
-
-  <ion-card class="ion-no-padding">
-    <ion-card-header class="ion-no-padding">
-      <ion-item lines="none">
-        <ion-text slot="start" >
-            Subtotal
-        </ion-text>
-        <ion-text slot="start" slot="end" class="ion-text-right">
-            &#8364;{{ order.grandTotal |  number: "1.1-2"}}
-        </ion-text>
-      </ion-item>
-      <ion-item lines="none" *ngIf=" order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='delivery'">
-          <ion-text slot="start" >
-              Delivery
-          </ion-text>
-          <ion-text slot="start" slot="end" class="ion-text-right">
-              &#8364;{{order.deliveryInfo.deliveryCharge |  number: "1.1-2"}}
-          </ion-text>
-        </ion-item>  
-        <ion-item lines="none" *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='collection'">
-            <ion-text slot="start" >
-                Collection
-            </ion-text>
-            <ion-text slot="start" slot="end" class="ion-text-right">
-                &#8364; 0
-            </ion-text>
-        </ion-item>
-
-    </ion-card-header>
-    <ion-card-content class="ion-no-padding">
+    <ion-toolbar>
+      <ion-buttons>
+        <ion-button (click)="dismiss(false)">
+          <ion-icon name="arrow-back"></ion-icon>
+        </ion-button>
+        <ion-title>Order Details</ion-title>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content appScrollbarTheme>
+    <ion-item *ngIf="store" lines="full">
+      <ion-avatar>
+        <ion-img [src]="
+            'data:' +
+            store.imageContentType +
+            ';base64,' +
+            store.image
+          "></ion-img>
+      </ion-avatar>
+      <ion-text class="ion-margin">
+        {{store.name}}
+      </ion-text>
+      <ion-badge slot="end" padding>{{'Order ' +  order.orderId}}</ion-badge>
+    </ion-item>
+  
+    <ion-card class="ion-no-padding">
+      <ion-card-header class="ion-no-padding">
         <ion-item lines="none">
-            <ion-text slot="start" >
-                <b>Total</b>
-            </ion-text>
-            <ion-text slot="start" slot="end" class="ion-text-right">
-              <b>&#8364;{{order.grandTotal |  number: "1.1-2"}}</b>
-            </ion-text>
-          </ion-item>    
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card>
-    <ion-card-content class="ion-no-padding">
-        <app-product-card *ngFor="let orderLine of orderLines" [type]="'minimal'" [auxilaries]="auxilaries[orderLine.productId]"
-        [product]="products[orderLine.productId]"
-        [comboLineItems]="comboLineItems[orderLine.productId]"
-        [orderLine]="orderLine"
-        ></app-product-card>
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryAddress !== null">
+          <ion-text slot="start" class="font-small">
+            Subtotal
+          </ion-text>
+          <ion-text *ngIf="order.deliveryInfo !== null" slot="start" slot="end" class="ion-text-right font-small">
+            &#8364;{{ (order.grandTotal-order.deliveryInfo.deliveryCharge) |  number: "1.1-2"}}
+          </ion-text>
+          <ion-text *ngIf="order.deliveryInfo === null" slot="start" slot="end" class="ion-text-right font-small">
+            &#8364;{{ order.grandTotal |  number: "1.1-2"}}
+          </ion-text>
+        </ion-item>
+        <ion-item lines="none" *ngIf=" order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='delivery'">
+          <ion-text slot="start" class="font-small">
+            Delivery
+          </ion-text>
+          <ion-text slot="start" slot="end" class="ion-text-right font-small">
+            &#8364;{{order.deliveryInfo.deliveryCharge |  number: "1.1-2"}}
+          </ion-text>
+        </ion-item>
+        <ion-item lines="none" *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='collection'">
+          <ion-text slot="start" class="font-small">
+            Collection
+          </ion-text>
+          <ion-text slot="start" slot="end" class="font-small ion-text-right">
+            &#8364; 0
+          </ion-text>
+        </ion-item>
+  
+      </ion-card-header>
+      <ion-card-content class="ion-no-padding">
+        <ion-item lines="none">
+          <ion-text slot="start" class="font-small">
+            <b>Total</b>
+          </ion-text>
+          <ion-text slot="start" slot="end" class="ion-text-right font-small">
+            <b>&#8364;{{order.grandTotal |  number: "1.1-2"}}</b>
+          </ion-text>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  
+    <ion-card *ngIf="orderLines.length === 0">
+      <ion-card-content class="ion-text-center">
+        <ion-spinner name="dots"></ion-spinner>
+      </ion-card-content>
+    </ion-card>
+    <app-product-card *ngFor="let orderLine of orderLines" [type]="'minimal'"
+      [auxilariesProducts]="auxilariesProducts[orderLine.productId]" [product]="products[orderLine.productId]"
+      [orderLine]="orderLine" [auxilaryOrderLine]="auxilaryOrderLines[orderLine.id]"></app-product-card>
+  
+    <ion-card *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryAddress !== null">
       <ion-card-header color="light">
         <ion-card-title>
           <h1>Address</h1>
@@ -99,34 +85,58 @@
       </ion-card-header>
       <ion-card-content class="ion-no-padding pd-10">
         <ion-item lines="none" *ngIf="order.deliveryInfo !== null">
-            <p>
-                <b>
-                {{order.deliveryInfo.deliveryAddress.name + ',' + order.deliveryInfo.deliveryAddress.houseNoOrBuildingName + ',' | titlecase}}
-                {{order.deliveryInfo.deliveryAddress.city + ',' + order.deliveryInfo.deliveryAddress.roadNameAreaOrStreet + ',' | titlecase}}
-                {{order.deliveryInfo.deliveryAddress.landmark + ',' + order.deliveryInfo.deliveryAddress.pincode + ' ' | titlecase}}
-                {{order.deliveryInfo.deliveryAddress.state + ',' + order.deliveryInfo.deliveryAddress.pincode + ' ' | titlecase}}
-                {{order.deliveryInfo.deliveryAddress.phone + ',' + order.deliveryInfo.deliveryAddress.alternatePhone + ' ' | titlecase}}
-                </b>
-              </p>
+          <p>
+            <b>
+              <span *ngIf="order.deliveryInfo.deliveryAddress.name !== null">
+                {{order.deliveryInfo.deliveryAddress.name | titlecase}} ,
+              </span>
+              <span *ngIf="order.deliveryInfo.deliveryAddress.houseNoOrBuildingName !== null">
+                {{order.deliveryInfo.deliveryAddress.houseNoOrBuildingName | titlecase}} ,
+              </span>
+              <span *ngIf="order.deliveryInfo.deliveryAddress.city !== null">
+                {{order.deliveryInfo.deliveryAddress.city | titlecase}}
+              </span>
+              <span *ngIf="order.deliveryInfo.deliveryAddress.roadNameAreaOrStreet !== null">
+                {{order.deliveryInfo.deliveryAddress.roadNameAreaOrStreet | titlecase}}
+              </span>
+              <span *ngIf="order.deliveryInfo.deliveryAddress.landmark !== null">
+                {{order.deliveryInfo.deliveryAddress.landmark | titlecase}}
+              </span>
+              <span *ngIf="order.deliveryInfo.deliveryAddress.pincode !== null">
+                {{order.deliveryInfo.deliveryAddress.pincode | titlecase}}
+              </span>
+              <span *ngIf="order.deliveryInfo.deliveryAddress.state  !== null">
+                {{order.deliveryInfo.deliveryAddress.state | titlecase}} ,
+              </span>
+              <span *ngIf="order.deliveryInfo.deliveryAddress.phone !== null">
+                {{order.deliveryInfo.deliveryAddress.phone }} ,
+              </span>
+              <span *ngIf="order.deliveryInfo.deliveryAddress.alternatePhone !== null">
+                {{order.deliveryInfo.deliveryAddress.alternatePhone }}
+              </span>
+            </b>
+          </p>
         </ion-item>
       </ion-card-content>
     </ion-card>
-
+  
     <ion-card *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryNotes !== null">
-        <ion-card-header color="light">
-          <ion-card-title>
-            <h1>Note</h1>
-          </ion-card-title>
-        </ion-card-header>
-        <ion-card-content class="ion-no-padding pd-10">
-          <ion-item lines="none">
-              <p><b>{{order.deliveryInfo.deliveryNotes | titlecase}}</b></p>
-          </ion-item>
-        </ion-card-content>
-      </ion-card>
-
-</ion-content>
+      <ion-card-header color="light">
+        <ion-card-title>
+          <h1>Note</h1>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="ion-no-padding pd-10">
+        <ion-item lines="none">
+          <p><b>{{order.deliveryInfo.deliveryNotes | titlecase}}</b></p>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  
+  </ion-content>
+  
 
 <ion-footer class="ion-padding  ">
-      <ion-button *ngIf="order.status.name === 'payment-processed'"  expand="block" (click)="dismiss(true)">Continue Shopping</ion-button>
+  <ion-button *ngIf="order.status.name === 'payment-processed'" expand="block" (click)="dismiss(true)">Continue Shopping
+  </ion-button>
 </ion-footer>

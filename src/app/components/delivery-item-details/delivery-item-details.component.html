@@ -97,32 +97,43 @@
   </ion-card>
 
   <ion-card>
-    <ion-item color="medium"
+    <ion-item *ngIf="currentDeliveryMode ==='delivery'">
+      <ion-label class="ion-text-start">
+        <h3><strong>Subtotal</strong></h3>
+      </ion-label>
+      <ion-label class="ion-text-end">
+          <h3>
+              <strong>
+                + &euro;{{ subTotal | number: "1.1-2" }}
+             </strong>
+            </h3>
+      </ion-label>
+    </ion-item>
+    <ion-item
      lines="full"
      *ngIf="storeSetting !== undefined && orders.length > 0 && currentDeliveryMode !== 'collection'">
-      <ion-label text-start>Delivery charge</ion-label>
+      <ion-text text-start>Delivery charge</ion-text>
       <ion-label text-center> </ion-label>
-      <ion-label text-end>&euro;{{ storeSetting.deliveryCharge | number: "1.1-2" }}</ion-label>
+      <ion-label text-end *ngIf="storeSetting.deliveryCharge === 0">Free</ion-label>
+      <ion-label text-end *ngIf="storeSetting.deliveryCharge !== 0">+ &euro;{{ storeSetting.deliveryCharge | number: "1.1-2" }}</ion-label>
     </ion-item>
     <ion-item *ngIf="offer" lines="full">
-      <ion-avatar slot="start">
-        <ion-img src="/assets/svg/discount.svg"></ion-img>
-     </ion-avatar>
-      <ion-text word-wrap text-left no-margin>
+      <ion-icon name="ribbon" slot="start" no-margin color="success"></ion-icon>
+      <ion-text word-wrap text-left no-margin color="success">
         <p>
-          <strong> 20% </strong>discount on <ion-badge>{{offer.promocode}}</ion-badge>
+          10% discount on {{offer.promoCode | lowercase}}
        </p>
      </ion-text>
-     <ion-text text-end>-{{offer.orderDiscountAmount}}</ion-text> 
+     <ion-text text-end slot="end">- &euro;{{offer.orderDiscountAmount}}</ion-text> 
     </ion-item>
     <ion-item *ngIf="storeSetting !== undefined" lines="full">
        <ion-label text-start>
-        <h3> <strong>Subtotal</strong></h3>
+        <h3> <strong>Total</strong></h3>
       </ion-label>
       <ion-label text-end>
         <h3 *ngIf="currentDeliveryMode === 'delivery'">
           <strong>
-            &euro;{{ totalPrice + storeSetting.deliveryCharge | number: "1.1-2" }}
+            &euro;{{ totalPrice  | number: "1.1-2" }}
          </strong>
         </h3>
         <h3 *ngIf="currentDeliveryMode === 'collection'">
