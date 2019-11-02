@@ -161,23 +161,29 @@ export class ProductCardComponent implements OnInit, OnDestroy {
   }
 
   add(i, stock: StockCurrent) {
-    if (this.store.regNo !== this.cartService.storeId) {
+    console.error(this.cartService.currentShopId,
+      this.store.regNo , this.cartService.storeId);
+    if(this.cartService.currentShopId === 0) {
       this.cartService.addShop(this.store);
       this.cartService.behaviourStore.next(this.store);
+      this.add(i,stock);
     }
-    if (this.auxilaries.length > 0 && this.stockCurrent.product.isAuxilaryItem === false) {
-      this.logger.info('Add Auxilary Items ', this.auxilaries);
-      this.cartService.addAuxilary(this.stockCurrent.product, this.auxilaries);
-      if (this.cartService.currentShopId === this.store.id) {
+    else if (this.store.regNo !== this.cartService.storeId) {
+      this.cartService.presentRestaurantCheckout(()=>{
+        this.cartService.emptyCart();
+        this.cartService.addShop(this.store);
+        this.cartService.behaviourStore.next(this.store);
+        this.add(i,stock);     
+     });
+    } else {
+      if (this.auxilaries.length > 0 && this.stockCurrent.product.isAuxilaryItem === false) {
+        this.logger.info('Add Auxilary Items ', this.auxilaries);
+        this.cartService.addAuxilary(this.stockCurrent.product, this.auxilaries);
         this.showAddAuxilaryPopover();
       } else {
-        this.cartService.presentRestaurantCheckout({
-          'product':stock.product, 'stockCurrent':stock, 'shop':this.store
-        });
-      }
-    } else {
-      this.logger.info('No Auxilary Items ', this.auxilaries);
-      this.cartService.addProduct(stock.product, stock, this.store);
+        this.logger.info('No Auxilary Items ', this.auxilaries);
+        this.cartService.addProduct(stock.product, stock, this.store);
+      }  
     }
   }
 
