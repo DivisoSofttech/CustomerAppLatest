@@ -86,10 +86,9 @@ export class CartService {
 
 
 
-  async presentRestaurantCheckout(details) {
+  async presentRestaurantCheckout(clear) {
     const alert = await this.alertController.create({
-      header: 'Clear Cart',
-      message: 'Are You sure',
+      header: 'Do You Wish To Clear The Cart',
       buttons: [
         {
           text: 'Cancel',
@@ -102,12 +101,7 @@ export class CartService {
           text: 'Ok',
           cssClass: 'secondary',
           handler: (blah) => {
-            this.emptyCart();
-            if (details.product && details.stockCurrent && details.shop) {
-              this.addProduct(details.product, details.stockCurrent, details.shop);
-            } else if (details.actionSuccess) {
-              details.actionSuccess();
-            }
+           clear();
           }
         }
       ]
@@ -255,10 +249,11 @@ export class CartService {
     }
     this.calculatePrice();
     this.orderLines.forEach(o => {
-      o.total = parseFloat(this.decimalPipe.transform(o.total ,'1.2-2'));
+      o.total = parseFloat(this.decimalPipe.transform(o.total ,'1.1-2'));
     });
     this.observableTickets.next(this.orderLines);
     this.observablePrice.next(this.totalPrice);
+    this.saveCartDetailsToSharedMemory();
   }
 
   emptyCart() {
@@ -283,12 +278,11 @@ export class CartService {
   }
 
   addShop(shop) {
-    if (this.currentShopId === 0) {
+
       this.currentShop = shop;
       this.currentShopId = shop.id;
       this.storeId = this.currentShop.regNo;
       this.getStoreSettings();
-    }
   }
 
   addOrder(order: OrderLine) {

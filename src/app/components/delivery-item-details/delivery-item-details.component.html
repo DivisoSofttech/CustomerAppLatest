@@ -56,7 +56,7 @@
     *ngIf="auxilaryItems[orderLine.productId] !== undefined && auxilaryItems[orderLine.productId].length !== 0">
       <ion-list-header>
         <ion-label>Extras</ion-label>
-        <ion-icon name="add" class="addAuxilaryButton" (click)="showUpdateAuxilaryPopover(orderLine)"></ion-icon>
+        <ion-button (click)="showUpdateAuxilaryPopover(orderLine)" class="ion-margin">Add</ion-button>
       </ion-list-header>
     </ion-list>
     <ion-list
@@ -69,28 +69,28 @@
                 <ion-icon slot="icon-only" name="trash"></ion-icon>
               </ion-item-option>
               </ion-item-options>
-          <ion-item *ngIf="auxilaryProducts[aux.productId] !== undefined">
-            <ion-label text-start class="wrap">{{
-              auxilaryProducts[aux.productId].name
-            }}</ion-label>
-            <ion-label text-center>{{ "x" + aux.quantity }}</ion-label>
-            <ion-label text-end
-              >&#8364;{{ (aux.total | number: "1.1-2") + "   " }}</ion-label
-            >
+          <ion-item *ngIf="auxilaryProducts[aux.productId] !== undefined" lines="none">
+            <ion-label text-start class="wrap">
+              <p>{{auxilaryProducts[aux.productId].name}}</p>
+              <p>&#8364;{{ (aux.total | number: "1.1-2") + "   " }}</p>
+          </ion-label>
+            <ion-grid slot="end" class="borderFull">
+              <ion-row>
+                <ion-col text-center  (click)="decreaseAuxilaryProductCount( auxilaryProducts[aux.productId], orderLine)">
+                  <ion-icon name="remove"></ion-icon>
+                </ion-col>
+                <ion-col text-center>
+                    <ion-text>
+                        {{ "x" + aux.quantity }}
+                      </ion-text>
+                  </ion-col>
+                <ion-col text-center (click)="increaseAuxilaryProductCount( auxilaryProducts[aux.productId], orderLine)">
+                    <ion-icon name="add"></ion-icon>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
           </ion-item>
-          <ion-item-options side="end">
-              <ion-item-option
-              color="primary"
-              (click)="increaseAuxilaryProductCount( auxilaryProducts[aux.productId], orderLine)">
-              <ion-icon name="add"></ion-icon>
-            </ion-item-option>
-            <ion-item-option
-              color="warning"
-              (click)="
-                decreaseAuxilaryProductCount( auxilaryProducts[aux.productId], orderLine)">
-              <ion-icon name="remove"></ion-icon>
-            </ion-item-option>
-            </ion-item-options>
+         
         </ion-item-sliding>
     </ion-list>
     <!--Auxilary Product End-->
