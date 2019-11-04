@@ -19,7 +19,6 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
 
   orders: OrderLine[] = [];
 
-  totalPrice;
   total;
   subTotal;
   deliveryCharge;
@@ -46,7 +45,7 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
 
   productBaseAuxItemsArray = {};
   offer;
-
+  isOfferAvailable: boolean;
   auxilaryItems;
 
   @Input() currentDeliveryMode = 'delivery';
@@ -77,11 +76,10 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
       this.logger.info('Getting cart Details', data);
       this.orders = data;
       this.storeSetting = this.cart.currentShop.storeSettings;
-      this.totalPrice = this.cart.totalPrice ;
-      if(this.storeSetting !== undefined) {
-        this.total = this.totalPrice + this.storeSetting.deliveryCharge ;
+      this.subTotal = this.cart.subTotal;
+      if (this.storeSetting !== undefined) {
+        this.total = this.subTotal + this.storeSetting.deliveryCharge ;
       }
-      this.subTotal = this.cart.totalPrice;
       this.store = this.cart.currentShop;
       this.auxilaryItems = this.cart.auxilaryItems;
       this.getAllProductsFromOrders();
@@ -89,39 +87,66 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
+  setCartTotal() {
+    this.cart.total = this.total;
+  }
   increaseProductCount(product , orderLine) {
     if (this.cart.auxilaryItems[product.id].length !== 0) {
       this.showAddAuxilaryPopover(product);
     } else {
       this.cart.increase(orderLine , product);
     }
-    this.getOffers();
+    if (this.isOfferAvailable) {
+      this.getOffers();
+    } else {
+      this.setCartTotal();
+    }
   }
 
   decreaseProductCount(product , orderLine) {
     this.cart.decrease(orderLine , product);
-    this.getOffers();
+    if (this.isOfferAvailable) {
+      this.getOffers();
+    } else {
+      this.setCartTotal();
+    }
   }
 
   removeOrder(orderLine, product) {
     this.logger.info('Removing Order ', orderLine);
     this.cart.removeOrder(orderLine);
-    this.getOffers();
+    if (this.isOfferAvailable) {
+      this.getOffers();
+    } else {
+      this.setCartTotal();
+    }
   }
 
   increaseAuxilaryProductCount(product , orderLine) {
     this.cart.increaseAuxilary(product , orderLine);
-    this.getOffers();
+    if (this.isOfferAvailable) {
+      this.getOffers();
+    } else {
+      this.setCartTotal();
+    }
   }
 
   decreaseAuxilaryProductCount(product , orderLine) {
     this.cart.decreaseAuxilary(product, orderLine);
-    this.getOffers();
+    if (this.isOfferAvailable) {
+      this.getOffers();
+    } else {
+      this.setCartTotal();
+    }
   }
 
   removeAuxilaryOrder(product , orderLine) {
     this.cart.removeAuxilary(product , orderLine);
-    this.getOffers();
+    if (this.isOfferAvailable) {
+      this.getOffers();
+    } else {
+      this.setCartTotal();
+    }
   }
 
   getAllProductsFromOrders() {
@@ -152,29 +177,29 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
   }
 
   getOffers() {
-    this.util.createCustomLoader('circles', 'Checking Offers').then(loader => {
+
+    this.util.createCustomLoader('circles', 'Fetching Offers').then(loader => {
     loader.present();
-    this.logger.info('Checking offer eligibility using price ', this.subTotal);
     let offerPrice;
-    offerPrice = this.decimalPipe.transform(this.totalPrice, '1.1-2');
+    offerPrice = this.decimalPipe.transform(this.subTotal, '1.1-2');
     this.orderService.claimMyOffer(offerPrice)
     .then(orderBehaviour => {
       orderBehaviour.subscribe(response => {
         this.logger.info('response for cliam offer ' , response);
         if (response.orderDiscountAmount === null) {
           this.logger.info('No offers available');
+          this.isOfferAvailable = false;
+          this.setCartTotal();
         } else {
+          this.isOfferAvailable = true;
           this.logger.info('One offer available ', response.promoCode);
           this.offer = response;
           this.total = this.total - response.orderDiscountAmount;
-          this.logger.info('Checking offer eligibility using price >>>>>>>', this.total);
-
-          this.cart.totalPrice = this.total;
+          this.setCartTotal();
           const myOffer: Offer = {
             offerRef : response.promoCode
           };
           this.orderService.setOffer(myOffer);
-          
         }
         loader.dismiss();
       });

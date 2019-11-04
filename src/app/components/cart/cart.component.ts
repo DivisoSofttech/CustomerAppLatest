@@ -41,7 +41,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
   cartSize = 0;
 
-  totalPrice = 0;
+  subTotal = 0;
 
   orderLines: OrderLine[] = [];
 
@@ -193,12 +193,12 @@ export class CartComponent implements OnInit, OnDestroy {
   getCartDetails() {
     this.cart.observableTickets.subscribe(data => {
       this.cartSize = data.length;
-      this.totalPrice = this.cart.totalPrice;
+      this.subTotal = this.cart.subTotal;
       this.orderLines = data;
       this.storeSetting = this.cart.currentShopSetting;
       this.store = this.cart.currentShop;
-      if (this.store !== undefined && this.store.minAmount > this.totalPrice) {
-        this.neededCheckOutAmount = this.store.minAmount - this.totalPrice;
+      if (this.store !== undefined && this.store.minAmount > this.subTotal) {
+        this.neededCheckOutAmount = this.store.minAmount - this.subTotal;
       } else {
         this.neededCheckOutAmount = 0;
       }
@@ -230,7 +230,7 @@ export class CartComponent implements OnInit, OnDestroy {
           let grandtotal = 0;
           grandtotal =
             grandtotal +
-            this.cart.totalPrice;
+            this.cart.total;
           const order: Order = {
             orderLines: this.orderLines,
             appliedOffers: [],
@@ -278,9 +278,7 @@ export class CartComponent implements OnInit, OnDestroy {
           }
           let grandtotal = 0;
           grandtotal =
-            grandtotal +
-            this.storeSetting.deliveryCharge +
-            this.cart.totalPrice;
+            grandtotal + this.cart.total;
           grandtotal = parseFloat(
             this.decimalPipe.transform(grandtotal, '1.1-2')
           ),
