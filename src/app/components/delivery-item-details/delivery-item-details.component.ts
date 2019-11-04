@@ -174,8 +174,9 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
             offerRef : response.promoCode
           };
           this.orderService.setOffer(myOffer);
-          loader.dismiss();
+          
         }
+        loader.dismiss();
       });
     });
   });
