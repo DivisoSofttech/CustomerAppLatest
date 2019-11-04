@@ -7,6 +7,8 @@ import { ShowAuxilaryModalComponent } from '../show-auxilary-modal/show-auxilary
 import { PopoverController } from '@ionic/angular';
 import { OrderService } from 'src/app/services/order.service';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { DecimalPipe } from '@angular/common';
+import { Util } from 'src/app/services/util';
 
 @Component({
   selector: 'app-delivery-item-details',
@@ -18,7 +20,7 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
   orders: OrderLine[] = [];
 
   totalPrice;
-
+  total;
   subTotal;
   deliveryCharge;
 
@@ -55,7 +57,9 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
     private offerCommandResource: OfferCommandResourceService,
     private logger: NGXLogger,
     private popover: PopoverController,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private decimalPipe: DecimalPipe,
+    private util: Util
   ) {}
 
   ngOnInit() {
@@ -73,7 +77,10 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
       this.logger.info('Getting cart Details', data);
       this.orders = data;
       this.storeSetting = this.cart.currentShop.storeSettings;
-      this.totalPrice = this.cart.totalPrice + this.storeSetting.deliveryCharge;
+      this.totalPrice = this.cart.totalPrice ;
+      if(this.storeSetting !== undefined) {
+        this.total = this.totalPrice + this.storeSetting.deliveryCharge ;
+      }
       this.subTotal = this.cart.totalPrice;
       this.store = this.cart.currentShop;
       this.auxilaryItems = this.cart.auxilaryItems;
@@ -88,27 +95,33 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
     } else {
       this.cart.increase(orderLine , product);
     }
+    this.getOffers();
   }
 
   decreaseProductCount(product , orderLine) {
     this.cart.decrease(orderLine , product);
+    this.getOffers();
   }
 
   removeOrder(orderLine, product) {
     this.logger.info('Removing Order ', orderLine);
     this.cart.removeOrder(orderLine);
+    this.getOffers();
   }
 
   increaseAuxilaryProductCount(product , orderLine) {
     this.cart.increaseAuxilary(product , orderLine);
+    this.getOffers();
   }
 
   decreaseAuxilaryProductCount(product , orderLine) {
     this.cart.decreaseAuxilary(product, orderLine);
+    this.getOffers();
   }
 
   removeAuxilaryOrder(product , orderLine) {
     this.cart.removeAuxilary(product , orderLine);
+    this.getOffers();
   }
 
   getAllProductsFromOrders() {
@@ -139,8 +152,12 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
   }
 
   getOffers() {
-    this.logger.info('Checking offer eligibility using price ', this.totalPrice);
-    this.orderService.claimMyOffer(this.totalPrice)
+    this.util.createCustomLoader('circles', 'Checking Offers').then(loader => {
+    loader.present();
+    this.logger.info('Checking offer eligibility using price ', this.subTotal);
+    let offerPrice;
+    offerPrice = this.decimalPipe.transform(this.totalPrice, '1.1-2');
+    this.orderService.claimMyOffer(offerPrice)
     .then(orderBehaviour => {
       orderBehaviour.subscribe(response => {
         this.logger.info('response for cliam offer ' , response);
@@ -149,14 +166,20 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
         } else {
           this.logger.info('One offer available ', response.promoCode);
           this.offer = response;
-          this.totalPrice = response.orderDiscountTotal;
+          this.total = this.total - response.orderDiscountAmount;
+          this.logger.info('Checking offer eligibility using price >>>>>>>', this.total);
+
+          this.cart.totalPrice = this.total;
           const myOffer: Offer = {
             offerRef : response.promoCode
           };
           this.orderService.setOffer(myOffer);
+          
         }
+        loader.dismiss();
       });
     });
+  });
   }
 
   async showAddAuxilaryPopover(p) {
