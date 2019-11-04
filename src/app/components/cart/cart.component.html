@@ -5,7 +5,7 @@ lines="full"
 <ion-label>
   {{store.name}}
 </ion-label></ion-item>
-<ion-grid no-padding margin *ngIf="viewType === 'minimal'">
+<ion-grid no-padding margin *ngIf="viewType === 'minimal'" (click)="routeBasket()">
   <ion-row>
     <ion-col size="4" text-center no-padding>
       <ion-label class="highlight">{{ cartSize + " Items" }}</ion-label>
@@ -16,7 +16,7 @@ lines="full"
       }}</ion-label>
     </ion-col>
     <ion-col size="4" text-center no-padding class="pointer">
-      <ion-label  class="cursor highlight" (click)="routeBasket()">View Cart</ion-label>
+      <ion-label  class="cursor highlight" >View Cart</ion-label>
     </ion-col>
   </ion-row>
 </ion-grid>
