@@ -89,7 +89,7 @@ export class CartService {
 
   async presentRestaurantCheckout(clear) {
     const alert = await this.alertController.create({
-      header: 'Do You Wish To Clear The Cart',
+      subHeader: 'Do You Wish To Clear The Cart?',
       buttons: [
         {
           text: 'Cancel',
@@ -304,12 +304,8 @@ export class CartService {
   increase(o, p) {
     this.orderLines.forEach((ol, i) => {
       if (ol === o) {
-        if (this.orderLines[i].quantity < this.MAX_ORDERS) {
-          this.orderLines[i].quantity++;
-          this.updateCart();
-        } else {
-          alert('Order is limited to ' + this.MAX_ORDERS + ' items');
-        }
+        this.orderLines[i].quantity++;
+        this.updateCart();
       }
     });
   }

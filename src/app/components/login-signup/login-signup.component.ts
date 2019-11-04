@@ -26,6 +26,9 @@ export class LoginSignupComponent implements OnInit {
   value = 'login';
   keycloakUserid;
 
+  showPasswordText = false;
+  passwordFieldType = 'password';
+
   @ViewChild('slides', null) slides: IonSlides;
 
   @Input() type = 'page';
@@ -90,6 +93,11 @@ export class LoginSignupComponent implements OnInit {
       component: ForgetPasswordComponent
     });
     modal.present();
+  }
+
+  showPassword(val) {
+    this.passwordFieldType = val?'text':'password';
+    this.showPasswordText = val;
   }
 
   signup() {
