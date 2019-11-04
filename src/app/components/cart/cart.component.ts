@@ -285,6 +285,7 @@ export class CartComponent implements OnInit, OnDestroy {
             this.decimalPipe.transform(grandtotal, '1.1-2')
           ),
           this.orderService.order.grandTotal = grandtotal;
+          alert(this.orderService.order.grandTotal);
           this.logger.info('Update Order id is', this.orderService.order);
           this.orderService
             .updateOrder(this.orderService.order)

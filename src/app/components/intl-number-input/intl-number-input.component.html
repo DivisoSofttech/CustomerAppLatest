@@ -3,8 +3,8 @@
   <ion-row>
     <ion-col size="12">
       <ion-item lines="full">
-        <span (click)="countrySelectPopover()"
-          [class]="'flag-icon flag-icon-' + (selectedCountry.code | lowercase )"></span>
+        <span (click)="countrySelectPopover()" 
+          [class]="'flags flag-icon flag-icon-' + (selectedCountry.code | lowercase )"></span>
         <ion-label class="ion-margin-left">{{'+' + selectedCountry.numberCode}}</ion-label>
         <ion-input type="number" placeholder="Number" text-left [(ngModel)]="phoneNumber" (ionChange)="checkIfValid()"></ion-input>
       </ion-item>
@@ -24,13 +24,6 @@
   </ion-text>
 </div>
 
-<!-- <ion-header *ngIf="viewType === 'list'">
-  <ion-toolbar>
-    <ion-buttons>
-      <ion-searchbar (ionChange)="searchCountry()" [(ngModel)]="searchTerm"></ion-searchbar>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header> -->
 
 <ion-content *ngIf="viewType === 'list' && countryList.length === 0">
 
@@ -45,7 +38,7 @@
   </ion-grid>
 
 </ion-content>
-<ion-content *ngIf="viewType === 'list' && countryList.length > 0">
+<ion-content *ngIf="viewType === 'list' && countryList.length > 0" style="min-height:200px">
   <ion-list class="ion-no-padding">
     <ion-list-header>
       <ion-text>
