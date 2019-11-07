@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController, PopoverController } from '@ionic/angular';
-import { OrderLine, Product, AuxilaryOrderLine } from 'src/app/api/models';
+import { OrderLine, Product, AuxilaryOrderLine, StockCurrent } from 'src/app/api/models';
 import { CartService } from 'src/app/services/cart.service';
 import { NGXLogger } from 'ngx-logger';
 
@@ -17,6 +17,8 @@ export class ShowAuxilaryModalComponent implements OnInit {
 
   orderLine: OrderLine;
 
+  @Input()stockCurrent: StockCurrent;
+
   auxilaryOrderLines: AuxilaryOrderLine[] = [];
 
   @Input() type = 'add';
@@ -31,7 +33,7 @@ export class ShowAuxilaryModalComponent implements OnInit {
     this.logger.info('ShowAuxModal' , this.auxilaryItems);
     if (this.type !== 'update') {
       this.orderLine = {
-        pricePerUnit: this.product.sellingPrice,
+        pricePerUnit: this.stockCurrent.sellPrice,
         productId: this.product.id,
         quantity: 1,
         total: 0

@@ -228,8 +228,8 @@ export class CartService {
     let orderTotal = 0;
     let auxilaryTotal = 0;
     this.orderLines.forEach(orderLine => {
+      auxilaryTotal = 0;
       if (orderLine.requiedAuxilaries !== undefined) {
-        auxilaryTotal = 0;
         orderLine.requiedAuxilaries.forEach(auxilaryOrderLine => {
           auxilaryOrderLine.total = auxilaryOrderLine.quantity * auxilaryOrderLine.pricePerUnit;
           auxilaryTotal += auxilaryOrderLine.total;
@@ -265,9 +265,7 @@ export class CartService {
   }
 
   removeOrder(order: OrderLine) {
-    console.warn('Previous Length', this.orderLines.length);
     this.orderLines = this.orderLines.filter(ol => ol !== order);
-    console.warn('After Filter Length', this.orderLines.length);
     this.updateCart();
   }
 
