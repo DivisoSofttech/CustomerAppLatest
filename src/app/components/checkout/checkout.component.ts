@@ -11,6 +11,7 @@ import { ModalDisplayUtilService } from 'src/app/services/modal-display-util.ser
 import { Subscription } from 'rxjs';
 import { AddressListComponent } from '../address-list/address-list.component';
 import { OrderCommandResourceService } from 'src/app/api/services';
+import { CartService } from 'src/app/services/cart.service';
 
 @Component({
   selector: 'app-checkout',
@@ -45,7 +46,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     private popoverController: PopoverController,
     private displayModalService: ModalDisplayUtilService,
     private orderCommandResource: OrderCommandResourceService,
-    private sharedData: SharedDataService
+    private sharedData: SharedDataService,
+    private cart: CartService
       ) { }
 
   ngOnInit() {
@@ -145,6 +147,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   checkOut() {
+
     this.logger.info('Order is ' , this.order);
     this.setNote();
     if ( this.orderService.resource.nextTaskName === 'Process Payment' ) {

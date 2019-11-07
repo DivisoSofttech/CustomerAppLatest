@@ -16,7 +16,8 @@ export class CartService {
 
   currentShopId = 0;
   orderLines: OrderLine[] = [];
-  totalPrice = 0;
+  subTotal = 0;
+  total = 0;
   storeId;
   observableTickets: BehaviorSubject<OrderLine[]>;
   observablePrice: BehaviorSubject<number>;
@@ -38,7 +39,7 @@ export class CartService {
     private decimalPipe: DecimalPipe
   ) {
     this.observableTickets = new BehaviorSubject<OrderLine[]>(this.orderLines);
-    this.observablePrice = new BehaviorSubject<number>(this.totalPrice);
+    this.observablePrice = new BehaviorSubject<number>(this.subTotal);
     this.logger.info('Cart Service Created');
     if (this.currentShopId === 0) {
       this.getCartDetailsFromSharedMemory();
@@ -238,21 +239,21 @@ export class CartService {
       orderLine.total = (orderLine.quantity * orderLine.pricePerUnit) + auxilaryTotal;
       orderTotal += orderLine.total;
     });
-    this.totalPrice = orderTotal;
+    this.subTotal = orderTotal;
   }
 
   updateCart() {
-    this.totalPrice = 0;
+    this.subTotal = 0;
     if (this.orderLines.length === 0) {
       this.currentShop = {};
       this.currentShopId = 0;
     }
     this.calculatePrice();
     this.orderLines.forEach(o => {
-      o.total = parseFloat(this.decimalPipe.transform(o.total ,'1.1-2'));
+      o.total = parseFloat(this.decimalPipe.transform(o.total , '1.1-2'));
     });
     this.observableTickets.next(this.orderLines);
-    this.observablePrice.next(this.totalPrice);
+    this.observablePrice.next(this.subTotal);
     this.saveCartDetailsToSharedMemory();
   }
 
