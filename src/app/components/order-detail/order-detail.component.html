@@ -55,10 +55,7 @@
           Subtotal
         </ion-text>
         <ion-text *ngIf="order.deliveryInfo !== null" slot="start" slot="end" class="ion-text-right font-small">
-          &#8364;{{ (order.grandTotal) |  number: "1.1-2"}}
-        </ion-text>
-        <ion-text *ngIf="order.deliveryInfo === null" slot="start" slot="end" class="ion-text-right font-small">
-          &#8364;{{ order.grandTotal |  number: "1.1-2"}}
+          &#8364;{{ (order.grandTotal - order.deliveryInfo.deliveryCharge) |  number: "1.1-2"}}
         </ion-text>
       </ion-item>
       <ion-item lines="none" *ngIf=" order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='delivery'">
@@ -84,8 +81,11 @@
         <ion-text slot="start" class="font-small">
           <b>Total</b>
         </ion-text>
-        <ion-text slot="start" slot="end" class="ion-text-right font-small">
-          <b>&#8364;{{order.grandTotal + order.deliveryInfo.deliveryCharge |  number: "1.1-2"}}</b>
+        <ion-text slot="start" slot="end" class="ion-text-right font-small" *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='delivery'">
+          <b>&#8364;{{order.grandTotal |  number: "1.1-2"}}</b>
+        </ion-text>
+        <ion-text slot="start" slot="end" class="ion-text-right font-small" *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='collection'">
+          <b>&#8364;{{order.grandTotal |  number: "1.1-2"}}</b>
         </ion-text>
       </ion-item>
     </ion-card-content>
@@ -96,7 +96,8 @@
       <ion-spinner name="dots"></ion-spinner>
     </ion-card-content>
   </ion-card>
-  <app-product-card *ngFor="let orderLine of orderLines" [type]="'minimal'"
+    <app-product-card  [type]="'minimal'" *ngFor="let orderLine of orderLines"
+    [auxTotal]="total[orderLine.id]"
     [auxilariesProducts]="auxilariesProducts[orderLine.productId]" [product]="products[orderLine.productId]"
     [orderLine]="orderLine" [auxilaryOrderLine]="auxilaryOrderLines[orderLine.id]"></app-product-card>
 

@@ -39,6 +39,8 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
 
   @Input() store: Store;
 
+  total = {};
+
   constructor(
     private logger: NGXLogger,
     private queryResource: QueryResourceService,
@@ -126,6 +128,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     })
     .subscribe(orderLines => {
       orderLines.content.forEach(o => {
+        this.total[o.id] = 0;
         this.orderLines.push(o);
         this.auxilariesProducts[o.productId] = [];
         this.auxilaryOrderLines[o.id] = [];
@@ -141,12 +144,14 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     });
   }
 
+
   getAuxilaryOrderLines(o , i) {
     this.queryResource.findAuxilaryOrderLineByOrderLineIdUsingGET({
       orderLineId: o.id
     })
     .subscribe(auxLines => {
       auxLines.content.forEach(auxLine => {
+        this.total[o.id] += auxLine.total;
         this.auxilaryOrderLines[o.id].push(auxLine);
         this.getAuxilaryProduct(o.productId,auxLine.productId)
       });

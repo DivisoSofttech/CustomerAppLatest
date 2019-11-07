@@ -48,6 +48,8 @@ export class ProductCardComponent implements OnInit, OnDestroy {
 
   @Input() product;
 
+  @Input() auxTotal = 0;
+
 
   @ViewChild('orderCountInput', null) orderCountInput: IonInput;
   keycloakSubscrption: any;
@@ -77,6 +79,7 @@ export class ProductCardComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+    console.log(this.auxTotal);
     if (this.type === 'full') {
       this.keycloakSubscrption = this.keycloakService.getUserChangedSubscription()
         .subscribe((data: any) => {

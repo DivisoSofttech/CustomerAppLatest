@@ -25,6 +25,7 @@ export class OrderSummaryComponent implements OnInit, OnDestroy {
 
   auxilariesProducts = {};
 
+  total = {};
 
   auxilaryOrderLines: AuxilaryOrderLine = {};
 
@@ -71,6 +72,7 @@ export class OrderSummaryComponent implements OnInit, OnDestroy {
     })
     .subscribe(orderLines => {
       orderLines.content.forEach(o => {
+        this.total[o.id] = 0;
         this.orderLines.push(o);
         this.auxilariesProducts[o.productId] = [];
         this.auxilaryOrderLines[o.id] = [];
@@ -92,6 +94,7 @@ export class OrderSummaryComponent implements OnInit, OnDestroy {
     })
     .subscribe(auxLines => {
       auxLines.content.forEach(auxLine => {
+        this.total[o.id] += auxLine.total;
         this.auxilaryOrderLines[o.id].push(auxLine);
         this.getAuxilaryProduct(o.productId,auxLine.productId)
       });

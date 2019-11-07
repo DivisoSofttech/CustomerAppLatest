@@ -24,7 +24,7 @@
       </ion-text>
       <ion-badge slot="end" padding>{{'Order ' +  order.orderId}}</ion-badge>
     </ion-item>
-  
+
     <ion-card class="ion-no-padding">
       <ion-card-header class="ion-no-padding">
         <ion-item lines="none">
@@ -32,10 +32,7 @@
             Subtotal
           </ion-text>
           <ion-text *ngIf="order.deliveryInfo !== null" slot="start" slot="end" class="ion-text-right font-small">
-            &#8364;{{ (order.grandTotal) |  number: "1.1-2"}}
-          </ion-text>
-          <ion-text *ngIf="order.deliveryInfo === null" slot="start" slot="end" class="ion-text-right font-small">
-            &#8364;{{ order.grandTotal |  number: "1.1-2"}}
+            &#8364;{{ (order.grandTotal - order.deliveryInfo.deliveryCharge) |  number: "1.1-2"}}
           </ion-text>
         </ion-item>
         <ion-item lines="none" *ngIf=" order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='delivery'">
@@ -61,22 +58,28 @@
           <ion-text slot="start" class="font-small">
             <b>Total</b>
           </ion-text>
-          <ion-text slot="start" slot="end" class="ion-text-right font-small">
+          <ion-text slot="start" slot="end" class="ion-text-right font-small" *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='delivery'">
+            <b>&#8364;{{order.grandTotal |  number: "1.1-2"}}</b>
+          </ion-text>
+          <ion-text slot="start" slot="end" class="ion-text-right font-small" *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='collection'">
             <b>&#8364;{{order.grandTotal |  number: "1.1-2"}}</b>
           </ion-text>
         </ion-item>
       </ion-card-content>
     </ion-card>
+
+  
   
     <ion-card *ngIf="orderLines.length === 0">
       <ion-card-content class="ion-text-center">
         <ion-spinner name="dots"></ion-spinner>
       </ion-card-content>
     </ion-card>
-    <app-product-card *ngFor="let orderLine of orderLines" [type]="'minimal'"
-      [auxilariesProducts]="auxilariesProducts[orderLine.productId]" [product]="products[orderLine.productId]"
-      [orderLine]="orderLine" [auxilaryOrderLine]="auxilaryOrderLines[orderLine.id]"></app-product-card>
-  
+     <app-product-card  [type]="'minimal'" *ngFor="let orderLine of orderLines"
+    [auxTotal]="total[orderLine.id]"
+    [auxilariesProducts]="auxilariesProducts[orderLine.productId]" [product]="products[orderLine.productId]"
+    [orderLine]="orderLine" [auxilaryOrderLine]="auxilaryOrderLines[orderLine.id]"></app-product-card>
+
     <ion-card *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryAddress !== null">
       <ion-card-header color="light">
         <ion-card-title>
