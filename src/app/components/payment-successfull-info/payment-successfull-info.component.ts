@@ -39,7 +39,7 @@ export class PaymentSuccessfullInfoComponent implements OnInit , OnDestroy {
     this.modalController.getTop()
     .then(data => {
       console.log(data);
-      this.modalController.dismiss();
+      this.modalController.dismiss(); 
     })
     this.navController.navigateBack('/restaurant');
   }
@@ -76,7 +76,6 @@ export class PaymentSuccessfullInfoComponent implements OnInit , OnDestroy {
   async showOrderDetails() {
 
     if (this.order !== null) {
-     
       const modal = await this.modalController.create({
         component: OrderSummaryComponent,
         componentProps: { order: this.order, store: this.cartService.currentShop }

@@ -51,7 +51,6 @@
     "com.paypal.cordova.mobilesdk": "^3.5.0",
     "com.razorpay.cordova": "^1.4.8",
     "cordova": "^7.1.0",
-    "cordova-android": "7.1.4",
     "cordova-android-support-gradle-release": "^3.0.1",
     "cordova-browser": "^5.0.4",
     "cordova-ios": "4.5.5",
@@ -161,8 +160,7 @@
     },
     "platforms": [
       "browser",
-      "ios",
-      "android"
+      "ios"
     ]
   }
 }
