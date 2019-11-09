@@ -8,6 +8,8 @@ import { QueryResourceService } from 'src/app/api/services';
 import { NGXLogger } from 'ngx-logger';
 import { FooterComponent } from 'src/app/components/footer/footer.component';
 import { GuestUserService } from 'src/app/services/security/guest-user.service';
+import { CartService } from 'src/app/services/cart.service';
+import { OrderService } from 'src/app/services/order.service';
 
 @Component({
   selector: 'app-profile',
@@ -46,7 +48,9 @@ export class ProfilePage implements OnInit {
     private logger: NGXLogger,
     private keycloak: KeycloakService,
     private alertController: AlertController,
-    private guestUserService: GuestUserService
+    private guestUserService: GuestUserService,
+    private cartService: CartService,
+    private orderService: OrderService
   ) { }
 
   ngOnInit() {
@@ -122,6 +126,9 @@ export class ProfilePage implements OnInit {
         }
       }]
     });
+    this.cartService.emptyCart();
+    this.orderService.resource = {};
+    this.orderService.offer = undefined;
     this.guestUserService.logInGuest();
     await alert.present();
   }

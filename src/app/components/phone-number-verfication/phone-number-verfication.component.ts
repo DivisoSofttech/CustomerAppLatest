@@ -41,7 +41,7 @@ export class PhoneNumberVerficationComponent implements OnInit {
       loader.present();
       this.commandResource.sendSMSUsingPOST(this.number).subscribe(data => {
       loader.dismiss();
-      this.util.createToast('OTP has been sent to your mobile');
+      this.util.createToast('OTP has been sent to your mobile', 'done-all');
       if (this.platform.is('android' || 'ios')) {
           this.startSMSListener();
       }
@@ -73,7 +73,7 @@ export class PhoneNumberVerficationComponent implements OnInit {
   }
 
   manualProcess() {
-    this.util.createCustomLoader('circles', 'Verfying OTP').then(loader => {
+    this.util.createCustomLoader('circles', 'Verifying OTP').then(loader => {
       loader.present();
       this.commandResource.verifyOTPUsingPOST({
         numbers: this.number,
@@ -96,7 +96,8 @@ export class PhoneNumberVerficationComponent implements OnInit {
     const message = data.body;
     const sender = data.address;
     console.log('The sender of sms is ', data.address);
-    if (sender === 'VK-040060' || 'VM-040060' || 'AD-040060' || 'Foodexp' || 'BP-080001' ) {
+    this.logger.info('SMS Substring is ', sender.substr(3, 6));
+    if (sender === 'Foodexp' || sender.substr(3, 6) === 'WINMTS') {
       this.OTP = data.body.slice((message.length - 5), message.length);
       console.log('OTP is readed is ', this.OTP);
       this.util.createCustomLoader('circles', 'Verfying OTP').then(loader => {

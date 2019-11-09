@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnDestroy, ViewChild } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { QueryResourceService } from 'src/app/api/services';
-import { Order, OrderLine, Product, Store, CommandResource, AuxilaryOrderLine } from 'src/app/api/models';
+import { Order, OrderLine, Product, Store, CommandResource, AuxilaryOrderLine, Offer } from 'src/app/api/models';
 import { CartService } from 'src/app/services/cart.service';
 import { ModalController, NavController } from '@ionic/angular';
 import { OrderService } from 'src/app/services/order.service';
@@ -29,6 +29,8 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
   auxilariesProducts = {};
 
   orderLines: OrderLine[] = [];
+
+  offer: Offer[] = [];
 
   auxilaryOrderLines: AuxilaryOrderLine = {};
 
@@ -75,6 +77,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.logger.info(this.order);
     this.getOrderLines(0);
+    this.getAppliedOffers(this.order.id);
   }
 
 
@@ -144,6 +147,13 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     });
   }
 
+  getAppliedOffers(id) {
+    this.queryResource.findOfferLinesByOrderIdUsingGET(id)
+      .subscribe(offerLines => {
+      this.logger.info('OfferLines for the order is ', offerLines);
+      this.offer = offerLines;
+    });
+  }
 
   getAuxilaryOrderLines(o , i) {
     this.queryResource.findAuxilaryOrderLineByOrderLineIdUsingGET({

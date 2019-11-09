@@ -36,11 +36,12 @@ export class PaymentSuccessfullInfoComponent implements OnInit , OnDestroy {
     this.logger.info('Closing the PaymentSuccessfullModal');
     this.cartService.emptyCart();
     this.orderService.resource = {};
+    this.orderService.offer = undefined;
     this.modalController.getTop()
     .then(data => {
       console.log(data);
-      this.modalController.dismiss(); 
-    })
+      this.modalController.dismiss();
+    });
     this.navController.navigateBack('/restaurant');
   }
 

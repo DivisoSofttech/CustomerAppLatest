@@ -197,7 +197,9 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
           this.total = this.total - response.orderDiscountAmount;
           this.setCartTotal();
           const myOffer: Offer = {
-            offerRef : response.promoCode
+            offerRef : response.promoCode,
+            orderDiscountAmount: parseFloat(this.decimalPipe.transform(response.orderDiscountAmount, '1.1-2')),
+            description: response.claimedDate
           };
           this.orderService.setOffer(myOffer);
         }

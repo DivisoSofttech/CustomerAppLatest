@@ -44,6 +44,7 @@ export class BasketPage implements OnInit {
   clearCart() {
     this.cart.emptyCart();
     this.orderService.resource = {};
+    this.orderService.offer = undefined;
   }
 
 }

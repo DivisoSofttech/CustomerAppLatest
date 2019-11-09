@@ -22,6 +22,7 @@ import { PageOfOrderLine } from '../models/page-of-order-line';
 import { PageOfAuxilaryOrderLine } from '../models/page-of-auxilary-order-line';
 import { Entry } from '../models/entry';
 import { ElasticDataEntry } from '../models/elastic-data-entry';
+import { Offer } from '../models/offer';
 import { OrderLine } from '../models/order-line';
 import { PageOfProduct } from '../models/page-of-product';
 import { Product } from '../models/product';
@@ -71,6 +72,7 @@ class QueryResourceService extends __BaseService {
   static readonly findCategoryAndCountUsingGETPath = '/api/query/findCategoryAndCount';
   static readonly findCategoryAndCountBystoreIdUsingGETPath = '/api/query/findCategoryAndCountBystoreId/{storeId}';
   static readonly findByMobileNumberUsingGETPath = '/api/query/findCustomerByMobileNumber/{mobileNumber}';
+  static readonly findOfferLinesByOrderIdUsingGETPath = '/api/query/findOfferLinesByOrderId/{id}';
   static readonly findOrderLinesByOrderIdUsingGETPath = '/api/query/findOrderLinesByOrderId/{orderId}';
   static readonly findProductByCategoryIdAndUserIdUsingGETPath = '/api/query/findProductByCategoryIdAndUserId/{categoryId}/{userId}';
   static readonly findProductByIdUsingGETPath = '/api/query/findProductById/{id}';
@@ -918,6 +920,42 @@ class QueryResourceService extends __BaseService {
   findByMobileNumberUsingGET(mobileNumber: number): __Observable<CustomerDTO> {
     return this.findByMobileNumberUsingGETResponse(mobileNumber).pipe(
       __map(_r => _r.body as CustomerDTO)
+    );
+  }
+
+  /**
+   * @param id id
+   * @return OK
+   */
+  findOfferLinesByOrderIdUsingGETResponse(id: number): __Observable<__StrictHttpResponse<Array<Offer>>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/findOfferLinesByOrderId/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<Array<Offer>>;
+      })
+    );
+  }
+  /**
+   * @param id id
+   * @return OK
+   */
+  findOfferLinesByOrderIdUsingGET(id: number): __Observable<Array<Offer>> {
+    return this.findOfferLinesByOrderIdUsingGETResponse(id).pipe(
+      __map(_r => _r.body as Array<Offer>)
     );
   }
 

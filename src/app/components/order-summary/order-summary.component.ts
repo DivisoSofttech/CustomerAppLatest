@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { QueryResourceService } from 'src/app/api/services';
-import { Order, OrderLine, Product, Store, CommandResource, AuxilaryOrderLine } from 'src/app/api/models';
+import { Order, OrderLine, Product, Store, CommandResource, AuxilaryOrderLine, Offer } from 'src/app/api/models';
 import { CartService } from 'src/app/services/cart.service';
 import { ModalController, NavController } from '@ionic/angular';
 import { OrderService } from 'src/app/services/order.service';
@@ -26,6 +26,7 @@ export class OrderSummaryComponent implements OnInit, OnDestroy {
   auxilariesProducts = {};
 
   total = {};
+  offer: Offer[] = [];
 
   auxilaryOrderLines: AuxilaryOrderLine = {};
 
@@ -49,6 +50,7 @@ export class OrderSummaryComponent implements OnInit, OnDestroy {
     this.logger.info(this.order);
     // this.getOrderDetails();
     this.getOrderLines(0);
+    this.getAppliedOffers(this.order.id);
   }
 
   ngOnDestroy() {
@@ -71,20 +73,29 @@ export class OrderSummaryComponent implements OnInit, OnDestroy {
       orderId: this.order.id
     })
     .subscribe(orderLines => {
+
       orderLines.content.forEach(o => {
         this.total[o.id] = 0;
         this.orderLines.push(o);
         this.auxilariesProducts[o.productId] = [];
         this.auxilaryOrderLines[o.id] = [];
         this.getProducts(o.productId);
-        this.getAuxilaryOrderLines(o,0);
+        this.getAuxilaryOrderLines(o, 0);
       });
       i++;
       if(i < orderLines.totalPages) {
         this.getOrderLines(i);
       } else {
-        this.logger.info('Completed Fetching OrderLines')
+        this.logger.info('Completed Fetching OrderLines');
       }
+    });
+  }
+
+  getAppliedOffers(id) {
+    this.queryResource.findOfferLinesByOrderIdUsingGET(id)
+      .subscribe(offerLines => {
+      this.logger.info('OfferLines for the order is ', offerLines);
+      this.offer = offerLines;
     });
   }
 

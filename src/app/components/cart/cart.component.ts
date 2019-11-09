@@ -238,6 +238,9 @@ export class CartComponent implements OnInit, OnDestroy {
             grandTotal: parseFloat(
               this.decimalPipe.transform(grandtotal, '1.1-2')
             ),
+            subTotal: parseFloat(
+              this.decimalPipe.transform(this.cart.subTotal, '1.1-2')
+            ),
             email: this.customer.email,
             storeId: this.cart.storeId,
             customerId: this.customer.preferred_username,
@@ -258,7 +261,7 @@ export class CartComponent implements OnInit, OnDestroy {
                 this.logger.info('Order is ', this.orderService.order);
               },
               error => {
-                this.orderService.orderResourceBehaviour.thrownError();
+                // this.orderService.orderResourceBehaviour.thrownError;
                 this.logger.error(
                   'An error has occured while initiating the order ',
                   error
@@ -283,6 +286,7 @@ export class CartComponent implements OnInit, OnDestroy {
             this.decimalPipe.transform(grandtotal, '1.1-2')
           ),
           this.orderService.order.grandTotal = grandtotal;
+          this.orderService.order.subTotal = this.cart.subTotal;
           this.logger.info('Update Order id is', this.orderService.order);
           this.orderService
             .updateOrder(this.orderService.order)

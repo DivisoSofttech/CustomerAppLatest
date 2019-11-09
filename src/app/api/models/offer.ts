@@ -1,7 +1,6 @@
 /* tslint:disable */
-import { Order } from './order';
 export interface Offer {
-  id?: number;
+  description?: string;
   offerRef?: string;
-  order?: Order;
+  orderDiscountAmount?: number;
 }

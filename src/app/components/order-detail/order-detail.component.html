@@ -55,15 +55,26 @@
           Subtotal
         </ion-text>
         <ion-text *ngIf="order.deliveryInfo !== null" slot="start" slot="end" class="ion-text-right font-small">
-          &#8364;{{ (order.grandTotal - order.deliveryInfo.deliveryCharge) |  number: "1.1-2"}}
+         + &#8364;{{ order.subTotal |  number: "1.1-2"}}
         </ion-text>
       </ion-item>
+      <ion-item lines="none" *ngIf="offer.length !==0" >
+          <ion-icon name="done-all" slot="start" no-margin color="success"></ion-icon>
+          <ion-text slot="start" class="font-small" color="success">
+            <p>
+              10% discount applied
+           </p>
+          </ion-text>
+          <ion-text *ngFor="let offerline of offer" slot="start" slot="end" class="ion-text-right font-small">
+            - &#8364;{{offerline.orderDiscountAmount}}
+          </ion-text>
+        </ion-item>
       <ion-item lines="none" *ngIf=" order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='delivery'">
         <ion-text slot="start" class="font-small">
           Delivery
         </ion-text>
         <ion-text slot="start" slot="end" class="ion-text-right font-small">
-          &#8364;{{order.deliveryInfo.deliveryCharge |  number: "1.1-2"}}
+         + &#8364;{{order.deliveryInfo.deliveryCharge |  number: "1.1-2"}}
         </ion-text>
       </ion-item>
       <ion-item lines="none" *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='collection'">
