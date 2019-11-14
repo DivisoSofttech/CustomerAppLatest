@@ -75,7 +75,7 @@
         <ion-text slot="start">
           <h2>
             <strong>{{ store.name | uppercase }}</strong>
-            <small>{{' , ' + (store.storeAddress.city | titlecase)}}</small>
+            <small>{{',' + (store.storeAddress.city | titlecase)}}</small>
           </h2>
           <p>
             {{ store.openingTime | date: "shortTime" }} to

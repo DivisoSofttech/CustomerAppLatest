@@ -4,7 +4,7 @@
 </ion-header>
 
 <ion-content appScrollbarTheme>
-  <ion-fab class="animated animation-duration mobile-only"
+  <ion-fab class="animated animation-duration"
     [ngClass]="(currentSegment === 'menu' && showCatgeoryFilterFab) ? 'rotateIn' : 'rotateOut'" vertical="bottom"
     horizontal="end" slot="fixed">
     <ion-fab-button (click)="categoryListPopOver($event)">
@@ -87,7 +87,7 @@
                   <ion-grid>
                     <ion-row *ngIf="store !== undefined">
                       <ion-col size="12" *ngIf="store.location !== null">
-                        <app-map [showActiveLocation]="'false'"></app-map>
+                        <app-map [showActiveLocation]="'false'" [coords]="store.location"></app-map>
                       </ion-col>
                       <ion-col size="12" *ngIf="store !== undefined">
                         <ion-text *ngIf="store.info">

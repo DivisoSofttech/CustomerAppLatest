@@ -32,6 +32,8 @@ export class MapComponent implements OnInit{
 
   @Input() showActiveLocation = true;
 
+  @Input() coords ='';
+
   constructor(
     private logger: NGXLogger,
     private platform: Platform,
@@ -50,6 +52,8 @@ export class MapComponent implements OnInit{
         this.logger.info('Map component getting LatLon');
         if (this.showActiveLocation === true) {
           this.getLatLon();
+        } else {
+          this.loadMap(this.coords);
         }
       }
     });

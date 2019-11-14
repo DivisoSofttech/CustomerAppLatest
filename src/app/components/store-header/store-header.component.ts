@@ -15,9 +15,9 @@ export class StoreHeaderComponent implements OnInit {
 
   @Input() name = '';
 
-  @Output() searchEnable = new EventEmitter();
-
   @Output() categoryfilterClicked = new EventEmitter();
+
+  @Output() searchEnable = new EventEmitter();
 
   showSearchBar = false;
 
