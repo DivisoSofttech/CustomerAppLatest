@@ -109,8 +109,7 @@ export class ProfilePage implements OnInit {
 
   async logout() {
     const alert = await this.alertController.create({
-      header: 'Alert',
-      message: 'Logout ',
+      header: 'Logout ',
       buttons: [ {
         text: 'Cancel',
         role: 'cancel',
