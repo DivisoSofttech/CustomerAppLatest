@@ -15,7 +15,7 @@ export class SharedDataService {
   ) { 
   }
 
-  saveToStorage(key,service) {
+  saveToStorage(key, service) {
     this.storage.set(key, service);
   }
 

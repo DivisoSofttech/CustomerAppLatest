@@ -33,6 +33,7 @@ export class KeycloakService {
     this.logger.info('Created Keycloak Service');
     this.storage.get('user')
     .then(storedUser => {
+      console.log('Use from storage in con keycloak', storedUser);
       if(storedUser === null ) {
         this.getCurrentUserDetails()
         .then((data: any ) => {
@@ -42,11 +43,16 @@ export class KeycloakService {
             this.notificationService.connectToNotification();
             this.notificationService.subscribeToMyNotifications(data.preferred_username);
           }
-        });    
+        });
       } else {
         this.getUserChangedSubscription().next(storedUser);
+        if (!this.isGuest(storedUser.preferred_username)) {
+          console.log('Subscribing to notifications for the user from KC Cons ', storedUser.preferred_username);
+          this.notificationService.connectToNotification();
+          this.notificationService.subscribeToMyNotifications(storedUser.preferred_username);
+        }
       }
-    })
+    });
   }
 
   public getUserChangedSubscription() {

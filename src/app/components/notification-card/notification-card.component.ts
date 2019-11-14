@@ -44,6 +44,7 @@ export class NotificationCardComponent implements OnInit {
     .subscribe(store => {
       this.store = store;
       this.showLoading = false;
+    }, err => {console.log('Error occured while fetching storeByRegisterNumber');
     });
   }
 
