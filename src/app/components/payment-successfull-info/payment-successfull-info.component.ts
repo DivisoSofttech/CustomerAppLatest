@@ -22,6 +22,8 @@ export class PaymentSuccessfullInfoComponent implements OnInit , OnDestroy {
 
   order;
 
+  currentShop;
+
   constructor(
     private modalController: ModalController,
     private cartService: CartService,
@@ -51,6 +53,8 @@ export class PaymentSuccessfullInfoComponent implements OnInit , OnDestroy {
   }
 
   ngOnInit() {
+    this.currentShop = this.cartService.currentShop;
+    this.cartService.emptyCart();
     this.getOrder();
     this.total = this.orderService.order.grandTotal;
     this.method = this.orderService.paymentMethod;
@@ -84,7 +88,7 @@ export class PaymentSuccessfullInfoComponent implements OnInit , OnDestroy {
     if (this.order !== null) {
       const modal = await this.modalController.create({
         component: OrderSummaryComponent,
-        componentProps: { order: this.order, store: this.cartService.currentShop }
+        componentProps: { order: this.order, store: this.currentShop }
       });
 
       modal.onDidDismiss()

@@ -10,6 +10,7 @@
   </ion-header>
   
   <ion-content appScrollbarTheme>
+
     <ion-item *ngIf="store" lines="full">
       <ion-avatar>
         <ion-img [src]="
@@ -21,7 +22,7 @@
       </ion-avatar>
       <ion-text class="ion-margin">
         {{store.name}}
-        <small>{{' , ' + (store.storeAddress.city | titlecase)}}</small>
+        <small class="cl-grey">{{' , ' + (store.storeAddress.city | titlecase)}}</small>
       </ion-text>
       <ion-badge slot="end" padding>{{'Order ' +  order.orderId}}</ion-badge>
     </ion-item>

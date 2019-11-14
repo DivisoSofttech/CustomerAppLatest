@@ -42,9 +42,9 @@
           store.image
         "></ion-img>
     </ion-avatar>
-    <ion-text class="ion-margin">
+    <ion-text class="ion-margin" slot="end">
       {{store.name}}
-      <small>{{' , ' + (store.storeAddress.city | titlecase)}}</small>
+      <small class="cl-grey">{{' , ' + (store.storeAddress.city | titlecase)}}</small>
     </ion-text>
     <ion-badge slot="end" padding>{{'Order ' +  order.orderId}}</ion-badge>
   </ion-item>
