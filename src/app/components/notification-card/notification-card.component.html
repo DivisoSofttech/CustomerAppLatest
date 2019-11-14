@@ -13,7 +13,9 @@
       </ion-thumbnail>
         <ion-label>
           <h2>{{(notification.title | titlecase)}}</h2>
-          <h3>{{(store.name | titlecase)}}</h3>
+          <h3>{{(store.name | titlecase)}}
+            <small class="cl-grey">{{' , ' + (store.storeAddress.city | titlecase)}}</small>
+          </h3>
           <ion-badge>{{order.orderId}}</ion-badge>
           <p>{{notification.message}}</p>
           <b><p>{{notification.date | date: 'short'}}</p></b>
