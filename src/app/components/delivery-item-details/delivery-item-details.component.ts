@@ -91,11 +91,8 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
     this.cart.total = this.total;
   }
   increaseProductCount(product , orderLine) {
-    if (this.cart.auxilaryItems[product.id].length !== 0) {
-      this.showAddAuxilaryPopover(product);
-    } else {
-      this.cart.increase(orderLine , product);
-    }
+    
+    this.cart.increase(orderLine , product);
     if (this.isOfferAvailable) {
       this.getOffers();
     } else {

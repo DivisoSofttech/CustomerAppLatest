@@ -9,7 +9,9 @@
       </ion-img>
       <ion-label style="margin-left:15px">
         <ion-text word-wrap text-wrap class="category">
-          <h2 class="store-name fnt-sserif">{{store.name | titlecase}}</h2>
+          <h2 class="store-name fnt-sserif">{{store.name  | titlecase}}
+            <small>{{' , ' + (store.storeAddress.city | titlecase)}}</small>
+          </h2>
           <h3 class="medium overflow-text-wrap fnt-sserif cl-grey">{{categories | arrayFormater}} </h3>
           <h4 class="medium overflow-text-wrap fnt-sserif cl-grey" style="color:#56a232">
             {{deliveryTypes | arrayFormater:'only'}}</h4>
@@ -73,6 +75,7 @@
         <ion-text slot="start">
           <h2>
             <strong>{{ store.name | uppercase }}</strong>
+            <small>{{' , ' + (store.storeAddress.city | titlecase)}}</small>
           </h2>
           <p>
             {{ store.openingTime | date: "shortTime" }} to

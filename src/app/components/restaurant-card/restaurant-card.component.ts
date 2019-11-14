@@ -56,6 +56,8 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
+    console.log("Store>>>>>>>>>>>>>>>" , this.store);
+
     this.keycloakSubscription = this.keycloakService.getUserChangedSubscription()
       .subscribe((data: any) => {
         this.logger.info('Checking If guest : RestaurantCardComponet');
