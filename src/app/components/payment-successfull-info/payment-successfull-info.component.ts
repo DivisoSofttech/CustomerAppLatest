@@ -1,3 +1,4 @@
+import { NotificationService } from './../../services/notification.service';
 import { SharedDataService } from 'src/app/services/shared-data.service';
 import { OrderService } from './../../services/order.service';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
@@ -29,7 +30,8 @@ export class PaymentSuccessfullInfoComponent implements OnInit , OnDestroy {
     private logger: NGXLogger,
     private queryResource: QueryResourceService,
     private util: Util,
-    private sharedData: SharedDataService
+    private sharedData: SharedDataService,
+    private notificationService: NotificationService
   ) { }
 
   async dismiss() {
@@ -37,6 +39,9 @@ export class PaymentSuccessfullInfoComponent implements OnInit , OnDestroy {
     this.cartService.emptyCart();
     this.orderService.resource = {};
     this.orderService.offer = undefined;
+    this.sharedData.getData('user').then(user => {
+      this.notificationService.getNotificationCount(user.preferred_username);
+    });
     this.modalController.getTop()
     .then(data => {
       console.log(data);
@@ -83,12 +88,12 @@ export class PaymentSuccessfullInfoComponent implements OnInit , OnDestroy {
       });
 
       modal.onDidDismiss()
-      .then((data)=> {
+      .then((data) => {
         this.logger.info('Modal Dismissed PaymentSuccessfull' , data);
-        if(data.data) {
+        if (data.data) {
           this.dismiss();
         }
-      })
+      });
       await modal.present();
 
     } else {
