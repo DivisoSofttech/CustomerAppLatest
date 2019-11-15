@@ -50,12 +50,14 @@ export class LoginSignupComponent implements OnInit {
   // Login and Register Methods
 
   login() {
+    this.logger.info('LoginCalled++++++++++++++++++++');
     this.util.createLoader()
       .then(loader => {
         loader.present();
         this.keycloakService.authenticate({ username: this.username, password: this.password },
           () => {
             loader.dismiss();
+            this.logger.info('Logged in+++++++');
             this.util.createToast('Logged in successfully', 'checkmark-circle-outline');
             this.createUserIfNotExists(this.username);
           }, () => {
@@ -79,6 +81,7 @@ export class LoginSignupComponent implements OnInit {
 
     modal.onDidDismiss()
     .then((data: any) => {
+      this.logger.info('onDismissCalled+++++++');
       console.log('---------' , data.data.numberVerified);
       if (data.data.numberVerified === true) {
           this.signup();
@@ -96,17 +99,21 @@ export class LoginSignupComponent implements OnInit {
   }
 
   showPassword(val) {
-    this.passwordFieldType = val?'text':'password';
+    this.passwordFieldType = val ? 'text' : 'password';
     this.showPasswordText = val;
   }
 
   signup() {
-        this.util.createLoader()
+    this.logger.info('signup+++++++');
+
+    this.util.createLoader()
       .then(loader => {
         loader.present();
         const user = { username: this.username, email: this.email };
         this.keycloakService.createAccount(user, this.password,
           (res) => {
+            this.logger.info('keycloakService.createAccount+++++++');
+
             loader.dismiss();
             this.keycloakUserid = res.id;
             this.login();
@@ -140,35 +147,34 @@ export class LoginSignupComponent implements OnInit {
       loader.present();
       this.logger.info('Checking if User Exists in MicroService Else Create');
       this.queryResourceService
-        .findCustomerByReferenceUsingGET(reference)
+        .checkUserExistsUsingGET(reference)
         .subscribe(
-          customer => {
-            this.logger.info('Got Customer', customer);
-            this.storage.set('customer' , customer);
-            this.keycloakService.getCurrentUserDetails()
+          isUserExists => {
+            this.logger.info('IsUserExists ', isUserExists);
+            if (isUserExists) {
+              this.queryResourceService.findCustomerByReferenceUsingGET(reference)
+            .subscribe(customer => {
+              this.logger.info('Got Customer', customer);
+              this.storage.set('customer' , customer);
+              this.keycloakService.getCurrentUserDetails()
             .then(data => {
               this.keycloakService.getUserChangedSubscription().next(data);
             });
-            loader.dismiss();
-            if (this.type === 'page') {
+              loader.dismiss();
+              if (this.type === 'page') {
               try {
                 this.util.navigateRoot();
-                this.dismissTrue();                  
+                this.dismissTrue();
               } catch (error) {
-                
+
               }
             } else {
               this.dismissTrue();
             }
-  },
-          err => {
-            if (err.status === 500) {
-              // Check if server is reachable
-              const url = this.apiConfiguration.rootUrl.slice(
-                2,
-                this.apiConfiguration.rootUrl.length
-              );
-              this.commandResourceService
+        });
+      } else {
+        this.logger.info('User is not exists creating new user');
+        this.commandResourceService
                 .createCustomerUsingPOST({
                   reference: this.username,
                   name: this.username,
@@ -188,15 +194,16 @@ export class LoginSignupComponent implements OnInit {
                       this.dismissTrue();
                     }
                   },
-                  eror => {
-                    this.logger.info(eror);
+                  error => {
+                    this.logger.info(error);
                     loader.dismiss();
                     this.util.createToast('Server is Unreachable');
                   }
                 );
-            } else {
+      }
+  },
+          err => {
               loader.dismiss();
-            }
           }
         );
     });

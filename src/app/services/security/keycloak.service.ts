@@ -34,7 +34,7 @@ export class KeycloakService {
     this.storage.get('user')
     .then(storedUser => {
       console.log('Use from storage in con keycloak', storedUser);
-      if(storedUser === null ) {
+      if (storedUser === null ) {
         this.getCurrentUserDetails()
         .then((data: any ) => {
           this.getUserChangedSubscription().next(data);
@@ -60,6 +60,7 @@ export class KeycloakService {
   }
 
   createAccount(user: any, password: string, success: any, err: any) {
+    this.logger.info('keycloakService.createAccount in keycloak service+++++++');
     this.keycloakConfig.refreshClient().then(() => {
       this.keycloakAdmin = this.keycloakConfig.kcAdminClient;
       user.realm = this.realm;
@@ -69,6 +70,7 @@ export class KeycloakService {
       this.keycloakAdmin.users
         .create(user)
         .then(async res => {
+          this.logger.info('user created nowww+++++++');
           this.logger.info('Create use id sub is ', res);
           await this.keycloakAdmin.roles
             .findOneByName({
@@ -76,6 +78,7 @@ export class KeycloakService {
               realm: this.realm
             })
             .then(async role => {
+              this.logger.info('keycloakAdmin.roles.findOneByName+++++++');
               this.logger.info('Role findonebyname ', role);
               await this.keycloakAdmin.users.addRealmRoleMappings({
                 id: res.id,
@@ -86,9 +89,11 @@ export class KeycloakService {
                     name: role.name
                   }
                 ]
-              });
+              }).then(() => success(res));
             });
-          success(res);
+          this.logger.info('keycloak service calling success+++++++');
+
+
         })
         .catch(e => {
           err(e);

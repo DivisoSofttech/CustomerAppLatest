@@ -13,7 +13,6 @@ export interface Order {
   deliveryInfo?: DeliveryInfo;
   email?: string;
   grandTotal?: number;
-  subTotal?: number;
   id?: number;
   orderId?: string;
   orderLines?: Array<OrderLine>;
@@ -21,4 +20,5 @@ export interface Order {
   preOrderDate?: string;
   status?: Status;
   storeId?: string;
+  subTotal?: number;
 }

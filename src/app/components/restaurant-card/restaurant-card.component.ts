@@ -69,8 +69,8 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
           }
         } else {
           this.showFavourite = false;
-        }
-      });
+          }
+        });
     this.timeNow = new Date();
     this.reviewSubscription = this.queryResource.findReviewCountByStoreIdUsingGET(this.store.regNo).subscribe(
       res => {

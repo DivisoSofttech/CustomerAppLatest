@@ -141,6 +141,7 @@ export class OrderSummaryComponent implements OnInit, OnDestroy {
 
   dismiss(value) {
     this.modalController.dismiss(value);
+    this.orderService.offer = undefined;
   }
 
 }

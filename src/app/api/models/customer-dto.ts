@@ -3,6 +3,7 @@ export interface CustomerDTO {
   card?: string;
   contactId?: number;
   curDebt?: number;
+  customerUniqueId?: string;
   debtDate?: string;
   discount?: number;
   id?: number;

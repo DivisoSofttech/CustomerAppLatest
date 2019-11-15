@@ -9,6 +9,7 @@ export interface Customer {
   card?: string;
   contact?: Contact;
   curDebt?: number;
+  customerUniqueId?: string;
   debtDate?: string;
   discount?: number;
   favouriteproducts?: Array<FavouriteProduct>;
