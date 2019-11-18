@@ -6,17 +6,9 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { Platform, MenuController, ModalController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { Storage } from '@ionic/storage';
-import { BackgroundMode } from '@ionic-native/background-mode/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
-import { OAuthService } from 'angular-oauth2-oidc';
-import { NotificationService } from './services/notification.service';
-import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { GuestUserService } from './services/security/guest-user.service';
 import { HistoryListComponent } from './components/history-list/history-list.component';
-import { SharedDataService } from './services/shared-data.service';
-import { Router, NavigationStart } from '@angular/router';
-// import { ForegroundService } from '@ionic-native/foreground-service/ngx';
 
 
 @Component({
@@ -55,14 +47,10 @@ export class AppComponent {
     private statusBar: StatusBar,
     private util: Util,
     private logger: NGXLogger,
-    private storage: Storage,
     private keycloakService: KeycloakService,
-    private menuController: MenuController,
     private modalController: ModalController,
     private screenOrientation: ScreenOrientation,
-    private backgroundMode: BackgroundMode,
     private localNotifications: LocalNotifications,
-    private androidPermissions: AndroidPermissions,
     private guestUserService: GuestUserService,
   ) {
    
@@ -70,77 +58,8 @@ export class AppComponent {
     this.initializeApp();
     if (this.platform.is('pwa') || this.platform.is('cordova')) {
       this.browser = true;
-    } else {
     }
   }
-
-
-
-  // startService() {
-  //   // Notification importance is optional, the default is 1 - Low (no sound or vibration)
-  //   this.foregroundService.start('Foodexp', 'Background Service', 'drawable/fsicon');
-  //  }
-  initializeApp() {
-    // this.startService();
-    this.platform.ready().then(() => {
-      if (this.localNotifications.hasPermission()) {
-        console.log('Local Notifications has permission');
-      } else {
-        this.localNotifications.requestPermission().then(permission => {
-          console.log('Permission has been granted', permission);
-        });
-      }
-      if (this.platform.is('pwa')) {
-        console.log('Browser');
-        this.browser = true;
-      }
-      if (this.platform.is('android')) {
-        // console.log('Checking permission foreground service android');
-        // this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.FOREGROUND_SERVICE)
-        // .then(
-        //   result => {
-        //     console.log('Has permission for foreground');
-        //     console.log('Has permission?', result.hasPermission);
-        //   },
-        //   err => {
-        //     console.log('Android has no permission for foreground service requesting ****');
-        //     this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.FOREGROUND_SERVICE);
-        //   });
-      }
-      this.statusBar.styleDefault();
-      this.statusBar.backgroundColorByHexString('#e6e6e6');
-      // Set orientation to portrait
-      if (this.platform.is('cordova')) {
-        this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
-        // this.backgroundMode.enable();
-        // this.backgroundMode.on('activate').subscribe(() => {
-        //    console.log('activate background mode');
-        //  });
-      }
-      this.splashScreen.hide();
-      this.getUser();
-    });
-  }
-
-  exitApp() {
-    this.util.createAlert('Exit App', 'Are you sure?',
-      (confirm) => {
-        // tslint:disable-next-line: no-string-literal
-        navigator['app'].exitApp();
-      }, (deny) => {
-      });
-  }
-
-  async showPreviousOrders() {
-    const modal = await this.modalController.create({
-      component: HistoryListComponent,
-      componentProps: { keyCloakUser: this.keyCloakUser, viewType: 'modal' }
-    });
-
-    await modal.present();
-
-  }
-
 
   getUser() {
     this.keycloakService.getUserChangedSubscription()
@@ -159,6 +78,45 @@ export class AppComponent {
           this.guest = true;
         }
       });
+  }
+
+  initializeApp() {
+    this.platform.ready().then(() => {
+      if (this.localNotifications.hasPermission()) {
+        this.logger.info('Local Notifications has permission');
+      } else {
+        this.localNotifications.requestPermission().then(permission => {
+          this.logger.info('Permission has been granted', permission);
+        });
+      }
+      if (this.platform.is('pwa')) {
+        this.logger.info("Browser");
+        this.browser = true;
+      }
+      this.statusBar.styleDefault();
+      this.statusBar.backgroundColorByHexString('#e6e6e6');
+      if (this.platform.is('cordova')) {
+        this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+      }
+      this.splashScreen.hide();
+      this.getUser();
+    });
+  }
+
+  exitApp() {
+    this.util.createAlert('Exit App', 'Are you sure?',
+      (confirm) => {
+        navigator['app'].exitApp();
+      }, (deny) => {
+      });
+  }
+
+  async showPreviousOrders() {
+    const modal = await this.modalController.create({
+      component: HistoryListComponent,
+      componentProps: { keyCloakUser: this.keyCloakUser, viewType: 'modal' }
+    });
+    await modal.present();
   }
 
   logout() {

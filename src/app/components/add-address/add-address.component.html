@@ -27,21 +27,13 @@
       <ion-label position="stacked">Email</ion-label>
       <ion-input formControlName="email" type="email"></ion-input>
     </ion-item>
-    <!-- <ion-item>
-            <ion-label position="stacked">Alternate Phone *</ion-label>
-            <ion-input formControlName="alternatePhone" type="number" disabled></ion-input>
-          </ion-item> -->
     <ion-item>
-      <ion-label position="stacked">Address </ion-label>
+      <ion-label position="stacked">Address(*)</ion-label>
       <ion-textarea formControlName="houseNoOrBuildingName" placeholder="Address Line" type="text"></ion-textarea>
       <ion-input formControlName="city" placeholder="City" type="text"></ion-input>
       <ion-input formControlName="landmark" placeholder="County" type="text"></ion-input>
       <ion-input formControlName="pincode" placeholder="Eircode" type="text"></ion-input>
     </ion-item>
-    <!-- <ion-item>
-            <ion-label position="stacked" disabled>State</ion-label>
-            <ion-input formControlName="state" type="text" ></ion-input>
-          </ion-item> -->
     <ion-radio-group formControlName="addressType">
       <ion-item lines="none">
         <ion-label>Home</ion-label>
