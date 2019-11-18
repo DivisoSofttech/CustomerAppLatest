@@ -56,7 +56,7 @@ export class PaypalPaymentComponent implements OnInit {
                 const payment = new PayPalPayment(
                   this.orderService.order.grandTotal + '',
                   'EUR',
-                  'Graeshoppe purchase',
+                  'Foodexp Purchase',
                   'sale'
                 );
                 this.payPal.renderSinglePaymentUI(payment).then(

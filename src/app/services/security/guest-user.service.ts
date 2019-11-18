@@ -20,7 +20,7 @@ export class GuestUserService {
   };
 
   async logInGuest() {
-    await this.keycloakService.authenticate(this.credentials,
+    await this.keycloakService.authenticateAndAuthorize(this.credentials,
       (success) => {
         this.logger.info('guest-logged-in');
         this.keycloakService.getCurrentUserDetails()

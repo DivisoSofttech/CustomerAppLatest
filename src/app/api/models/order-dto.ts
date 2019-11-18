@@ -13,4 +13,5 @@ export interface OrderDTO {
   preOrderDate?: string;
   statusId?: number;
   storeId?: string;
+  subTotal?: number;
 }

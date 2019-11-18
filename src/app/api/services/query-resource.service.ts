@@ -56,6 +56,7 @@ import { PageOfUserRating } from '../models/page-of-user-rating';
 })
 class QueryResourceService extends __BaseService {
   static readonly findAuxilariesByProductIdUsingGETPath = '/api/query/auxilaries-productId/{productId}';
+  static readonly checkUserExistsUsingGETPath = '/api/query/checkUserExists/{reference}';
   static readonly findComboByProductIdUsingGETPath = '/api/query/combos-productId/{productId}';
   static readonly findContactByIdUsingGETPath = '/api/query/contacts/{id}';
   static readonly findCustomerByReferenceUsingGETPath = '/api/query/customers/findByReference/{reference}';
@@ -165,6 +166,42 @@ class QueryResourceService extends __BaseService {
   findAuxilariesByProductIdUsingGET(productId: number): __Observable<PageOfAuxilaryLineItem> {
     return this.findAuxilariesByProductIdUsingGETResponse(productId).pipe(
       __map(_r => _r.body as PageOfAuxilaryLineItem)
+    );
+  }
+
+  /**
+   * @param reference reference
+   * @return OK
+   */
+  checkUserExistsUsingGETResponse(reference: string): __Observable<__StrictHttpResponse<boolean>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/checkUserExists/${reference}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'text'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return (_r as HttpResponse<any>).clone({ body: (_r as HttpResponse<any>).body === 'true' }) as __StrictHttpResponse<boolean>
+      })
+    );
+  }
+  /**
+   * @param reference reference
+   * @return OK
+   */
+  checkUserExistsUsingGET(reference: string): __Observable<boolean> {
+    return this.checkUserExistsUsingGETResponse(reference).pipe(
+      __map(_r => _r.body as boolean)
     );
   }
 
