@@ -42,13 +42,12 @@ export class AddAddressComponent implements OnInit {
       houseNoOrBuildingName: [this.address.houseNoOrBuildingName , Validators.compose([Validators.required])],
 
       addressType: [this.address.addressType],
-      landmark: [this.address.landmark],
-      city: [this.address.city],
+      landmark: [this.address.landmark, Validators.compose([Validators.required])],
+      city: [this.address.city, Validators.compose([Validators.required])],
       email: [this.address.email , Validators.email],
       customerId: [this.address.customerId],
       id: [this.address.id]
     });
-  
   }
 
   updateAddress() {
