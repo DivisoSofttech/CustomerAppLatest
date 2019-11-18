@@ -54,7 +54,7 @@ export class LoginSignupComponent implements OnInit {
     this.util.createLoader()
       .then(loader => {
         loader.present();
-        this.keycloakService.authenticate({ username: this.username, password: this.password },
+        this.keycloakService.authenticateAndAuthorize({ username: this.username, password: this.password },
           () => {
             loader.dismiss();
             this.logger.info('Logged in+++++++');
@@ -105,18 +105,22 @@ export class LoginSignupComponent implements OnInit {
 
   signup() {
     this.logger.info('signup+++++++');
-
-    this.util.createLoader()
+    this.util.createCustomLoader('lines', 'Logging in')
       .then(loader => {
         loader.present();
         const user = { username: this.username, email: this.email };
         this.keycloakService.createAccount(user, this.password,
           (res) => {
             this.logger.info('keycloakService.createAccount+++++++');
-
             loader.dismiss();
             this.keycloakUserid = res.id;
-            this.login();
+            this.keycloakService.authenticateUser({ username: this.username, password: this.password }
+              , () => {
+                this.logger.info('Success callack navgating to route');
+                this.dismissTrue();
+                this.util.navigateHome();
+              });
+            this.createUserIfNotExists(this.username);
           },
           (err) => {
             loader.dismiss();
@@ -143,8 +147,6 @@ export class LoginSignupComponent implements OnInit {
   }
 
   createUserIfNotExists(reference) {
-    this.util.createLoader().then(loader => {
-      loader.present();
       this.logger.info('Checking if User Exists in MicroService Else Create');
       this.queryResourceService
         .checkUserExistsUsingGET(reference)
@@ -160,17 +162,6 @@ export class LoginSignupComponent implements OnInit {
             .then(data => {
               this.keycloakService.getUserChangedSubscription().next(data);
             });
-              loader.dismiss();
-              if (this.type === 'page') {
-              try {
-                this.util.navigateRoot();
-                this.dismissTrue();
-              } catch (error) {
-
-              }
-            } else {
-              this.dismissTrue();
-            }
         });
       } else {
         this.logger.info('User is not exists creating new user');
@@ -187,26 +178,17 @@ export class LoginSignupComponent implements OnInit {
                   customer => {
                     this.logger.info('Customer Created', customer);
                     this.storage.set('customer' , customer);
-                    loader.dismiss();
-                    if (this.type === 'page') {
-                      this.util.navigateRoot();
-                    } else {
-                      this.dismissTrue();
-                    }
                   },
                   error => {
                     this.logger.info(error);
-                    loader.dismiss();
                     this.util.createToast('Server is Unreachable');
                   }
                 );
       }
   },
           err => {
-              loader.dismiss();
           }
         );
-    });
   }
 
   // View Related Methods

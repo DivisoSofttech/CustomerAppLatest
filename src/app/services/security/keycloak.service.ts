@@ -72,25 +72,17 @@ export class KeycloakService {
         .then(async res => {
           this.logger.info('user created nowww+++++++');
           this.logger.info('Create use id sub is ', res);
-          await this.keycloakAdmin.roles
-            .findOneByName({
-              name: 'customer',
-              realm: this.realm
-            })
-            .then(async role => {
-              this.logger.info('keycloakAdmin.roles.findOneByName+++++++');
-              this.logger.info('Role findonebyname ', role);
-              await this.keycloakAdmin.users.addRealmRoleMappings({
+          this.logger.info('keycloakAdmin.roles.findOneByName+++++++');
+          await this.keycloakAdmin.users.addRealmRoleMappings({
                 id: res.id,
                 realm: this.realm,
                 roles: [
                   {
-                    id: role.id,
-                    name: role.name
+                    id: 'd2745301-d632-446e-a941-de016048a0f0',
+                    name: 'customer'
                   }
                 ]
               }).then(() => success(res));
-            });
           this.logger.info('keycloak service calling success+++++++');
 
 
@@ -137,7 +129,25 @@ export class KeycloakService {
     });
   }
 
-  async authenticate(credentials: any, success: any, failure: any, err: any) {
+
+  async authenticateUser(credentials: any, success: any) {
+    await this.oauthService
+    .fetchTokenUsingPasswordFlowAndLoadUserProfile(
+      credentials.username,
+      credentials.password,
+      new HttpHeaders()
+    )
+    .then(data => {
+      this.logger.info('Data after authenticate ', data);
+      this.storage.set('user', data);
+      this.userChangedBehaviour.next(data);
+      this.customer = data;
+      success();
+    });
+  }
+
+
+  async authenticateAndAuthorize(credentials: any, success: any, failure: any, err: any) {
     await this.oauthService
       .fetchTokenUsingPasswordFlowAndLoadUserProfile(
         credentials.username,
