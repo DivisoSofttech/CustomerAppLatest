@@ -123,11 +123,11 @@ lines="full"
 <ion-button
 class="ion-margin round-button" *ngIf="currentSegment==='delivery'"
 [disabled]="neededCheckOutAmount !== 0"
-color="primary" expand="full" (click)="continue('delivery')"
+color="primary" expand="full" (click)="checkRestaurantStatus('delivery')"
 >Continue</ion-button
 >
 <ion-button *ngIf="currentSegment==='collection'"
-color="primary" expand="full" (click)="continue('collection')"
+color="primary" expand="full" (click)="checkRestaurantStatus('collection')"
 class="ion-margin round-button"
 >Continue</ion-button
 >

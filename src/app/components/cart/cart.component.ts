@@ -13,15 +13,15 @@ import {
   OnDestroy
 } from '@angular/core';
 import { OrderLine, Store, StoreSettings } from 'src/app/api/models';
-import { ModalController, NavController } from '@ionic/angular';
+import { ModalController, NavController, PopoverController } from '@ionic/angular';
 import { Util } from 'src/app/services/util';
 import { OrderService } from 'src/app/services/order.service';
-import { OrderCommandResourceService } from 'src/app/api/services';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { LoginSignupComponent } from '../login-signup/login-signup.component';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { SharedDataService } from 'src/app/services/shared-data.service';
+import { Subscription} from 'rxjs';
 import { DecimalPipe } from '@angular/common';
+import { PreorderComponent } from '../preorder/preorder.component';
+import { ClosedPipe } from 'src/app/pipes/closed.pipe';
 
 @Component({
   selector: 'app-cart',
@@ -78,7 +78,9 @@ export class CartComponent implements OnInit, OnDestroy {
     private navController: NavController,
     private logger: NGXLogger,
     private util: Util,
-    private decimalPipe: DecimalPipe
+    private decimalPipe: DecimalPipe,
+    private popoverController: PopoverController,
+    private closedPipe: ClosedPipe
   ) {}
 
   ngOnInit() {
@@ -218,86 +220,112 @@ export class CartComponent implements OnInit, OnDestroy {
     });
   }
 
+  async preorderPopover(callback?) {
+    const popover = await this.popoverController.create({
+      component: PreorderComponent,
+      translucent: false,
+      backdropDismiss: false
+    });
+
+    popover.onDidDismiss()
+    .then(()=> {
+      callback();
+    })
+  
+    await popover.present();
+  }
+
+  checkRestaurantStatus(deliveryType) {
+    if(!this.closedPipe.transform(new Date() , this.store.openingTime , this.store.closingTime)) {
+      this.preorderPopover(()=> {
+        this.continue(deliveryType);
+      });
+     } else {
+       this.continue(deliveryType);
+     }
+  }
+
   continue(deliveryType) {
-    this.logger.info('In Continue');
-    this.orderService.setShop(this.store);
-    this.orderService.setDeliveryType(deliveryType);
-    this.orderService.setDeliveryCharge(this.storeSetting.deliveryCharge);
-    this.loginModal(
-      () => {
-        if (this.orderService.resource.nextTaskName === undefined) {
-          this.logger.info('creating new order >>>>>>>>>>>>>');
-          let grandtotal = 0;
-          grandtotal =
-            grandtotal +
-            this.cart.total;
-          const order: Order = {
-            orderLines: this.orderLines,
-            appliedOffers: [],
-            // tslint:disable-next-line: radix
-            grandTotal: parseFloat(
+
+      this.logger.info('In Continue');
+      this.orderService.setShop(this.store);
+      this.orderService.setDeliveryType(deliveryType);
+      this.orderService.setDeliveryCharge(this.storeSetting.deliveryCharge);
+      this.loginModal(
+        () => {
+          if (this.orderService.resource.nextTaskName === undefined) {
+            this.logger.info('creating new order >>>>>>>>>>>>>');
+            let grandtotal = 0;
+            grandtotal =
+              grandtotal +
+              this.cart.total;
+            const order: Order = {
+              orderLines: this.orderLines,
+              appliedOffers: [],
+              // tslint:disable-next-line: radix
+              grandTotal: parseFloat(
+                this.decimalPipe.transform(grandtotal, '1.1-2')
+              ),
+              subTotal: parseFloat(
+                this.decimalPipe.transform(this.cart.subTotal, '1.1-2')
+              ),
+              email: this.customer.email,
+              storeId: this.cart.storeId,
+              customerId: this.customer.preferred_username,
+              allergyNote: this.allergyNote
+            };
+            console.log('The grandtotal is exactly after piping', this.decimalPipe.transform(grandtotal, '1.1-2'));
+            this.orderService.setOrder(order);
+            this.logger.info('Delivery type is ', deliveryType);
+            this.initiateOrderSubcription = this.orderService
+              .initiateOrder()
+              .subscribe(
+                resource => {
+                  this.orderService.setResource(resource);
+                  this.orderService.orderResourceBehaviour.next(
+                    resource.nextTaskName
+                  );
+                  this.logger.info('Resultant resource is ', resource);
+                  this.logger.info('Order is ', this.orderService.order);
+                },
+                error => {
+                  // this.orderService.orderResourceBehaviour.thrownError;
+                  this.logger.error(
+                    'An error has occured while initiating the order ',
+                    error
+                  );
+                  this.util.createToast(
+                    'Something went wrong try again',
+                    'information-circle-outline'
+                  );
+                }
+              );
+          } else {
+            this.orderService.order.orderLines = this.cart.orderLines;
+            this.orderService.order.allergyNote = this.allergyNote;
+            if (this.orderService.deliveryInfo !== undefined) {
+              this.logger.info('Deliveryinfo exists ');
+              this.orderService.order.deliveryInfo = this.orderService.deliveryInfo;
+            }
+            let grandtotal = 0;
+            grandtotal =
+              grandtotal + this.cart.total;
+            grandtotal = parseFloat(
               this.decimalPipe.transform(grandtotal, '1.1-2')
             ),
-            subTotal: parseFloat(
-              this.decimalPipe.transform(this.cart.subTotal, '1.1-2')
-            ),
-            email: this.customer.email,
-            storeId: this.cart.storeId,
-            customerId: this.customer.preferred_username,
-            allergyNote: this.allergyNote
-          };
-          console.log('The grandtotal is exactly after piping', this.decimalPipe.transform(grandtotal, '1.1-2'));
-          this.orderService.setOrder(order);
-          this.logger.info('Delivery type is ', deliveryType);
-          this.initiateOrderSubcription = this.orderService
-            .initiateOrder()
-            .subscribe(
-              resource => {
-                this.orderService.setResource(resource);
-                this.orderService.orderResourceBehaviour.next(
-                  resource.nextTaskName
-                );
-                this.logger.info('Resultant resource is ', resource);
-                this.logger.info('Order is ', this.orderService.order);
-              },
-              error => {
-                // this.orderService.orderResourceBehaviour.thrownError;
-                this.logger.error(
-                  'An error has occured while initiating the order ',
-                  error
-                );
-                this.util.createToast(
-                  'Something went wrong try again',
-                  'information-circle-outline'
-                );
-              }
-            );
-        } else {
-          this.orderService.order.orderLines = this.cart.orderLines;
-          this.orderService.order.allergyNote = this.allergyNote;
-          if (this.orderService.deliveryInfo !== undefined) {
-            this.logger.info('Deliveryinfo exists ');
-            this.orderService.order.deliveryInfo = this.orderService.deliveryInfo;
+            this.orderService.order.grandTotal = grandtotal;
+            this.orderService.order.subTotal = this.cart.subTotal;
+            this.logger.info('Update Order id is', this.orderService.order);
+            this.orderService
+              .updateOrder(this.orderService.order)
+              .subscribe(orderDTO => {
+                this.logger.info('Order DTO Updated is ', orderDTO);
+              });
           }
-          let grandtotal = 0;
-          grandtotal =
-            grandtotal + this.cart.total;
-          grandtotal = parseFloat(
-            this.decimalPipe.transform(grandtotal, '1.1-2')
-          ),
-          this.orderService.order.grandTotal = grandtotal;
-          this.orderService.order.subTotal = this.cart.subTotal;
-          this.logger.info('Update Order id is', this.orderService.order);
-          this.orderService
-            .updateOrder(this.orderService.order)
-            .subscribe(orderDTO => {
-              this.logger.info('Order DTO Updated is ', orderDTO);
-            });
-        }
-      },
-      err => this.logger.error('An Error occured during sign in ', err)
-    );
-    this.navController.navigateForward('/checkout');
+        },
+        err => this.logger.error('An Error occured during sign in ', err)
+      );
+      this.navController.navigateForward('/checkout');  
   }
 
   segmenChanged(event) {
