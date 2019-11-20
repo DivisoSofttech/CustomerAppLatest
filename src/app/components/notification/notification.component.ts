@@ -5,6 +5,7 @@ import { Storage } from '@ionic/storage';
 import { OpenTask, Notification } from 'src/app/api/models';
 import { ModalController, IonInfiniteScroll } from '@ionic/angular';
 import { Util } from 'src/app/services/util';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-notification',
@@ -18,6 +19,12 @@ export class NotificationComponent implements OnInit  , OnDestroy {
   showLoading;
   notificationSubscription;
   pageNumber = 0;
+
+  notificationSorted = {
+    'today':[]
+  }
+  notificationSortedKeys = ['today'];
+
   @ViewChild(IonInfiniteScroll, null) inifinitScroll: IonInfiniteScroll;
 
   constructor(
@@ -25,7 +32,8 @@ export class NotificationComponent implements OnInit  , OnDestroy {
     private queryResource: QueryResourceService,
     private logger: NGXLogger,
     private storage: Storage,
-    private util: Util
+    private util: Util,
+    private datePipe: DatePipe
   ) { }
 
   ngOnInit() {
@@ -48,9 +56,8 @@ export class NotificationComponent implements OnInit  , OnDestroy {
         page: i
       }
     ).subscribe(notifcatons => {
-      this.logger.info('Notificatins ' , i , notifcatons.body.content);
       notifcatons.body.content.forEach(n => {
-        this.notifications.push(n);
+       this.sortNotifications(n);
       });
       this.showLoading = false;
       if(i !== 0) {
@@ -66,6 +73,24 @@ export class NotificationComponent implements OnInit  , OnDestroy {
       this.util.createToast('Unable to get Notifications');
       this.showLoading = false;
     });
+  }
+
+  sortNotifications(n) {
+    const date1 = new Date(this.datePipe.transform(n.date,'M/d/yy'))
+    const date2 = new Date(this.datePipe.transform(new Date() , 'M/d/yy'));
+    const diffTime = Math.abs(date2 - date1);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+    if(diffDays === 0) {
+        this.notificationSorted['today'].push(n);
+    } else {
+      if(this.notificationSortedKeys.includes(this.datePipe.transform(n.date,'M/d/yy'))) {            
+        this.notificationSorted[this.datePipe.transform(n.date,'M/d/yy')].push(n);
+      } else {
+        this.notificationSortedKeys.push(this.datePipe.transform(n.date,'M/d/yy'));
+        this.notificationSorted[this.datePipe.transform(n.date,'M/d/yy')] = [];
+        this.notificationSorted[this.datePipe.transform(n.date,'M/d/yy')].push(n);
+      }
+    }
   }
 
   

@@ -162,9 +162,11 @@ export class LoginSignupComponent implements OnInit {
                 this.dismissTrue();
               }  
               this.keycloakService.getCurrentUserDetails()
-            .then(data => {
+              .then(data => {
               this.keycloakService.getUserChangedSubscription().next(data);
-            });
+              if(this.type !== 'modal')
+              this.navigateRoot();
+              });
         });
       } else {
         this.logger.info('User is not exists creating new user');

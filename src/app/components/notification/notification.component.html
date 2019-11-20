@@ -15,14 +15,28 @@
 
 <ion-content>
 
-  <ion-spinner color="primary" name="dots" *ngIf="showLoading"></ion-spinner>
-  <ion-list class="ion-text-center ion-padding">
-      <ion-text *ngIf="!showLoading && notifications.length === 0">No Notifications</ion-text>
+  <ion-list class="ion-text-center" *ngFor="let nkey of notificationSortedKeys">
+    <ion-list-header color="light">
+        <ion-label>
+          <h2>{{nkey | titlecase}}</h2>
+        </ion-label>
+    </ion-list-header>
+    <ion-spinner color="primary" name="dots" *ngIf="showLoading"></ion-spinner>
+    <ion-grid *ngIf="!showLoading && notificationSorted[nkey].length === 0">
+      <ion-row>
+        <ion-col size="12">
+            <ion-text class="ion-margin">No Notifications</ion-text>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
     <app-notification-card
-    *ngFor="let notification of notifications"
+    *ngFor="let notification of notificationSorted[nkey]"
     [notification]="notification"
     ></app-notification-card>
   </ion-list>
+
+
+
   <ion-infinite-scroll
   threshold="500px"
   (ionInfinite)="loadMoreData($event)"
