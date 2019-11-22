@@ -148,13 +148,12 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   checkOut() {
 
-    this.logger.info('Order is ' , this.order);
+    this.logger.info('Delivery info is  ' , this.order.deliveryInfo);
     this.setNote();
     if ( this.orderService.resource.nextTaskName === 'Process Payment' ) {
       this.logger.info('In for updating the deliveryinfo >>>>>>>>>>> ', this.orderService.deliveryInfo);
       this.orderService.updateDeliveryInfo().subscribe(response => {
           this.logger.info('Update deliveryInfo result is ', response);
-          this.orderService.updateDeliveryInfo();
         });
       if ( this.orderService.acceptType === 'manual') {
           this.displayModalService.presentWaitInfoPopover();

@@ -40,10 +40,12 @@ export class CartComponent implements OnInit, OnDestroy {
   currentSegment = 'delivery';
 
   cartSize = 0;
-
+  date: Date;
   subTotal = 0;
 
   orderLines: OrderLine[] = [];
+
+  orderLinesUpdated: OrderLine[] = [];
 
   selectedAddress;
 
@@ -82,6 +84,9 @@ export class CartComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.date = new Date();
+    console.log('date now ', this.date);
+    
     this.getCartDetails();
     this.getCustomer();
     if (this.viewType === 'full') {
@@ -227,38 +232,33 @@ export class CartComponent implements OnInit, OnDestroy {
       () => {
         if (this.orderService.resource.nextTaskName === undefined) {
           this.logger.info('creating new order >>>>>>>>>>>>>');
-          let grandtotal = 0;
-          grandtotal =
-            grandtotal +
-            this.cart.total;
           const order: Order = {
             orderLines: this.orderLines,
             appliedOffers: [],
             // tslint:disable-next-line: radix
-            grandTotal: parseFloat(
-              this.decimalPipe.transform(grandtotal, '1.1-2')
-            ),
-            subTotal: parseFloat(
-              this.decimalPipe.transform(this.cart.subTotal, '1.1-2')
-            ),
+            grandTotal: this.cart.total,
+            subTotal: this.cart.subTotal,
             email: this.customer.email,
             storeId: this.cart.storeId,
             customerId: this.customer.preferred_username,
-            allergyNote: this.allergyNote
+            allergyNote: this.allergyNote,
+            date: new Date().toISOString()
           };
-          console.log('The grandtotal is exactly after piping', this.decimalPipe.transform(grandtotal, '1.1-2'));
+          console.log('Order setting to order service is ', order);
           this.orderService.setOrder(order);
           this.logger.info('Delivery type is ', deliveryType);
           this.initiateOrderSubcription = this.orderService
             .initiateOrder()
             .subscribe(
               resource => {
-                this.orderService.setResource(resource);
+                this.orderService.setOrder(resource.order);
+                this.orderService.setResource(resource.commandResource);
+                // this.cart.orderLines = resource.order.orderLines;
                 this.orderService.orderResourceBehaviour.next(
-                  resource.nextTaskName
+                  resource.commandResource.nextTaskName
                 );
                 this.logger.info('Resultant resource is ', resource);
-                this.logger.info('Order is ', this.orderService.order);
+                this.logger.info('Order is ', resource.order);
               },
               error => {
                 // this.orderService.orderResourceBehaviour.thrownError;
@@ -273,25 +273,34 @@ export class CartComponent implements OnInit, OnDestroy {
               }
             );
         } else {
-          this.orderService.order.orderLines = this.cart.orderLines;
+          this.orderLinesUpdated = [];
+          this.cart.orderLines.forEach(orderLineUpdated => {
+            let updated ;
+            this.orderService.order.orderLines.forEach(orderLine => {
+              if (orderLine.productId === orderLineUpdated.productId) {
+                orderLineUpdated.id = orderLine.id;
+                this.orderLinesUpdated.push(orderLineUpdated);
+                updated = true;
+              }
+            });
+            if (!updated) {
+              this.orderLinesUpdated.push(orderLineUpdated);
+            }
+          });
+          this.orderService.order.orderLines = this.orderLinesUpdated;
           this.orderService.order.allergyNote = this.allergyNote;
+          this.orderService.order.subTotal = this.cart.subTotal;
+          this.orderService.order.grandTotal = this.cart.total;
           if (this.orderService.deliveryInfo !== undefined) {
             this.logger.info('Deliveryinfo exists ');
             this.orderService.order.deliveryInfo = this.orderService.deliveryInfo;
           }
-          let grandtotal = 0;
-          grandtotal =
-            grandtotal + this.cart.total;
-          grandtotal = parseFloat(
-            this.decimalPipe.transform(grandtotal, '1.1-2')
-          ),
-          this.orderService.order.grandTotal = grandtotal;
-          this.orderService.order.subTotal = this.cart.subTotal;
-          this.logger.info('Update Order id is', this.orderService.order);
+          this.logger.info('Going to Update Order id is', this.orderService.order);
           this.orderService
             .updateOrder(this.orderService.order)
-            .subscribe(orderDTO => {
-              this.logger.info('Order DTO Updated is ', orderDTO);
+            .subscribe(order => {
+              this.logger.info('Order DTO Updated is ', order);
+              this.orderService.order = order;
             });
         }
       },

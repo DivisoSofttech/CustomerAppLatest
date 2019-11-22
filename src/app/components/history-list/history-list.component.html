@@ -45,7 +45,7 @@
                 <span class="custom-span" *ngIf="order.status.name ==='delivered'">Delivered</span>
               </p>
               <p>{{ order.date | date: "medium" }}</p>
-              <p>&#8364;{{ order.grandTotal | number: "1.1-2" }}</p>
+              <p>&#8364;{{ order.grandTotal | number: "1.2-2" }}</p>
             </ion-label>
             <ion-badge slot="end">{{ order.orderId }}</ion-badge>
           </ion-item>

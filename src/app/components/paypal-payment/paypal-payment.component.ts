@@ -52,7 +52,6 @@ export class PaypalPaymentComponent implements OnInit {
             .then(
               () => {
                 console.log('In paypal payment 1');
-
                 const payment = new PayPalPayment(
                   this.orderService.order.grandTotal + '',
                   'EUR',
@@ -114,9 +113,15 @@ export class PaypalPaymentComponent implements OnInit {
             );
         },
         () => {
-          console.log(
+          console.log('OnRejectionPaypal&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
+                    console.log(
             'Error in initialization, maybe PayPal isn\'t supported or something else'
           );
+          this.modalController.getTop().then(modal => {
+            console.log('Getting the top overlay');
+            
+            modal.dismiss();
+          });
           // Error in initialization, maybe PayPal isn't supported or something else
           this.displayModalService.presentMakePayment();
           this.util.createToast('Payment failed please try again', 'information-circle-outline');
@@ -154,7 +159,6 @@ export class PaypalPaymentComponent implements OnInit {
     return await modal.present();
   }
   ngOnInit() {
-
     if (this.platform.is('android') || this.platform.is('ios')) {
       console.log('This is a browser routed paypalsdk android ios ');
       this.payWithPaypalSDK();

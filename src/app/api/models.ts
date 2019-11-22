@@ -48,7 +48,7 @@ export { Offer } from './models/offer';
 export { OpenTask } from './models/open-task';
 export { Order } from './models/order';
 export { OrderAggregator } from './models/order-aggregator';
-export { OrderDTO } from './models/order-dto';
+export { OrderInitiateResponse } from './models/order-initiate-response';
 export { OrderLine } from './models/order-line';
 export { OrderMaster } from './models/order-master';
 export { OrderModel } from './models/order-model';

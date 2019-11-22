@@ -130,6 +130,11 @@ export class OrderService implements OnInit , OnDestroy {
         receipt: 'receipt12340'
       });
   }
+
+  deleteOrderLine(orderLineId) {
+    this.logger.info('Entering into deleteOrderLine with id ', orderLineId);
+    return this.orderCommandService.deleteOrderLineUsingDELETE(orderLineId);
+  }
   initiatePaypalPayment() {
     return this.paymentCommandService.initiatePaymentUsingPOST({
       intent: 'sale',
@@ -200,7 +205,6 @@ export class OrderService implements OnInit , OnDestroy {
   }
 
   setShop(shop) {
-    this.logger.info('Shop Added to Order Service ', shop);
     this.shop = shop;
   }
 

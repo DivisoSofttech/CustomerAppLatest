@@ -34,7 +34,7 @@
             Subtotal
           </ion-text>
           <ion-text *ngIf="order.deliveryInfo !== null" slot="start" slot="end" class="ion-text-right font-small">
-            + &#8364; {{ order.subTotal |  number: "1.1-2"}}
+            + &#8364; {{ order.subTotal |  number: "1.2-2"}}
           </ion-text>
         </ion-item>
         <ion-item lines="none" *ngIf="offer.length !==0" >
@@ -45,7 +45,7 @@
            </p>
           </ion-text>
           <ion-text *ngFor="let offerline of offer" slot="start" slot="end" class="ion-text-right font-small">
-            - &#8364;{{offerline.orderDiscountAmount}}
+            - &#8364;{{offerline.orderDiscountAmount |  number: "1.2-2"}}
           </ion-text>
         </ion-item>
         <ion-item lines="none" *ngIf=" order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='delivery'">
@@ -53,7 +53,7 @@
             Delivery
           </ion-text>
           <ion-text slot="start" slot="end" class="ion-text-right font-small">
-            + &#8364;{{order.deliveryInfo.deliveryCharge |  number: "1.1-2"}}
+            + &#8364;{{order.deliveryInfo.deliveryCharge |  number: "1.2-2"}}
           </ion-text>
         </ion-item>
         <ion-item lines="none" *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='collection'">
@@ -72,10 +72,10 @@
             <b>Total</b>
           </ion-text>
           <ion-text slot="start" slot="end" class="ion-text-right font-small" *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='delivery'">
-            <b>&#8364;{{order.grandTotal |  number: "1.1-2"}}</b>
+            <b>&#8364;{{order.grandTotal |  number: "1.2-2"}}</b>
           </ion-text>
           <ion-text slot="start" slot="end" class="ion-text-right font-small" *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='collection'">
-            <b>&#8364;{{order.grandTotal |  number: "1.1-2"}}</b>
+            <b>&#8364;{{order.grandTotal |  number: "1.2-2"}}</b>
           </ion-text>
         </ion-item>
       </ion-card-content>

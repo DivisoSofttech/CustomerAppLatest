@@ -16,7 +16,7 @@ export class CartService {
 
   currentShopId = 0;
   orderLines: OrderLine[] = [];
-  subTotal = 0;
+  subTotal;
   total = 0;
   storeId;
   observableTickets: BehaviorSubject<OrderLine[]>;
@@ -239,7 +239,7 @@ export class CartService {
       orderLine.total = (orderLine.quantity * orderLine.pricePerUnit) + auxilaryTotal;
       orderTotal += orderLine.total;
     });
-    this.subTotal = orderTotal;
+    this.subTotal = this.decimalPipe.transform(orderTotal, '1.2-2');
   }
 
   updateCart() {
@@ -249,9 +249,9 @@ export class CartService {
       this.currentShopId = 0;
     }
     this.calculatePrice();
-    this.orderLines.forEach(o => {
-      o.total = parseFloat(this.decimalPipe.transform(o.total , '1.1-2'));
-    });
+    // this.orderLines.forEach(o => {
+    //   o.total = parseFloat(this.decimalPipe.transform(o.total , '1.2-2'));
+    // });
     this.observableTickets.next(this.orderLines);
     this.observablePrice.next(this.subTotal);
     this.saveCartDetailsToSharedMemory();

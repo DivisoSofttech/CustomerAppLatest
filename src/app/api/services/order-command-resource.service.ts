@@ -11,10 +11,10 @@ import { AddressDTO } from '../models/address-dto';
 import { DeliveryInfoDTO } from '../models/delivery-info-dto';
 import { DeliveryInfo } from '../models/delivery-info';
 import { NotificationDTO } from '../models/notification-dto';
-import { OrderDTO } from '../models/order-dto';
 import { Order } from '../models/order';
-import { CommandResource } from '../models/command-resource';
+import { OrderInitiateResponse } from '../models/order-initiate-response';
 import { PageOfAddress } from '../models/page-of-address';
+import { CommandResource } from '../models/command-resource';
 
 /**
  * Order Command Resource
@@ -25,6 +25,7 @@ import { PageOfAddress } from '../models/page-of-address';
 class OrderCommandResourceService extends __BaseService {
   static readonly updateAddressUsingPUTPath = '/api/command/addresses';
   static readonly deleteAddressUsingDELETEPath = '/api/command/addresses/{id}';
+  static readonly deleteAuxilaryOrderLineUsingDELETEPath = '/api/command/auxilaries/{id}';
   static readonly editDeliveryInfoUsingPUTPath = '/api/command/delivery-info';
   static readonly updateNotificationUsingPUTPath = '/api/command/notifications';
   static readonly editOrderUsingPUTPath = '/api/command/order';
@@ -32,6 +33,7 @@ class OrderCommandResourceService extends __BaseService {
   static readonly createAddressUsingPOSTPath = '/api/command/orders/addresses';
   static readonly getAllSavedAddressUsingGETPath = '/api/command/orders/addresses/{customerId}';
   static readonly collectDeliveryDetailsUsingPOSTPath = '/api/command/orders/collectDeliveryDetails/{taskId}/{orderId}';
+  static readonly deleteOrderLineUsingDELETEPath = '/api/command/orders/{id}';
   static readonly sendUsingGETPath = '/api/command/sendMessage';
 
   constructor(
@@ -112,6 +114,40 @@ class OrderCommandResourceService extends __BaseService {
   }
 
   /**
+   * @param id id
+   */
+  deleteAuxilaryOrderLineUsingDELETEResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/api/command/auxilaries/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param id id
+   */
+  deleteAuxilaryOrderLineUsingDELETE(id: number): __Observable<null> {
+    return this.deleteAuxilaryOrderLineUsingDELETEResponse(id).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
+
+  /**
    * @param deliveryInfo deliveryInfo
    * @return OK
    */
@@ -187,7 +223,7 @@ class OrderCommandResourceService extends __BaseService {
    * @param order order
    * @return OK
    */
-  editOrderUsingPUTResponse(order: Order): __Observable<__StrictHttpResponse<OrderDTO>> {
+  editOrderUsingPUTResponse(order: Order): __Observable<__StrictHttpResponse<Order>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -205,7 +241,7 @@ class OrderCommandResourceService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<OrderDTO>;
+        return _r as __StrictHttpResponse<Order>;
       })
     );
   }
@@ -213,9 +249,9 @@ class OrderCommandResourceService extends __BaseService {
    * @param order order
    * @return OK
    */
-  editOrderUsingPUT(order: Order): __Observable<OrderDTO> {
+  editOrderUsingPUT(order: Order): __Observable<Order> {
     return this.editOrderUsingPUTResponse(order).pipe(
-      __map(_r => _r.body as OrderDTO)
+      __map(_r => _r.body as Order)
     );
   }
 
@@ -223,7 +259,7 @@ class OrderCommandResourceService extends __BaseService {
    * @param order order
    * @return OK
    */
-  initiateOrderUsingPOSTResponse(order: Order): __Observable<__StrictHttpResponse<CommandResource>> {
+  initiateOrderUsingPOSTResponse(order: Order): __Observable<__StrictHttpResponse<OrderInitiateResponse>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -241,7 +277,7 @@ class OrderCommandResourceService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<CommandResource>;
+        return _r as __StrictHttpResponse<OrderInitiateResponse>;
       })
     );
   }
@@ -249,9 +285,9 @@ class OrderCommandResourceService extends __BaseService {
    * @param order order
    * @return OK
    */
-  initiateOrderUsingPOST(order: Order): __Observable<CommandResource> {
+  initiateOrderUsingPOST(order: Order): __Observable<OrderInitiateResponse> {
     return this.initiateOrderUsingPOSTResponse(order).pipe(
-      __map(_r => _r.body as CommandResource)
+      __map(_r => _r.body as OrderInitiateResponse)
     );
   }
 
@@ -397,6 +433,40 @@ class OrderCommandResourceService extends __BaseService {
   collectDeliveryDetailsUsingPOST(params: OrderCommandResourceService.CollectDeliveryDetailsUsingPOSTParams): __Observable<CommandResource> {
     return this.collectDeliveryDetailsUsingPOSTResponse(params).pipe(
       __map(_r => _r.body as CommandResource)
+    );
+  }
+
+  /**
+   * @param id id
+   */
+  deleteOrderLineUsingDELETEResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/api/command/orders/${id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param id id
+   */
+  deleteOrderLineUsingDELETE(id: number): __Observable<null> {
+    return this.deleteOrderLineUsingDELETEResponse(id).pipe(
+      __map(_r => _r.body as null)
     );
   }
 

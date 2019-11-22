@@ -66,11 +66,11 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
     this.productBaseAuxItemsArray = this.cart.auxilaryItems;
     this.getOffers();
   }
-  
+
   animateSlide() {
 
   }
-  
+
   getCartDetails() {
     this.cartSubscription = this.cart.observableTickets.subscribe(data => {
       this.logger.info('Getting cart Details', data);
@@ -78,7 +78,8 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
       this.storeSetting = this.cart.currentShop.storeSettings;
       this.subTotal = this.cart.subTotal;
       if (this.storeSetting !== undefined) {
-        this.total = this.subTotal + this.storeSetting.deliveryCharge ;
+        this.total = this.decimalPipe.transform(this.subTotal + this.storeSetting.deliveryCharge, '1.2-2' );
+
       }
       this.store = this.cart.currentShop;
       this.auxilaryItems = this.cart.auxilaryItems;
@@ -91,7 +92,7 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
     this.cart.total = this.total;
   }
   increaseProductCount(product , orderLine) {
-    
+
     this.cart.increase(orderLine , product);
     if (this.isOfferAvailable) {
       this.getOffers();
@@ -112,6 +113,16 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
   removeOrder(orderLine, product) {
     this.logger.info('Removing Order ', orderLine);
     this.cart.removeOrder(orderLine);
+    if (this.orderService.resource.nextTaskName !== undefined) {
+      orderLine = this.orderService.order.orderLines
+     .forEach(line => {
+      if (line.productId === orderLine.productId) {
+        this.logger.info('Deleting order from service', line.id);
+        this.orderService.deleteOrderLine(line.id)
+      .subscribe(() => this.logger.info('Product deleted', line.id));
+      }
+     });
+    }
     if (this.isOfferAvailable) {
       this.getOffers();
     } else {
@@ -191,7 +202,7 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
           this.isOfferAvailable = true;
           this.logger.info('One offer available ', response.promoCode);
           this.offer = response;
-          this.total = this.total - response.orderDiscountAmount;
+          this.total = this.decimalPipe.transform(this.total - response.orderDiscountAmount, '1.2-2');
           this.setCartTotal();
           const myOffer: Offer = {
             offerRef : response.promoCode,

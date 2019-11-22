@@ -104,7 +104,7 @@
       <ion-label class="ion-text-end">
           <h3>
               <strong>
-                + &euro;{{ subTotal | number: "1.1-2" }}
+                + &euro;{{ subTotal  }}
              </strong>
             </h3>
       </ion-label>
@@ -116,7 +116,7 @@
           10% discount applied
        </p>
      </ion-text>
-     <ion-text text-end slot="end">- &euro;{{offer.orderDiscountAmount | number: "1.1-2"}}</ion-text> 
+     <ion-text text-end slot="end">- &euro;{{offer.orderDiscountAmount | number: "1.2-2"}}</ion-text> 
     </ion-item>
     <ion-item
      lines="full"
@@ -133,12 +133,12 @@
       <ion-label text-end>
         <h3 *ngIf="currentDeliveryMode === 'delivery'">
           <strong>
-            &euro;{{ total  | number: "1.1-2" }}
+            &euro;{{ total }}
          </strong>
         </h3>
         <h3 *ngIf="currentDeliveryMode === 'collection'">
          <strong>
-           &euro;{{ total | number: "1.1-2" }}
+           &euro;{{ total  }}
          </strong>
         </h3>
       </ion-label>

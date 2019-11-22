@@ -86,8 +86,8 @@ export class HistoryListComponent implements OnInit {
       sort: ['desc']
     })
     .subscribe(porders => {
+      this.showHistoryLoading = false;
       porders.content.forEach(o => {
-        this.showHistoryLoading = false;
         this.orders.push(o);
         if (this.stores[o.storeId] === undefined) {
           this.getStores(o.storeId);
