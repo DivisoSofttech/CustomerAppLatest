@@ -76,8 +76,8 @@ export class NotificationComponent implements OnInit  , OnDestroy {
   }
 
   sortNotifications(n) {
-    const date1 = new Date(this.datePipe.transform(n.date,'M/d/yy'))
-    const date2 = new Date(this.datePipe.transform(new Date() , 'M/d/yy'));
+    const date1: any = new Date(this.datePipe.transform(n.date,'M/d/yy'))
+    const date2: any = new Date(this.datePipe.transform(new Date() , 'M/d/yy'));
     const diffTime = Math.abs(date2 - date1);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
     if(diffDays === 0) {

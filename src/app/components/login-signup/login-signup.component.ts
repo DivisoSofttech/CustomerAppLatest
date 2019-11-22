@@ -5,10 +5,10 @@ import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { CommandResourceService } from 'src/app/api/services';
 import { Util } from 'src/app/services/util';
-import { ApiConfiguration } from 'src/app/api/api-configuration';
 import { Storage } from '@ionic/storage';
 import { PhoneNumberVerficationComponent } from '../phone-number-verfication/phone-number-verfication.component';
 import { ForgetPasswordComponent } from '../forget-password/forget-password.component';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login-signup',
@@ -16,12 +16,15 @@ import { ForgetPasswordComponent } from '../forget-password/forget-password.comp
   styleUrls: ['./login-signup.component.scss'],
 })
 export class LoginSignupComponent implements OnInit {
+  
   username = '';
   password = '';
   email = '';
   phone = 0;
+  
   numberValid = false;
   numberCode = 0;
+  
   loginTab = true;
   value = 'login';
   keycloakUserid;
@@ -29,9 +32,17 @@ export class LoginSignupComponent implements OnInit {
   showPasswordText = false;
   passwordFieldType = 'password';
 
+  showFormErrors = {
+    'username': false,
+    'password': false,
+    'email':false
+  };
+
   @ViewChild('slides', null) slides: IonSlides;
 
   @Input() type = 'page';
+
+  signupForm: FormGroup;
 
   constructor(
     private keycloakService: KeycloakService,
@@ -40,14 +51,23 @@ export class LoginSignupComponent implements OnInit {
     private util: Util,
     private modalController: ModalController,
     private logger: NGXLogger,
-    private apiConfiguration: ApiConfiguration,
-    private storage: Storage
+    private storage: Storage,
+    private formBuilder: FormBuilder
   ) {}
 
   ngOnInit() {
+    this.signupForm = this.formBuilder.group({
+      username: [this.username ,  Validators.compose([Validators.required,Validators.minLength(6), Validators.maxLength(15)])],
+      email: [this.email ,  Validators.compose([Validators.required , Validators.email])],
+      password: [this.password ,  Validators.compose([Validators.required,Validators.minLength(6), Validators.maxLength(15)])]
+    })
   }
 
   // Login and Register Methods
+
+  showErrors(ekey) {
+    this.showFormErrors[ekey] = true;
+  }
 
   login() {
     this.logger.info('LoginCalled++++++++++++++++++++');
@@ -73,6 +93,9 @@ export class LoginSignupComponent implements OnInit {
 
   async signupModal() {
 
+    this.username = this.signupForm.value.username;
+    this.email = this.signupForm.value.email;
+    this.password = this.signupForm.value.password;
     const modal = await this.modalController.create({
       component: PhoneNumberVerficationComponent,
       componentProps: {number: this.numberCode + this.phone},
@@ -207,11 +230,10 @@ export class LoginSignupComponent implements OnInit {
   }
 
   registerDisabled(): boolean {
-    if (this.username === '' || this.password === '' || this.email === '' || this.numberValid === false) {
-      return true;
-    } else {
-      return false;
+    if(!this.signupForm.valid || this.numberValid === false) {
+      return true;      
     }
+    return false;
   }
 
   slide(value) {

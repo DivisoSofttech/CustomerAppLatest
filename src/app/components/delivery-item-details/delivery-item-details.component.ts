@@ -9,6 +9,7 @@ import { OrderService } from 'src/app/services/order.service';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { DecimalPipe } from '@angular/common';
 import { Util } from 'src/app/services/util';
+import { ErrorService } from 'src/app/services/error.service';
 
 @Component({
   selector: 'app-delivery-item-details',
@@ -53,12 +54,12 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private cart: CartService,
     private queryResource: QueryResourceService,
-    private offerCommandResource: OfferCommandResourceService,
     private logger: NGXLogger,
     private popover: PopoverController,
     private orderService: OrderService,
     private decimalPipe: DecimalPipe,
-    private util: Util
+    private util: Util,
+    private errorService: ErrorService
   ) {}
 
   ngOnInit() {
@@ -201,6 +202,10 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
           this.orderService.setOffer(myOffer);
         }
         loader.dismiss();
+      },
+      err=> {
+        loader.dismiss();
+        this.errorService.showErrorModal(this);
       });
     });
   });

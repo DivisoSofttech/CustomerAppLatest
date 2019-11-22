@@ -9,6 +9,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { GuestUserService } from './services/security/guest-user.service';
 import { HistoryListComponent } from './components/history-list/history-list.component';
+import { Router, NavigationEnd } from '@angular/router';
 
 
 @Component({
@@ -41,6 +42,8 @@ export class AppComponent {
   browser = false;
   keyCloakUser: any;
 
+  showFilter = false;
+
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -51,9 +54,21 @@ export class AppComponent {
     private modalController: ModalController,
     private screenOrientation: ScreenOrientation,
     private localNotifications: LocalNotifications,
+    private router: Router,
     private guestUserService: GuestUserService,
   ) {
    
+    router.events.subscribe((val) => {
+      console.log(window.innerWidth);
+      if(window.innerWidth >= 1280)
+      if(val instanceof NavigationEnd) {
+        if(val.url==='/restaurant') {
+          this.showFilter = true;
+        } else {
+          this.showFilter = false;
+        }
+      }
+    })
     this.getUser();
     this.initializeApp();
     if (this.platform.is('pwa') || this.platform.is('cordova')) {

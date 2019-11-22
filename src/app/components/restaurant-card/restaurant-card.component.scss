@@ -20,7 +20,7 @@ ion-card {
 
 ion-card-header {
   padding: 5px;
-  height: 150px;
+  height: 180px;
   border-bottom: 1px solid lightgray;
 }
 
@@ -96,7 +96,7 @@ h4 , p{
 @media only screen and (max-width: 600px) {
   ion-card-header {
     padding: 2vw 0vw;
-    height: 150px;
+    height: auto;
   }
 } 
 

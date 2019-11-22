@@ -78,7 +78,7 @@ export class RestaurantPage implements OnInit {
         this.toggleIonRefresher();
       },
         () => {
-          this.errorService.showErrorModal(this);
+          // this.errorService.showErrorModal(this);
         });
     });
   }

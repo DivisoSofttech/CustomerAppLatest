@@ -8,6 +8,7 @@ import { ModalController} from '@ionic/angular';
 import { ModalDisplayUtilService } from 'src/app/services/modal-display-util.service';
 import { Subscription } from 'rxjs';
 import { AddressListComponent } from '../address-list/address-list.component';
+import { ErrorService } from 'src/app/services/error.service';
 
 @Component({
   selector: 'app-checkout',
@@ -34,6 +35,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     private modalController: ModalController,
     private displayModalService: ModalDisplayUtilService,
     private sharedData: SharedDataService,
+    private errorService: ErrorService
   ) { }
 
   ngOnInit() {
@@ -148,6 +150,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           this.behaviouralSubjectSubscription.unsubscribe();
           this.util.createToast('Something went wrong try again', 'information-circle-outline');
           this.displayModalService.navigateToBasket();
+          this.errorService.showErrorModal(this);
       });
         if ( this.orderService.acceptType === 'manual') {
         this.displayModalService.presentWaitInfoPopover();

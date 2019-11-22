@@ -1,5 +1,5 @@
 import { OrderService } from 'src/app/services/order.service';
-import { IonSlides, IonRefresher, PopoverController, NavController, Platform } from '@ionic/angular';
+import { IonSlides, IonRefresher, PopoverController, NavController, Platform, IonSplitPane } from '@ionic/angular';
 import { ViewChild, OnDestroy } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { Component, OnInit } from '@angular/core';
@@ -57,8 +57,7 @@ export class StorePage implements OnInit , OnDestroy {
     private logger: NGXLogger,
     private util: Util,
     private platform: Platform,
-    private orderService: OrderService,
-    private navController: NavController
+    private navController: NavController,
   ) {}
 
   ngOnInit() {
