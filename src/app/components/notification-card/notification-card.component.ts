@@ -27,7 +27,6 @@ export class NotificationCardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.logger.info('Notifications' , this.notification);
     this.getOrder();
   }
 

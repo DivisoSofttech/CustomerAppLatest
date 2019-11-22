@@ -1,19 +1,34 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-buttons>
-      <ion-searchbar #placeSearch showCancelButton="always" debounce="1500" placeholder="Enter Location Name"
-        (ionCancel)="close()" (ionChange)="getPlacePredictions($event)"></ion-searchbar>
+      <ion-button (click)="dismiss()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+      <ion-title> 
+          <ion-label>{{currentPlaceName}}</ion-label>
+      </ion-title>
     </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar>
+      <ion-title>
+        <small>Choose Distance</small>
+      </ion-title>
+      <ion-range>
+        <ion-label slot="end">
+          <h2>200KM</h2>
+        </ion-label>
+      </ion-range>      
   </ion-toolbar>
 </ion-header>
 <ion-content>
 
+  <ion-buttons>
+    <ion-searchbar #placeSearch debounce="1500" placeholder="Enter Location Name"
+      (ionCancel)="close()" (ionChange)="getPlacePredictions($event)"></ion-searchbar>
+  </ion-buttons>
+
   <!--List Of Available place Suggestions-->
   <ion-spinner color="primary" name="dots" *ngIf="showSpinner"></ion-spinner>
-  <ion-item *ngIf="searchTerm === ''" color="primary" class="ion-no-padding">
-    <ion-icon name="pin" class="ion-padding"></ion-icon>
-    <ion-label>{{currentPlaceName}}</ion-label>
-  </ion-item>
   <ion-list *ngIf="searchTerm === '' && recents.length > 0">
     <ion-list-header>
       <ion-label>

@@ -1,17 +1,14 @@
 import { SharedDataService } from 'src/app/services/shared-data.service';
-import { WaitInformatonPopoverComponent } from './../wait-informaton-popover/wait-informaton-popover.component';
-import { MakePaymentComponent } from './../make-payment/make-payment.component';
 import { Util } from 'src/app/services/util';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { OrderService } from 'src/app/services/order.service';
 import { Order } from 'src/app/api/models';
 import { NGXLogger } from 'ngx-logger';
-import { ModalController, PopoverController } from '@ionic/angular';
+import { ModalController} from '@ionic/angular';
 import { ModalDisplayUtilService } from 'src/app/services/modal-display-util.service';
 import { Subscription } from 'rxjs';
 import { AddressListComponent } from '../address-list/address-list.component';
-import { OrderCommandResourceService } from 'src/app/api/services';
-import { CartService } from 'src/app/services/cart.service';
+import { ErrorService } from 'src/app/services/error.service';
 
 @Component({
   selector: 'app-checkout',
@@ -24,10 +21,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   behaviouralSubjectSubscription: Subscription;
 
-  addresses: [] = [];
-
-  loader: Promise<HTMLIonLoadingElement>;
-
   showAddressBack = false;
   customer;
   selectedAddress;
@@ -35,20 +28,15 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   order: Order;
   deliveryType: any;
 
-  showLoading = true;
-
-
   constructor(
     private orderService: OrderService,
     private logger: NGXLogger,
     private util: Util,
     private modalController: ModalController,
-    private popoverController: PopoverController,
     private displayModalService: ModalDisplayUtilService,
-    private orderCommandResource: OrderCommandResourceService,
     private sharedData: SharedDataService,
-    private cart: CartService
-      ) { }
+    private errorService: ErrorService
+  ) { }
 
   ngOnInit() {
     this.deliveryType = this.orderService.deliveryInfo.deliveryType;
@@ -57,9 +45,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.logger.info(this.orderService.customer);
     this.getCustomer();
     this.getOrderDetails();
-    if (this.deliveryType === 'delivery') {
-      this.getAllAdress();
-    }
     this.getDataFromStorage();
     console.log('elivery type is ', this.deliveryType);
   }
@@ -90,26 +75,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     }
   }
 
-  getAllAdress() {
-    this.logger.info('Getting all Addresses');
-    this.orderCommandResource.getAllSavedAddressUsingGET({
-      customerId: this.customer.preferred_username,
-    })
-    .subscribe(paddress => {
-      this.showLoading = false;
-      this.selectedAddress = paddress.content[0];
-      this.setAddress();
-    }, err => {
-      this.showLoading = false;
-    });
-  }
-
   getCustomer() {
     this.logger.info(this.orderService.customer);
     this.customer = this.orderService.customer;
-    if (this.deliveryType === 'delivery') {
-    this.getAllAdress();
-    }
+    this.getAddress();
   }
 
   getOrderDetails() {
@@ -123,15 +92,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
     modal.onDidDismiss()
     .then(data => {
-      console.log(data);
-      if (data.data !== undefined && data.data.deleted === undefined) {
-        this.selectedAddress = data.data;
-        this.setAddress();
-      } else if (data.data.deleted === true) {
-        if (this.selectedAddress.id === data.data.deletedId) {
-          this.selectedAddress = undefined;
-        }
-      }
+      this.getAddress();
     });
     await modal.present();
 
@@ -141,6 +102,14 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.orderService.setNote(this.note);
   }
 
+  getAddress() {
+    this.sharedData.getData('address')
+    .then(addresses => {
+      if(addresses != null)
+      this.selectedAddress = addresses.selectedAddress
+      this.setAddress();
+    });
+  }
   setAddress() {
     this.logger.info(this.selectedAddress);
     this.orderService.setAddress(this.selectedAddress);
@@ -180,6 +149,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           this.behaviouralSubjectSubscription.unsubscribe();
           this.util.createToast('Something went wrong try again', 'information-circle-outline');
           this.displayModalService.navigateToBasket();
+          this.errorService.showErrorModal(this);
       });
         if ( this.orderService.acceptType === 'manual') {
         this.displayModalService.presentWaitInfoPopover();

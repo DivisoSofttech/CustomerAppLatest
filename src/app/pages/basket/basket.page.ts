@@ -35,9 +35,11 @@ export class BasketPage implements OnInit {
     this.logger.info('Basket Page Getting Store' ,     this.cart.currentShop.regNo);
     this.queryResource.findStoreByRegisterNumberUsingGET(this.cart.currentShop.regNo)
     .subscribe(store => {
-      this.store = store;
-      this.orderService.acceptType = store.storeSettings.orderAcceptType;
-      console.log(' Accept type is ', this.orderService.acceptType);
+      if(this.store !== undefined) {
+        this.store = store;
+        this.orderService.acceptType = store.storeSettings.orderAcceptType;
+        console.log(' Accept type is ', this.orderService.acceptType);  
+      }
     });
   }
 

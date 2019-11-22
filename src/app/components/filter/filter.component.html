@@ -14,22 +14,48 @@
   <ion-grid class="ion-no-padding full-height">
     <ion-row>
       <ion-col size="5" class="ion-no-padding">
-        <ion-item lines="full" (click)="setFilterCategoryType('sort')">
-          Sort
-        </ion-item>
+        <ion-grid class="ion-no-padding">
+          <ion-row>
+              <ion-col size="12" class="ion-no-padding">
+                  <ion-item lines="full" (click)="setFilterCategoryType('sort')" 
+                  [ngClass]="{'highlight':type==='sort'}">
+                    Sort
+                  </ion-item>
+                </ion-col>
+                <ion-col size="12" class="ion-no-padding">
+                  <ion-item lines="full" (click)="setFilterCategoryType('cuisine')"
+                  [ngClass]="{'highlight':type==='cuisine'}">
+                    Cuisines
+                  </ion-item>    
+                </ion-col>          
+          </ion-row>
+        </ion-grid>
       </ion-col>
-
-      <ion-col size="7" class="ion-no-padding" *ngIf="type==='sort'">
-        <ion-radio-group [(ngModel)]="currentFilterType">
-          <ion-item lines="none" >
-            <ion-radio value="{{filterTypes.TOP_RATED}}" [checked]="currentFilterType === filterTypes.TOP_RATED"></ion-radio>
-            <ion-label class="ion-margin">Rating</ion-label>
-          </ion-item>
-          <ion-item lines="none" >
-            <ion-radio [checked]="currentFilterType === filterTypes.DELIVERY_TIME" value="{{filterTypes.DELIVERY_TIME}}"></ion-radio>
-            <ion-label class="ion-margin">Delivery time</ion-label>
-          </ion-item>
-        </ion-radio-group>
+      <ion-col size="7" class="ion-no-padding">
+        <ion-grid class="ion-no-padding">
+          <ion-row>
+              <ion-col size="12" class="ion-no-padding" *ngIf="type==='sort'">
+                  <ion-radio-group [(ngModel)]="currentFilterType">
+                    <ion-item lines="none" >
+                      <ion-radio value="{{filterTypes.TOP_RATED}}" [checked]="currentFilterType === filterTypes.TOP_RATED"></ion-radio>
+                      <ion-label class="ion-margin">Rating</ion-label>
+                    </ion-item>
+                    <ion-item lines="none" >
+                      <ion-radio [checked]="currentFilterType === filterTypes.DELIVERY_TIME" value="{{filterTypes.DELIVERY_TIME}}"></ion-radio>
+                      <ion-label class="ion-margin">Delivery time</ion-label>
+                    </ion-item>
+                  </ion-radio-group>
+                </ion-col>  
+                <ion-col size="12" class="ion-no-padding" *ngIf="type==='cuisine'">
+                  <ion-list>
+                    <ion-item *ngFor="let t of [1,2,3]">
+                      <ion-label>Burgers(2)</ion-label>
+                      <ion-checkbox></ion-checkbox>
+                    </ion-item>
+                  </ion-list>
+                </ion-col>      
+          </ion-row>
+        </ion-grid>
       </ion-col>
     </ion-row>
   </ion-grid>

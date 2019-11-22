@@ -15,9 +15,9 @@ export class MakePaymentComponent implements OnInit {
   toBePaid;
 
   paymentOptions = [
-    { name: 'Cash On Delivery', value: 'cod' , isChecked: false},
-     {name: 'Debit Card/ Wallet', value: 'card'},
-    { name: 'Credit Card', value: 'braintree' , isChecked: true}
+    { name: 'Cash On Delivery', value: 'cod' , isChecked: false, icon: 'cash'},
+    {name: 'Debit Card/ Wallet', value: 'card', isChecked: false, icon: 'card'},
+    { name: 'Credit Card', value: 'braintree' , isChecked: false, icon: 'card'}
   ];
 
   constructor(
@@ -45,13 +45,13 @@ export class MakePaymentComponent implements OnInit {
      if (this.orderService.paymentMethod === 'braintree') {
       this.paymentMethod = this.orderService.paymentMethod;
       this.paymentOptions = [];
-      this.paymentOptions.push( { name: 'Cash On Delivery', value: 'cod' , isChecked: false});
-      this.paymentOptions.push({ name: 'Credit/Debit Card', value: 'braintree' , isChecked: true});
+      this.paymentOptions.push( { name: 'Cash On Delivery', value: 'cod' , isChecked: false , icon:'cash'});
+      this.paymentOptions.push({ name: 'Credit/Debit Card', value: 'braintree' , isChecked: true , icon:'card'});
     }
      this.toBePaid = this.orderService.order.grandTotal;
      if (this.platform.is('android') || this.platform.is('ios')) {
       this.logger.info(' android ios platform');
-      this.paymentOptions.push({ name: 'Paypal Wallet/Card', value: 'paypal' , isChecked: false });
+      this.paymentOptions.push({ name: 'Paypal Wallet/Card', value: 'paypal' , isChecked: false , icon: 'wallet'});
     } else if (this.platform.is('desktop') || this.platform.is('pwa')) {
       console.log('This is a browser platform ');
       // this.paymentOptions.push({name: 'Paypal Wallet', value: 'paypal', isChecked: false});

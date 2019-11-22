@@ -6,7 +6,7 @@
   <ion-grid class="ion-no-padding ion-no-margin full-height">
 
     <ion-row class="ion-no-padding ion-no-margin full-height">
-      <ion-col size="12" size-md="12" size-lg="12" class="ion-no-padding ion-no-margin">
+      <ion-col size="12" size-md="12" class="ion-no-padding ion-no-margin">
         <app-banner></app-banner>
         <ion-item lines="none" color="light">
           <ion-label slot="start">
@@ -20,12 +20,13 @@
           </ion-label>
           <ion-icon class="pointer" name="create" slot="end" *ngIf="currentPlaceName!==''" (click)="showPlaceSelectionModal()"></ion-icon>
       </ion-item>    
+     
         <ion-grid no-padding no-margin>
           <ion-row no-padding no-margin>
             <ion-col size="12" no-padding>
                     <ion-grid>
                       <ion-row>
-                        <ion-col class="restaurantCol" size="12" size-md="6" size-lg="4" *ngFor="let store of stores">
+                        <ion-col class="restaurantCol" size="12" size-md="6" size-lg="6" *ngFor="let store of stores">
                             <app-restaurant-card
                             *ngIf="store.name !== null"
                             [store]="store"
@@ -38,9 +39,6 @@
           </ion-row>
         </ion-grid>      
       </ion-col>
-      <!-- <ion-col size="12" size-lg="4" class="ion-no-padding ion-no-margin border-left desktop-only">
-
-      </ion-col> -->
     </ion-row>
   </ion-grid>
    

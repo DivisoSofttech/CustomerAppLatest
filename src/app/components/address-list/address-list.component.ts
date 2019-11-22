@@ -1,12 +1,10 @@
-import { Util } from './../../services/util';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Address, AddressDTO } from 'src/app/api/models';
+import { Component, OnInit, Input} from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { OrderCommandResourceService } from 'src/app/api/services';
 import { NGXLogger } from 'ngx-logger';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AddAddressComponent } from '../add-address/add-address.component';
 import { Storage } from '@ionic/storage';
+import { SharedDataService } from 'src/app/services/shared-data.service';
 
 @Component({
   selector: 'app-address-list',
@@ -27,9 +25,7 @@ export class AddressListComponent implements OnInit {
     private modalController: ModalController,
     private logger: NGXLogger,
     private orderCommandResource: OrderCommandResourceService,
-    private form: FormBuilder,
-    private util: Util,
-    private storage: Storage
+    private sharedData: SharedDataService
   ){}
 
   ngOnInit(){
@@ -37,15 +33,35 @@ export class AddressListComponent implements OnInit {
   }
 
   getCustomer() {
-    this.storage.get('user')
+    this.sharedData.getData('user')
     .then(data => {
       this.customer = data;
-      this.getAllAdress(0);
+      this.sharedData.getData('address')
+      .then(addresses => {
+        if(addresses === null) {
+          this.getAllAdress(0);
+        } else {
+          this.addresses = addresses.all;
+          this.showLoading = false;
+        }
+      })
+    });
+  }
+
+  updateStorageData(data) {
+    this.sharedData.getData('address')
+    .then(addresses => {
+      if(addresses !== null) {
+        if(addresses.selectedAddress.id === data.data.id) {
+          addresses.selectedAddress = data.data;
+        }
+        addresses.all = this.addresses;
+        this.sharedData.saveToStorage('address' , addresses);  
+      }
     });
   }
 
   getAllAdress(i) {
-    
     this.orderCommandResource.getAllSavedAddressUsingGET({
       customerId: this.customer.preferred_username,
       page: i
@@ -60,6 +76,9 @@ export class AddressListComponent implements OnInit {
         this.getAllAdress(i);
       } else {
         this.logger.info('All Address Fetched');
+        if(this.addresses.length>0) {
+          this.updateStorageData(this.addresses[0]);
+        }
       }
     });
   }
@@ -72,41 +91,16 @@ export class AddressListComponent implements OnInit {
 
     modal.onDidDismiss()
     .then(data=> {
-      console.error(data.data);
-      this.addresses.forEach((element , index)=> {
-        if(element.id === data.data.id) {
-          console.log(element , index);
-          this.addresses[index] = data.data;
-          console.log(this.addresses);
-        }
-      })
-    })
-  
-    await modal.present();
-  
-  }
-
-  deleteAddress(id) {
-    this.util.createLoader()
-    .then(loader => {
-      loader.present();
-      this.orderCommandResource.deleteAddressUsingDELETE(id)
-      .subscribe((data:any) => {
-        this.util.createToast('Address Deleted' , data);
-        this.addresses = this.addresses.filter(ad => ad.id !== id);
-        this.modalController.getTop()
-        .then(element => {
-          this.dismissData({
-            deleted:true,
-            deletedId: id
-          });
-        });  
-        loader.dismiss();
-      },
-      err => {
-        loader.dismiss();
-      });
+      if(data.data) {
+        this.addresses.forEach((element , index)=> {
+          if(element.id === data.data.id) {
+            this.addresses[index] = data.data;
+            this.updateStorageData(data);
+          }
+        })  
+      }
     });
+    await modal.present();
   }
   
   async addAddressModal() {
@@ -119,6 +113,7 @@ export class AddressListComponent implements OnInit {
     .then(data => {
       if(data.data !== undefined) {
         this.addresses.push(data.data);
+        this.updateStorageData(data);
         this.modalController.getTop()
         .then(element => {
           this.dismissData(data.data);
@@ -135,6 +130,11 @@ export class AddressListComponent implements OnInit {
   }
 
   dismissData(address) {
+    this.sharedData.saveToStorage('address' , 
+    {
+      'all': this.addresses,
+      'selectedAddress': address
+    });
     this.modalController.dismiss(address);
   }
 }

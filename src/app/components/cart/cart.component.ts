@@ -12,16 +12,16 @@ import {
   EventEmitter,
   OnDestroy
 } from '@angular/core';
-import { OrderLine, Store, StoreSettings } from 'src/app/api/models';
-import { ModalController, NavController } from '@ionic/angular';
+import { OrderLine, Store, StoreSettings, Status } from 'src/app/api/models';
+import { ModalController, NavController, PopoverController } from '@ionic/angular';
 import { Util } from 'src/app/services/util';
 import { OrderService } from 'src/app/services/order.service';
-import { OrderCommandResourceService } from 'src/app/api/services';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { LoginSignupComponent } from '../login-signup/login-signup.component';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { SharedDataService } from 'src/app/services/shared-data.service';
+import { Subscription} from 'rxjs';
 import { DecimalPipe } from '@angular/common';
+import { PreorderComponent } from '../preorder/preorder.component';
+import { ClosedPipe } from 'src/app/pipes/closed.pipe';
 
 @Component({
   selector: 'app-cart',
@@ -80,7 +80,9 @@ export class CartComponent implements OnInit, OnDestroy {
     private navController: NavController,
     private logger: NGXLogger,
     private util: Util,
-    private decimalPipe: DecimalPipe
+    private decimalPipe: DecimalPipe,
+    private popoverController: PopoverController,
+    private closedPipe: ClosedPipe
   ) {}
 
   ngOnInit() {
@@ -223,6 +225,30 @@ export class CartComponent implements OnInit, OnDestroy {
     });
   }
 
+  async preorderPopover(callback?) {
+    const popover = await this.popoverController.create({
+      component: PreorderComponent,
+      translucent: false,
+      backdropDismiss: false
+    });
+
+    popover.onDidDismiss()
+    .then(() => {
+      callback();
+    }); 
+    await popover.present();
+  }
+
+  checkRestaurantStatus(deliveryType) {
+    if (!this.closedPipe.transform(new Date() , this.store.openingTime , this.store.closingTime)) {
+      this.preorderPopover(() => {
+        this.continue(deliveryType);
+      });
+     } else {
+       this.continue(deliveryType);
+     }
+  }
+
   continue(deliveryType) {
     this.logger.info('In Continue');
     this.orderService.setShop(this.store);
@@ -273,6 +299,9 @@ export class CartComponent implements OnInit, OnDestroy {
               }
             );
         } else {
+          console.log('Current status is ', this.getStatus());
+          
+          this.orderService.order.status = this.getStatus();
           this.orderLinesUpdated = [];
           this.cart.orderLines.forEach(orderLineUpdated => {
             let updated ;
@@ -309,6 +338,25 @@ export class CartComponent implements OnInit, OnDestroy {
     this.navController.navigateForward('/checkout');
   }
 
+  getStatus(): Status {
+    console.log('Resource getStatus ', this.orderService.resource);
+    let status: Status;
+    if (this.orderService.resource.nextTaskName === 'Collect Delivery Info&Place Order') {
+      console.log('in if**');
+      status = {
+        name: 'unapproved',
+        id: 1
+      };
+    } else {
+      console.log('in else **');
+      status = {
+        name: 'approved',
+        id: 3
+      };
+    }
+    console.log('status in getStatus ', status);
+    return status;
+  }
   segmenChanged(event) {
     if (this.delivery !== undefined) {
       this.deliveryMode = event.detail.value;

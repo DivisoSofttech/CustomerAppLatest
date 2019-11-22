@@ -23,7 +23,7 @@ import { IonicModule } from '@ionic/angular';
 import { ImageSelectorComponent } from './image-selector/image-selector.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { ImageCropperModule } from 'ngx-img-cropper';
 import { RouterModule } from '@angular/router';
 import { RestaurantCardComponent } from './restaurant-card/restaurant-card.component';
@@ -56,8 +56,10 @@ import { PlaceSuggestionComponent } from './place-suggestion/place-suggestion.co
 import { DirectiveModule } from '../directives/directive.module';
 import { OrderSummaryComponent } from './order-summary/order-summary.component';
 import { AddAddressComponent } from './add-address/add-address.component';
+import { PreorderComponent } from './preorder/preorder.component';
 
 @NgModule({
+  providers: [ClosedPipe,DatePipe],
   declarations: [
 
     ImageSelectorComponent,
@@ -107,7 +109,8 @@ import { AddAddressComponent } from './add-address/add-address.component';
     ForgetPasswordComponent,
     NotificationCardComponent,
     PlaceSuggestionComponent,
-    OrderSummaryComponent
+    OrderSummaryComponent,
+    PreorderComponent
   ],
 
   imports: [
@@ -169,7 +172,8 @@ import { AddAddressComponent } from './add-address/add-address.component';
     ForgetPasswordComponent,
     NotificationCardComponent,
     PlaceSuggestionComponent,
-    OrderSummaryComponent
+    OrderSummaryComponent,
+    PreorderComponent
   ],
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -205,7 +209,8 @@ import { AddAddressComponent } from './add-address/add-address.component';
     ErrorComponent,
     NotificationCardComponent,
     PlaceSuggestionComponent,
-    OrderSummaryComponent
+    OrderSummaryComponent,
+    PreorderComponent
   ]
 })
 export class ComponentsModule { }

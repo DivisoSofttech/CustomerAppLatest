@@ -1,6 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { BehaviorSubject } from 'rxjs';
+import { NGXLogger } from 'ngx-logger';
 
 const recentKey = 'recent';
 
@@ -28,8 +29,11 @@ export class RecentService implements OnInit{
 
   private obeservableRecentProducts: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
-  constructor(private storage: Storage) { 
-    console.log('RecentService');
+  constructor(
+    private storage: Storage,
+    private logger: NGXLogger) 
+  { 
+    this.logger.info("Created Recent Service");
     this.getRecentsFromStorage();
   }
 

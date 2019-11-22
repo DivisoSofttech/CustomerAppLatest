@@ -28,7 +28,6 @@ export class GuestUserService {
           this.keycloakService.getUserChangedSubscription().next(data);
         });
     }, (failure) => {
-
     }, (err) => {
 
     });

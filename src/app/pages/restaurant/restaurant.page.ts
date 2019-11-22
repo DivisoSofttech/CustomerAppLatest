@@ -78,7 +78,7 @@ export class RestaurantPage implements OnInit {
         this.toggleIonRefresher();
       },
         () => {
-          this.errorService.showErrorModal(this);
+          // this.errorService.showErrorModal(this);
         });
     });
   }
@@ -138,7 +138,7 @@ export class RestaurantPage implements OnInit {
             if(data !== undefined)
             if (data.data !== undefined && data.data.data !== 'current') {
               this.updatedLocation(data);
-            } else if (data.data.data === 'current') {
+            } else if (data.data !== undefined && data.data.data === 'current') {
               this.logger.info('Setting Current Location ', data.data);
               this.currentPlaceName = '';
               this.getCurrentLocation();

@@ -111,6 +111,10 @@ export class PlaceSuggestionComponent implements OnInit , OnDestroy {
       });
   }
 
+  dismiss() {
+    this.modalController.dismiss();
+  }
+
   ngOnDestroy() {
  
   }

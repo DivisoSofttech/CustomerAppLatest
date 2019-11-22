@@ -27,7 +27,6 @@
         <h2>{{address.postCode}}</h2>
       </ion-label>
       <ion-icon class="modificationIcon" name="create" (click)="editAddress(address)"></ion-icon>
-      <ion-icon class="modificationIcon" name="trash" (click)="deleteAddress(address.id)"></ion-icon>
     </ion-item>
   </ion-list>
   <ion-list *ngIf="(addresses === undefined || addresses.length === 0 ) && !showLoading ">
@@ -52,7 +51,6 @@
         <h2>{{address.pincode}}</h2>
       </ion-label>
       <ion-icon class="modificationIcon" name="create" (click)="editAddress(address)"></ion-icon>
-      <ion-icon class="modificationIcon" name="trash" (click)="deleteAddress(address.id)"></ion-icon>
     </ion-item>
   </ion-list>
   <ion-list *ngIf="addresses === undefined || addresses.length === 0">

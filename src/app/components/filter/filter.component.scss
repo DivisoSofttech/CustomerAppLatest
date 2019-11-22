@@ -5,6 +5,11 @@ ion-list-header {
     font-family: monospace;
 }
 
+.highlight {
+    --background:var(--ion-color-primary);
+    color:white;
+}
+
 ion-content {
     height: 55vh;
 }
@@ -46,4 +51,16 @@ ion-list {
 
 .selected {
     color: blue;
+}
+
+
+@media (min-width: 1280px) and (max-width: 2280px) {
+ ion-footer {
+     position: fixed;
+     bottom: 0px;
+     width: 25%;
+ }
+ ion-content {
+     height: 85%;
+ }
 }

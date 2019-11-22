@@ -19,20 +19,6 @@
               <h1 class="font-big"><b>&euro;{{toBePaid}}</b></h1>
               <p class="font-medium cl-grey">Total amount due</p>
             </ion-text>
-            <!-- <ion-col  size="12">
-                  <ion-item lines="none" text-center>
-                    <ion-label>Thank you</ion-label>
-                  </ion-item>
-                  <ion-item lines="none" text-center>
-                      <ion-label >Payment received</ion-label>
-                  </ion-item>
-                </ion-col>
-                <ion-col *ngIf="method=='cod'" size="12">
-                  <ion-item lines="none" text-center>
-                      <ion-label class="font-bold font-20">Keep ready &#8364;{{total | number:'1.1-2'}} </ion-label>
-                  </ion-item>
-                </ion-col> -->
-
           </ion-col>
         </ion-row>
         <ion-row>
@@ -49,8 +35,10 @@
     </ion-list-header>
     <ion-radio-group [(ngModel)]="paymentMethod">
       <ion-item lines="full" *ngFor="let paymentOption of paymentOptions">
-        <ion-label>{{paymentOption.name}}</ion-label>
+        <ion-label>
+          {{paymentOption.name}}</ion-label>
         <ion-radio slot="start" value="{{paymentOption.value}}" checked="{{paymentOption.isChecked}}"></ion-radio>
+        <ion-icon [name]="paymentOption.icon"></ion-icon>
       </ion-item>
     </ion-radio-group>
   </ion-list>

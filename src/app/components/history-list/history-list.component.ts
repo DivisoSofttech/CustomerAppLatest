@@ -88,6 +88,8 @@ export class HistoryListComponent implements OnInit {
     .subscribe(porders => {
       this.showHistoryLoading = false;
       porders.content.forEach(o => {
+        console.log('Order retreived is ', o);
+        
         this.orders.push(o);
         if (this.stores[o.storeId] === undefined) {
           this.getStores(o.storeId);
