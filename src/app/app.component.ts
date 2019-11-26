@@ -58,6 +58,7 @@ export class AppComponent {
     private guestUserService: GuestUserService,
   ) {
 
+    this.toggleFilterView('/restaurant');
     this.router.events.subscribe((val) => {
       if(val instanceof NavigationEnd) {
         this.toggleFilterView(val.url);      
