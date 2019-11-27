@@ -14,7 +14,7 @@ export class CategoryWiseProductsCardComponent implements OnInit {
 
   @Input() store;
 
-  stockCurrents  = [];
+  stockCurrents = [];
 
   showLoading = true;
 
@@ -24,22 +24,17 @@ export class CategoryWiseProductsCardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getProductsCategoryWise(0);
+    this.getProductsCategoryWise();
   }
 
-  getProductsCategoryWise(i) {
+  getProductsCategoryWise() {
     this.queryResource.findStockCurrentByStoreIdAndCategoryIdUsingGET({
       userId: this.store.regNo,
-      categoryId: this.category.id,
-      page: i
+      categoryId: this.category.id
     })
     .subscribe(s => {
-      if(i < s.totalPages)
-      {
-        i++;
-        this.getProductsCategoryWise(i);
-        this.stockCurrents.push(s.content);
-      }
+      this.stockCurrents = s;
+      this.showLoading = false;
     });
   }
 

@@ -4,5 +4,6 @@ export interface Banner {
   file?: string;
   fileContentType?: string;
   id?: number;
+  imageLink?: string;
   store?: Store;
 }
