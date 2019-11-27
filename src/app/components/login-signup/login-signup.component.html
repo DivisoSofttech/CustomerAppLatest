@@ -67,7 +67,7 @@
                 <ion-input (ionChange)="showErrors('username')" formControlName="username" background="light"></ion-input>
               </ion-item>
               <ion-item lines="full" *ngIf="signupForm.get('username').invalid && showFormErrors['username']">
-                  <ion-label color="danger">Username should be 6 - 8 characters long</ion-label>
+                  <ion-label color="danger">Username should not contain spaces</ion-label>
               </ion-item>
               <ion-item class="item-inner">
                 <ion-label color="medium" position="floating">Email</ion-label>

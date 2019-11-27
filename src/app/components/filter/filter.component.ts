@@ -15,6 +15,8 @@ export class FilterComponent implements OnInit , OnDestroy {
 
   filterTypes = FILTER_TYPES;
 
+  cusines = ['Burger' , 'Pizza' , 'Biriyani']
+
   categories = [];
 
   deliveryType = 'Both';
