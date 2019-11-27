@@ -1,7 +1,7 @@
 import { CartService } from '../../services/cart.service';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { OrderLine, Store, Order, AuxilaryLineItem, Offer } from 'src/app/api/models';
-import { QueryResourceService, OfferCommandResourceService } from 'src/app/api/services';
+import { QueryResourceService } from 'src/app/api/services';
 import { NGXLogger } from 'ngx-logger';
 import { ShowAuxilaryModalComponent } from '../show-auxilary-modal/show-auxilary-modal.component';
 import { PopoverController } from '@ionic/angular';
@@ -114,10 +114,10 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
   removeOrder(orderLine, product) {
     this.logger.info('Removing Order ', orderLine);
     this.cart.removeOrder(orderLine);
-    if (this.orderService.resource.nextTaskName !== undefined) {
+    if (this.orderService.resource.nextTaskName !== undefined ) {
       orderLine = this.orderService.order.orderLines
      .forEach(line => {
-      if (line.productId === orderLine.productId) {
+      if (line.productId === orderLine.productId && line.id !== undefined) {
         this.logger.info('Deleting order from service', line.id);
         this.orderService.deleteOrderLine(line.id)
       .subscribe(() => this.logger.info('Product deleted', line.id));
@@ -151,6 +151,18 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
 
   removeAuxilaryOrder(product , orderLine) {
     this.cart.removeAuxilary(product , orderLine);
+    if (this.orderService.resource.nextTaskName !== undefined ) {
+      orderLine = this.orderService.order.orderLines
+     .forEach(line => {
+       line.requiedAuxilaries.filter(aux => aux.productId === orderLine.productId)
+       .forEach(auxilaryFiltered => {
+          if ( line.id !== undefined) {
+            this.orderService.deleteAuxilaryOrderLine(line.id)
+            .subscribe(() => this.logger.info('Auxilary deleted', line.id));
+          }
+       });
+     });
+    }
     if (this.isOfferAvailable) {
       this.getOffers();
     } else {

@@ -102,8 +102,7 @@ export class FilterService {
 
   private getStoreByRating(pageNumber, success, error?) {
     this.logger.info('Getting STores Via Rating Filter');
-    this.queryResource.findStoreByRatingUsingGET(
-    ).subscribe(data => {
+    this.queryResource.findStoreByRatingUsingGET({}).subscribe(data => {
       success(data.totalElements, data.totalPages, data.content);
     },
       err => {

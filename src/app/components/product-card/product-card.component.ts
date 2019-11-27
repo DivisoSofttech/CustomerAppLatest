@@ -116,7 +116,7 @@ export class ProductCardComponent implements OnInit, OnDestroy {
   }
 
   getAuxilaries(i) {
-    this.auxilariesSubscription = this.queryResource.findAuxilariesByProductIdUsingGET(this.stockCurrent.product.id)
+    this.auxilariesSubscription = this.queryResource.findAuxilariesByProductIdUsingGET({productId: this.stockCurrent.product.id})
       .subscribe(data => {
         i++;
         data.content.forEach(a => {
@@ -135,7 +135,7 @@ export class ProductCardComponent implements OnInit, OnDestroy {
 
 
   getComboItems(i) {
-    this.comboSusbcription = this.queryResource.findComboByProductIdUsingGET(this.stockCurrent.product.id)
+    this.comboSusbcription = this.queryResource.findComboByProductIdUsingGET({productId: this.stockCurrent.product.id})
       .subscribe(data => {
         i++;
         data.content.forEach(a => {

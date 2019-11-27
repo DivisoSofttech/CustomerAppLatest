@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
-import { OrderCommandResourceService } from 'src/app/api/services';
+import { CommandResourceService } from 'src/app/api/services';
 import { Util } from 'src/app/services/util';
 import { NGXLogger } from 'ngx-logger';
 import { Storage } from '@ionic/storage';
@@ -23,7 +23,7 @@ export class AddAddressComponent implements OnInit {
 
   constructor(
     private modalController: ModalController,
-    private orderCommandResource: OrderCommandResourceService,
+    private commandResourceService: CommandResourceService,
     private form: FormBuilder,
     private util: Util,
     private logger: NGXLogger,
@@ -54,7 +54,7 @@ export class AddAddressComponent implements OnInit {
     this.util.createLoader()
     .then(loader => {
       loader.present();
-      this.orderCommandResource.updateAddressUsingPUT(this.addressForm.value)
+      this.commandResourceService.updateAddressUsingPUT(this.addressForm.value)
       .subscribe(address => {
         this.logger.info('Address Saved', address);
         loader.dismiss();
@@ -71,7 +71,7 @@ export class AddAddressComponent implements OnInit {
       loader.present();
       this.addressForm.value.customerId = this.customer.preferred_username;
       this.logger.info('Address To Be Saved', this.addressForm.value);
-      this.orderCommandResource
+      this.commandResourceService
       .createAddressUsingPOST(this.addressForm.value)
       .subscribe(address => {
         this.logger.info('Address Saved', address);

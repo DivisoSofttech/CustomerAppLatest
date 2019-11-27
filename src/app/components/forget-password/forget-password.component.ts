@@ -97,7 +97,7 @@ export class ForgetPasswordComponent implements OnInit {
     this.logger.info('Senfing OTP');
     if (this.numberValid === true) {
       this.query.findByMobileNumberUsingGET(this.number).subscribe(user => {
-        this.keycloakService.getUser(user.searchKey);
+        this.keycloakService.getUser(user.idpSub);
         this.user = user;
         console.log(this.user);
         this.initSMSSender();

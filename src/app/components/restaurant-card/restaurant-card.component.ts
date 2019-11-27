@@ -115,7 +115,7 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
   }
 
   getStoreDeliveryInfo() {
-    this.deliveryInfoSubscription = this.queryResource.findDeliveryInfoByStoreIdUsingGET(this.store.regNo)
+    this.deliveryInfoSubscription = this.queryResource.findDeliveryInfoByStoreIdUsingGET({storeId: this.store.regNo})
       .subscribe(
         success => {
           this.deliveryInfos = success.content;
