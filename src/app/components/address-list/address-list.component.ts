@@ -1,6 +1,6 @@
 import { Component, OnInit, Input} from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { OrderCommandResourceService } from 'src/app/api/services';
+import { QueryResourceService } from 'src/app/api/services';
 import { NGXLogger } from 'ngx-logger';
 import { AddAddressComponent } from '../add-address/add-address.component';
 import { Storage } from '@ionic/storage';
@@ -24,7 +24,7 @@ export class AddressListComponent implements OnInit {
   constructor(
     private modalController: ModalController,
     private logger: NGXLogger,
-    private orderCommandResource: OrderCommandResourceService,
+    private queryResourceService: QueryResourceService,
     private sharedData: SharedDataService
   ){}
 
@@ -62,7 +62,7 @@ export class AddressListComponent implements OnInit {
   }
 
   getAllAdress(i) {
-    this.orderCommandResource.getAllSavedAddressUsingGET({
+    this.queryResourceService.getAllSavedAddressUsingGET({
       customerId: this.customer.preferred_username,
       page: i
     })

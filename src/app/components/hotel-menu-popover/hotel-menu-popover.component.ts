@@ -41,7 +41,6 @@ export class HotelMenuPopoverComponent implements OnInit {
   getProducts(i , loader) {
 
     // Change this API Later to findStockCurrentByStoreIdAndCategoryName()
-
     this.queryResourceService.findStockCurrentByCategoryNameAndStoreIdUsingGET({
       storeId: this.storeId,
       categoryName: this.selectedCategory

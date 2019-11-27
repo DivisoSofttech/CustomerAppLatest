@@ -1,6 +1,6 @@
 /* tslint:disable */
-export interface ElasticDataEntry {
-  count?: number;
+export interface ResultBucket {
+  docCount?: number;
   key?: string;
   keyAsString?: string;
 }

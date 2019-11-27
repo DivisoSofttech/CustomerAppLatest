@@ -41,7 +41,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
   cartSize = 0;
   date: Date;
-  subTotal = 0;
+  subTotal = 0.0;
 
   orderLines: OrderLine[] = [];
 
@@ -268,7 +268,7 @@ export class CartComponent implements OnInit, OnDestroy {
             storeId: this.cart.storeId,
             customerId: this.customer.preferred_username,
             allergyNote: this.allergyNote,
-            date: new Date().toISOString()
+            date: new Date().toUTCString()
           };
           console.log('Order setting to order service is ', order);
           this.orderService.setOrder(order);
@@ -300,7 +300,6 @@ export class CartComponent implements OnInit, OnDestroy {
             );
         } else {
           console.log('Current status is ', this.getStatus());
-          
           this.orderService.order.status = this.getStatus();
           this.orderLinesUpdated = [];
           this.cart.orderLines.forEach(orderLineUpdated => {

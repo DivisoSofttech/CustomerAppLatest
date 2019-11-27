@@ -1,6 +1,6 @@
 import { CartService } from 'src/app/services/cart.service';
 import { Injectable, OnInit, OnDestroy } from '@angular/core';
-import { OrderCommandResourceService, OfferCommandResourceService, PaymentCommandResourceService } from '../api/services';
+import { CommandResourceService } from '../api/services';
 import { CommandResource, Order, DeliveryInfo, Address, Offer } from '../api/models';
 import { Storage } from '@ionic/storage';
 import { NGXLogger } from 'ngx-logger';
@@ -30,13 +30,11 @@ export class OrderService implements OnInit , OnDestroy {
   offer: Offer;
   keycloakSubscription: any;
   constructor(
-    private orderCommandService: OrderCommandResourceService,
+    private commandResourceService: CommandResourceService,
     private storage: Storage,
     private cart: CartService,
     private logger: NGXLogger,
     private oauthService: OAuthService,
-    private offerCommandService: OfferCommandResourceService,
-    private paymentCommandService: PaymentCommandResourceService,
     private util: Util,
     private sharedData: SharedDataService,
     private keycloakService: KeycloakService
@@ -59,7 +57,7 @@ export class OrderService implements OnInit , OnDestroy {
     if (this.offer !== undefined) {
       this.order.appliedOffers.push(this.offer);
     }
-    return this.orderCommandService.initiateOrderUsingPOST(this.order);
+    return this.commandResourceService.initiateOrderUsingPOST(this.order);
   }
 
   async getCustomer() {
@@ -82,7 +80,7 @@ export class OrderService implements OnInit , OnDestroy {
 
   collectDeliveryInfo() {
     this.logger.info('DeliveryInfo is' + this.deliveryInfo);
-    return this.orderCommandService.collectDeliveryDetailsUsingPOST(
+    return this.commandResourceService.collectDeliveryDetailsUsingPOST(
       { taskId: this.resource.nextTaskId, orderId: this.resource.orderId, deliveryInfo: this.deliveryInfo });
   }
 
@@ -90,7 +88,7 @@ export class OrderService implements OnInit , OnDestroy {
     if (!this.customer) {
       await this.getCustomer();
     }
-    return this.offerCommandService.checkOfferEligibilityUsingPOST({
+    return this.commandResourceService.checkOfferEligibilityUsingPOST({
       orderModel: {
         orderTotal: totalPrice
       }, customerId: this.customer.preferred_username
@@ -102,7 +100,7 @@ export class OrderService implements OnInit , OnDestroy {
       this.getCustomer();
     }
     console.log('Payment reference is ' + ref);
-    return this.paymentCommandService.processPaymentUsingPOST(
+    return this.commandResourceService.processPaymentUsingPOST(
       {
         taskId: this.resource.nextTaskId,
         status, paymentDTO: {
@@ -122,7 +120,7 @@ export class OrderService implements OnInit , OnDestroy {
   }
 
   createOrderRazorPay() {
-    return this.paymentCommandService
+    return this.commandResourceService
       .createOrderUsingPOST({
         amount: this.order.grandTotal,
         currency: 'INR',
@@ -133,10 +131,16 @@ export class OrderService implements OnInit , OnDestroy {
 
   deleteOrderLine(orderLineId) {
     this.logger.info('Entering into deleteOrderLine with id ', orderLineId);
-    return this.orderCommandService.deleteOrderLineUsingDELETE(orderLineId);
+    return this.commandResourceService.deleteOrderLineUsingDELETE(orderLineId);
+  }
+
+  deleteAuxilaryOrderLine(auxilaryOrderLineId) {
+    this.logger.info('Entering into delete auxilary with id ', auxilaryOrderLineId);
+    return this.commandResourceService.deleteAuxilaryOrderLineUsingDELETE(auxilaryOrderLineId);
+
   }
   initiatePaypalPayment() {
-    return this.paymentCommandService.initiatePaymentUsingPOST({
+    return this.commandResourceService.initiatePaymentUsingPOST({
       intent: 'sale',
       payer: { payment_method: 'paypal' },
       transactions: [
@@ -157,11 +161,11 @@ export class OrderService implements OnInit , OnDestroy {
   }
 
   createBraintreeClientAuthToken() {
-    return this.paymentCommandService.createClientAuthTokenUsingGET();
+    return this.commandResourceService.createClientAuthTokenUsingGET();
   }
 
   createBraintreeTransaction(payload) {
-    return this.paymentCommandService.createTransactionUsingPOST({
+    return this.commandResourceService.createTransactionUsingPOST({
       nounce: payload.nonce,
       customerId: payload.customerId,
       amount: Math.round(this.order.grandTotal)
@@ -169,11 +173,11 @@ export class OrderService implements OnInit , OnDestroy {
   }
 
   updateOrder(order: Order) {
-    return this.orderCommandService.editOrderUsingPUT(order);
+    return this.commandResourceService.editOrderUsingPUT(order);
   }
 
   updateDeliveryInfo() {
-    return this.orderCommandService.editDeliveryInfoUsingPUT(this.deliveryInfo);
+    return this.commandResourceService.editDeliveryInfoUsingPUT(this.deliveryInfo);
   }
   setResource(resource: CommandResource) {
     if (resource.nextTaskName === 'Collect Delivery Info&Place Order') {

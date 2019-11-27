@@ -1,3 +1,4 @@
+import { PageOfStockCurrent } from './../../api/models/page-of-stock-current';
 import { Component, OnInit, Input } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { QueryResourceService } from 'src/app/api/services';
@@ -13,7 +14,7 @@ export class CategoryWiseProductsCardComponent implements OnInit {
 
   @Input() store;
 
-  stockCurrents = [];
+  stockCurrents  = [];
 
   showLoading = true;
 
@@ -23,19 +24,23 @@ export class CategoryWiseProductsCardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getProductsCategoryWise();
+    this.getProductsCategoryWise(0);
   }
 
-  getProductsCategoryWise() {
+  getProductsCategoryWise(i) {
     this.queryResource.findStockCurrentByStoreIdAndCategoryIdUsingGET({
       userId: this.store.regNo,
-      categoryId: this.category.id
+      categoryId: this.category.id,
+      page: i
     })
     .subscribe(s => {
-      this.stockCurrents = s;
-      this.showLoading = false;
+      if(i < s.totalPages)
+      {
+        i++;
+        this.getProductsCategoryWise(i);
+        this.stockCurrents.push(s.content);
+      }
     });
- 
   }
 
 }

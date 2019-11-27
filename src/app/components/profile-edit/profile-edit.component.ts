@@ -51,8 +51,8 @@ export class ProfileEditComponent implements OnInit {
   }
 
   removeImage() {
-    this.customer.photo = null;
-    this.customer.photoContentType = null;
+    this.customer.image = null;
+    this.customer.imageContentType = null;
   }
 
   async selectImage() {
@@ -62,10 +62,10 @@ export class ProfileEditComponent implements OnInit {
     });
 
     modal.onDidDismiss().then(data => {
-      this.customer.photo = data.data.image.substring(
+      this.customer.image = data.data.image.substring(
         data.data.image.indexOf(',') + 1
       );
-      this.customer.photoContentType = data.data.image.slice(
+      this.customer.imageContentType = data.data.image.slice(
         data.data.image.indexOf(':') + 1,
         data.data.image.indexOf(';')
       );

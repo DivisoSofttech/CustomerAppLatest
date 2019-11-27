@@ -195,12 +195,12 @@ export class LoginSignupComponent implements OnInit {
         this.logger.info('User is not exists creating new user');
         this.commandResourceService
                 .createCustomerUsingPOST({
-                  reference: this.username,
+                  idpCode: this.username,
                   name: this.username,
                   email: this.email,
                   mobileNumber: this.phone,
                   phoneCode: this.numberCode,
-                  searchKey: this.keycloakUserid
+                  idpSub: this.keycloakUserid
                 })
                 .subscribe(
                   customer => {
