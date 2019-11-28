@@ -62,6 +62,7 @@ export class NotificationService implements OnDestroy {
            this.notificationCount++;
            console.log('Notification count is ', this.notificationCount);
            console.log(notification);
+           this.notificationBehaviouralSubject.next(this.notificationCount);
            this.platform.ready().then(() => {
               this.localNotifications.schedule({
                 title: notification.title,

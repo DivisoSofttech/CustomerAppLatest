@@ -19,7 +19,7 @@ import { OrderService } from 'src/app/services/order.service';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { LoginSignupComponent } from '../login-signup/login-signup.component';
 import { Subscription} from 'rxjs';
-import { DecimalPipe } from '@angular/common';
+import { DecimalPipe, DatePipe } from '@angular/common';
 import { PreorderComponent } from '../preorder/preorder.component';
 import { ClosedPipe } from 'src/app/pipes/closed.pipe';
 
@@ -82,10 +82,14 @@ export class CartComponent implements OnInit, OnDestroy {
     private util: Util,
     private decimalPipe: DecimalPipe,
     private popoverController: PopoverController,
-    private closedPipe: ClosedPipe
+    private closedPipe: ClosedPipe,
+    private datePipe: DatePipe
   ) {}
 
   ngOnInit() {
+    console.log('date piped format is &&&&&', this.datePipe.transform(new Date(), 'MM/dd/yyyy hh:mm:ss'));
+    console.log('date to be in utc  ', new Date().toISOString());
+    console.log('Date piped with timezone ', this.datePipe.transform(new Date().toISOString(),'dd-mm-yyyy hh:mm','IST'));
     this.date = new Date();
     console.log('date now ', this.date);
     
@@ -250,6 +254,8 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   continue(deliveryType) {
+    console.log('date piped format is &&&&&', this.datePipe.transform(new Date(), 'MM/dd/yyyy hh:mm:ss'));
+    console.log('date to be in timezone', new Date().getTimezoneOffset());
     this.logger.info('In Continue');
     this.orderService.setShop(this.store);
     this.orderService.setDeliveryType(deliveryType);
@@ -268,7 +274,7 @@ export class CartComponent implements OnInit, OnDestroy {
             storeId: this.cart.storeId,
             customerId: this.customer.preferred_username,
             allergyNote: this.allergyNote,
-            date: new Date().toUTCString()
+            date: new Date().toISOString()
           };
           console.log('Order setting to order service is ', order);
           this.orderService.setOrder(order);

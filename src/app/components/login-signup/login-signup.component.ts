@@ -176,7 +176,7 @@ export class LoginSignupComponent implements OnInit {
         .subscribe(
           isUserExists => {
             this.logger.info('IsUserExists ', isUserExists);
-            if (isUserExists) {
+            if (isUserExists === true) {
               this.queryResourceService.findCustomerByReferenceUsingGET(reference)
             .subscribe(customer => {
               this.logger.info('Got Customer', customer);
