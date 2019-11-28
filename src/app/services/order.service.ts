@@ -12,6 +12,7 @@ import { BehaviorSubject } from 'rxjs';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { SharedDataService } from './shared-data.service';
 import { KeycloakService } from './security/keycloak.service';
+import { DecimalPipe } from '@angular/common';
 
 
 @Injectable({
@@ -37,7 +38,8 @@ export class OrderService implements OnInit , OnDestroy {
     private oauthService: OAuthService,
     private util: Util,
     private sharedData: SharedDataService,
-    private keycloakService: KeycloakService
+    private keycloakService: KeycloakService,
+    private decimalPipe: DecimalPipe
   ) {
     this.getCustomer();
   }
@@ -205,6 +207,8 @@ export class OrderService implements OnInit , OnDestroy {
   }
 
   setOrder(order) {
+    order.grandTotal = this.decimalPipe.transform(order.grandTotal, '1.2-2');
+    order.subTotal = this.decimalPipe.transform(order.subTotal, '1.2-2');
     this.order = order;
   }
 

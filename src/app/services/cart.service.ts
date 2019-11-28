@@ -16,7 +16,7 @@ export class CartService {
 
   currentShopId = 0;
   orderLines: OrderLine[] = [];
-  subTotal = 0.0;
+  subTotal: any = 0.0;
   total = 0;
   storeId;
   observableTickets: BehaviorSubject<OrderLine[]>;
@@ -239,7 +239,7 @@ export class CartService {
       orderLine.total = (orderLine.quantity * orderLine.pricePerUnit) + auxilaryTotal;
       orderTotal += orderLine.total;
     });
-    this.subTotal = parseFloat(this.decimalPipe.transform(orderTotal, '1.2-2'));
+    this.subTotal = this.decimalPipe.transform(orderTotal, '1.2-2');
   }
 
   updateCart() {
