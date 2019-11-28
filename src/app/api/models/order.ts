@@ -13,12 +13,13 @@ export interface Order {
   deliveryInfo?: DeliveryInfo;
   email?: string;
   grandTotal?: number;
-  subTotal?: number;
   id?: number;
   orderId?: string;
   orderLines?: Array<OrderLine>;
   paymentRef?: string;
   preOrderDate?: string;
+  state?: string;
   status?: Status;
   storeId?: string;
+  subTotal?: number;
 }

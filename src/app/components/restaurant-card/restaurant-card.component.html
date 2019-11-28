@@ -4,8 +4,8 @@
   <span class="ribbon6" *ngIf="!(timeNow | closed: store.openingTime:store.closingTime)">Closed</span>
   <ion-card-header (click)="showHotelMenu(store.regNo)">
     <ion-item lines="none">
-      <ion-img no-margin slot="start" *ngIf="store.image" slot="start"
-        [src]="'data:' + store.imageContentType + ';base64,' + store.image" class="imageShow">
+      <ion-img no-margin slot="start" *ngIf="store.imageLink" slot="start"
+        [src]="store.imageLink" class="imageShow">
       </ion-img>
       <ion-label style="margin-left:15px">
         <ion-text word-wrap text-wrap class="category">

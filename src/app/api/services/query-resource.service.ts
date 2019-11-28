@@ -27,6 +27,7 @@ import { Product } from '../models/product';
 import { PageOfProduct } from '../models/page-of-product';
 import { PageOfRatingReview } from '../models/page-of-rating-review';
 import { PageOfStockCurrent } from '../models/page-of-stock-current';
+import { StockCurrent } from '../models/stock-current';
 import { Store } from '../models/store';
 import { PageOfNotification } from '../models/page-of-notification';
 import { PageOfOrder } from '../models/page-of-order';
@@ -1246,7 +1247,7 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  findStockCurrentByStoreIdAndCategoryIdUsingGETResponse(params: QueryResourceService.FindStockCurrentByStoreIdAndCategoryIdUsingGETParams): __Observable<__StrictHttpResponse<PageOfStockCurrent>> {
+  findStockCurrentByStoreIdAndCategoryIdUsingGETResponse(params: QueryResourceService.FindStockCurrentByStoreIdAndCategoryIdUsingGETParams): __Observable<__StrictHttpResponse<Array<StockCurrent>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -1268,7 +1269,7 @@ class QueryResourceService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<PageOfStockCurrent>;
+        return _r as __StrictHttpResponse<Array<StockCurrent>>;
       })
     );
   }
@@ -1287,9 +1288,9 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  findStockCurrentByStoreIdAndCategoryIdUsingGET(params: QueryResourceService.FindStockCurrentByStoreIdAndCategoryIdUsingGETParams): __Observable<PageOfStockCurrent> {
+  findStockCurrentByStoreIdAndCategoryIdUsingGET(params: QueryResourceService.FindStockCurrentByStoreIdAndCategoryIdUsingGETParams): __Observable<Array<StockCurrent>> {
     return this.findStockCurrentByStoreIdAndCategoryIdUsingGETResponse(params).pipe(
-      __map(_r => _r.body as PageOfStockCurrent)
+      __map(_r => _r.body as Array<StockCurrent>)
     );
   }
 
