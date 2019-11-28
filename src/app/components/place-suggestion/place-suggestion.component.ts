@@ -5,6 +5,7 @@ import { ModalController, Platform } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { Subscription } from 'rxjs';
 import { RecentService, RecentType } from 'src/app/services/recent.service';
+import { FilterService } from 'src/app/services/filter.service';
 
 @Component({
   selector: 'app-place-suggestion',
@@ -23,6 +24,8 @@ export class PlaceSuggestionComponent implements OnInit , OnDestroy {
 
   recents = [];
 
+  distance = 10;
+
   private unregisterBackAction: Subscription;
 
   constructor(
@@ -31,7 +34,8 @@ export class PlaceSuggestionComponent implements OnInit , OnDestroy {
     private modalController: ModalController,
     private storage: Storage,
     private platform: Platform,
-    private recentService: RecentService
+    private recentService: RecentService,
+    private filter: FilterService
   ) { }
 
   ngOnInit() {
@@ -101,6 +105,7 @@ export class PlaceSuggestionComponent implements OnInit , OnDestroy {
       .then(data => {
         this.logger.info('Found LatLon for selected Location', data);
         // Dismiss Data here
+        this.filter.distance = this.distance;
         this.modalController.dismiss({
           latLon: data,
           name: this.currentPlaceName

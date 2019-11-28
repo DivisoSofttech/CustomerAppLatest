@@ -1,5 +1,5 @@
 import { StoreDTO } from './../../api/models/store-dto';
-import { FilterService } from './../../services/filter.service';
+import { FilterService , FILTER_TYPES} from './../../services/filter.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Util } from 'src/app/services/util';
 import { IonInfiniteScroll, IonRefresher, ModalController} from '@ionic/angular';
@@ -51,7 +51,6 @@ export class RestaurantPage implements OnInit {
     return await modal.present();
   }
   ngOnInit() {
-    this.getStores();
     this.getCurrentLocation();
   }
 
@@ -78,7 +77,7 @@ export class RestaurantPage implements OnInit {
         this.toggleIonRefresher();
       },
         () => {
-          // this.errorService.showErrorModal(this);
+          this.errorService.showErrorModal(this);
         });
     });
   }
@@ -169,6 +168,7 @@ export class RestaurantPage implements OnInit {
     this.logger.info('Getting Current Location');
     this.locationService.getCurrentLoactionAddress((data, coords) => {
     this.filter.setCoordinates(coords);
+    this.getStores();
     this.currentPlaceName = data[0].address_components[0].short_name;
     this.logger.info('Current Place Name ', this.currentPlaceName);
     this.logger.info('Getting LatLon for current Location', coords);
