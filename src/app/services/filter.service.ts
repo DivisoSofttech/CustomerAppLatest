@@ -88,13 +88,12 @@ export class FilterService {
       this.locationBehaviour.next(this.currentCordinates);
       this.queryResource
       .findStoreBySearUsingGET({
-        lat:this.currentCordinates.coords.latitude,
-        lon:this.currentCordinates.coords.longitude,
+        lat:this.currentCordinates.coords?this.currentCordinates.coords.latitude:this.currentCordinates[0],
+        lon:this.currentCordinates.coords?this.currentCordinates.coords.longitude:this.currentCordinates[1],
         distanceUnit:'KILOMETERS',
         distance: 10
       })
       .subscribe(data => {
-        console.log('skkskskskskskskssskskskksksk')
         success(data.totalElements, data.totalPages, data.content);
       },
       err => {

@@ -21,7 +21,7 @@ export class ErrorService {
     this.component.ngOnInit();
   }
 
-  async showErrorModal(component) {
+  async showErrorModal(component?) {
 
     if(this.modal !== undefined) {
       this.modalController.dismiss();

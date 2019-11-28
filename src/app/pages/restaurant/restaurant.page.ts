@@ -54,7 +54,7 @@ export class RestaurantPage implements OnInit {
     this.getCurrentLocation();
   }
 
-  getStores() {
+  async getStores() {
     this.filter.getSubscription().subscribe(data => {
       this.showLoading = true;
       this.stores = [];
@@ -164,12 +164,12 @@ export class RestaurantPage implements OnInit {
     this.footer.setcurrentRoute('restaurant');
   }
 
-  getCurrentLocation() {
+  async getCurrentLocation() {
     this.logger.info('Getting Current Location');
     this.locationService.getCurrentLoactionAddress((data, coords) => {
     this.filter.setCoordinates(coords);
-    this.getStores();
     this.currentPlaceName = data[0].address_components[0].short_name;
+    this.getStores();
     this.logger.info('Current Place Name ', this.currentPlaceName);
     this.logger.info('Getting LatLon for current Location', coords);
     });

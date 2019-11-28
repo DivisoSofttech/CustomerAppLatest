@@ -22,6 +22,7 @@ export interface Product {
   idpcode?: string;
   image?: string;
   imageContentType?: string;
+  imagelink?: string;
   isActive?: boolean;
   isAuxilaryItem?: boolean;
   isServiceItem?: boolean;

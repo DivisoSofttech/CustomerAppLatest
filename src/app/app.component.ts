@@ -10,6 +10,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { GuestUserService } from './services/security/guest-user.service';
 import { HistoryListComponent } from './components/history-list/history-list.component';
 import { Router, NavigationEnd } from '@angular/router';
+import { ErrorService } from './services/error.service';
 
 
 @Component({
@@ -53,6 +54,7 @@ export class AppComponent {
     private keycloakService: KeycloakService,
     private modalController: ModalController,
     private screenOrientation: ScreenOrientation,
+    private errorService: ErrorService,
     private localNotifications: LocalNotifications,
     private router: Router,
     private guestUserService: GuestUserService,
@@ -70,6 +72,17 @@ export class AppComponent {
     if (this.platform.is('pwa') || this.platform.is('cordova')) {
       this.browser = true;
     }
+    this.checkInternetConnection(this.errorService);
+  }
+
+  checkInternetConnection(errorService: ErrorService) {
+    window.addEventListener('offline', function(event){
+      errorService.showErrorModal();
+    });
+    window.addEventListener('online', function(event){
+      errorService.modal.dismiss();
+      this.location.reload();
+    });
   }
 
   toggleFilterView(val) {
@@ -87,6 +100,8 @@ export class AppComponent {
   onResize(event) {
     this.toggleFilterView(this.router.url);
   }
+
+
 
   getUser() {
     this.keycloakService.getUserChangedSubscription()

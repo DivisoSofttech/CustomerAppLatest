@@ -15,9 +15,7 @@ export class FilterComponent implements OnInit , OnDestroy {
 
   filterTypes = FILTER_TYPES;
 
-  cusines = ['Burger' , 'Pizza' , 'Biriyani']
-
-  categories = [];
+  cusines;
 
   deliveryType = 'Both';
 
@@ -57,15 +55,13 @@ export class FilterComponent implements OnInit , OnDestroy {
     this.closeEvent();
   }
 
-  // Api Does not Work
-  // getCategories() {
-  //   this.queryResource.findStoreAndCountUsingGET({}).subscribe(data => {
-  //     if (data !== undefined) {
-
-  //       this.categories = data;
-  //     }
-  //   });
-  // }
+  getCategories() {
+    this.queryResource.findStoreAndCountUsingGET({}).subscribe(data => {
+      if (data !== undefined) {
+        this.cusines = data;
+      }
+    });
+  }
 
   ngOnDestroy(): void {
     this.filterServiceSubscription.unsubscribe();
