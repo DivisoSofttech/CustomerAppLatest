@@ -13,9 +13,9 @@
       <ion-title>
         <small>Choose Distance</small>
       </ion-title>
-      <ion-range>
+      <ion-range min="10" max="100" [(ngModel)]="distance" (ionChange)="distanceChanged($event)">
         <ion-label slot="end">
-          <h2>200KM</h2>
+          <h2>{{distance}}KM</h2>
         </ion-label>
       </ion-range>      
   </ion-toolbar>

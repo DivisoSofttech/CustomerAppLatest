@@ -1,5 +1,5 @@
 import { StoreDTO } from './../../api/models/store-dto';
-import { FilterService } from './../../services/filter.service';
+import { FilterService , FILTER_TYPES} from './../../services/filter.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Util } from 'src/app/services/util';
 import { IonInfiniteScroll, IonRefresher, ModalController} from '@ionic/angular';
@@ -51,11 +51,10 @@ export class RestaurantPage implements OnInit {
     return await modal.present();
   }
   ngOnInit() {
-    this.getStores();
     this.getCurrentLocation();
   }
 
-  getStores() {
+  async getStores() {
     this.filter.getSubscription().subscribe(data => {
       this.showLoading = true;
       this.stores = [];
@@ -78,7 +77,7 @@ export class RestaurantPage implements OnInit {
         this.toggleIonRefresher();
       },
         () => {
-          // this.errorService.showErrorModal(this);
+          this.errorService.showErrorModal(this);
         });
     });
   }
@@ -155,9 +154,9 @@ export class RestaurantPage implements OnInit {
     this.logger.info('Changed Current Location - LatLon ', data);
     this.filter.setCoordinates(data.data.latLon);
     this.currentPlaceName = data.data.name;
-    // this.logger.info('Setting Distance_wise Filter');
-    // this.filter.setFilter(FILTER_TYPES.DISTANCE_WISE);
-    // this.logger.info('Getting Stores');
+    this.logger.info('Setting Distance_wise Filter');
+    this.filter.setFilter(FILTER_TYPES.DISTANCE_WISE);
+    this.logger.info('Getting Stores');
   }
 
   // Fix for Footer
@@ -165,11 +164,12 @@ export class RestaurantPage implements OnInit {
     this.footer.setcurrentRoute('restaurant');
   }
 
-  getCurrentLocation() {
+  async getCurrentLocation() {
     this.logger.info('Getting Current Location');
     this.locationService.getCurrentLoactionAddress((data, coords) => {
-    // this.filter.setCoordinates(coords);
+    this.filter.setCoordinates(coords);
     this.currentPlaceName = data[0].address_components[0].short_name;
+    this.getStores();
     this.logger.info('Current Place Name ', this.currentPlaceName);
     this.logger.info('Getting LatLon for current Location', coords);
     });

@@ -15,9 +15,7 @@ export class FilterComponent implements OnInit , OnDestroy {
 
   filterTypes = FILTER_TYPES;
 
-  cusines = ['Burger' , 'Pizza' , 'Biriyani']
-
-  categories = [];
+  cusines;
 
   deliveryType = 'Both';
 
@@ -37,6 +35,7 @@ export class FilterComponent implements OnInit , OnDestroy {
     .subscribe(data => {
       this.currentFilterType = data;
     });
+    this.getCategories();
   }
 
   closeEvent() {
@@ -44,7 +43,7 @@ export class FilterComponent implements OnInit , OnDestroy {
   }
 
   clearFiter(filter) {
-    this.filter.setFilter(FILTER_TYPES.NO_FILTER);
+    this.filter.setFilter(FILTER_TYPES.DISTANCE_WISE);
     this.closeEvent();
   }
 
@@ -57,15 +56,13 @@ export class FilterComponent implements OnInit , OnDestroy {
     this.closeEvent();
   }
 
-  // Api Does not Work
-  // getCategories() {
-  //   this.queryResource.findStoreAndCountUsingGET({}).subscribe(data => {
-  //     if (data !== undefined) {
-
-  //       this.categories = data;
-  //     }
-  //   });
-  // }
+  getCategories() {
+    this.queryResource.findStoreTypeAndCountUsingGET({}).subscribe(data => {
+      if (data !== undefined) {
+        this.cusines = data;
+      }
+    });
+  }
 
   ngOnDestroy(): void {
     this.filterServiceSubscription.unsubscribe();

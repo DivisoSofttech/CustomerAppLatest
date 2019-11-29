@@ -14,8 +14,8 @@
 
     <ion-icon *ngIf="customer.photo" (click)="removeImage()"  float-right slot="icon-only" name="close"></ion-icon>
     <img (click)="selectImage($event)" *ngIf="!customer.photo" src="assets/images/user.png" slot="end" class="img" />
-    <ion-img class="profileImage" (click)="selectImage($event)" *ngIf="customer.photo"
-      [src]="'data:' + customer.photoContentType + ';base64,' + customer.photo" slot="end">
+    <ion-img class="profileImage" (click)="selectImage($event)" *ngIf="customer.imageLink"
+      [src]="customer.imageLink" slot="end">
     </ion-img>
 
   </div>

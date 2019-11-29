@@ -7,12 +7,7 @@
   <ion-item lines="none">
     <ion-thumbnail>
       <ion-img
-        [src]="
-          'data:' +
-          stockCurrent.product.imageContentType +
-          ';base64,' +
-          stockCurrent.product.image
-        "
+        [src]="stockCurrent.product.imageLink"
         class="imageShow"
       >
       </ion-img>
@@ -84,12 +79,7 @@
       <ion-item lines="none" *ngFor="let combo of comboLineItems">
         <ion-thumbnail class="comboPhoto">
           <ion-img
-            [src]="
-              'data:' +
-              combo.comboItem.imageContentType +
-              ';base64,' +
-              combo.comboItem.image
-            "
+            [src]=" combo.comboItem.imageLink"
             class="imageShow"
           >
           </ion-img>
@@ -109,12 +99,7 @@ class="ion-no-padding">
       <ion-item lines="full">
           <ion-thumbnail class="img-small">
               <ion-img
-                [src]="
-                  'data:' +
-                  product.imageContentType +
-                  ';base64,' +
-                  product.image
-                "
+                [src]="product.imageLink"
                 class="imageShow"
               >
               </ion-img>
@@ -137,12 +122,7 @@ class="ion-no-padding">
             <ion-thumbnail *ngIf="auxilariesProducts[auxLine.productId] !== null
             && auxilariesProducts[auxLine.productId] !== undefined" class="img-small">
               <ion-img 
-                [src]="
-                  'data:' +
-                  auxilariesProducts[auxLine.productId].imageContentType +
-                  ';base64,' +
-                  auxilariesProducts[auxLine.productId].image
-                "
+                [src]="auxilariesProducts[auxLine.productId].imageLink"
                 class="imageShow"
               >
               </ion-img>

@@ -12,7 +12,7 @@
       </ion-col>
     </ion-row>
 
-    <ion-row class="ion-justify-content-center ion-text-center">
+    <ion-row class="ion-justify-content-center ion-text-center" *ngIf="isOnline">
       <ion-label>
         <h1>Oh No !</h1>
         <h1>Something Went Wrong</h1>
@@ -20,7 +20,13 @@
       </ion-label>
     </ion-row>
 
-    <ion-row class="ion-justify-content-center ion-text-center">
+    <ion-row class="ion-justify-content-center ion-text-center" *ngIf="!isOnline">
+      <ion-label>
+        No Internet Connection
+      </ion-label>
+    </ion-row>
+
+    <ion-row class="ion-justify-content-center ion-text-center" >
       <ion-col size="12">
         <ion-button color="success" (click)="refresh()">
           TRY AGAIN

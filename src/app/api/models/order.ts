@@ -16,6 +16,7 @@ export interface Order {
   id?: number;
   orderId?: string;
   orderLines?: Array<OrderLine>;
+  paymentMode?: string;
   paymentRef?: string;
   preOrderDate?: string;
   state?: string;

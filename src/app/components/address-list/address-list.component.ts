@@ -19,6 +19,10 @@ export class AddressListComponent implements OnInit {
 
   addresses: any = [];
 
+  selectedAddress = {
+    id:0
+  };
+
   showLoading = true;
 
   constructor(
@@ -43,8 +47,17 @@ export class AddressListComponent implements OnInit {
         } else {
           this.addresses = addresses.all;
           this.showLoading = false;
+          this.getAddress();
         }
       })
+    });
+  }
+
+  getAddress() {
+    this.sharedData.getData('address')
+    .then(addresses => {
+      if(addresses != null)
+      this.selectedAddress = addresses.selectedAddress
     });
   }
 

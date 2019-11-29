@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ErrorService } from 'src/app/services/error.service';
 import { ModalController } from '@ionic/angular';
 
@@ -9,14 +9,16 @@ import { ModalController } from '@ionic/angular';
 })
 export class ErrorComponent implements OnInit {
 
+  isOnline = false;
+
   constructor(
-    private modalController: ModalController
+    private modalController: ModalController,
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   refresh() {
     this.modalController.dismiss();
   }
-
 }

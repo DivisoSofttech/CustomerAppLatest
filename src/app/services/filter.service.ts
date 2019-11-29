@@ -22,7 +22,7 @@ export enum FILTER_TYPES {
 export class FilterService {
 
   // Change to FILTER_TYPES.DISTANCE_WISE
-  private currentFilter = FILTER_TYPES.NO_FILTER;
+  private currentFilter = FILTER_TYPES.DISTANCE_WISE;
   private filterBehaviour = new BehaviorSubject<any>(this.currentFilter);
 
 
@@ -83,26 +83,31 @@ export class FilterService {
   }
 
   private getStoreByDistance(pageNumber, success, error?) {
-    this.logger.info('Getting STores Via Distance Filter');
+    this.logger.info('Getting STores Via Distance Filter' , this.currentCordinates);
     if (this.currentCordinates !== undefined) {
       this.locationBehaviour.next(this.currentCordinates);
-      // this.queryResource
-      // .searchByNearestLocationUsingGET({
-      //   latLon: this.currentCordinates,
-      //   kiloMeter: this.distance
-      // })
-      // .subscribe(data => {
-      //   success(data.totalElements, data.totalPages, data.content);
-      // },
-      // err => {
-      //   this.logger.error('Error Finding Store By Distance and Location' , err);
-      // });
+      this.queryResource
+      .findStoreBySearUsingGET({
+        lat:this.currentCordinates.coords?this.currentCordinates.coords.latitude:this.currentCordinates[0],
+        lon:this.currentCordinates.coords?this.currentCordinates.coords.longitude:this.currentCordinates[1],
+        distanceUnit:'KILOMETERS',
+        distance: this.distance
+      })
+      .subscribe(data => {
+        success(data.totalElements, data.totalPages, data.content);
+      },
+      err => {
+        this.logger.error('Error Finding Store By Distance and Location' , err);
+        error();
+      });
     }
   }
 
   private getStoreByRating(pageNumber, success, error?) {
     this.logger.info('Getting STores Via Rating Filter');
-    this.queryResource.findStoreByRatingUsingGET({}).subscribe(data => {
+    this.queryResource.findStoreByRatingUsingGET(
+      {}
+    ).subscribe(data => {
       success(data.totalElements, data.totalPages, data.content);
     },
       err => {

@@ -62,12 +62,8 @@
                       <ion-list>
                         <ion-item color="primary" lines="none">
                           <ion-avatar>
-                            <ion-img [src]="
-                                      'data:' +
-                                      category.imageContentType +
-                                      ';base64,' +
-                                      category.image
-                                      " class="imageShow">
+                            <ion-img [src]="category.imageLink"
+                                class="imageShow">
                             </ion-img>
                           </ion-avatar>
                           <ion-label margin>{{category.name | titlecase}}</ion-label>
