@@ -113,6 +113,11 @@ export class PlaceSuggestionComponent implements OnInit , OnDestroy {
         this.logger.info('Found LatLon for selected Location', data);
         // Dismiss Data here
         this.filter.distance = this.distance;
+        this.sharedData.saveToStorage('location',{
+          latLon: data,
+          name: this.currentPlaceName,
+          coords:data
+        })
         this.modalController.dismiss({
           latLon: data,
           name: this.currentPlaceName
@@ -121,6 +126,11 @@ export class PlaceSuggestionComponent implements OnInit , OnDestroy {
       .catch(err => {
         this.logger.warn('Error Getting LatLon for selected Location', place);
       });
+  }
+  
+  getCurrentLocation() {
+    this.locationService.getCurrentLoactionAddress((data,coords)=> {})    
+    this.closeCurrent();
   }
 
   dismiss() {

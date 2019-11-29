@@ -16,7 +16,11 @@
   <ion-grid>
     <ion-row>
       <ion-col size="12">
-          <ion-datetime class="ion-text-center" display-format="h:mm A" picker-format="h:mm A" value="1990-02-19T07:43Z"></ion-datetime>
+          <ion-datetime
+            [max]="toTime"
+            [min]="fromTime"
+           class="ion-text-center" display-format="h:mm A" picker-format="h:mm A" mode="ios" >
+          </ion-datetime>
       </ion-col>
     </ion-row>
   </ion-grid>

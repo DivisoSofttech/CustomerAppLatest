@@ -56,7 +56,7 @@ class QueryResourceService extends __BaseService {
   static readonly findAllDeliveryTypesByStoreIdUsingGETPath = '/api/query/deliveryTypes/{storeId}';
   static readonly findDeliveryInfoByStoreIdUsingGETPath = '/api/query/deliveryinfoByStoreId/{storeId}';
   static readonly findDiscountByProductIdUsingGETPath = '/api/query/discount-productId/{productId}';
-  static readonly facetSearchByStoreTypeNameUsingGETPath = '/api/query/facetSearchByStoreTypeName';
+  static readonly facetSearchByStoreTypeNameUsingPOSTPath = '/api/query/facetSearchByStoreTypeName';
   static readonly findFavouriteProductsByCustomerReferenceUsingGETPath = '/api/query/favouriteproductsbycustomerreference/{reference}';
   static readonly findFavouriteStoresByCustomerReferenceUsingGETPath = '/api/query/favouritestoresbycustomerreference/{reference}';
   static readonly findAllCategoriesUsingGETPath = '/api/query/findAllCategories/{iDPcode}';
@@ -478,7 +478,7 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
-   * @param params The `QueryResourceService.FacetSearchByStoreTypeNameUsingGETParams` containing the following parameters:
+   * @param params The `QueryResourceService.FacetSearchByStoreTypeNameUsingPOSTParams` containing the following parameters:
    *
    * - `storeTypeWrapper`: storeTypeWrapper
    *
@@ -490,7 +490,7 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  facetSearchByStoreTypeNameUsingGETResponse(params: QueryResourceService.FacetSearchByStoreTypeNameUsingGETParams): __Observable<__StrictHttpResponse<PageOfStoreType>> {
+  facetSearchByStoreTypeNameUsingPOSTResponse(params: QueryResourceService.FacetSearchByStoreTypeNameUsingPOSTParams): __Observable<__StrictHttpResponse<PageOfStoreType>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -499,7 +499,7 @@ class QueryResourceService extends __BaseService {
     if (params.size != null) __params = __params.set('size', params.size.toString());
     if (params.page != null) __params = __params.set('page', params.page.toString());
     let req = new HttpRequest<any>(
-      'GET',
+      'POST',
       this.rootUrl + `/api/query/facetSearchByStoreTypeName`,
       __body,
       {
@@ -516,7 +516,7 @@ class QueryResourceService extends __BaseService {
     );
   }
   /**
-   * @param params The `QueryResourceService.FacetSearchByStoreTypeNameUsingGETParams` containing the following parameters:
+   * @param params The `QueryResourceService.FacetSearchByStoreTypeNameUsingPOSTParams` containing the following parameters:
    *
    * - `storeTypeWrapper`: storeTypeWrapper
    *
@@ -528,8 +528,8 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  facetSearchByStoreTypeNameUsingGET(params: QueryResourceService.FacetSearchByStoreTypeNameUsingGETParams): __Observable<PageOfStoreType> {
-    return this.facetSearchByStoreTypeNameUsingGETResponse(params).pipe(
+  facetSearchByStoreTypeNameUsingPOST(params: QueryResourceService.FacetSearchByStoreTypeNameUsingPOSTParams): __Observable<PageOfStoreType> {
+    return this.facetSearchByStoreTypeNameUsingPOSTResponse(params).pipe(
       __map(_r => _r.body as PageOfStoreType)
     );
   }
@@ -2726,9 +2726,9 @@ module QueryResourceService {
   }
 
   /**
-   * Parameters for facetSearchByStoreTypeNameUsingGET
+   * Parameters for facetSearchByStoreTypeNameUsingPOST
    */
-  export interface FacetSearchByStoreTypeNameUsingGETParams {
+  export interface FacetSearchByStoreTypeNameUsingPOSTParams {
 
     /**
      * storeTypeWrapper

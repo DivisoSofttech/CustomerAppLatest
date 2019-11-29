@@ -141,7 +141,6 @@ export class RestaurantPage implements OnInit {
             } else if (data.data !== undefined && data.data.data === 'current') {
               this.logger.info('Setting Current Location ', data.data);
               this.currentPlaceName = '';
-              this.getCurrentLocation();
             }
           });
         modal.present()
@@ -170,7 +169,7 @@ export class RestaurantPage implements OnInit {
     this.locationService.getLocation()
     .subscribe(value => {
       if(value !== null) {
-        this.currentPlaceName = value.data[0].address_components[0].short_name;
+        this.currentPlaceName = value.name;
         this.filter.setCoordinates(value.coords);
         this.getStores();
         this.logger.info('Current Place Name ', this.currentPlaceName);
