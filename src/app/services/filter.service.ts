@@ -71,33 +71,30 @@ export class FilterService {
     if (this.currentFilter == FILTER_TYPES.NO_FILTER.valueOf()) {
       this.logger.info('Finding All Stores');
       this.getStoreNoFilter(pageNumber, success, error);
-    }
-    else if (this.currentFilter == FILTER_TYPES.DELIVERY_TIME.valueOf()) {
+    } else if (this.currentFilter == FILTER_TYPES.DELIVERY_TIME.valueOf()) {
       this.getStoreByDeliveryTime(pageNumber, success, error);
-    }
-    else if (this.currentFilter == FILTER_TYPES.DISTANCE_WISE.valueOf()) {
+    } else if (this.currentFilter == FILTER_TYPES.DISTANCE_WISE.valueOf()) {
       this.logger.info('Finding Store By Distance and Location', this.distance);
       this.getStoreByDistance(pageNumber, success, error);
-    }
-    else if (this.currentFilter == FILTER_TYPES.TOP_RATED.valueOf()) {
+    } else if (this.currentFilter == FILTER_TYPES.TOP_RATED.valueOf()) {
       this.logger.info('Finding Store By Rating');
       this.getStoreByRating(pageNumber, success, error);
-    } 
-    else if (this.currentFilter == FILTER_TYPES.CUSINE_FILTER.valueOf()){
-      this.logger.info("Finding Store By Cusines")
-      this.getStoreByCusines(pageNumber,success,error);
+    }
+    else if (this.currentFilter == FILTER_TYPES.CUSINE_FILTER.valueOf()) {
+      this.logger.info('Finding Store By Cusines');
+      this.getStoreByCusines(pageNumber, success, error);
     }
 
   }
 
   private getStoreByCusines(pageNumber, success, error?) {
-    this.logger.info("Fetching Stores Via Cusines" , this.selectedCusines);
+    this.logger.info('Fetching Stores Via Cusines' , this.selectedCusines);
     this.queryResource.facetSearchByStoreTypeNameUsingGET(
       {
-        storeTypeWrapper:{
-          typeName:['Indian','Italian']
+        storeTypeWrapper: {
+          typeName: this.selectedCusines
         },
-        page:pageNumber
+        page: pageNumber
       }
     )
     .subscribe(data => {
@@ -106,7 +103,7 @@ export class FilterService {
     err => {
       this.logger.error('Error Finding Store By Cusine Filter' , err);
       error();
-    })
+    });
   }
 
   private getStoreByDistance(pageNumber, success, error?) {
@@ -115,9 +112,9 @@ export class FilterService {
       this.locationBehaviour.next(this.currentCordinates);
       this.queryResource
       .findStoreBySearUsingGET({
-        lat:this.currentCordinates.coords?this.currentCordinates.coords.latitude:this.currentCordinates[0],
-        lon:this.currentCordinates.coords?this.currentCordinates.coords.longitude:this.currentCordinates[1],
-        distanceUnit:'KILOMETERS',
+        lat: this.currentCordinates.coords ? this.currentCordinates.coords.latitude : this.currentCordinates[0],
+        lon: this.currentCordinates.coords ? this.currentCordinates.coords.longitude : this.currentCordinates[1],
+        distanceUnit: 'KILOMETERS',
         distance: this.distance
       })
       .subscribe(data => {

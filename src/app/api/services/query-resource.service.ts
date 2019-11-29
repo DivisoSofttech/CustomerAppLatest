@@ -490,7 +490,7 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  facetSearchByStoreTypeNameUsingGETResponse(params: QueryResourceService.FacetSearchByStoreTypeNameUsingGETParams): __Observable<__StrictHttpResponse<PageOfStoreType>> {
+  facetSearchByStoreTypeNameUsingGETResponse(params: QueryResourceService.FacetSearchByStoreTypeNameUsingGETParams): __Observable<__StrictHttpResponse<PageOfStoreType>> {   
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -499,7 +499,7 @@ class QueryResourceService extends __BaseService {
     if (params.size != null) __params = __params.set('size', params.size.toString());
     if (params.page != null) __params = __params.set('page', params.page.toString());
     let req = new HttpRequest<any>(
-      'GET',
+      'POST',
       this.rootUrl + `/api/query/facetSearchByStoreTypeName`,
       __body,
       {
