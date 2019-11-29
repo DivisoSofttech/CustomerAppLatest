@@ -68,7 +68,8 @@
     </ion-card-content>
   </ion-card>
   <div class="overlay-container">
-    <ion-img [src]="'data:' + store.imageContentType + ';base64,' + store.image" class="mainImg"></ion-img>
+    <ion-img *ngIf="store.imageLink" slot="start"
+    [src]="store.imageLink" class="mainImg"></ion-img>
     <div class="overlay">
 
       <ion-item class="overlay-item">

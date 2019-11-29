@@ -5,7 +5,8 @@ import { ModalController, Platform } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { Subscription } from 'rxjs';
 import { RecentService, RecentType } from 'src/app/services/recent.service';
-import { FilterService } from 'src/app/services/filter.service';
+import { FilterService, FILTER_TYPES } from 'src/app/services/filter.service';
+import { SharedDataService } from 'src/app/services/shared-data.service';
 
 @Component({
   selector: 'app-place-suggestion',
@@ -32,7 +33,7 @@ export class PlaceSuggestionComponent implements OnInit , OnDestroy {
     private logger: NGXLogger,
     private locationService: LocationService,
     private modalController: ModalController,
-    private storage: Storage,
+    private sharedData: SharedDataService,
     private platform: Platform,
     private recentService: RecentService,
     private filter: FilterService
@@ -40,13 +41,19 @@ export class PlaceSuggestionComponent implements OnInit , OnDestroy {
 
   ngOnInit() {
     this.getRecents();
+    this.sharedData.getData('distance_filter')
+    .then(data => {
+      if(data !== null) {
+        this.distance = data;
+      }
+    })
   }
 
-  // closeModalOnBack() {
-  //   this.unregisterBackAction = this.platform.backButton.(() => {
-  //     this.modalController.dismiss();
-  // })
-  // }
+  distanceChanged(event) {
+    this.sharedData.saveToStorage('distance_filter' , this.distance);
+    this.filter.distance = event.detail.value;
+    this.filter.setFilter(FILTER_TYPES.DISTANCE_WISE);
+  }
 
   getRecents() {
     this.recentService.getRecentLocations()

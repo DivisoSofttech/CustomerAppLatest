@@ -10,6 +10,7 @@ export class ErrorService {
 
   component;
   modal: HTMLIonModalElement;
+  isOnline = true;
 
   constructor(
     private modalController: ModalController,
@@ -21,6 +22,10 @@ export class ErrorService {
     this.component.ngOnInit();
   }
 
+  setNetworkStatus(val) {
+    this.isOnline = val;
+  }
+
   async showErrorModal(component?) {
 
     if(this.modal !== undefined) {
@@ -30,6 +35,7 @@ export class ErrorService {
     this.component = component;
     this.modal = await this.modalController.create({
     component: ErrorComponent,
+    componentProps: {isOnline: this.isOnline},
     cssClass:['full'],
     backdropDismiss: false
     });

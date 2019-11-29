@@ -1,4 +1,4 @@
 /* tslint:disable */
 export interface StoreTypeWrapper {
-  typeName?: string;
+  typeName?: Array<string>;
 }

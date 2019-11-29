@@ -9,10 +9,8 @@
         ></ion-img>
         <ion-img
           class="profileImage"
-          *ngIf="customer.photo !== null"
-          [src]="
-            'data:' + customer.photoContentType + ';base64,' + customer.photo
-          "
+          *ngIf="customer.imageLink !== null"
+          [src]="customer.imageLink"
         ></ion-img>
       </ion-avatar>
       <ion-text class="mg-left" *ngIf="customer !== null && keyCloakUser !== null">

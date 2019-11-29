@@ -14,13 +14,14 @@ import { CustomerDTO } from '../models/customer-dto';
 import { PageOfType } from '../models/page-of-type';
 import { PageOfDeliveryInfo } from '../models/page-of-delivery-info';
 import { Discount } from '../models/discount';
-import { PageOfStore } from '../models/page-of-store';
+import { PageOfStoreType } from '../models/page-of-store-type';
 import { StoreTypeWrapper } from '../models/store-type-wrapper';
 import { PageOfFavouriteProduct } from '../models/page-of-favourite-product';
 import { PageOfFavouriteStore } from '../models/page-of-favourite-store';
 import { PageOfCategory } from '../models/page-of-category';
 import { PageOfOrderLine } from '../models/page-of-order-line';
 import { PageOfAuxilaryOrderLine } from '../models/page-of-auxilary-order-line';
+import { PageOfStore } from '../models/page-of-store';
 import { ResultBucket } from '../models/result-bucket';
 import { Offer } from '../models/offer';
 import { Product } from '../models/product';
@@ -35,7 +36,6 @@ import { Order } from '../models/order';
 import { OrderAggregator } from '../models/order-aggregator';
 import { PageOfAddress } from '../models/page-of-address';
 import { ProductDTO } from '../models/product-dto';
-import { PageOfStoreType } from '../models/page-of-store-type';
 import { StoreAddress } from '../models/store-address';
 import { StoreSettings } from '../models/store-settings';
 import { BannerDTO } from '../models/banner-dto';
@@ -72,7 +72,7 @@ class QueryResourceService extends __BaseService {
   static readonly findStockCurrentByProductNameAndStoreIdUsingGETPath = '/api/query/findStockCurrentByProductNameStoreId/{name}/{storeId}';
   static readonly findStockCurrentByStoreIdAndCategoryIdUsingGETPath = '/api/query/findStockCurrentByStoreIdAndCategoryId/{userId}/{categoryId}';
   static readonly findStoreByIdUsingGETPath = '/api/query/findStoreById/{id}';
-  static readonly findStoreAndCountUsingGETPath = '/api/query/findStoreTypeAndCount';
+  static readonly findStoreTypeAndCountUsingGETPath = '/api/query/findStoreTypeAndCount';
   static readonly findNotificationByReceiverIdUsingGETPath = '/api/query/findnotificationbyreceiverid/{receiverId}';
   static readonly findNotificationCountByReceiverIdAndStatusNameUsingGETPath = '/api/query/findnotificationcount/{receiverId}/{status}';
   static readonly headerUsingGETPath = '/api/query/header/{searchTerm}';
@@ -490,7 +490,7 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  facetSearchByStoreTypeNameUsingGETResponse(params: QueryResourceService.FacetSearchByStoreTypeNameUsingGETParams): __Observable<__StrictHttpResponse<PageOfStore>> {
+  facetSearchByStoreTypeNameUsingGETResponse(params: QueryResourceService.FacetSearchByStoreTypeNameUsingGETParams): __Observable<__StrictHttpResponse<PageOfStoreType>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -511,7 +511,7 @@ class QueryResourceService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<PageOfStore>;
+        return _r as __StrictHttpResponse<PageOfStoreType>;
       })
     );
   }
@@ -528,9 +528,9 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  facetSearchByStoreTypeNameUsingGET(params: QueryResourceService.FacetSearchByStoreTypeNameUsingGETParams): __Observable<PageOfStore> {
+  facetSearchByStoreTypeNameUsingGET(params: QueryResourceService.FacetSearchByStoreTypeNameUsingGETParams): __Observable<PageOfStoreType> {
     return this.facetSearchByStoreTypeNameUsingGETResponse(params).pipe(
-      __map(_r => _r.body as PageOfStore)
+      __map(_r => _r.body as PageOfStoreType)
     );
   }
 
@@ -1331,7 +1331,7 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
-   * @param params The `QueryResourceService.FindStoreAndCountUsingGETParams` containing the following parameters:
+   * @param params The `QueryResourceService.FindStoreTypeAndCountUsingGETParams` containing the following parameters:
    *
    * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    *
@@ -1341,7 +1341,7 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  findStoreAndCountUsingGETResponse(params: QueryResourceService.FindStoreAndCountUsingGETParams): __Observable<__StrictHttpResponse<Array<ResultBucket>>> {
+  findStoreTypeAndCountUsingGETResponse(params: QueryResourceService.FindStoreTypeAndCountUsingGETParams): __Observable<__StrictHttpResponse<Array<ResultBucket>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -1366,7 +1366,7 @@ class QueryResourceService extends __BaseService {
     );
   }
   /**
-   * @param params The `QueryResourceService.FindStoreAndCountUsingGETParams` containing the following parameters:
+   * @param params The `QueryResourceService.FindStoreTypeAndCountUsingGETParams` containing the following parameters:
    *
    * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    *
@@ -1376,8 +1376,8 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  findStoreAndCountUsingGET(params: QueryResourceService.FindStoreAndCountUsingGETParams): __Observable<Array<ResultBucket>> {
-    return this.findStoreAndCountUsingGETResponse(params).pipe(
+  findStoreTypeAndCountUsingGET(params: QueryResourceService.FindStoreTypeAndCountUsingGETParams): __Observable<Array<ResultBucket>> {
+    return this.findStoreTypeAndCountUsingGETResponse(params).pipe(
       __map(_r => _r.body as Array<ResultBucket>)
     );
   }
@@ -2733,7 +2733,7 @@ module QueryResourceService {
     /**
      * storeTypeWrapper
      */
-    storeTypeWrapper: Array<StoreTypeWrapper>;
+    storeTypeWrapper: StoreTypeWrapper;
 
     /**
      * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -3063,9 +3063,9 @@ module QueryResourceService {
   }
 
   /**
-   * Parameters for findStoreAndCountUsingGET
+   * Parameters for findStoreTypeAndCountUsingGET
    */
-  export interface FindStoreAndCountUsingGETParams {
+  export interface FindStoreTypeAndCountUsingGETParams {
 
     /**
      * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.

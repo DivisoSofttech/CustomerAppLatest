@@ -9,8 +9,10 @@ import { ModalController } from '@ionic/angular';
 })
 export class ErrorComponent implements OnInit {
 
+  isOnline = false;
+
   constructor(
-    private modalController: ModalController
+    private modalController: ModalController,
   ) { }
 
   ngOnInit() {

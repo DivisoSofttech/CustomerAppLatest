@@ -35,6 +35,7 @@ export class FilterComponent implements OnInit , OnDestroy {
     .subscribe(data => {
       this.currentFilterType = data;
     });
+    this.getCategories();
   }
 
   closeEvent() {
@@ -56,7 +57,7 @@ export class FilterComponent implements OnInit , OnDestroy {
   }
 
   getCategories() {
-    this.queryResource.findStoreAndCountUsingGET({}).subscribe(data => {
+    this.queryResource.findStoreTypeAndCountUsingGET({}).subscribe(data => {
       if (data !== undefined) {
         this.cusines = data;
       }

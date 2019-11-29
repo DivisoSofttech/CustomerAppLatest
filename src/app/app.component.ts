@@ -77,9 +77,11 @@ export class AppComponent {
 
   checkInternetConnection(errorService: ErrorService) {
     window.addEventListener('offline', function(event){
+      errorService.setNetworkStatus(false);
       errorService.showErrorModal();
     });
     window.addEventListener('online', function(event){
+      errorService.setNetworkStatus(true);
       errorService.modal.dismiss();
       this.location.reload();
     });

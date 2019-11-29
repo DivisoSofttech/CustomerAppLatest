@@ -91,7 +91,7 @@ export class FilterService {
         lat:this.currentCordinates.coords?this.currentCordinates.coords.latitude:this.currentCordinates[0],
         lon:this.currentCordinates.coords?this.currentCordinates.coords.longitude:this.currentCordinates[1],
         distanceUnit:'KILOMETERS',
-        distance: 10
+        distance: this.distance
       })
       .subscribe(data => {
         success(data.totalElements, data.totalPages, data.content);
