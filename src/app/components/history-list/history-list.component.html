@@ -26,10 +26,7 @@
         <ion-item [lines]="lineFlag" class="order" *ngIf="order.status?.name === 'payment-processed' || order.status?.name === 'delivered'"   margin (click)="showOrderDetails(order)">
             <ion-thumbnail class="image" slot="start" *ngIf="stores[order.storeId] !== null && stores[order.storeId].imageContentType !== undefined">
               <ion-img [src]="
-                  'data:' +
-                  stores[order.storeId].imageContentType +
-                  ';base64,' +
-                  stores[order.storeId].image
+                  stores[order.storeId].imageLink
                 "></ion-img>
             </ion-thumbnail>
             <ion-icon slot="start" name="image" class="icon-big" *ngIf="stores[order.storeId] === null || stores[order.storeId].imageContentType === undefined"></ion-icon>

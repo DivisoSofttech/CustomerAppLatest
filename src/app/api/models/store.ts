@@ -18,7 +18,7 @@ export interface Store {
   id?: number;
   image?: string;
   imageContentType?: string;
-  imageLink: string;
+  imageLink?: string;
   info?: string;
   location?: string;
   locationName?: string;
@@ -33,7 +33,7 @@ export interface Store {
   storeAddress?: StoreAddress;
   storeSettings?: StoreSettings;
   storeTypes?: Array<StoreType>;
-  storeUniqueId: string;
+  storeUniqueId?: string;
   totalRating?: number;
   userRatingReviews?: Array<UserRatingReview>;
   userRatings?: Array<UserRating>;

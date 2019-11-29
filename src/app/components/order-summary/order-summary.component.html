@@ -14,10 +14,7 @@
     <ion-item *ngIf="store" lines="full">
       <ion-avatar>
         <ion-img [src]="
-            'data:' +
-            store.imageContentType +
-            ';base64,' +
-            store.image
+            store.imageLink
           "></ion-img>
       </ion-avatar>
       <ion-text class="ion-margin">
