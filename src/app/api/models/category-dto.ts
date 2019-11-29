@@ -6,5 +6,6 @@ export interface CategoryDTO {
   idpcode?: string;
   image?: string;
   imageContentType?: string;
+  imagelink?: string;
   name?: string;
 }

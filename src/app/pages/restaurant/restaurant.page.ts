@@ -74,6 +74,7 @@ export class RestaurantPage implements OnInit {
         // show stores in map
         // this.mapComponent.setStoreLocationMarkers(stores);
         this.showLoading = false;
+        this.logger.info("Disabling Loader",this.showLoading);
         this.toggleIonRefresher();
       },
         () => {
@@ -166,12 +167,15 @@ export class RestaurantPage implements OnInit {
 
   async getCurrentLocation() {
     this.logger.info('Getting Current Location');
-    this.locationService.getCurrentLoactionAddress((data, coords) => {
-    this.filter.setCoordinates(coords);
-    this.currentPlaceName = data[0].address_components[0].short_name;
-    this.getStores();
-    this.logger.info('Current Place Name ', this.currentPlaceName);
-    this.logger.info('Getting LatLon for current Location', coords);
+    this.locationService.getLocation()
+    .subscribe(value => {
+      if(value !== null) {
+        this.currentPlaceName = value.data[0].address_components[0].short_name;
+        this.filter.setCoordinates(value.coords);
+        this.getStores();
+        this.logger.info('Current Place Name ', this.currentPlaceName);
+        this.logger.info('Getting LatLon for current Location', value.coords);    
+      }
     });
   }
 

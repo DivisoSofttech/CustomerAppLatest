@@ -13,13 +13,15 @@ export enum FILTER_TYPES {
 
   // Sort Types
   TOP_RATED,
-  DELIVERY_TIME
+  DELIVERY_TIME,
+  CUSINE_FILTER
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class FilterService {
+
 
   // Change to FILTER_TYPES.DISTANCE_WISE
   private currentFilter = FILTER_TYPES.DISTANCE_WISE;
@@ -30,6 +32,7 @@ export class FilterService {
   currentCordinates: any;
   distance = 25;
   private locationBehaviour = new BehaviorSubject<any>(this.currentCordinates);
+  selectedCusines: string[];
 
 
   constructor(
@@ -59,6 +62,10 @@ export class FilterService {
     return this.currentFilter;
   }
 
+  setSelectedCusines(selectedCusines: any) {
+    this.selectedCusines = selectedCusines;
+  }
+
   public getStores(pageNumber, success, error?) {
     console.log(this.currentFilter == FILTER_TYPES.TOP_RATED.valueOf());
     if (this.currentFilter == FILTER_TYPES.NO_FILTER.valueOf()) {
@@ -76,10 +83,30 @@ export class FilterService {
       this.logger.info('Finding Store By Rating');
       this.getStoreByRating(pageNumber, success, error);
     } 
-    else {
-
+    else if (this.currentFilter == FILTER_TYPES.CUSINE_FILTER.valueOf()){
+      this.logger.info("Finding Store By Cusines")
+      this.getStoreByCusines(pageNumber,success,error);
     }
 
+  }
+
+  private getStoreByCusines(pageNumber, success, error?) {
+    this.logger.info("Fetching Stores Via Cusines" , this.selectedCusines);
+    this.queryResource.facetSearchByStoreTypeNameUsingGET(
+      {
+        storeTypeWrapper:{
+          typeName:['Indian','Italian']
+        },
+        page:pageNumber
+      }
+    )
+    .subscribe(data => {
+      success(data.totalElements, data.totalPages, data.content);
+    },
+    err => {
+      this.logger.error('Error Finding Store By Cusine Filter' , err);
+      error();
+    })
   }
 
   private getStoreByDistance(pageNumber, success, error?) {
