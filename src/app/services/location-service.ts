@@ -1,7 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { MapsAPILoader, GoogleMapsAPIWrapper } from '@agm/core';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { NGXLogger } from 'ngx-logger';
 
 declare var google: any;
@@ -17,6 +17,8 @@ export class LocationService {
   private currentLon: number;
   private geocoder: any;
 
+  positionAddressObservable = new BehaviorSubject<any>(null);
+
   constructor(
     private mapsAPILoader: MapsAPILoader,
     private geolocation: Geolocation,
@@ -25,6 +27,12 @@ export class LocationService {
     this.logger.info('Location Service Created');
     this.mapsAPILoader.load().then(() => {
       this.autoCompleteService = new google.maps.places.AutocompleteService();
+      this.getCurrentLoactionAddress((data,coords)=> {
+        this.positionAddressObservable.next({
+          data: data,
+          coords: coords
+        })
+      })
     });
   }
 
@@ -99,6 +107,9 @@ export class LocationService {
       });
 
     });
+  }
 
+  getLocation() {
+    return this.positionAddressObservable;
   }
 }
