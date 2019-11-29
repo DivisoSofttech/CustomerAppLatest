@@ -28,6 +28,7 @@ export class CartService {
   MAX_ORDERS = 10;
   behaviourDeliveryTypes = new BehaviorSubject<any>(this.currentDeliveryTypes);
   behaviourStore = new BehaviorSubject<Store>(this.currentShop);
+  preOrderDate;
 
   constructor(
     private alertController: AlertController,

@@ -234,7 +234,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
     popover.onDidDismiss()
     .then((data) => {
-      callback();
+      callback(data);
     }); 
     await popover.present();
   }
@@ -243,8 +243,9 @@ export class CartComponent implements OnInit, OnDestroy {
     this.logger.info('Checking if Store is Closed',this.store);
     if (!this.closedPipe.transform(new Date() , this.store.openingTime , this.store.closingTime)
     && this.store.preOrderSettings.isPreOrderAvailable) {
-      this.preorderPopover(() => {
-        this.continue(deliveryType);
+      this.preorderPopover((data) => {
+        console.error(data);
+        if(data.data===true)  this.continue(deliveryType);
       });
      } else {
        this.continue(deliveryType);
@@ -263,6 +264,7 @@ export class CartComponent implements OnInit, OnDestroy {
           const order: Order = {
             orderLines: this.orderLines,
             appliedOffers: [],
+            preOrderDate: this.cart.preOrderDate?this.cart.preOrderDate:null,
             // tslint:disable-next-line: radix
             grandTotal: this.cart.total,
             subTotal: this.cart.subTotal,

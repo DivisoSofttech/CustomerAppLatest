@@ -16,17 +16,21 @@
   <ion-grid>
     <ion-row>
       <ion-col size="12">
+        <ion-item>
+          <ion-label>Select Time</ion-label>
           <ion-datetime
-            [max]="toTime"
-            [min]="fromTime"
-           class="ion-text-center" display-format="h:mm A" picker-format="h:mm A" mode="ios" >
-          </ion-datetime>
+          [max]="fromTime"
+          [min]="toTime"
+          [(ngModel)]="selectedTime"
+         class="ion-text-center" display-format="h:mm A" picker-format="h:mm A" mode="ios" >
+        </ion-datetime>
+        </ion-item>
       </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
 <ion-footer>
-  <ion-button expand="block" class="ion-margin" (click)="dismiss()">
+  <ion-button [disabled]="selectedTime===undefined" expand="block" class="ion-margin" (click)="dismissTrue()">
     Confirm
   </ion-button>
 </ion-footer>
