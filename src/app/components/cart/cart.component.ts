@@ -87,12 +87,7 @@ export class CartComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    console.log('date piped format is &&&&&', this.datePipe.transform(new Date(), 'MM/dd/yyyy hh:mm:ss'));
-    console.log('date to be in utc  ', new Date().toISOString());
-    console.log('Date piped with timezone ', this.datePipe.transform(new Date().toISOString(),'dd-mm-yyyy hh:mm','IST'));
     this.date = new Date();
-    console.log('date now ', this.date);
-    
     this.getCartDetails();
     this.getCustomer();
     if (this.viewType === 'full') {
@@ -254,8 +249,6 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   continue(deliveryType) {
-    console.log('date piped format is &&&&&', this.datePipe.transform(new Date(), 'MM/dd/yyyy hh:mm:ss'));
-    console.log('date to be in timezone', new Date().getTimezoneOffset());
     this.logger.info('In Continue');
     this.orderService.setShop(this.store);
     this.orderService.setDeliveryType(deliveryType);

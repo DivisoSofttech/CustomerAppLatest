@@ -16,8 +16,8 @@ export class MakePaymentComponent implements OnInit {
 
   paymentOptions = [
     { name: 'Cash On Delivery', value: 'cod' , isChecked: false, icon: 'cash'},
-    {name: 'Debit Card/ Wallet', value: 'card', isChecked: false, icon: 'card'},
-    { name: 'Credit Card', value: 'braintree' , isChecked: false, icon: 'card'}
+    {name: 'Debit/Credit Card', value: 'card', isChecked: false, icon: 'card'}
+   // { name: 'Credit Card', value: 'braintree' , isChecked: false, icon: 'card'}
   ];
 
   constructor(
@@ -42,11 +42,11 @@ export class MakePaymentComponent implements OnInit {
   }
 
   ngOnInit() {
-     if (this.orderService.paymentMethod === 'braintree') {
+     if (this.orderService.paymentMethod === 'card') {
       this.paymentMethod = this.orderService.paymentMethod;
       this.paymentOptions = [];
-      this.paymentOptions.push( { name: 'Cash On Delivery', value: 'cod' , isChecked: false , icon:'cash'});
-      this.paymentOptions.push({ name: 'Credit/Debit Card', value: 'braintree' , isChecked: true , icon:'card'});
+      this.paymentOptions.push( { name: 'Cash On Delivery', value: 'cod' , isChecked: false , icon: 'cash'});
+      this.paymentOptions.push({ name: 'Credit/Debit Card', value: 'card' , isChecked: true , icon: 'card'});
     }
      this.toBePaid = this.orderService.order.grandTotal;
      if (this.platform.is('android') || this.platform.is('ios')) {
