@@ -3,6 +3,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { MapsAPILoader, GoogleMapsAPIWrapper } from '@agm/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { NGXLogger } from 'ngx-logger';
+import { SharedDataService } from './shared-data.service';
 
 declare var google: any;
 
@@ -22,16 +23,21 @@ export class LocationService {
   constructor(
     private mapsAPILoader: MapsAPILoader,
     private geolocation: Geolocation,
-    private logger: NGXLogger
+    private logger: NGXLogger,
+    private sharedData: SharedDataService
   ) {
     this.logger.info('Location Service Created');
     this.mapsAPILoader.load().then(() => {
       this.autoCompleteService = new google.maps.places.AutocompleteService();
-      this.getCurrentLoactionAddress((data,coords)=> {
-        this.positionAddressObservable.next({
-          data: data,
-          coords: coords
-        })
+      this.sharedData.getData('location')
+      .then(location => {
+        if(location !== null) {
+          this.logger.info("Fetching Existing Location From Storage");
+          this.positionAddressObservable.next(location)  
+        } else {
+          this.logger.info("Fetching Current Location");
+          this.getCurrentLoactionAddress((data,coords)=> {})    
+        }
       })
     });
   }
@@ -93,16 +99,26 @@ export class LocationService {
 
   async getCurrentLoactionAddress(func) {
     return this.getCurrentLocation()
-    .then(data => {
-      const latLng = data.coords.latitude + ',' + data.coords.longitude;
+    .then(latData => {
+      const latLng = latData.coords.latitude + ',' + latData.coords.longitude;
       this.mapsAPILoader.load()
       .then(() => {
-        const googleMapPos = new google.maps.LatLng( data.coords.latitude, data.coords.longitude );
+        const googleMapPos = new google.maps.LatLng( latData.coords.latitude, latData.coords.longitude );
         this.geocoder = new google.maps.Geocoder();
         this.geocoder.geocode(
         {latLng: googleMapPos},
        ( results, status ) => {
-          func(results , data);
+          func(results , latData);
+          this.sharedData.saveToStorage('location' , {
+            coords: [latData.coords.latitude, latData.coords.longitude],
+            latLon: [latData.coords.latitude, latData.coords.longitude],
+            name: results[0].address_components[0].short_name
+          });
+          this.positionAddressObservable.next({
+            coords: [latData.coords.latitude, latData.coords.longitude],
+            latLon: [latData.coords.latitude, latData.coords.longitude],
+            name: results[0].address_components[0].short_name
+          });
         });
       });
 

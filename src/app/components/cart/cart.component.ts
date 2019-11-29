@@ -227,19 +227,22 @@ export class CartComponent implements OnInit, OnDestroy {
   async preorderPopover(callback?) {
     const popover = await this.popoverController.create({
       component: PreorderComponent,
+      componentProps: {store: this.store},
       translucent: false,
       backdropDismiss: false
     });
 
     popover.onDidDismiss()
-    .then(() => {
+    .then((data) => {
       callback();
     }); 
     await popover.present();
   }
 
   checkRestaurantStatus(deliveryType) {
-    if (!this.closedPipe.transform(new Date() , this.store.openingTime , this.store.closingTime)) {
+    this.logger.info('Checking if Store is Closed',this.store);
+    if (!this.closedPipe.transform(new Date() , this.store.openingTime , this.store.closingTime)
+    && this.store.preOrderSettings.isPreOrderAvailable) {
       this.preorderPopover(() => {
         this.continue(deliveryType);
       });
