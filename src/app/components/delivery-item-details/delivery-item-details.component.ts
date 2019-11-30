@@ -228,7 +228,7 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
       },
       err=> {
         loader.dismiss();
-        this.errorService.showErrorModal(this);
+        // this.errorService.showErrorModal(this);
       });
     });
   });

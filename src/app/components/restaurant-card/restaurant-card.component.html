@@ -1,7 +1,7 @@
 <!--Normal View-->
 
 <ion-card class="ion-no-padding" *ngIf="viewType === 'normal'">
-  <span class="ribbon6" *ngIf="!(timeNow | closed: store.openingTime:store.closingTime)">Closed</span>
+  <span class="ribbon6" *ngIf="!(currentTime | closed: store.openingTime:store.closingTime)">Closed</span>
   <ion-card-header (click)="showHotelMenu(store.regNo)">
     <ion-item lines="none">
       <ion-img no-margin slot="start" *ngIf="store.imageLink" slot="start"
@@ -58,14 +58,28 @@
 
 <!--Detailed View-->
 <div class="container" *ngIf="viewType === 'detailedCard'">
-  <ion-card color="danger" class="closeCard" *ngIf="!(timeNow | closed: store.openingTime:store.closingTime)">
+  <ion-card color="danger" class="closeCard" *ngIf="!(currentTime | closed: store.openingTime:store.closingTime)">
     <ion-card-content>
       <ion-card-title>Closed</ion-card-title>
       <ion-card-subtitle>
         Serving in
-        {{ timeNow | dateDifference: store.openingTime:store.closingTime }}
+        {{ currentTime | dateDifference: store.openingTime:store.closingTime }}
       </ion-card-subtitle>
+      <ion-card-subtitle *ngIf="isPreOrderAvailable">
+        <ion-text color="success">
+            <h2><b>Preorder Available
+            </b></h2>
+        </ion-text>
+      </ion-card-subtitle>
+      <ion-card-subtitle *ngIf="!isPreOrderAvailable && store.preOrderSettings.isPreOrderAvailable">
+          <ion-text color="success">
+              <h2><b>Preorder Available From {{store.preOrderSettings.fromTime | date:'shortTime'}} to
+                {{store.preOrderSettings.toTime | date:'shortTime'}}
+              </b></h2>
+          </ion-text>
+        </ion-card-subtitle>
     </ion-card-content>
+
   </ion-card>
   <div class="overlay-container">
     <ion-img *ngIf="store.imageLink" slot="start"

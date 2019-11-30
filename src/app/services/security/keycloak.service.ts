@@ -5,62 +5,71 @@ import { KeycloakAdminConfig } from './../../configs/keycloak.admin.config';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { KeycloakAdminClient } from 'keycloak-admin/lib/client';
 import { Injectable } from '@angular/core';
-import { map, first } from 'rxjs/operators';
+import { map} from 'rxjs/operators';
 import { HttpHeaders } from '@angular/common/http';
-import { Storage } from '@ionic/storage';
 import { BehaviorSubject } from 'rxjs';
+import { LogService } from '../log.service';
+import { SharedDataService } from '../shared-data.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class KeycloakService {
+
   private userChangedBehaviour: BehaviorSubject<any> = new BehaviorSubject<any>(
     null
   );
 
+  private isGuestObservable: BehaviorSubject<any> = new BehaviorSubject<any>(true);
+
   keycloakAdmin: KeycloakAdminClient;
   customer;
   realm = 'graeshoppe';
+
   constructor(
     private oauthService: OAuthService,
     private keycloakConfig: KeycloakAdminConfig,
-    private storage: Storage,
-    private logger: NGXLogger,
+    private sharedData: SharedDataService,
+    private logger: LogService,
     private util: Util,
     private notificationService: NotificationService
 
   ) {
-    this.logger.info('Created Keycloak Service');
-    this.storage.get('user')
+    this.logger.info(this,'Created Keycloak Service');
+    this.sharedData.getData('user')
     .then(storedUser => {
-      console.log('Use from storage in con keycloak', storedUser);
       if (storedUser === null ) {
         this.getCurrentUserDetails()
         .then((data: any ) => {
-          this.getUserChangedSubscription().next(data);
-          if (!this.isGuest(data.preferred_username)) {
-            console.log('Subscribing to notifications for the user from KC Cons ', data.preferred_username);
-            this.notificationService.connectToNotification();
-            this.notificationService.subscribeToMyNotifications(data.preferred_username);
-          }
+          this.subscribeToNotification(data);
+          this.isGuestCheck(storedUser);
         });
       } else {
-        this.getUserChangedSubscription().next(storedUser);
-        if (!this.isGuest(storedUser.preferred_username)) {
-          console.log('Subscribing to notifications for the user from KC Cons ', storedUser.preferred_username);
-          this.notificationService.connectToNotification();
-          this.notificationService.subscribeToMyNotifications(storedUser.preferred_username);
-        }
+        this.subscribeToNotification(storedUser);
+        this.isGuestCheck(storedUser);
       }
     });
+  }
+
+  subscribeToNotification(data) {
+    this.getUserChangedSubscription().next(data);
+    if (!this.isGuest(data.preferred_username)) {
+      this.logger.info(this,'Subscribing to notifications for the user from KC Cons ', data.preferred_username);
+      this.notificationService.connectToNotification();
+      this.notificationService.subscribeToMyNotifications(data.preferred_username);  
+    }
   }
 
   public getUserChangedSubscription() {
     return this.userChangedBehaviour;
   }
 
+  public getUserGuestSubscription() {
+    return this.isGuestObservable;
+  }
+
   createAccount(user: any, password: string, success: any, err: any) {
-    this.logger.info('keycloakService.createAccount in keycloak service+++++++');
+    this.logger.info(this,'Keycloak Service Create Account');
     this.keycloakConfig.refreshClient().then(() => {
       this.keycloakAdmin = this.keycloakConfig.kcAdminClient;
       user.realm = this.realm;
@@ -70,9 +79,8 @@ export class KeycloakService {
       this.keycloakAdmin.users
         .create(user)
         .then(async res => {
-          this.logger.info('user created nowww+++++++');
-          this.logger.info('Create use id sub is ', res);
-          this.logger.info('keycloakAdmin.roles.findOneByName+++++++');
+          this.logger.info(this,'User Created With id Sub:' , res);
+          this.logger.info(this,'Fetching Availabel Roles');
           await this.keycloakAdmin.users.addRealmRoleMappings({
                 id: res.id,
                 realm: this.realm,
@@ -83,9 +91,7 @@ export class KeycloakService {
                   }
                 ]
               }).then(() => success(res));
-          this.logger.info('keycloak service calling success+++++++');
-
-
+          this.logger.info(this,'User Creation Successfull');
         })
         .catch(e => {
           err(e);
@@ -96,8 +102,9 @@ export class KeycloakService {
   async isAuthenticated(): Promise<boolean> {
     return await this.oauthService.hasValidAccessToken();
   }
+
   async checkUserInRole(user): Promise<boolean> {
-    this.logger.info('Checking user in role ', user);
+    this.logger.info('Checking User Role ', user);
     return await new Promise<boolean>(async (resolve, reject) => {
       await this.keycloakConfig
         .refreshClient()
@@ -108,7 +115,7 @@ export class KeycloakService {
               realm: this.realm
             })
             .then(async roles => {
-              this.logger.info('Available roles for the user are ', roles);
+              this.logger.info('Available Roles For The User Are ', roles);
               const rolesAvailable = await roles.realmMappings.filter(
                 mapping => {
                   if (mapping.name === 'customer') {
@@ -116,11 +123,11 @@ export class KeycloakService {
                   }
                 }
               );
-              this.logger.info('Length is ', rolesAvailable.length);
+              this.logger.info('Roles Availabel Length is ', rolesAvailable.length);
               if (rolesAvailable.length === 1) {
                 resolve(true);
               } else {
-                this.logger.info('Its false');
+                this.logger.info(this,'Its false');
                 resolve(false);
               }
             });
@@ -131,6 +138,7 @@ export class KeycloakService {
 
 
   async authenticateUser(credentials: any, success: any) {
+    this.logger.info(this,'Authenticating User')
     await this.oauthService
     .fetchTokenUsingPasswordFlowAndLoadUserProfile(
       credentials.username,
@@ -139,8 +147,9 @@ export class KeycloakService {
     )
     .then(data => {
       this.logger.info('Data after authenticate ', data);
-      this.storage.set('user', data);
+      this.sharedData.saveToStorage('user' , data);
       this.userChangedBehaviour.next(data);
+      this.isGuestCheck(data);
       this.customer = data;
       success();
     });
@@ -155,14 +164,15 @@ export class KeycloakService {
         new HttpHeaders()
       )
       .then(data => {
-        this.logger.info('Data after authenticate ', data);
-        this.storage.set('user', data);
+        this.logger.info(this,'Data after authenticate ', data);
+        this.sharedData.saveToStorage('user', data);
         this.userChangedBehaviour.next(data);
+        this.isGuestCheck(data);
         this.customer = data;
         this.checkUserInRole(this.customer.sub)
           .then(hasRoleCustomer => {
             if (hasRoleCustomer) {
-              this.logger.info('Success callback');
+              this.logger.info(this,'Success callback');
               success();
               if (!this.isGuest(credentials.username)) {
                  console.log('IsNotGuest');
@@ -171,24 +181,36 @@ export class KeycloakService {
               }
             } else {
               this.oauthService.logOut();
-              this.logger.info('Failure callback');
+              this.logger.info(this,'Failure callback');
               failure();
             }
           })
           .catch(error => {
             failure();
-            console.log('Error in authenticate', error);
+            this.logger.error(this,'Error in authentication', error);
             });
       });
   }
 
+  // Kept For Compatability if any components are using this
   isGuest(user): boolean {
-    console.log('Checking is guest');
+    this.logger.info('Checking if The Current User is Guest');
     if (user === 'guest') {
       return true;
     }
     return false;
   }
+
+  isGuestCheck(user) {
+    this.logger.info('Checking if The Current User is Guest');
+    if (user.preferred_username === 'guest') {
+      this.isGuestObservable.next(true);
+    } else {
+      this.isGuestObservable.next(false);
+    }
+  }
+
+
   async getCurrentUserDetails() {
     if (this.oauthService.hasValidAccessToken()) {
       return await this.oauthService.loadUserProfile();
@@ -229,7 +251,7 @@ export class KeycloakService {
   }
 
   resetPassword(newPassword, success, err) {
-    this.storage.get('user').then(user => {
+    this.sharedData.getData('user').then(user => {
       this.keycloakConfig.refreshClient().then(() => {
         this.keycloakAdmin = this.keycloakConfig.kcAdminClient;
         this.keycloakAdmin.users
@@ -257,14 +279,13 @@ export class KeycloakService {
     this.keycloakConfig.refreshClient().then(() => {
       this.keycloakAdmin = this.keycloakConfig.kcAdminClient;
       this.keycloakAdmin.users.findOne({id: userId}).then(user => {
-        console.log('user', userId);
-        console.log('userA', user);
+        this.logger.info(this,'User', user);
       });
     });
   }
 
   ForgetPassword(user, newPassword, success, err) {
-    console.log('user', user);
+    this.logger.info(this,'ForgotPassword User:', user);
     this.keycloakConfig.refreshClient().then(() => {
       this.keycloakAdmin = this.keycloakConfig.kcAdminClient;
       this.keycloakAdmin.users
@@ -288,8 +309,9 @@ export class KeycloakService {
 
   logout() {
     this.oauthService.logOut();
-    this.storage.clear();
+    this.sharedData.clearAll();
     this.userChangedBehaviour.next(null);
+    this.isGuestObservable.next(null);
     this.util.navigateHome();
     this.notificationService.disconnectToMyNotifications();
   }

@@ -30,7 +30,6 @@ export class RestaurantPage implements OnInit {
 
   @ViewChild(IonInfiniteScroll, null) ionInfiniteScroll: IonInfiniteScroll;
   @ViewChild(IonRefresher, null) IonRefresher: IonRefresher;
-  @ViewChild(MapComponent, null) mapComponent: MapComponent;
   @ViewChild(FooterComponent, null) footer: FooterComponent;
 
 
@@ -44,12 +43,7 @@ export class RestaurantPage implements OnInit {
     private errorService: ErrorService
   ) { }
 
-  async presentmakePayment() {
-    const modal = await this.modalController.create({
-      component: MakePaymentComponent
-    });
-    return await modal.present();
-  }
+
   ngOnInit() {
     this.getCurrentLocation();
   }
@@ -70,9 +64,6 @@ export class RestaurantPage implements OnInit {
         stores.forEach(s => {
           this.stores.push(s);
         });
-
-        // show stores in map
-        // this.mapComponent.setStoreLocationMarkers(stores);
         this.showLoading = false;
         this.logger.info("Disabling Loader",this.showLoading);
         this.toggleIonRefresher();

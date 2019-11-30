@@ -9,6 +9,7 @@ import { HotelMenuPopoverComponent } from 'src/app/components/hotel-menu-popover
 import { Util } from 'src/app/services/util';
 import { NGXLogger } from 'ngx-logger';
 import { MapComponent } from 'src/app/components/map/map.component';
+import { ClosedPipe } from 'src/app/pipes/closed.pipe';
 
 @Component({
   selector: 'app-store',
@@ -49,6 +50,9 @@ export class StorePage implements OnInit , OnDestroy {
   slidesHeight: number;
   timeNow: Date;
   slideWidthChecker;
+  isOrderAvailable: any = true;
+  isClosed = false;
+  categoryLoading: boolean = true;
 
   constructor(
     private queryResource: QueryResourceService,
@@ -58,6 +62,7 @@ export class StorePage implements OnInit , OnDestroy {
     private util: Util,
     private platform: Platform,
     private navController: NavController,
+    private closedPipe: ClosedPipe
   ) {}
 
   ngOnInit() {
@@ -92,7 +97,8 @@ export class StorePage implements OnInit , OnDestroy {
           this.logger.info('Got Store ', result.name, result);
           this.store = result;
           this.showRestaurantLoading = false;
-
+          this.checkPreorderStatus();
+          this.checkClosedStatus();
           // Show the Store In Map
           if (this.map !== undefined) {
             this.map.loadMap(this.store.location);
@@ -134,6 +140,8 @@ export class StorePage implements OnInit , OnDestroy {
         ++i;
         if (i < result.totalPages) {
           this.getCategories(i);
+        } else {
+          this.categoryLoading = false;
         }
         this.toggleIonRefresher();
       });
@@ -154,24 +162,28 @@ export class StorePage implements OnInit , OnDestroy {
     });
 
     popover.onDidDismiss().then((data: any) => {
-      if (data.data !== undefined) {
-        this.selectedCategory = data.data.selectedCategory;
-        if (this.selectedCategory === 'All') {
-          this.stockCurrents = this.tempStockCurrents;
-          this.showCategoryWiseProducts = true;
-        } else {
-          this.stockCurrents = data.data.result.filter(s => s !== null);
-          this.logger.info(
-            'Got StockCurrent of ',
-            this.selectedCategory,
-            this.stockCurrents
-          );
-          this.ionSlides.updateAutoHeight();
-          this.showCategoryWiseProducts = false;
-        }
-      }
+      this.swapCategoryOnDismiss(data);
     });
     return await popover.present();
+  }
+
+  swapCategoryOnDismiss(data) {
+    if (data.data !== undefined) {
+      this.selectedCategory = data.data.selectedCategory;
+      if (this.selectedCategory === 'All') {
+        this.stockCurrents = this.tempStockCurrents;
+        this.showCategoryWiseProducts = true;
+      } else {
+        this.stockCurrents = data.data.result.filter(s => s !== null);
+        this.logger.info(
+          'Got StockCurrent of ',
+          this.selectedCategory,
+          this.stockCurrents
+        );
+        this.ionSlides.updateAutoHeight();
+        this.showCategoryWiseProducts = false;
+      }
+    }
   }
 
   navigateBasket() {
@@ -221,5 +233,22 @@ export class StorePage implements OnInit , OnDestroy {
     this.logger.info(val, '----');
     this.logger.info('Hiding Fab Button');
     this.showCatgeoryFilterFab = val;
+  }
+
+
+  checkPreorderStatus() {
+
+    //Restaurant Should Be Closed
+    // Preorder Should be Avialable
+    // And Current Time should be between preorder[fromTime and toTime]
+    const currentTime = new Date();
+    this.isOrderAvailable = !this.closedPipe.transform(currentTime,this.store.openingTime,this.store.closingTime)
+    && this.store.preOrderSettings.isPreOrderAvailable
+    && this.closedPipe.transform(currentTime, this.store.preOrderSettings.fromTime,this.store.preOrderSettings.toTime);
+  }
+
+  checkClosedStatus() {
+    const currentTime = new Date();
+    this.isClosed = !this.closedPipe.transform(currentTime,this.store.openingTime,this.store.closingTime)
   }
 }

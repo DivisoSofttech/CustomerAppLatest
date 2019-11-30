@@ -45,6 +45,7 @@ import { HistoryListComponent } from './components/history-list/history-list.com
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { SharedDataService } from './services/shared-data.service';
 import { RecentService } from './services/recent.service';
+import { LogService } from './services/log.service';
  
 const config: SocketIoConfig = { url: 'https://dev.ci2.divisosofttech.com:9999', options: {} };
 
@@ -107,6 +108,7 @@ const config: SocketIoConfig = { url: 'https://dev.ci2.divisosofttech.com:9999',
     DecimalPipe,
     RecentService,
     ErrorService,
+    LogService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

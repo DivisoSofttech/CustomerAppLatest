@@ -27,9 +27,9 @@ export class PreorderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.logger.info('>>>>>>>>>>>FromTime',this.store.preOrderSettings.fromTime, ' toTime>>>>>>>>>>>',this.store.preOrderSettings.toTime);
-    this.fromTime = new Date(this.store.preOrderSettings.fromTime).toISOString();
-    this.toTime = new Date(this.store.preOrderSettings.toTime).toISOString();
+    this.logger.info('>>>>>>>>>>>FromTime',this.store.openingTime, ' toTime>>>>>>>>>>>',this.store.closingTime);
+    this.fromTime = new Date(this.store.openingTime).toISOString();
+    this.toTime = new Date(this.store.closingTime).toISOString();
     this.logger.info('From Time>>>>>',this.fromTime ,' toTime>>>>>>', this.toTime);
   }
 

@@ -1,7 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
-import { Storage } from '@ionic/storage';
 import { BehaviorSubject } from 'rxjs';
 import { NGXLogger } from 'ngx-logger';
+import { SharedDataService } from './shared-data.service';
 
 const recentKey = 'recent';
 
@@ -30,7 +30,7 @@ export class RecentService implements OnInit{
   private obeservableRecentProducts: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   constructor(
-    private storage: Storage,
+    private sharedData: SharedDataService,
     private logger: NGXLogger) 
   { 
     this.logger.info("Created Recent Service");
@@ -41,7 +41,7 @@ export class RecentService implements OnInit{
   }
 
   private getRecentsFromStorage() {
-    this.storage.get(recentKey)
+    this.sharedData.getData(recentKey)
     .then(recents => {
       if(recents !== null && recents !== undefined) {
         console.log('Recents' , recents);
@@ -72,7 +72,7 @@ export class RecentService implements OnInit{
 
   saveRecent(data: any) {
     this.recents.push(data);
-    this.storage.set(recentKey, this.recents)
+    this.sharedData.saveToStorage(recentKey, this.recents)
     .then(()=> {
       this.getRecentsFromStorage();
     });

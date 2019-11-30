@@ -89,7 +89,7 @@ export class FilterService {
 
   private getStoreByCusines(pageNumber, success, error?) {
     this.logger.info('Fetching Stores Via Cusines' , this.selectedCusines);
-    this.queryResource.facetSearchByStoreTypeNameUsingGET(
+    this.queryResource.facetSearchByStoreTypeNameUsingPOST(
       {
         storeTypeWrapper: {
           typeName: this.selectedCusines
