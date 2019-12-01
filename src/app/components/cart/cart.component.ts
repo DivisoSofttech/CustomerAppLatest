@@ -22,6 +22,7 @@ import { Subscription} from 'rxjs';
 import { DecimalPipe, DatePipe } from '@angular/common';
 import { PreorderComponent } from '../preorder/preorder.component';
 import { ClosedPipe } from 'src/app/pipes/closed.pipe';
+import { LogService } from 'src/app/services/log.service';
 
 @Component({
   selector: 'app-cart',
@@ -71,6 +72,8 @@ export class CartComponent implements OnInit, OnDestroy {
 
   @ViewChild(DeliveryItemDetailsComponent, null) delivery: DeliveryItemDetailsComponent;
   deliveryMode: any;
+  isOrderAvailable: any = true;
+  isClosed: boolean = false;
 
   constructor(
     private cart: CartService,
@@ -78,7 +81,7 @@ export class CartComponent implements OnInit, OnDestroy {
     private keycloakService: KeycloakService,
     private modalController: ModalController,
     private navController: NavController,
-    private logger: NGXLogger,
+    private logger: LogService,
     private util: Util,
     private decimalPipe: DecimalPipe,
     private popoverController: PopoverController,
@@ -110,10 +113,10 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   routeBasket() {
-    this.logger.info('Firing event');
+    this.logger.info(this,'Firing event');
     this.loginModal(
       () => {
-        this.logger.info('Emitting View Click');
+        this.logger.info(this,'Emitting View Click');
         this.viewClick.emit();
       },
       () => {}
@@ -121,7 +124,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   async loginModal(success, error) {
-    this.logger.info('CartComponent Login Modal');
+    this.logger.info(this,'CartComponent Login Modal');
     if (this.guest === true) {
       const modal = await this.modalController.create({
         component: LoginSignupComponent,
@@ -234,35 +237,56 @@ export class CartComponent implements OnInit, OnDestroy {
 
     popover.onDidDismiss()
     .then((data) => {
-      callback();
+      callback(data);
     }); 
     await popover.present();
   }
 
+  checkPreorderStatus() {
+
+    //Restaurant Should Be Closed
+    // Preorder Should be Avialable
+    // And Current Time should be between preorder[fromTime and toTime]
+    const currentTime = new Date();
+    this.isOrderAvailable = !this.closedPipe.transform(currentTime,this.store.openingTime,this.store.closingTime)
+    && this.store.preOrderSettings.isPreOrderAvailable
+    && this.closedPipe.transform(currentTime, this.store.preOrderSettings.fromTime,this.store.preOrderSettings.toTime);
+  }
+
+  checkClosedStatus() {
+    const currentTime = new Date();
+    this.isClosed = !this.closedPipe.transform(currentTime,this.store.openingTime,this.store.closingTime)
+  }
+
   checkRestaurantStatus(deliveryType) {
-    this.logger.info('Checking if Store is Closed',this.store);
-    if (!this.closedPipe.transform(new Date() , this.store.openingTime , this.store.closingTime)
-    && this.store.preOrderSettings.isPreOrderAvailable) {
-      this.preorderPopover(() => {
-        this.continue(deliveryType);
+    this.logger.info(this,'Checking if Store is Closed',this.store);
+    this.checkClosedStatus();
+    this.checkPreorderStatus();
+    if(this.isClosed && this.isOrderAvailable) {
+      this.preorderPopover((data) => {
+        console.error(data);
+        if(data.data===true)  this.continue(deliveryType);
       });
-     } else {
-       this.continue(deliveryType);
-     }
+    } else if(this.isClosed && !this.isOrderAvailable) {
+      this.logger.info(this,'Restaurant is Closed');
+    } else {
+      this.continue(deliveryType);
+    }
   }
 
   continue(deliveryType) {
-    this.logger.info('In Continue');
+    this.logger.info(this,'In Continue');
     this.orderService.setShop(this.store);
     this.orderService.setDeliveryType(deliveryType);
     this.orderService.setDeliveryCharge(this.storeSetting.deliveryCharge);
     this.loginModal(
       () => {
         if (this.orderService.resource.nextTaskName === undefined) {
-          this.logger.info('creating new order >>>>>>>>>>>>>');
+          this.logger.info(this,'creating new order >>>>>>>>>>>>>');
           const order: Order = {
             orderLines: this.orderLines,
             appliedOffers: [],
+            preOrderDate: this.cart.preOrderDate?this.cart.preOrderDate:null,
             // tslint:disable-next-line: radix
             grandTotal: this.cart.total,
             subTotal: this.cart.subTotal,
@@ -274,7 +298,7 @@ export class CartComponent implements OnInit, OnDestroy {
           };
           console.log('Order setting to order service is ', order);
           this.orderService.setOrder(order);
-          this.logger.info('Delivery type is ', deliveryType);
+          this.logger.info(this,'Delivery type is ', deliveryType);
           this.initiateOrderSubcription = this.orderService
             .initiateOrder()
             .subscribe(
@@ -285,8 +309,8 @@ export class CartComponent implements OnInit, OnDestroy {
                 this.orderService.orderResourceBehaviour.next(
                   resource.commandResource.nextTaskName
                 );
-                this.logger.info('Resultant resource is ', resource);
-                this.logger.info('Order is ', resource.order);
+                this.logger.info(this,'Resultant resource is ', resource);
+                this.logger.info(this,'Order is ', resource.order);
               },
               error => {
                 // this.orderService.orderResourceBehaviour.thrownError;
@@ -322,14 +346,14 @@ export class CartComponent implements OnInit, OnDestroy {
           this.orderService.order.subTotal = this.cart.subTotal;
           this.orderService.order.grandTotal = this.cart.total;
           if (this.orderService.deliveryInfo !== undefined) {
-            this.logger.info('Deliveryinfo exists ');
+            this.logger.info(this,'Deliveryinfo exists ');
             this.orderService.order.deliveryInfo = this.orderService.deliveryInfo;
           }
-          this.logger.info('Going to Update Order id is', this.orderService.order);
+          this.logger.info(this,'Going to Update Order id is', this.orderService.order);
           this.orderService
             .updateOrder(this.orderService.order)
             .subscribe(order => {
-              this.logger.info('Order DTO Updated is ', order);
+              this.logger.info(this,'Order DTO Updated is ', order);
               this.orderService.order = order;
             });
         }

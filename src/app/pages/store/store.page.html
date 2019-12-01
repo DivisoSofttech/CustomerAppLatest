@@ -22,7 +22,9 @@
           </ion-header>
           <ion-col size="12" size-lg="12" class="ion-no-padding">
             <app-loading *ngIf="showRestaurantLoading === true" [type]="'restaurant-detail'"></app-loading>
-            <app-restaurant-card *ngIf="store != undefined" [store]="store" [viewType]="'detailedCard'">
+            <app-restaurant-card *ngIf="store != undefined" [store]="store" 
+            [isPreOrderAvailable]="isOrderAvailable"
+            [viewType]="'detailedCard'">
             </app-restaurant-card>
           </ion-col>
           <ion-col size="12" size-lg="12" class="ion-no-padding">
@@ -42,7 +44,9 @@
 
               <ion-slides [options]="slideOptions" (ionSlideDidChange)="slideChanged($event)">
                 <ion-slide>
-                  <ion-row class="categories" *ngIf="store !== undefined && showCategoryWiseProducts === false"
+                  <ion-icon *ngIf="!isOrderAvailable && isClosed" class="icon-sad" name="sad"></ion-icon>
+                  <ng-container *ngIf="isOrderAvailable || !isClosed">
+                      <ion-row class="categories" *ngIf="store !== undefined && showCategoryWiseProducts === false"
                     no-margin no-padding>
                     <ion-col size="12" class="ion-no-padding">
                       <ion-item color="primary">
@@ -57,7 +61,7 @@
                   </ion-row>
 
                   <div class="categories" *ngIf="showCategoryWiseProducts === true">
-                    <ion-spinner name="circles" class="center" *ngIf="categories.length === 0"></ion-spinner>
+                    <ion-spinner name="circles" class="center" *ngIf="categoryLoading"></ion-spinner>
                     <div class="category" *ngFor="let category of categories">
                       <ion-list>
                         <ion-item color="primary" lines="none">
@@ -74,8 +78,8 @@
                       </ion-list>
                     </div>
                   </div>
+                  </ng-container>
                 </ion-slide>
-
                 <ion-slide>
                   <app-review *ngIf="store != undefined" [store]="store"></app-review>
                 </ion-slide>

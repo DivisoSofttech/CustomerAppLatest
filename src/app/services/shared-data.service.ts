@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { Router, NavigationStart } from '@angular/router';
-import { CartService } from './cart.service';
-
-export let browserRefresh;
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +12,7 @@ export class SharedDataService {
   }
 
   saveToStorage(key, service) {
-    this.storage.set(key, service);
+    return this.storage.set(key, service);
   }
 
   getData(key) {
@@ -25,5 +21,15 @@ export class SharedDataService {
 
   deleteData(key) {
     this.storage.remove(key);
+  }
+
+  clearAll() {
+    this.storage.clear();
+  }
+
+  clearKeys(...keys) {
+    keys.forEach(key=> {
+      this.storage.remove(key);
+    });
   }
 }

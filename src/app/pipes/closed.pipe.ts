@@ -5,6 +5,10 @@ import * as moment from 'moment';
   name: 'closed'
 })
 export class ClosedPipe implements PipeTransform {
+
+  // Return true if value is between arag1 and arg2
+  // else Return False
+
   transform(value: any, arg1?: any, arg2?: any): any {
     const date = new Date();
 

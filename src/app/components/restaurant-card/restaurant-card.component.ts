@@ -3,8 +3,10 @@ import { Store } from './../../api/models/store';
 import { FavouriteService } from './../../services/favourite.service';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { NGXLogger } from 'ngx-logger';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
+import { StoreType, Type, DeliveryInfo } from 'src/app/api/models';
+import { LogService } from 'src/app/services/log.service';
+import { Util } from 'src/app/services/util';
 
 @Component({
   selector: 'app-restaurant-card',
@@ -15,24 +17,25 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
 
   @Input() store: Store = {};
 
-  @Input() viewType = 'normal';
+  @Input() viewType: string = 'normal';
 
-  categories;
+  @Input() isPreOrderAvailable = false;
 
-  rateReview = 0;
+  categories: StoreType[] = [];
 
-  reviewCount = 0;
+  deliveryTypes: Type[] = [];
 
-  deliveryTypes = [];
+  deliveryInfos: DeliveryInfo[] = [];
 
-  deliveryInfos = [];
+  rateReview: number = 0;
+
+  reviewCount: number = 0;
 
   isFavourite = false;
-
   showFavourite = false;
-
-  timeNow;
+  currentTime: Date;
   deliveryOk: boolean;
+
   keycloakSubscription: any;
   reviewSubscription: any;
   storeTypeSubscription: any;
@@ -43,11 +46,16 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
     private favourite: FavouriteService,
     private queryResource: QueryResourceService,
     private nav: NavController,
-    private logger: NGXLogger,
-    private keycloakService: KeycloakService
+    private logger: LogService,
+    private keycloakService: KeycloakService,
+    private util: Util
   ) { }
 
   ngOnDestroy() {
+    this.unsubscribeAll();
+  }
+
+  unsubscribeAll() {
     this.keycloakSubscription?this.keycloakSubscription.unsubscribe():null;
     this.reviewSubscription?this.reviewSubscription.unsubscribe():null;
     this.storeTypeSubscription?this.storeTypeSubscription.unsubscribe():null;
@@ -56,27 +64,10 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    console.log("Store>>>>>>>>>>>>>>>" , this.store);
-
-    this.keycloakSubscription = this.keycloakService.getUserChangedSubscription()
-      .subscribe((data: any) => {
-        this.logger.info('Checking If guest : RestaurantCardComponet');
-        if (data !== null) {
-          if (data.preferred_username === 'guest') {
-            this.showFavourite = false;
-          } else {
-            this.showFavourite = true;
-          }
-        } else {
-          this.showFavourite = false;
-          }
-        });
-    this.timeNow = new Date();
-    this.reviewSubscription = this.queryResource.findReviewCountByStoreIdUsingGET(this.store.regNo).subscribe(
-      res => {
-        this.reviewCount = res;
-      }
-    );
+    this.logger.info(this,'Current Store ' , this.store)
+    this.currentTime = new Date();
+    this.checkIfGuest();
+    this.getStoreReview();
     this.getStoreCategory();
     if (this.viewType === 'normal') {
       this.checkIfAlreadyFavourite();
@@ -128,12 +119,12 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
 
   }
 
-  checkDeliveryExists() {
-    this.deliveryTypes.forEach(d => {
-      if (d.name === 'delivery') {
-        this.deliveryOk = true;
+  getStoreReview() {
+    this.reviewSubscription = this.queryResource.findReviewCountByStoreIdUsingGET(this.store.regNo).subscribe(
+      res => {
+        this.reviewCount = res;
       }
-    });
+    );
   }
 
   addToFavourite(store: Store) {
@@ -146,6 +137,14 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
     this.favourite.removeFromFavorite(store, 'store');
   }
 
+  checkDeliveryExists() {
+    this.deliveryTypes.forEach(d => {
+      if (d.name === 'delivery') {
+        this.deliveryOk = true;
+      }
+    });
+  }
+  
   checkIfAlreadyFavourite() {
     this.favourite.getFavourites()
       .subscribe(data => {
@@ -156,8 +155,18 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
       });
   }
 
+  checkIfGuest() {
+    this.keycloakSubscription = this.keycloakService.getUserGuestSubscription()
+    .subscribe(data => {
+      if(data !== null) {
+        this.showFavourite = !data;
+      } else {
+        this.showFavourite = false;
+      }
+    });
+  }
+
   showHotelMenu(regno) {
     this.nav.navigateForward('/store/' + regno);
   }
-
 }

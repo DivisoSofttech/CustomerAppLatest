@@ -43,20 +43,20 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
 
   total = {};
 
+  addressString;
+
   constructor(
     private logger: NGXLogger,
     private queryResource: QueryResourceService,
     private cartService: CartService,
     private modalController: ModalController,
     private orderService: OrderService,
-    private navController: NavController,
     private util: Util
   ) { }
 
   @ViewChild('stepper' , null) stepper: MatStepper;
 
   ngAfterViewInit() {
-
     if(this.order.status.name === 'created') {
       this.stepper.selected.state = 'done';
     } else if(this.order.status.name === 'approved' || this.order.status.name === 'payment-processed') {
@@ -70,14 +70,18 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
       this.stepper.next();
       this.stepper.selected.completed = true;
     }  
-
   }
-
 
   ngOnInit() {
     this.logger.info(this.order);
     this.getOrderLines(0);
     this.getAppliedOffers(this.order.id);
+    this.addressString = Object.keys(this.order.deliveryInfo.deliveryAddress)
+    .map(function(k){
+      if(this.order.deliveryInfo.deliveryAddress[k] !== null) {
+        return  this.order.deliveryInfo.deliveryAddress[k]
+      }
+    }).join(",");
   }
 
 

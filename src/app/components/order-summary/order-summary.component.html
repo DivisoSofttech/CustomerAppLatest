@@ -45,6 +45,13 @@
             - &#8364;{{offerline.orderDiscountAmount |  number: "1.2-2"}}
           </ion-text>
         </ion-item>
+        <ion-item>
+            <ion-icon name="cash"></ion-icon>
+            <ion-label>
+              <h2>Payment Mode</h2>
+              <h3>{{order.paymentMode}}</h3>
+            </ion-label>
+          </ion-item>
         <ion-item lines="none" *ngIf=" order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='delivery'">
           <ion-text slot="start" class="font-small">
             Delivery
@@ -100,33 +107,34 @@
         <ion-item lines="none" *ngIf="order.deliveryInfo !== null">
           <p>
             <b>
-              <span *ngIf="order.deliveryInfo.deliveryAddress.name !== null">
-                {{order.deliveryInfo.deliveryAddress.name | titlecase}} ,
-              </span>
-              <span *ngIf="order.deliveryInfo.deliveryAddress.houseNoOrBuildingName !== null">
-                {{order.deliveryInfo.deliveryAddress.houseNoOrBuildingName | titlecase}} ,
-              </span>
-              <span *ngIf="order.deliveryInfo.deliveryAddress.city !== null">
-                {{order.deliveryInfo.deliveryAddress.city | titlecase}}
-              </span>
-              <span *ngIf="order.deliveryInfo.deliveryAddress.roadNameAreaOrStreet !== null">
-                {{order.deliveryInfo.deliveryAddress.roadNameAreaOrStreet | titlecase}}
-              </span>
-              <span *ngIf="order.deliveryInfo.deliveryAddress.landmark !== null">
-                {{order.deliveryInfo.deliveryAddress.landmark | titlecase}}
-              </span>
-              <span *ngIf="order.deliveryInfo.deliveryAddress.pincode !== null">
-                {{order.deliveryInfo.deliveryAddress.pincode | titlecase}}
-              </span>
-              <span *ngIf="order.deliveryInfo.deliveryAddress.state  !== null">
-                {{order.deliveryInfo.deliveryAddress.state | titlecase}} ,
-              </span>
-              <span *ngIf="order.deliveryInfo.deliveryAddress.phone !== null">
-                {{order.deliveryInfo.deliveryAddress.phone }} ,
-              </span>
-              <span *ngIf="order.deliveryInfo.deliveryAddress.alternatePhone !== null">
-                {{order.deliveryInfo.deliveryAddress.alternatePhone }}
-              </span>
+              {{addressString}}
+              <!-- <span *ngIf="order.deliveryInfo.deliveryAddress.name !== null">
+                  {{order.deliveryInfo.deliveryAddress.name | titlecase}} ,
+                </span>
+                <span *ngIf="order.deliveryInfo.deliveryAddress.houseNoOrBuildingName !== null">
+                  {{order.deliveryInfo.deliveryAddress.houseNoOrBuildingName | titlecase}} ,
+                </span>
+                <span *ngIf="order.deliveryInfo.deliveryAddress.city !== null">
+                  {{order.deliveryInfo.deliveryAddress.city | titlecase}}
+                </span>
+                <span *ngIf="order.deliveryInfo.deliveryAddress.roadNameAreaOrStreet !== null">
+                  {{order.deliveryInfo.deliveryAddress.roadNameAreaOrStreet | titlecase}}
+                </span>
+                <span *ngIf="order.deliveryInfo.deliveryAddress.landmark !== null">
+                  {{order.deliveryInfo.deliveryAddress.landmark | titlecase}}
+                </span>
+                <span *ngIf="order.deliveryInfo.deliveryAddress.pincode !== null">
+                  {{order.deliveryInfo.deliveryAddress.pincode | titlecase}}
+                </span>
+                <span *ngIf="order.deliveryInfo.deliveryAddress.state  !== null">
+                  {{order.deliveryInfo.deliveryAddress.state | titlecase}} ,
+                </span>
+                <span *ngIf="order.deliveryInfo.deliveryAddress.phone !== null">
+                  {{order.deliveryInfo.deliveryAddress.phone }} ,
+                </span>
+                <span *ngIf="order.deliveryInfo.deliveryAddress.alternatePhone !== null">
+                  {{order.deliveryInfo.deliveryAddress.alternatePhone }}
+                </span> -->
             </b>
           </p>
         </ion-item>

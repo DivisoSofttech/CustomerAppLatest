@@ -64,15 +64,6 @@ export class OrderService implements OnInit , OnDestroy {
 
   async getCustomer() {
     await this.util.createLoader().then(async loader => {
-      // loader.dismiss();
-      // if (this.oauthService.hasValidAccessToken()) {
-      //   await this.storage.get('user')
-      //     .then(data => {
-      //       this.customer = data;
-      //       this.logger.info('Got Customer ', data);
-      //       loader.dismiss();
-      //     });
-      // }
       this.keycloakSubscription = this.keycloakService.getUserChangedSubscription()
       .subscribe(data => {
         this.customer = data;

@@ -36,6 +36,7 @@ export class OrderSummaryComponent implements OnInit, OnDestroy {
   auxilayByProductIdSubscription: Subscription;
 
   @Input() store: Store;
+  addressString: string;
 
   constructor(
     private logger: NGXLogger,
@@ -51,6 +52,12 @@ export class OrderSummaryComponent implements OnInit, OnDestroy {
     // this.getOrderDetails();
     this.getOrderLines(0);
     this.getAppliedOffers(this.order.id);
+    this.addressString = Object.keys(this.order.deliveryInfo.deliveryAddress)
+    .map(function(k){
+      if(this.order.deliveryInfo.deliveryAddress[k] !== null) {
+        return  this.order.deliveryInfo.deliveryAddress[k]
+      }
+    }).join(",");
   }
 
   ngOnDestroy() {

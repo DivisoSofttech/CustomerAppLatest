@@ -35,6 +35,7 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   declarations: [StorePage],
+  providers:[ClosedPipe],
   entryComponents: [StoreHeaderComponent, RestaurantCardComponent , 
                     ProductCardComponent , ReviewComponent,
                     CartComponent, HotelMenuPopoverComponent,LoadingComponent,
