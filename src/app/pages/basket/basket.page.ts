@@ -14,7 +14,10 @@ import { NavController } from '@ionic/angular';
 })
 export class BasketPage implements OnInit {
 
-  store: Store = {};
+  store: Store = {
+    imageLink:'',
+    storeUniqueId:''
+  };;
 
   constructor(
     private cart: CartService,

@@ -1,8 +1,8 @@
 /* tslint:disable */
-import { RatingReview } from './rating-review';
+import { UserRatingReview } from './user-rating-review';
 import { Sort } from './sort';
-export interface PageOfRatingReview {
-  content?: Array<RatingReview>;
+export interface PageOfUserRatingReview {
+  content?: Array<UserRatingReview>;
   first?: boolean;
   last?: boolean;
   number?: number;

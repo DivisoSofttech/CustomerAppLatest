@@ -1,14 +1,12 @@
 import { NGXLogger } from 'ngx-logger';
 import { Util } from './../../services/util';
-import { RatingReview } from './../../api/models/rating-review';
 import { Component, OnInit, Input } from '@angular/core';
 import {
   QueryResourceService,
   CommandResourceService
 } from 'src/app/api/services';
-import { UserRatingDTO, ReviewDTO } from 'src/app/api/models';
+import {UserRatingReview, UserRatingReviewDTO } from 'src/app/api/models';
 import { Storage } from '@ionic/storage';
-import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { ModalController } from '@ionic/angular';
 import { LoginSignupComponent } from '../login-signup/login-signup.component';
 
@@ -18,17 +16,14 @@ import { LoginSignupComponent } from '../login-signup/login-signup.component';
   styleUrls: ['./review.component.scss']
 })
 export class ReviewComponent implements OnInit {
+
   @Input() store;
 
-  rateReviews: RatingReview[] = [];
+  rateReviews: UserRatingReview[] = [];
 
-  rate: UserRatingDTO = { rating: 1 };
-
-  review: ReviewDTO = {
-    userName: '',
-    review: '',
-    reviewedDate: '',
-    storeId: 0
+  review: UserRatingReviewDTO = {
+    rating: 0,
+    review: ''
   };
 
   pageCount = 0;
@@ -39,13 +34,14 @@ export class ReviewComponent implements OnInit {
 
   guest = false;
 
+  username = '';
+
   constructor(
     private queryResource: QueryResourceService,
     private commandResource: CommandResourceService,
     private storage: Storage,
     private util: Util,
     private logger: NGXLogger,
-    private keycloak: KeycloakService,
     private modalController: ModalController
   ) {}
 
@@ -75,6 +71,7 @@ export class ReviewComponent implements OnInit {
           this.guest = true;
         } else {
           this.guest = false;
+          this.username = user.preferred_username;
         }
       } else {
         this.guest = true;
@@ -83,20 +80,20 @@ export class ReviewComponent implements OnInit {
   }
 
   updateRating(event) {
-    this.rate.rating = event;
-    this.logger.info(this.rate.rating);
+    this.review.rating = event;
   }
+
 
   getRatingReview(i) {
     this.queryResource
-      .findRatingReviewByStoreidAndCustomerNameUsingGET({
-        storeId: this.store.regNo,
+      .findUserRatingReviewByRegNoUsingGET({
+        regNo: this.store.regNo,
         page: i
       })
       .subscribe(
         result => {
           this.showReviewLoading = false;
-          this.logger.info('Got rating', result.content);
+          this.logger.info('Got Rating Review', result.content);
           ++i;
           if (result.totalPages === i) {
             this.toggleInfiniteScroll();
@@ -104,7 +101,7 @@ export class ReviewComponent implements OnInit {
           result.content.forEach(rr => {
             this.rateReviews.push(rr);
             this.queryResource
-              .findCustomerByReferenceUsingGET(rr.review.userName)
+              .findCustomerByReferenceUsingGET(rr.userName)
               .subscribe(data => {
                 this.customers.push(data);
               });
@@ -112,7 +109,7 @@ export class ReviewComponent implements OnInit {
         },
         err => {
           this.showReviewLoading = false;
-          this.logger.info('Error fetching review data', err);
+          this.logger.info('Error fetching rating/review data', err);
         }
       );
   }
@@ -121,17 +118,13 @@ export class ReviewComponent implements OnInit {
     this.util.createLoader().then(loader => {
       loader.present();
       this.storage.get('user').then(usr => {
-        this.review.storeId = this.store.id;
-        this.rate.storeId = this.store.id;
-        if (this.review.review !== '') {
-          const raterev: RatingReview = {
-            review: this.review,
-            rating: this.rate
-          };
-          raterev.rating.userName = usr.preferred_username;
-          raterev.review.userName = usr.preferred_username;
+        this.review.storeId= this.store.id;
+        this.review.userName = this.username;
+        this.review.date = new Date().toISOString();
+        if (this.review.review !== '' && this.review.review !== null) {
+          this.logger.info("Saving" , this.review,this.store);
           this.commandResource
-            .createRatingAndReviewUsingPOST({ ratingReview: raterev })
+            .createUserRatingReviewUsingPOST(this.review)
             .subscribe(
               async result => {
                 this.logger.info(result);
@@ -141,12 +134,14 @@ export class ReviewComponent implements OnInit {
                 loader.dismiss();
               },
               err => {
+                loader.dismiss();
                 this.util.createToast(
-                  'Error while posting review. Try again later'
+                  'Error while posting rating/review. Try again later'
                 );
               }
             );
         } else {
+          loader.dismiss();
           this.util.createToast('Review field can\'t be empty.');
         }
       });

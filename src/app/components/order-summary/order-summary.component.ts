@@ -52,12 +52,14 @@ export class OrderSummaryComponent implements OnInit, OnDestroy {
     // this.getOrderDetails();
     this.getOrderLines(0);
     this.getAppliedOffers(this.order.id);
-    this.addressString = Object.keys(this.order.deliveryInfo.deliveryAddress)
-    .map(function(k){
-      if(this.order.deliveryInfo.deliveryAddress[k] !== null) {
-        return  this.order.deliveryInfo.deliveryAddress[k]
+    for(let key in this.order.deliveryInfo.deliveryAddress) {
+      if(this.order.deliveryInfo.deliveryAddress[key] !== null) {
+        this.addressString += this.order.deliveryInfo.deliveryAddress[key] + ',';
       }
-    }).join(",");
+    }
+    if(this.addressString.endsWith(',')) {
+      this.addressString = this.addressString.slice(0,this.addressString.length-1);
+    }
   }
 
   ngOnDestroy() {

@@ -1,12 +1,8 @@
 import { KeycloakService } from './../../services/security/keycloak.service';
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { KeycloakAdminClient } from 'keycloak-admin/lib/client';
 import { CustomerDTO, ContactDTO } from 'src/app/api/models';
-import {
-  QueryResourceService,
-  CommandResourceService
-} from 'src/app/api/services';
+import {CommandResourceService} from 'src/app/api/services';
 import { ImageSelectorComponent } from '../image-selector/image-selector.component';
 import { NGXLogger } from 'ngx-logger';
 
@@ -62,6 +58,7 @@ export class ProfileEditComponent implements OnInit {
     });
 
     modal.onDidDismiss().then(data => {
+      this.logger.info("Changing Image");
       this.customer.image = data.data.image.substring(
         data.data.image.indexOf(',') + 1
       );

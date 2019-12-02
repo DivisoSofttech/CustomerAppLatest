@@ -1,4 +1,4 @@
-import { StoreDTO } from './../../api/models/store-dto';
+
 import { FilterService , FILTER_TYPES} from './../../services/filter.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Util } from 'src/app/services/util';
@@ -10,6 +10,7 @@ import { MakePaymentComponent } from 'src/app/components/make-payment/make-payme
 import { PlaceSuggestionComponent } from 'src/app/components/place-suggestion/place-suggestion.component';
 import { LocationService } from 'src/app/services/location-service';
 import { ErrorService } from 'src/app/services/error.service';
+import { Store } from 'src/app/api/models';
 
 @Component({
   selector: 'app-restaurant',
@@ -24,7 +25,7 @@ export class RestaurantPage implements OnInit {
 
   page = 0;
 
-  stores: StoreDTO[] = [];
+  stores: Store[] = [];
 
   currentPlaceName = '';
 

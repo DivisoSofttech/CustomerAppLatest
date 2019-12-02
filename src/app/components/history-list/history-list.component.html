@@ -24,7 +24,7 @@
   <ion-list *ngIf="orders.length > 0 && stores !== undefined && showHistoryLoading === false">
     <div *ngFor="let order of orders">
         <ion-item [lines]="lineFlag" class="order" *ngIf="order.status?.name === 'payment-processed' || order.status?.name === 'delivered'"   margin (click)="showOrderDetails(order)">
-            <ion-thumbnail class="image" slot="start" *ngIf="stores[order.storeId] !== null && stores[order.storeId].imageContentType !== undefined">
+            <ion-thumbnail mode="ios" class="image" slot="start" *ngIf="stores[order.storeId] !== null && stores[order.storeId].imageContentType !== undefined">
               <ion-img [src]="
                   stores[order.storeId].imageLink
                 "></ion-img>
@@ -35,16 +35,19 @@
                 {{ stores[order.storeId].name }}
               </h2>
               <p>
-                <span class="custom-span" *ngIf="order.status.name ==='created'">Order Placed</span>
-                <span class="custom-span" *ngIf="order.status.name ==='approved'">Order Placed</span>
-                <span class="custom-span" *ngIf="order.status.name ==='unapproved'">Order Placed</span>
-                <span class="custom-span" *ngIf="order.status.name ==='payment-processed'">Order Placed</span>
-                <span class="custom-span" *ngIf="order.status.name ==='delivered'">Delivered</span>
+                <span class="custom-span" *ngIf="order.status.name ==='created'
+                || order.status.name ==='approved' || order.status.name ==='unapproved'
+                || order.status.name ==='payment-processed'"><b>
+                  Order Placed
+                </b></span>
+                <span class="custom-span" *ngIf="order.status.name ==='delivered'"><b>
+                  Delivered
+                </b></span>
               </p>
               <p>{{ order.date | date: "medium" }}</p>
               <p>&#8364;{{ order.grandTotal | number: "1.2-2" }}</p>
             </ion-label>
-            <ion-badge slot="end">{{ order.orderId }}</ion-badge>
+            <ion-badge mode="ios" slot="end">{{ order.orderId }}</ion-badge>
           </ion-item>
     </div>
     
