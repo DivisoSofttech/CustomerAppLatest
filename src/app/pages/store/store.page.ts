@@ -222,7 +222,7 @@ export class StorePage implements OnInit , OnDestroy {
     this.stockCurrents = [];
     this.tempStockCurrents = [];
     this.categories = [];
-    this.getCategories(0);
+    this.ngOnInit();
   }
 
   toggleIonRefresher() {

@@ -67,17 +67,6 @@
             - &#8364;{{offerline.orderDiscountAmount |  number: "1.2-2"}}
           </ion-text>
         </ion-item>
-      <ion-item lines="full">
-        <ion-label>
-            <h2>Payment Mode</h2>
-            <ion-icon name="cash"></ion-icon>
-        </ion-label>
-        <ion-label slot="end" class="ion-text-right">
-          <h3>
-            <b>{{order.paymentMode}}</b>
-          </h3>
-        </ion-label>
-      </ion-item>
       <ion-item lines="none" *ngIf=" order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='delivery'">
         <ion-text slot="start" class="font-small">
           Delivery
@@ -121,6 +110,17 @@
     [auxilariesProducts]="auxilariesProducts[orderLine.productId]" [product]="products[orderLine.productId]"
     [orderLine]="orderLine" [auxilaryOrderLine]="auxilaryOrderLines[orderLine.id]"></app-product-card>
 
+    <ion-item lines="full">
+        <ion-label>
+            <h2>Payment Mode</h2>
+            <ion-icon name="cash"></ion-icon>
+        </ion-label>
+        <ion-label slot="end" class="ion-text-right">
+          <h3>
+            <b>{{order.paymentMode}}</b>
+          </h3>
+        </ion-label>
+      </ion-item>
   <ion-card *ngIf="order.deliveryInfo !== null && order.deliveryInfo.deliveryAddress !== null">
     <ion-card-header color="light">
       <ion-card-title>

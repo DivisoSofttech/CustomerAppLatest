@@ -100,11 +100,11 @@ export class ReviewComponent implements OnInit {
           }
           result.content.forEach(rr => {
             this.rateReviews.push(rr);
-            this.queryResource
-              .findCustomerByReferenceUsingGET(rr.userName)
-              .subscribe(data => {
-                this.customers.push(data);
-              });
+            // this.queryResource
+            //   .findCustomerByReferenceUsingGET(rr.userName)
+            //   .subscribe(data => {
+            //     this.customers.push(data);
+            //   });
           });
         },
         err => {

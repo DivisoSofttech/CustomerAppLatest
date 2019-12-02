@@ -5,4 +5,5 @@ export interface ReplyDTO {
   reply?: string;
   reviewId?: number;
   userName?: string;
+  userRatingReviewId?: number;
 }
