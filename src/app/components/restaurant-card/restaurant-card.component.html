@@ -11,7 +11,7 @@
       <ion-img
         no-margin
         slot="start"
-        *ngIf="store.imageLink !== ' ' && ''"
+        *ngIf="store.imageLink !== ' '"
         slot="start"
         [src]="store.imageLink"
         class="imageShow"
@@ -21,7 +21,7 @@
         no-margin
         slot="start"
         name="image"
-        *ngIf="store.imageLink === '' || ' '"
+        *ngIf="store.imageLink === ''"
         slot="start"
         [src]="store.imageLink"
         class="imageShowTemp"
@@ -32,7 +32,7 @@
           <h2 class="store-name fnt-sserif">
             {{ store.name | titlecase }}
             <small *ngIf="store.storeAddress" class="cl-grey">{{
-              "," + (store.storeAddress.city | titlecase)
+              ", " + (store.storeAddress.city | titlecase)
             }}</small>
           </h2>
           <h3 class="medium overflow-text-wrap fnt-sserif cl-grey">
@@ -169,7 +169,7 @@
         <ion-text slot="start">
           <h2>
             <strong>{{ store.name | uppercase }}</strong>
-            <small>{{ "," + (store.storeAddress.city | titlecase) }}</small>
+            <small>{{ ", " + (store.storeAddress.city | titlecase) }}</small>
           </h2>
           <p>
             {{ store.openingTime | date: "shortTime" }} to

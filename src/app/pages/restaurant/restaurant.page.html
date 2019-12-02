@@ -26,6 +26,14 @@
             <ion-col size="12" no-padding>
                     <ion-grid>
                       <ion-row>
+
+                        <ion-col class="restaurantCol padding-top ion-text-center" size="12" size-md="6" size-lg="6" *ngIf="!showLoading && stores.length <= 0">
+                            <ion-label class="font-20">
+                              <h1>
+                                  Sorry online ordering isn't availabel in yet.We'll be there soon.
+                              </h1>
+                            </ion-label>
+                        </ion-col>
                         <ion-col class="restaurantCol" size="12" size-md="6" size-lg="6" *ngFor="let store of stores">
                             <app-restaurant-card
                             *ngIf="store.name !== null"
@@ -54,7 +62,7 @@
     <ion-refresher-content
       pullingIcon="arrow-dropdown"
       pullingText="Pull to refresh"
-      refreshingSpinner="circles"
+      refreshingSpinner="bubbles"
     >
     </ion-refresher-content>
   </ion-refresher>

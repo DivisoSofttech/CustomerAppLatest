@@ -16,7 +16,7 @@
     <ion-list>
         <ion-item (click)="dismiss()" [ngClass]="{'selected': selectedCategory=== 'All'}">All</ion-item>
         <ion-item (click)="selectCategory(category)" *ngFor="let category of categories">
-          <ion-label [ngClass]="{'selected': category.key === selectedCategory}">{{category.key + '(' + category.count + ')'}}</ion-label>
+          <ion-label [ngClass]="{'selected': category.key === selectedCategory}">{{category.key + '(' + category.docCount + ')'}}</ion-label>
         </ion-item>
       </ion-list>    
 </ion-content>

@@ -36,19 +36,18 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card *ngFor="let review of rateReviews;let i = index">
-      <ion-item lines="full" *ngIf="customers[i] !== undefined">
+  <ion-card *ngFor="let review of rateReviews">
+      <ion-item lines="full">
           <ion-avatar slot="start">
             <ion-img
-              *ngIf="customers[i].imageLink === null || customers[i].imageLink === ' '"
               src="assets/images/user.png"
               class="profileImage"
             ></ion-img>
-            <ion-img *ngIf="customers[i].imageLink !== null && customers[i].imageLink !== ' ' "
+            <!-- <ion-img *ngIf="customers[i].imageLink !== null && customers[i].imageLink !== ' ' "
               [src]="customers[i].imageLink"
             class="imageShow"
           >
-          </ion-img>
+          </ion-img> -->
           </ion-avatar>
 
           <ion-text >

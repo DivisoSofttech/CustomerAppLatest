@@ -6,7 +6,6 @@ import { IonInfiniteScroll, IonRefresher, ModalController} from '@ionic/angular'
 import { NGXLogger } from 'ngx-logger';
 import { MapComponent } from 'src/app/components/map/map.component';
 import { FooterComponent } from 'src/app/components/footer/footer.component';
-import { MakePaymentComponent } from 'src/app/components/make-payment/make-payment.component';
 import { PlaceSuggestionComponent } from 'src/app/components/place-suggestion/place-suggestion.component';
 import { LocationService } from 'src/app/services/location-service';
 import { ErrorService } from 'src/app/services/error.service';

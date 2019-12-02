@@ -157,6 +157,7 @@ export class KeycloakService {
 
 
   async authenticateAndAuthorize(credentials: any, success: any, failure: any, err: any) {
+    this.logger.info(this,'Authenticating user' , credentials);
     await this.oauthService
       .fetchTokenUsingPasswordFlowAndLoadUserProfile(
         credentials.username,
@@ -189,6 +190,9 @@ export class KeycloakService {
             failure();
             this.logger.error(this,'Error in authentication', error);
             });
+      })
+      .catch(err=> {
+        failure();
       });
   }
 
