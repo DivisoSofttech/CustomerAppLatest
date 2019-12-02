@@ -43,7 +43,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
 
   total = {};
 
-  addressString;
+  addressString: String;
 
   constructor(
     private logger: NGXLogger,
@@ -76,12 +76,15 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     this.logger.info(this.order);
     this.getOrderLines(0);
     this.getAppliedOffers(this.order.id);
-    this.addressString = Object.keys(this.order.deliveryInfo.deliveryAddress)
-    .map(function(k){
-      if(this.order.deliveryInfo.deliveryAddress[k] !== null) {
-        return  this.order.deliveryInfo.deliveryAddress[k]
+    this.addressString = '';
+    for(let key in this.order.deliveryInfo.deliveryAddress) {
+      if(this.order.deliveryInfo.deliveryAddress[key] !== null) {
+        this.addressString += this.order.deliveryInfo.deliveryAddress[key] + ',';
       }
-    }).join(",");
+    }
+    if(this.addressString.endsWith(',')) {
+      this.addressString = this.addressString.slice(0,this.addressString.length-1);
+    }
   }
 
 

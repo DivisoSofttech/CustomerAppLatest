@@ -246,7 +246,10 @@ export class CartService {
   updateCart() {
     this.subTotal = 0;
     if (this.orderLines.length === 0) {
-      this.currentShop = {};
+      this.currentShop = {
+        imageLink:'',
+        storeUniqueId:''
+      };;
       this.currentShopId = 0;
     }
     this.calculatePrice();

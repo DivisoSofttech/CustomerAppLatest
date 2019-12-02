@@ -7,7 +7,7 @@ export interface Category {
   idpcode?: string;
   image?: string;
   imageContentType?: string;
-  imagelink?: string;
+  imageLink?: string;
   name?: string;
   products?: Array<Product>;
 }

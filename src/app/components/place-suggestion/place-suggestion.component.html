@@ -9,15 +9,23 @@
       </ion-title>
     </ion-buttons>
   </ion-toolbar>
-  <ion-toolbar>
-      <ion-title>
-        <small>Choose Distance</small>
-      </ion-title>
-      <ion-range min="10" max="100" [(ngModel)]="distance" (ionChange)="distanceChanged($event)">
-        <ion-label slot="end">
-          <h2>{{distance}}KM</h2>
-        </ion-label>
-      </ion-range>      
+  <ion-toolbar color="primary">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" class="pd-25">
+          <ion-label>
+          Distance
+          </ion-label>    
+        </ion-col>
+        <ion-col size="12">
+          <ion-range color="light" mode="ios" min="10" max="100" [(ngModel)]="distance" (ionChange)="distanceChanged($event)">
+            <ion-label slot="end">
+              <h2>{{distance}}KM</h2>
+            </ion-label>
+          </ion-range>     
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-toolbar>
 </ion-header>
 <ion-content>

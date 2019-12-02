@@ -14,7 +14,7 @@
     <ion-grid>
       <ion-row>
         <ion-col>
-          <rating [rate]="rate.rating" (rateChange)="updateRating($event)"></rating>
+          <rating [rate]="review.rating" (rateChange)="updateRating($event)"></rating>
         </ion-col>
         <ion-col text-right>
           <ion-button (click)="postReview()" fill="medium">
@@ -36,28 +36,24 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card *ngFor="let rr of rateReviews;let i = index">
+  <ion-card *ngFor="let review of rateReviews;let i = index">
       <ion-item lines="full" *ngIf="customers[i] !== undefined">
           <ion-avatar slot="start">
             <ion-img
-              *ngIf="customers[i].photo === null"
+              *ngIf="customers[i].imageLink === null || customers[i].imageLink === ' '"
               src="assets/images/user.png"
               class="profileImage"
             ></ion-img>
-            <ion-img *ngIf="customers[i].photo !== null"
-              [src]=" 'data:' +
-              customers[i].photoContentType +
-              ';base64,' +
-              customers[i].photo
-            "
+            <ion-img *ngIf="customers[i].imageLink !== null && customers[i].imageLink !== ' ' "
+              [src]="customers[i].imageLink"
             class="imageShow"
           >
           </ion-img>
           </ion-avatar>
 
           <ion-text >
-            <p>{{ rr.review.userName | uppercase }}</p>
-            <p>{{rr.review.reviewedDate | date:'short' }}</p>
+            <p>{{ review.userName | uppercase }}</p>
+            <p>{{review.date | date:'short' }}</p>
           </ion-text>
         </ion-item>
 
@@ -66,12 +62,12 @@
           <ion-col size="12" text-left>
             <ion-text padding-left>
               <p class="mg-left">{{
-                    rr.review.review
+                  review.review
                   }}</p>
             </ion-text>
           </ion-col>
           <ion-col size="12">
-            <rating text-center [rate]="rr.rating.rating" [readonly]="true"></rating>
+            <rating text-center [rate]="review.rating" [readonly]="true"></rating>
             </ion-col>
         </ion-row>
       </ion-grid>

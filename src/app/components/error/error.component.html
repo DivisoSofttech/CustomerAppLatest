@@ -8,7 +8,8 @@
 
     <ion-row class="ion-justify-content-center ion-text-center">
       <ion-col size="12">
-          <ion-icon name="alert" color="primary"></ion-icon>
+          <ion-icon name="alert" color="primary" *ngIf="isOnline"></ion-icon>
+          <ion-icon name="planet" color="primary" *ngIf="!isOnline"></ion-icon>
       </ion-col>
     </ion-row>
 
@@ -22,7 +23,7 @@
 
     <ion-row class="ion-justify-content-center ion-text-center" *ngIf="!isOnline">
       <ion-label>
-        No Internet Connection
+      <h1> No Internet Connection</h1>
       </ion-label>
     </ion-row>
 

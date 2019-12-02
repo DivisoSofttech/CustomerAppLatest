@@ -23,24 +23,12 @@ ion-scroll {
 }
 
 .image {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   border-radius: 10px !important;
   overflow: hidden;
 }
 
 .custom-span {
-  display: flex;
-  align-items: center;
-}
-.custom-span::before {
-  content: "";
-  display: inline-block;
-  width: 5px;
-  height: 5px;
-  -moz-border-radius: 7.5px;
-  -webkit-border-radius: 7.5px;
-  border-radius: 7.5px;
-  background-color: #54e428;
-  margin-right: 5px;
+  color: green;
 }

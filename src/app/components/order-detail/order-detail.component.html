@@ -34,16 +34,16 @@
   </mat-horizontal-stepper>
 
   <ion-item *ngIf="store" lines="full">
-    <ion-avatar>
+    <ion-avatar mode="ios">
       <ion-img [src]="
           store.imageLink
         "></ion-img>
     </ion-avatar>
-    <ion-text class="ion-margin" slot="end">
+    <ion-text class="ion-margin">
       {{store.name}}
       <small class="cl-grey">{{' , ' + (store.storeAddress.city | titlecase)}}</small>
     </ion-text>
-    <ion-badge slot="end" padding>{{'Order ' +  order.orderId}}</ion-badge>
+    <ion-badge mode="ios" color="success" slot="end" padding>{{'Order ' +  order.orderId}}</ion-badge>
   </ion-item>
 
   <ion-card class="ion-no-padding">
@@ -67,11 +67,15 @@
             - &#8364;{{offerline.orderDiscountAmount |  number: "1.2-2"}}
           </ion-text>
         </ion-item>
-      <ion-item>
-        <ion-icon name="cash"></ion-icon>
+      <ion-item lines="full">
         <ion-label>
-          <h2>Payment Mode</h2>
-          <h3>{{order.paymentMode}}</h3>
+            <h2>Payment Mode</h2>
+            <ion-icon name="cash"></ion-icon>
+        </ion-label>
+        <ion-label slot="end" class="ion-text-right">
+          <h3>
+            <b>{{order.paymentMode}}</b>
+          </h3>
         </ion-label>
       </ion-item>
       <ion-item lines="none" *ngIf=" order.deliveryInfo !== null && order.deliveryInfo.deliveryType ==='delivery'">
@@ -124,13 +128,15 @@
       </ion-card-title>
     </ion-card-header>
     <ion-card-content class="ion-no-padding pd-10">
-      <ion-item lines="none" *ngIf="order.deliveryInfo !== null">
+      <ng-container  *ngIf="order.deliveryInfo !== null">
+       <ion-text>
         <p>
           <b>
             {{addressString}}
           </b>
         </p>
-      </ion-item>
+       </ion-text>
+      </ng-container>
     </ion-card-content>
   </ion-card>
 

@@ -15,7 +15,10 @@ import { Util } from 'src/app/services/util';
 })
 export class RestaurantCardComponent implements OnInit, OnDestroy {
 
-  @Input() store: Store = {};
+  @Input() store: Store = {
+    imageLink:'',
+    storeUniqueId:''
+  };
 
   @Input() viewType: string = 'normal';
 
@@ -120,7 +123,7 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
   }
 
   getStoreReview() {
-    this.reviewSubscription = this.queryResource.findReviewCountByStoreIdUsingGET(this.store.regNo).subscribe(
+    this.reviewSubscription = this.queryResource.findUserRatingReviewCountByRegNoUsingGET(this.store.regNo).subscribe(
       res => {
         this.reviewCount = res;
       }

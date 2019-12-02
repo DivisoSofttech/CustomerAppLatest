@@ -3,14 +3,14 @@
     <ion-item lines="none">
       <ion-avatar>
         <ion-img
-          *ngIf="customer.imageLink=== null"
+          *ngIf="customer.image === null"
           src="assets/images/user.png"
           class="profileImage"
         ></ion-img>
         <ion-img
           class="profileImage"
-          *ngIf="customer.imageLink !== null"
-          [src]="customer.imageLink"
+          *ngIf="customer.image !== null"
+          [src]="'data:' + customer.imageContentType + ';base64,' + customer.image"
         ></ion-img>
       </ion-avatar>
       <ion-text class="mg-left" *ngIf="customer !== null && keyCloakUser !== null">

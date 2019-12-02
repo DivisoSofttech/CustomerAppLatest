@@ -9,7 +9,7 @@ export interface ProductDTO {
   idpcode?: string;
   image?: string;
   imageContentType?: string;
-  imagelink?: string;
+  imageLink?: string;
   isActive?: boolean;
   isAuxilaryItem?: boolean;
   isServiceItem?: boolean;
