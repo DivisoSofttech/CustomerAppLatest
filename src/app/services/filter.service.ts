@@ -74,6 +74,8 @@ export class FilterService {
       this.getStoreNoFilter(pageNumber, success, error);
     } else if (this.currentFilter == FILTER_TYPES.DELIVERY_TIME.valueOf()) {
       this.getStoreByDeliveryTime(pageNumber, success, error);
+    } else if (this.currentFilter == FILTER_TYPES.MIN_AMOUNT.valueOf()) {
+      this.getStoreByMinAmount(pageNumber, success, error);
     } else if (this.currentFilter == FILTER_TYPES.DISTANCE_WISE.valueOf()) {
       this.logger.info('Finding Store By Distance and Location', this.distance);
       this.getStoreByDistance(pageNumber, success, error);
@@ -86,6 +88,11 @@ export class FilterService {
       this.getStoreByCusines(pageNumber, success, error);
     }
 
+  }
+
+  getStoreByMinAmount(pageNumber: any, success: any, error: any) {
+    success();
+    error();
   }
 
   private getStoreByCusines(pageNumber, success, error?) {
@@ -112,7 +119,7 @@ export class FilterService {
     if (this.currentCordinates !== undefined) {
       this.locationBehaviour.next(this.currentCordinates);
       this.queryResource
-      .findStoreBySearUsingGET({
+      .findStoreByNearLocationUsingGET({
         lat: this.currentCordinates.coords ? this.currentCordinates.coords.latitude : this.currentCordinates[0],
         lon: this.currentCordinates.coords ? this.currentCordinates.coords.longitude : this.currentCordinates[1],
         distanceUnit: 'KILOMETERS',
@@ -157,7 +164,7 @@ export class FilterService {
 
   private getStoreByDeliveryTime(pageNumber, success, error?) {
     this.logger.info('Getting STores Via Delivery Time Filter');
-    this.queryResource.findAndSortStoreBydeliveryTimeUsingGET({
+    this.queryResource.findAndSortStoreByMinAmountUsingGET({
       page: pageNumber
     })
       .subscribe(data => {

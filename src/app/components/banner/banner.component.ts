@@ -1,8 +1,8 @@
-import { BannerDTO } from './../../api/models/banner-dto';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { IonSlides, Platform } from '@ionic/angular';
 import { Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
+import { Banner } from 'src/app/api/models';
 
 @Component({
   selector: 'app-banner',
@@ -60,7 +60,7 @@ export class BannerComponent implements OnInit , OnDestroy {
 
   @ViewChild('slides', null) slides: IonSlides;
 
-  banners: BannerDTO[] = [];
+  banners: Banner[] = [];
   bannerSubscription: any;
 
   constructor(
@@ -80,16 +80,17 @@ export class BannerComponent implements OnInit , OnDestroy {
 
 
   getBanners() {
-    this.bannerSubscription = this.queryResource.findStoreBannersUsingGET({}).subscribe(
-      data => {
-        this.logger.info('Banners got', data);
-        this.banners = data;
-        this.showLoading = false;
-      },
-      err => {
-        this.showLoading = false;
-        this.logger.error('Error Getting Banners', err);
-      }
-    );
-  }
+    // this.bannerSubscription = this.queryResource.findStoreBannerUsingGET({}).subscribe(
+    //   data => {
+    //     this.logger.info('Banners got', data);
+    //     this.banners = data.content;
+    //     this.showLoading = false;
+    //   },
+    //   err => {
+    //     this.showLoading = false;
+    //     this.logger.error('Error Getting Banners', err);
+    //   }
+    // );
+    this.showLoading = false;
+    }
 }

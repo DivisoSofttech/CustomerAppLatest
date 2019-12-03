@@ -21,7 +21,6 @@ import { PageOfFavouriteStore } from '../models/page-of-favourite-store';
 import { PageOfCategory } from '../models/page-of-category';
 import { PageOfOrderLine } from '../models/page-of-order-line';
 import { PageOfAuxilaryOrderLine } from '../models/page-of-auxilary-order-line';
-import { PageOfStore } from '../models/page-of-store';
 import { ResultBucket } from '../models/result-bucket';
 import { Offer } from '../models/offer';
 import { Product } from '../models/product';
@@ -29,6 +28,7 @@ import { PageOfProduct } from '../models/page-of-product';
 import { PageOfStockCurrent } from '../models/page-of-stock-current';
 import { StockCurrent } from '../models/stock-current';
 import { Store } from '../models/store';
+import { PageOfStore } from '../models/page-of-store';
 import { PageOfUserRatingReview } from '../models/page-of-user-rating-review';
 import { PageOfNotification } from '../models/page-of-notification';
 import { PageOfOrder } from '../models/page-of-order';
@@ -38,7 +38,7 @@ import { PageOfAddress } from '../models/page-of-address';
 import { ProductDTO } from '../models/product-dto';
 import { StoreAddress } from '../models/store-address';
 import { StoreSettings } from '../models/store-settings';
-import { BannerDTO } from '../models/banner-dto';
+import { PageOfBanner } from '../models/page-of-banner';
 import { OpenTask } from '../models/open-task';
 
 /**
@@ -62,7 +62,6 @@ class QueryResourceService extends __BaseService {
   static readonly findAllCategoriesUsingGETPath = '/api/query/findAllCategories/{iDPcode}';
   static readonly findAllOrderLinesByOrderIdUsingGETPath = '/api/query/findAllOrderLinesByOrderId/{orderId}';
   static readonly findAuxilaryOrderLineByOrderLineIdUsingGETPath = '/api/query/findAuxilaryOrderLineByOrderLineId/{orderLineId}';
-  static readonly findStoreBySearUsingGETPath = '/api/query/findByLocationNear/{lat}/{lon}/{distance}/{distanceUnit}';
   static readonly findCategoryAndCountBystoreIdUsingGETPath = '/api/query/findCategoryAndCountBystoreId/{storeId}';
   static readonly findByMobileNumberUsingGETPath = '/api/query/findCustomerByMobileNumber/{mobileNumber}';
   static readonly findOfferLinesByOrderIdUsingGETPath = '/api/query/findOfferLinesByOrderId/{id}';
@@ -71,6 +70,7 @@ class QueryResourceService extends __BaseService {
   static readonly findStockCurrentByProductNameAndStoreIdUsingGETPath = '/api/query/findStockCurrentByProductNameStoreId/{name}/{storeId}';
   static readonly findStockCurrentByStoreIdAndCategoryIdUsingGETPath = '/api/query/findStockCurrentByStoreIdAndCategoryId/{userId}/{categoryId}';
   static readonly findStoreByIdUsingGETPath = '/api/query/findStoreById/{id}';
+  static readonly findStoreByNearLocationUsingGETPath = '/api/query/findStoreByNearLocation/{lat}/{lon}/{distance}/{distanceUnit}';
   static readonly findStoreTypeAndCountUsingGETPath = '/api/query/findStoreTypeAndCount';
   static readonly findUserRatingReviewByRegNoUsingGETPath = '/api/query/findUserRatingReview/{regNo}';
   static readonly findNotificationByReceiverIdUsingGETPath = '/api/query/findnotificationbyreceiverid/{receiverId}';
@@ -85,7 +85,7 @@ class QueryResourceService extends __BaseService {
   static readonly findAndSortProductByPriceUsingGETPath = '/api/query/productByPrice/{from}/{to}';
   static readonly findProductUsingGETPath = '/api/query/products/{id}';
   static readonly findUserRatingReviewCountByRegNoUsingGETPath = '/api/query/review-count/{regNo}';
-  static readonly findAndSortStoreBydeliveryTimeUsingGETPath = '/api/query/sortStoreByMinAmount';
+  static readonly findAndSortStoreByMinAmountUsingGETPath = '/api/query/sortStoreByMinAmount';
   static readonly findStockCurrentByCategoryNameAndStoreIdUsingGETPath = '/api/query/stock-current-by-categoryname/{categoryName}/{storeId}';
   static readonly findStockCurrentByStoreIdUsingGETPath = '/api/query/stockcurrent/{storeId}';
   static readonly findStoreTypeByStoreIdUsingGETPath = '/api/query/store-type/{storeId}';
@@ -94,7 +94,7 @@ class QueryResourceService extends __BaseService {
   static readonly findStoreByRatingUsingGETPath = '/api/query/storeByRating';
   static readonly getStoreSettingsUsingGETPath = '/api/query/storeSettings/{IDPCode}';
   static readonly findAllStoresUsingGETPath = '/api/query/stores';
-  static readonly findStoreBannersUsingGETPath = '/api/query/stores/banners';
+  static readonly findStoreBannerUsingGETPath = '/api/query/stores/banners';
   static readonly getTaskDetailsUsingGETPath = '/api/query/taskDetails/{taskName}/{orderId}/{storeId}';
   static readonly getTasksUsingGETPath = '/api/query/tasks';
 
@@ -820,78 +820,6 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
-   * @param params The `QueryResourceService.FindStoreBySearUsingGETParams` containing the following parameters:
-   *
-   * - `lon`: lon
-   *
-   * - `lat`: lat
-   *
-   * - `distanceUnit`: distanceUnit
-   *
-   * - `distance`: distance
-   *
-   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-   *
-   * - `size`: Size of a page
-   *
-   * - `page`: Page number of the requested page
-   *
-   * @return OK
-   */
-  findStoreBySearUsingGETResponse(params: QueryResourceService.FindStoreBySearUsingGETParams): __Observable<__StrictHttpResponse<PageOfStore>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-
-
-
-    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
-    if (params.size != null) __params = __params.set('size', params.size.toString());
-    if (params.page != null) __params = __params.set('page', params.page.toString());
-    let req = new HttpRequest<any>(
-      'GET',
-      this.rootUrl + `/api/query/findByLocationNear/${params.lat}/${params.lon}/${params.distance}/${params.distanceUnit}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<PageOfStore>;
-      })
-    );
-  }
-  /**
-   * @param params The `QueryResourceService.FindStoreBySearUsingGETParams` containing the following parameters:
-   *
-   * - `lon`: lon
-   *
-   * - `lat`: lat
-   *
-   * - `distanceUnit`: distanceUnit
-   *
-   * - `distance`: distance
-   *
-   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-   *
-   * - `size`: Size of a page
-   *
-   * - `page`: Page number of the requested page
-   *
-   * @return OK
-   */
-  findStoreBySearUsingGET(params: QueryResourceService.FindStoreBySearUsingGETParams): __Observable<PageOfStore> {
-    return this.findStoreBySearUsingGETResponse(params).pipe(
-      __map(_r => _r.body as PageOfStore)
-    );
-  }
-
-  /**
    * @param params The `QueryResourceService.FindCategoryAndCountBystoreIdUsingGETParams` containing the following parameters:
    *
    * - `storeId`: storeId
@@ -1270,6 +1198,78 @@ class QueryResourceService extends __BaseService {
   findStoreByIdUsingGET(id: number): __Observable<Store> {
     return this.findStoreByIdUsingGETResponse(id).pipe(
       __map(_r => _r.body as Store)
+    );
+  }
+
+  /**
+   * @param params The `QueryResourceService.FindStoreByNearLocationUsingGETParams` containing the following parameters:
+   *
+   * - `lon`: lon
+   *
+   * - `lat`: lat
+   *
+   * - `distanceUnit`: distanceUnit
+   *
+   * - `distance`: distance
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findStoreByNearLocationUsingGETResponse(params: QueryResourceService.FindStoreByNearLocationUsingGETParams): __Observable<__StrictHttpResponse<PageOfStore>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+
+
+
+    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
+    if (params.size != null) __params = __params.set('size', params.size.toString());
+    if (params.page != null) __params = __params.set('page', params.page.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/findStoreByNearLocation/${params.lat}/${params.lon}/${params.distance}/${params.distanceUnit}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PageOfStore>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.FindStoreByNearLocationUsingGETParams` containing the following parameters:
+   *
+   * - `lon`: lon
+   *
+   * - `lat`: lat
+   *
+   * - `distanceUnit`: distanceUnit
+   *
+   * - `distance`: distance
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findStoreByNearLocationUsingGET(params: QueryResourceService.FindStoreByNearLocationUsingGETParams): __Observable<PageOfStore> {
+    return this.findStoreByNearLocationUsingGETResponse(params).pipe(
+      __map(_r => _r.body as PageOfStore)
     );
   }
 
@@ -1988,7 +1988,7 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
-   * @param params The `QueryResourceService.FindAndSortStoreBydeliveryTimeUsingGETParams` containing the following parameters:
+   * @param params The `QueryResourceService.FindAndSortStoreByMinAmountUsingGETParams` containing the following parameters:
    *
    * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    *
@@ -1998,7 +1998,7 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  findAndSortStoreBydeliveryTimeUsingGETResponse(params: QueryResourceService.FindAndSortStoreBydeliveryTimeUsingGETParams): __Observable<__StrictHttpResponse<PageOfStore>> {
+  findAndSortStoreByMinAmountUsingGETResponse(params: QueryResourceService.FindAndSortStoreByMinAmountUsingGETParams): __Observable<__StrictHttpResponse<PageOfStore>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -2023,7 +2023,7 @@ class QueryResourceService extends __BaseService {
     );
   }
   /**
-   * @param params The `QueryResourceService.FindAndSortStoreBydeliveryTimeUsingGETParams` containing the following parameters:
+   * @param params The `QueryResourceService.FindAndSortStoreByMinAmountUsingGETParams` containing the following parameters:
    *
    * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    *
@@ -2033,8 +2033,8 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  findAndSortStoreBydeliveryTimeUsingGET(params: QueryResourceService.FindAndSortStoreBydeliveryTimeUsingGETParams): __Observable<PageOfStore> {
-    return this.findAndSortStoreBydeliveryTimeUsingGETResponse(params).pipe(
+  findAndSortStoreByMinAmountUsingGET(params: QueryResourceService.FindAndSortStoreByMinAmountUsingGETParams): __Observable<PageOfStore> {
+    return this.findAndSortStoreByMinAmountUsingGETResponse(params).pipe(
       __map(_r => _r.body as PageOfStore)
     );
   }
@@ -2428,17 +2428,17 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
-   * @param params The `QueryResourceService.FindStoreBannersUsingGETParams` containing the following parameters:
+   * @param params The `QueryResourceService.FindStoreBannerUsingGETParams` containing the following parameters:
    *
-   * - `sort`: sort
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    *
-   * - `size`: size
+   * - `size`: Size of a page
    *
-   * - `page`: page
+   * - `page`: Page number of the requested page
    *
    * @return OK
    */
-  findStoreBannersUsingGETResponse(params: QueryResourceService.FindStoreBannersUsingGETParams): __Observable<__StrictHttpResponse<Array<BannerDTO>>> {
+  findStoreBannerUsingGETResponse(params: QueryResourceService.FindStoreBannerUsingGETParams): __Observable<__StrictHttpResponse<PageOfBanner>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -2458,24 +2458,24 @@ class QueryResourceService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Array<BannerDTO>>;
+        return _r as __StrictHttpResponse<PageOfBanner>;
       })
     );
   }
   /**
-   * @param params The `QueryResourceService.FindStoreBannersUsingGETParams` containing the following parameters:
+   * @param params The `QueryResourceService.FindStoreBannerUsingGETParams` containing the following parameters:
    *
-   * - `sort`: sort
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    *
-   * - `size`: size
+   * - `size`: Size of a page
    *
-   * - `page`: page
+   * - `page`: Page number of the requested page
    *
    * @return OK
    */
-  findStoreBannersUsingGET(params: QueryResourceService.FindStoreBannersUsingGETParams): __Observable<Array<BannerDTO>> {
-    return this.findStoreBannersUsingGETResponse(params).pipe(
-      __map(_r => _r.body as Array<BannerDTO>)
+  findStoreBannerUsingGET(params: QueryResourceService.FindStoreBannerUsingGETParams): __Observable<PageOfBanner> {
+    return this.findStoreBannerUsingGETResponse(params).pipe(
+      __map(_r => _r.body as PageOfBanner)
     );
   }
 
@@ -2882,47 +2882,6 @@ module QueryResourceService {
   }
 
   /**
-   * Parameters for findStoreBySearUsingGET
-   */
-  export interface FindStoreBySearUsingGETParams {
-
-    /**
-     * lon
-     */
-    lon: number;
-
-    /**
-     * lat
-     */
-    lat: number;
-
-    /**
-     * distanceUnit
-     */
-    distanceUnit: string;
-
-    /**
-     * distance
-     */
-    distance: number;
-
-    /**
-     * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-     */
-    sort?: Array<string>;
-
-    /**
-     * Size of a page
-     */
-    size?: number;
-
-    /**
-     * Page number of the requested page
-     */
-    page?: number;
-  }
-
-  /**
    * Parameters for findCategoryAndCountBystoreIdUsingGET
    */
   export interface FindCategoryAndCountBystoreIdUsingGETParams {
@@ -3019,6 +2978,47 @@ module QueryResourceService {
      * categoryId
      */
     categoryId: number;
+
+    /**
+     * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     */
+    sort?: Array<string>;
+
+    /**
+     * Size of a page
+     */
+    size?: number;
+
+    /**
+     * Page number of the requested page
+     */
+    page?: number;
+  }
+
+  /**
+   * Parameters for findStoreByNearLocationUsingGET
+   */
+  export interface FindStoreByNearLocationUsingGETParams {
+
+    /**
+     * lon
+     */
+    lon: number;
+
+    /**
+     * lat
+     */
+    lat: number;
+
+    /**
+     * distanceUnit
+     */
+    distanceUnit: string;
+
+    /**
+     * distance
+     */
+    distance: number;
 
     /**
      * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -3297,9 +3297,9 @@ module QueryResourceService {
   }
 
   /**
-   * Parameters for findAndSortStoreBydeliveryTimeUsingGET
+   * Parameters for findAndSortStoreByMinAmountUsingGET
    */
-  export interface FindAndSortStoreBydeliveryTimeUsingGETParams {
+  export interface FindAndSortStoreByMinAmountUsingGETParams {
 
     /**
      * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -3443,22 +3443,22 @@ module QueryResourceService {
   }
 
   /**
-   * Parameters for findStoreBannersUsingGET
+   * Parameters for findStoreBannerUsingGET
    */
-  export interface FindStoreBannersUsingGETParams {
+  export interface FindStoreBannerUsingGETParams {
 
     /**
-     * sort
+     * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
      */
     sort?: Array<string>;
 
     /**
-     * size
+     * Size of a page
      */
     size?: number;
 
     /**
-     * page
+     * Page number of the requested page
      */
     page?: number;
   }
