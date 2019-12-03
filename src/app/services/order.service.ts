@@ -115,10 +115,10 @@ export class OrderService implements OnInit , OnDestroy {
   createOrderRazorPay() {
     return this.commandResourceService
       .createOrderUsingPOST({
-        amount: this.order.grandTotal,
-        currency: 'INR',
+        amount: this.order.grandTotal * 100,
+        currency: 'EUR',
         payment_capture: 1,
-        receipt: 'receipt12340'
+        receipt: 'fpreceipt' + this.order.orderId
       });
   }
 
