@@ -4,8 +4,8 @@
       <ion-title>Sort and Filter</ion-title>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button (click)="clearFiter()">
-        CLEAR ALL
+      <ion-button (click)="closeEvent()">
+        <ion-icon name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -42,7 +42,7 @@
                     </ion-item>
                     <ion-item lines="none" >
                       <ion-radio [checked]="currentFilterType === filterTypes.DELIVERY_TIME" value="{{filterTypes.DELIVERY_TIME}}"></ion-radio>
-                      <ion-label class="ion-margin">Delivery time</ion-label>
+                      <ion-label class="ion-margin">Min Amount</ion-label>
                     </ion-item>
                   </ion-radio-group>
                 </ion-col>  
@@ -61,5 +61,6 @@
   </ion-grid>
 </ion-content>
 <ion-footer>
-  <ion-button (click)="setFilterType()" class="ion-margin" expand="block">Apply</ion-button>
+  <ion-button (click)="setFilterType()" color="success" class="ion-margin" expand="block">Apply</ion-button>
+  <ion-button (click)="clearFiter()" class="ion-margin" expand="block">CLEAR ALL</ion-button>
 </ion-footer>

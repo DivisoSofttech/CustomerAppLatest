@@ -14,6 +14,7 @@ export enum FILTER_TYPES {
   // Sort Types
   TOP_RATED,
   DELIVERY_TIME,
+  MIN_AMOUNT,
   CUSINE_FILTER
 }
 

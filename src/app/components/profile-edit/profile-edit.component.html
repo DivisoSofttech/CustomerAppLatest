@@ -11,13 +11,11 @@
 <ion-content>
 
   <div>
-
     <ion-icon *ngIf="customer.image !== null" (click)="removeImage()"  float-right slot="icon-only" name="close"></ion-icon>
-    <img (click)="selectImage($event)" *ngIf="customer.image === null && !showCurrentSelected" src="assets/images/user.png" slot="end" class="img" />
+    <img (click)="selectImage($event)" *ngIf="customer.image === null" src="assets/images/user.png" slot="end" class="img" />
     <ion-img class="profileImage" (click)="selectImage($event)" *ngIf="customer.image !== null"
     [src]="'data:' + customer.imageContentType + ';base64,' + customer.image" slot="end">
     </ion-img>
-
   </div>
 
   <ion-item>
