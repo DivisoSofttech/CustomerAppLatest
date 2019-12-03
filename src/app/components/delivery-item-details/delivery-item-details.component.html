@@ -17,12 +17,7 @@
         <ion-item color="secondary" >
             <ion-avatar class="desktop-only ion-margin">  
                 <ion-img
-                  [src]="
-                    'data:' +
-                    products[orderLine.productId].imageContentType +
-                    ';base64,' +
-                    products[orderLine.productId].image
-                  "
+                  [src]="products[orderLine.productId].imageLink"
                 >
                 </ion-img>
               </ion-avatar>
