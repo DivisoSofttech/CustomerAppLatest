@@ -167,13 +167,15 @@ export class HeaderComponent implements OnInit , OnDestroy {
   }
 
   search(event) {
-    this.showLoading = true;
-    this.logger.info('Getting Restaurants By Name');
-    this.storeSearchResults = [];
-    if(this.searchTerm !=='') {
-      this.getSearchResults(0);
-    } else {
-      this.showLoading = false;
+    if (this.searchTerm.replace(/\s/g, '').length) {
+      this.showLoading = true;
+      this.logger.info('Getting Restaurants By Name');
+      this.storeSearchResults = [];
+      if(this.searchTerm !=='') {
+        this.getSearchResults(0);
+      } else {
+        this.showLoading = false;
+      }  
     }
   }
 

@@ -5,6 +5,7 @@ import { StockCurrent } from 'src/app/api/models';
 import { IonInfiniteScroll, IonSearchbar } from '@ionic/angular';
 import { NGXLogger } from 'ngx-logger';
 import { RecentService, RecentType } from 'src/app/services/recent.service';
+import { LogService } from 'src/app/services/log.service';
 
 @Component({
   selector: 'app-store-header',
@@ -43,7 +44,7 @@ export class StoreHeaderComponent implements OnInit {
   constructor(
     private queryResource: QueryResourceService,
     private util: Util,
-    private logger: NGXLogger,
+    private logger: LogService,
     private recentService: RecentService
   ) {}
 
@@ -53,6 +54,7 @@ export class StoreHeaderComponent implements OnInit {
 
   
   getRecents() {
+    this.logger.info(this,"Fetching Recents From Storage");
     this.recentService.getRecentProductSearchTerms()
     .subscribe(data => {
       if(data !== null) {
@@ -120,13 +122,15 @@ export class StoreHeaderComponent implements OnInit {
   }
 
   searchProducts(event) {
-    this.stockCurrents = [];
-    this.showLoading = true;
-    const found = this.recents.some(el => el.data === this.searchTerm);
-    if(!found) {
-      this.recentService.saveRecent({data:this.searchTerm , type: RecentType.PRODUCT})
+    if (this.searchTerm.replace(/\s/g, '').length) {
+      this.stockCurrents = [];
+      this.showLoading = true;
+      const found = this.recents.some(el => el.data === this.searchTerm);
+      if(!found) {
+        this.recentService.saveRecent({data:this.searchTerm , type: RecentType.PRODUCT})
+      }
+      this.getProductsByName(0);  
     }
-    this.getProductsByName(0);
   }
 
   emitFilterClick() {

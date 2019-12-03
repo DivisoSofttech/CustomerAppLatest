@@ -80,21 +80,23 @@ export class PlaceSuggestionComponent implements OnInit , OnDestroy {
   }
 
   getPlacePredictions(event) {
-    this.logger.info('Getting Place Suggestions' , event);
-    this.places = [];
-    this.searchTerm = event.detail.value;
-    this.logger.info(event.detail.value);
-    const searchterm = event.detail.value;
-    if (searchterm === '' || searchterm === null) {
-      return;
-    } else {
-      this.logger.info('Finding Places Searchterm ', searchterm);
-      this.showSpinner = true;
-      this.locationService.getPredictions(searchterm).subscribe(res => {
-        this.logger.info('Got Place Suggestions', res);
-        this.places = res;
-        this.showSpinner=false;
-      });  
+    if (event.detail.value.replace(/\s/g, '').length) {
+      this.logger.info('Getting Place Suggestions' , event);
+      this.places = [];
+      this.searchTerm = event.detail.value;
+      this.logger.info(event.detail.value);
+      const searchterm = event.detail.value;
+      if (searchterm === '' || searchterm === null) {
+        return;
+      } else {
+        this.logger.info('Finding Places Searchterm ', searchterm);
+        this.showSpinner = true;
+        this.locationService.getPredictions(searchterm).subscribe(res => {
+          this.logger.info('Got Place Suggestions', res);
+          this.places = res;
+          this.showSpinner=false;
+        });    
+    }
     }
   }
 

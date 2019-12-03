@@ -11,6 +11,7 @@ import { GuestUserService } from './services/security/guest-user.service';
 import { HistoryListComponent } from './components/history-list/history-list.component';
 import { Router, NavigationEnd } from '@angular/router';
 import { ErrorService } from './services/error.service';
+import { LogService } from './services/log.service';
 
 
 @Component({
@@ -50,7 +51,7 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private util: Util,
-    private logger: NGXLogger,
+    private logger: LogService,
     private keycloakService: KeycloakService,
     private modalController: ModalController,
     private screenOrientation: ScreenOrientation,
@@ -89,11 +90,16 @@ export class AppComponent {
 
   toggleFilterView(val) {
     if(window.innerWidth >= 1280)
-        if(val==='/restaurant') {
+    {    this.logger.info(this,'Current Route' , val);
+        if(val==='/restaurant' || val==='/') {
+          this.logger.info(this,'Turning On Filter View')
           this.showFilter = true;
         } else {
+          this.logger.info(this,'Turning Off Filter View')
           this.showFilter = false;
-      } else {
+        }
+      }  else {
+        this.logger.info(this,'Turning On Filter View Window Small')
         this.showFilter=false;
       }
   }

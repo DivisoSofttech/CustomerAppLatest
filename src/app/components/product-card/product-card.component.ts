@@ -79,7 +79,6 @@ export class ProductCardComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    console.log(this.auxTotal);
     if (this.type === 'full') {
       this.keycloakSubscrption = this.keycloakService.getUserChangedSubscription()
         .subscribe((data: any) => {

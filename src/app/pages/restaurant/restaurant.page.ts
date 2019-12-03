@@ -29,6 +29,8 @@ export class RestaurantPage implements OnInit {
 
   currentPlaceName = '';
 
+  currentFilter = FILTER_TYPES.DISTANCE_WISE;
+
   @ViewChild(IonInfiniteScroll, null) ionInfiniteScroll: IonInfiniteScroll;
   @ViewChild(IonRefresher, null) IonRefresher: IonRefresher;
   @ViewChild(FooterComponent, null) footer: FooterComponent;
@@ -51,6 +53,7 @@ export class RestaurantPage implements OnInit {
 
   async getStores() {
     this.filter.getSubscription().subscribe(data => {
+      this.currentFilter = data;
       this.showLoading = true;
       this.stores = [];
       this.toggleInfiniteScroll();
@@ -80,7 +83,7 @@ export class RestaurantPage implements OnInit {
     ++this.page;
     this.filter.getStores(this.page, (totalElements, totalPages, stores) => {
       event.target.complete();
-      this.logger.info('Got Stores ', stores);
+      this.logger.info('Got Stores Page :', this.page,'----', stores ,);
       if (this.page === totalPages) {
         this.toggleInfiniteScroll();
       }

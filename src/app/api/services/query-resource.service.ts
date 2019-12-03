@@ -14,7 +14,7 @@ import { CustomerDTO } from '../models/customer-dto';
 import { PageOfType } from '../models/page-of-type';
 import { PageOfDeliveryInfo } from '../models/page-of-delivery-info';
 import { Discount } from '../models/discount';
-import { PageOfStoreType } from '../models/page-of-store-type';
+import { PageOfStore } from '../models/page-of-store';
 import { StoreTypeWrapper } from '../models/store-type-wrapper';
 import { PageOfFavouriteProduct } from '../models/page-of-favourite-product';
 import { PageOfFavouriteStore } from '../models/page-of-favourite-store';
@@ -28,7 +28,6 @@ import { PageOfProduct } from '../models/page-of-product';
 import { PageOfStockCurrent } from '../models/page-of-stock-current';
 import { StockCurrent } from '../models/stock-current';
 import { Store } from '../models/store';
-import { PageOfStore } from '../models/page-of-store';
 import { PageOfUserRatingReview } from '../models/page-of-user-rating-review';
 import { PageOfNotification } from '../models/page-of-notification';
 import { PageOfOrder } from '../models/page-of-order';
@@ -36,6 +35,7 @@ import { Order } from '../models/order';
 import { OrderAggregator } from '../models/order-aggregator';
 import { PageOfAddress } from '../models/page-of-address';
 import { ProductDTO } from '../models/product-dto';
+import { PageOfStoreType } from '../models/page-of-store-type';
 import { StoreAddress } from '../models/store-address';
 import { StoreSettings } from '../models/store-settings';
 import { PageOfBanner } from '../models/page-of-banner';
@@ -490,7 +490,7 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  facetSearchByStoreTypeNameUsingPOSTResponse(params: QueryResourceService.FacetSearchByStoreTypeNameUsingPOSTParams): __Observable<__StrictHttpResponse<PageOfStoreType>> {
+  facetSearchByStoreTypeNameUsingPOSTResponse(params: QueryResourceService.FacetSearchByStoreTypeNameUsingPOSTParams): __Observable<__StrictHttpResponse<PageOfStore>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -511,7 +511,7 @@ class QueryResourceService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<PageOfStoreType>;
+        return _r as __StrictHttpResponse<PageOfStore>;
       })
     );
   }
@@ -528,9 +528,9 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  facetSearchByStoreTypeNameUsingPOST(params: QueryResourceService.FacetSearchByStoreTypeNameUsingPOSTParams): __Observable<PageOfStoreType> {
+  facetSearchByStoreTypeNameUsingPOST(params: QueryResourceService.FacetSearchByStoreTypeNameUsingPOSTParams): __Observable<PageOfStore> {
     return this.facetSearchByStoreTypeNameUsingPOSTResponse(params).pipe(
-      __map(_r => _r.body as PageOfStoreType)
+      __map(_r => _r.body as PageOfStore)
     );
   }
 
