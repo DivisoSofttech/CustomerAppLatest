@@ -74,6 +74,17 @@ ion-slides , .categories {
   padding-top: 50px;
 }
 
+.showSideReview {
+  display: none;
+}
+
+
+@media(min-width:1024px) and (max-width:2280px) {
+  .showSideReview {
+    display: block;
+  }
+}
+
 @media (min-width: 1280px) and (max-width: 2280px) {
   //CSS
 

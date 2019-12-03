@@ -111,29 +111,31 @@ class="ion-no-padding">
             </ion-label>   
       </ion-item> 
   </ion-card-header>
-  <ion-card-content *ngIf="auxilaryOrderLine.length > 0" class="ion-no-padding" color="primary">
-      <ion-list lines="none">
-          <ion-list-header>
-            <ion-text>
-              <h2>Extras</h2>
-            </ion-text>
-          </ion-list-header>
-          <ion-item lines="none" *ngFor="let auxLine of auxilaryOrderLine" lines="none">
-            <ion-thumbnail *ngIf="auxilariesProducts[auxLine.productId] !== null
-            && auxilariesProducts[auxLine.productId] !== undefined" class="img-small">
-              <ion-img 
-                [src]="auxilariesProducts[auxLine.productId].imageLink"
-                class="imageShow"
-              >
-              </ion-img>
-            </ion-thumbnail>
-            <ion-label margin *ngIf="auxilariesProducts[auxLine.productId] !== null &&
-            auxilariesProducts[auxLine.productId] !== undefined">
-              <h1 class="font-tiny">{{auxilariesProducts[auxLine.productId].name}}</h1>
-              <span >{{auxLine.quantity + ' x &#8364;' + auxLine.pricePerUnit + ' '}}</span>
-              <span>{{'Total: &#8364;' + (auxLine.total |  number: "1.1-2")}}</span>
-            </ion-label>
-          </ion-item>
-        </ion-list>  
-  </ion-card-content>
+  <ng-container *ngIf="auxilaryOrderLine !== undefined">
+      <ion-card-content *ngIf="auxilaryOrderLine.length > 0" class="ion-no-padding" color="primary">
+          <ion-list lines="none">
+              <ion-list-header>
+                <ion-text>
+                  <h2>Extras</h2>
+                </ion-text>
+              </ion-list-header>
+              <ion-item lines="none" *ngFor="let auxLine of auxilaryOrderLine" lines="none">
+                <ion-thumbnail *ngIf="auxilariesProducts[auxLine.productId] !== null
+                && auxilariesProducts[auxLine.productId] !== undefined" class="img-small">
+                  <ion-img 
+                    [src]="auxilariesProducts[auxLine.productId].imageLink"
+                    class="imageShow"
+                  >
+                  </ion-img>
+                </ion-thumbnail>
+                <ion-label margin *ngIf="auxilariesProducts[auxLine.productId] !== null &&
+                auxilariesProducts[auxLine.productId] !== undefined">
+                  <h1 class="font-tiny">{{auxilariesProducts[auxLine.productId].name}}</h1>
+                  <span >{{auxLine.quantity + ' x &#8364;' + auxLine.pricePerUnit + ' '}}</span>
+                  <span>{{'Total: &#8364;' + (auxLine.total |  number: "1.1-2")}}</span>
+                </ion-label>
+              </ion-item>
+            </ion-list>  
+      </ion-card-content>
+  </ng-container>
 </ion-card>

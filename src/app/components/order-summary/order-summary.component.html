@@ -18,7 +18,7 @@
               "></ion-img>
           </ion-avatar>
           <ion-text class="ion-margin">
-            {{store.name}}
+            {{store.name | titlecase}}
             <small class="cl-grey">{{' , ' + (store.storeAddress.city | titlecase)}}</small>
           </ion-text>
           <ion-badge color="success" mode="ios" slot="end" padding>{{'Order ' +  order.orderId}}</ion-badge>
@@ -112,7 +112,7 @@
            <ion-text>
             <p>
               <b>
-                {{addressString}}
+                {{addressString | titlecase}}
               </b>
             </p>
            </ion-text>
