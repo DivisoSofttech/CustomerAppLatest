@@ -80,17 +80,19 @@ export class BannerComponent implements OnInit , OnDestroy {
 
 
   getBanners() {
-    // this.bannerSubscription = this.queryResource.findStoreBannerUsingGET({}).subscribe(
-    //   data => {
-    //     this.logger.info('Banners got', data);
-    //     this.banners = data.content;
-    //     this.showLoading = false;
-    //   },
-    //   err => {
-    //     this.showLoading = false;
-    //     this.logger.error('Error Getting Banners', err);
-    //   }
-    // );
+    this.bannerSubscription = this.queryResource.findStoreBannerUsingGET({}).subscribe(
+      data => {
+        this.logger.info('Banners got', data);
+        data.content.forEach(b=>{
+          this.banners.push(b);
+        });
+        this.showLoading = false;
+      },
+      err => {
+        this.showLoading = false;
+        this.logger.error('Error Getting Banners', err);
+      }
+    );
     this.showLoading = false;
     }
 }

@@ -44,7 +44,7 @@ export class FilterComponent implements OnInit , OnDestroy {
     this.closeFilter.emit('close');
   }
 
-  clearFiter(filter) {
+  clearFiter() {
     this.filter.setFilter(FILTER_TYPES.DISTANCE_WISE);
     this.closeEvent();
   }

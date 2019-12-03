@@ -91,8 +91,16 @@ export class FilterService {
   }
 
   getStoreByMinAmount(pageNumber: any, success: any, error: any) {
-    success();
-    error();
+    this.logger.info('Fetching Store by Min Amount');
+    this.queryResource.findAndSortStoreByMinAmountUsingGET({
+      page:pageNumber
+    }).subscribe(data => {
+      success(data.totalElements,data.totalPages,data.content);
+    },
+    err=> {
+      this.logger.error('Error Finding Store By Cusine Filter' , err);
+      error();
+    })
   }
 
   private getStoreByCusines(pageNumber, success, error?) {
