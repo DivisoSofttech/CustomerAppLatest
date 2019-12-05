@@ -19,6 +19,8 @@ export class ReviewComponent implements OnInit {
 
   @Input() store;
 
+  @Input() viewType='normal';
+
   rateReviews: UserRatingReview[] = [];
 
   review: UserRatingReviewDTO = {

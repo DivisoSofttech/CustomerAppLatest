@@ -20,14 +20,14 @@ export class Recent {
 })
 export class RecentService implements OnInit{
 
-  currentStore: Store;
+  currentStoreBehaviour = new BehaviorSubject<Store>(null);
 
   setCurrentStore(store) {
-    this.currentStore = store;
+    this.currentStoreBehaviour.next(store);
   }
 
   getCurrentStore() {
-    return this.currentStore;
+    return this.currentStoreBehaviour;
   }
 
   recents:any[] = [];

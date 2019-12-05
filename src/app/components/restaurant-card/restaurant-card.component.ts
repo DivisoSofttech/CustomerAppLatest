@@ -7,7 +7,6 @@ import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { StoreType, Type, DeliveryInfo } from 'src/app/api/models';
 import { LogService } from 'src/app/services/log.service';
 import { Util } from 'src/app/services/util';
-import { RecentService } from 'src/app/services/recent.service';
 
 @Component({
   selector: 'app-restaurant-card',
@@ -51,7 +50,6 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
     private queryResource: QueryResourceService,
     private nav: NavController,
     private logger: LogService,
-    private recentService: RecentService,
     private keycloakService: KeycloakService,
     private util: Util
   ) { }
@@ -172,7 +170,6 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
   }
 
   showHotelMenu(regno) {
-    this.recentService.setCurrentStore(this.store);
     this.nav.navigateForward('/store/' + regno);
   }
 }

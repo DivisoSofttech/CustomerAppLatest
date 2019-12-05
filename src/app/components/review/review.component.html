@@ -1,4 +1,11 @@
-
+<ion-item color="light" *ngIf="store !== undefined && viewType==='full'" lines="full">
+    <ion-label *ngIf="store !== undefined"
+      >Reviews
+      <span *ngIf="store.reviews !== null"
+        >({{store.reviews.review}})</span
+      ></ion-label
+    >
+  </ion-item>
 <ion-card *ngIf="guest">
   <ion-card-content text-center (click)="loginModal()">
     Login To Post Reviews

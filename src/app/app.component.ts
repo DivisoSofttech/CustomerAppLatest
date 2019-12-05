@@ -11,6 +11,8 @@ import { HistoryListComponent } from './components/history-list/history-list.com
 import { Router, NavigationEnd } from '@angular/router';
 import { LogService } from './services/log.service';
 import {APP_SIDE_MENU} from './configs/app-side-menu';
+import { RecentService } from './services/recent.service';
+import { ErrorService } from './services/error.service';
 
 
 @Component({
@@ -29,12 +31,18 @@ export class AppComponent {
 
   showFilter = false;
 
+  showReview = false;
+
+  store;
+
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private util: Util,
     private logger: LogService,
+    private errorService: ErrorService,
+    private recentService: RecentService,
     private keycloakService: KeycloakService,
     private modalController: ModalController,
     private screenOrientation: ScreenOrientation,
@@ -43,10 +51,12 @@ export class AppComponent {
     private guestUserService: GuestUserService,
   ) {
 
+    this.getCurrentStore();
     this.appPages = APP_SIDE_MENU;
     this.toggleFilterView('/restaurant');
     this.router.events.subscribe((val) => {
       if(val instanceof NavigationEnd) {
+        this.logger.info(this,'Current URL' , val.url);
         this.toggleFilterView(val.url);      
       }
     });
@@ -56,6 +66,31 @@ export class AppComponent {
     if (this.platform.is('pwa') || this.platform.is('cordova')) {
       this.browser = true;
     }
+    this.checkInternetConnection(this.errorService);
+  }
+
+  checkInternetConnection(errorService: ErrorService) {
+    window.addEventListener('offline', function(event){
+      errorService.setNetworkStatus(false);
+      errorService.showErrorModal();
+    });
+    window.addEventListener('online', function(event){
+      errorService.setNetworkStatus(true);
+      errorService.modal.dismiss();
+      this.location.reload();
+    });
+  }
+
+
+  getCurrentStore() {
+    this.recentService.getCurrentStore()
+    .subscribe(data => {
+      if(data !== null) {
+        this.store = data;
+      } else {
+        this.store = null;
+      }
+    })
   }
 
   toggleFilterView(val) {
@@ -64,13 +99,21 @@ export class AppComponent {
         if(val==='/restaurant' || val==='/') {
           this.logger.info(this,'Turning On Filter View')
           this.showFilter = true;
-        } else {
+          this.showReview = false;
+        } 
+        else if(val.slice(0,7)==='/store/'){
+          this.logger.info(this,'Turning On Review View')
+          this.showReview = true;
+          this.showFilter = false;
+        }else {
           this.logger.info(this,'Turning Off Filter View')
           this.showFilter = false;
+          this.showReview = false;
         }
       }  else {
         this.logger.info(this,'Turning On Filter View Window Small')
         this.showFilter=false;
+        this.showReview=false;
       }
   }
 

@@ -8,6 +8,7 @@ import { HotelMenuPopoverComponent } from 'src/app/components/hotel-menu-popover
 import { MapComponent } from 'src/app/components/map/map.component';
 import { ClosedPipe } from 'src/app/pipes/closed.pipe';
 import { LogService } from 'src/app/services/log.service';
+import { RecentService } from 'src/app/services/recent.service';
 
 @Component({
   selector: 'app-store',
@@ -59,10 +60,12 @@ export class StorePage implements OnInit , OnDestroy {
     private logger: LogService,
     private platform: Platform,
     private navController: NavController,
-    private closedPipe: ClosedPipe
+    private closedPipe: ClosedPipe,
+    private recentService: RecentService
   ) {}
 
   ngOnInit() {
+    this.recentService.setCurrentStore(null);
     this.getStoreId();
     this.getStore();
     this.getCategories(0);
@@ -93,6 +96,7 @@ export class StorePage implements OnInit , OnDestroy {
         result => {
           this.logger.info(this,'Got Store ', result.name, result);
           this.store = result;
+          this.recentService.setCurrentStore(this.store);
           this.showRestaurantLoading = false;
           this.checkPreorderStatus();
           this.checkClosedStatus();

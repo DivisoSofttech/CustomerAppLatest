@@ -38,15 +38,6 @@ ion-card-header {
   border-radius:0px;
 }
 
-.overlay {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height:auto;
-  background-color: rgba(0,0,0,0.7);
-}
-
-
 .mainImg {
   width: fit-content;
   height: fit-content;
@@ -102,6 +93,23 @@ h4 , p{
   text-align: center;
 }
 
+
+ion-grid.overlay {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  background: rgba(0,0,0,0.7);
+  color: white;
+}
+
+.restaurantImage {
+  height: 300px;
+  width: 300px;
+  margin: auto;
+}
+
+
+
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
   ion-card-header {
@@ -109,17 +117,6 @@ h4 , p{
     height: auto;
   }
 } 
-
-.overlay-container {
-  position: relative;
-  color: white;
-}
-
-.overlay-item {
-  --background: rgba(0, 0, 0, 0.0);
-  padding: 21px 0px;
-  color: white;
-}
 
 .rating {
   display: flex;

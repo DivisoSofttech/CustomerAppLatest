@@ -46,6 +46,7 @@
     </ion-menu>
     <ion-router-outlet main></ion-router-outlet>
     <app-filter class="extra" [hidden]="!showFilter" main ></app-filter>
-    
+    <app-review class="extra" [viewType]="'full'" *ngIf="store !== null && showReview" [store]="store"></app-review>
+    <div class="extra" *ngIf="store === null && !showFilter"></div>
   </ion-split-pane>
 </ion-app>

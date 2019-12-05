@@ -157,30 +157,30 @@
       </ion-card-subtitle>
     </ion-card-content>
   </ion-card>
-  <div class="overlay-container">
-    <ion-img
-      *ngIf="store.imageLink"
-      slot="start"
-      [src]="store.imageLink"
-      class="mainImg"
-    ></ion-img>
-    <div class="overlay">
-      <ion-item class="overlay-item">
-        <ion-text slot="start">
-          <h2>
-            <strong>{{ store.name | uppercase }}</strong>
-            <small>{{ ", " + (store.storeAddress.city | titlecase) }}</small>
-          </h2>
-          <p>
-            {{ store.openingTime | date: "shortTime" }} to
-            {{ store.closingTime | date: "shortTime" }}
-          </p>
-          <p class="rating">
-            {{ store.totalRating | number: "1.1-1" }}
-            <ion-icon name="star-half"></ion-icon>
-          </p>
-        </ion-text>
-      </ion-item>
-    </div>
-  </div>
+  <ion-img
+  *ngIf="store.imageLink"
+  slot="start"
+  [src]="store.imageLink"
+  class="restaurantImage"
+></ion-img>
+  <ion-grid class="overlay">
+    <ion-row>
+      <ion-col size="12">
+          <ion-text>
+              <h2>
+                <strong>{{ store.name | uppercase }}</strong>
+                <small>{{ ", " + (store.storeAddress.city | titlecase) }}</small>
+              </h2>
+              <p>
+                {{ store.openingTime | date: "shortTime" }} to
+                {{ store.closingTime | date: "shortTime" }}
+              </p>
+              <p class="rating">
+                {{ store.totalRating | number: "1.1-1" }}
+                <ion-icon name="star-half"></ion-icon>
+              </p>
+            </ion-text>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </div>
