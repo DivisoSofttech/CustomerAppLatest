@@ -25,7 +25,7 @@ import { ComponentsModule } from './components/components.module';
 import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 import { OrderService } from './services/order.service';
 import { LoggerModule } from 'ngx-logger';
-import {environment} from '../environments/environment';
+import { environment } from '../environments/environment';
 import { PayPal } from '@ionic-native/paypal/ngx';
 import { LocationStrategy, HashLocationStrategy, Location, DecimalPipe } from '@angular/common';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
@@ -46,14 +46,15 @@ import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { SharedDataService } from './services/shared-data.service';
 import { RecentService } from './services/recent.service';
 import { LogService } from './services/log.service';
- 
+import { PaymentNavService } from './services/payment-nav.service';
+
 const config: SocketIoConfig = { url: 'https://dev.ci2.divisosofttech.com:9999', options: {} };
 
 @NgModule({
 
   declarations: [AppComponent],
 
-  entryComponents: [BannerComponent , NotificationComponent , HistoryListComponent],
+  entryComponents: [BannerComponent, NotificationComponent, HistoryListComponent],
 
   imports: [
     BrowserModule,
@@ -101,6 +102,7 @@ const config: SocketIoConfig = { url: 'https://dev.ci2.divisosofttech.com:9999',
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     Geolocation,
     GoogleMapsAPIWrapper,
+    { provide: PaymentNavService, useClass: PaymentNavService },
     FilterService,
     FavouriteService,
     OrderService,
@@ -119,4 +121,4 @@ const config: SocketIoConfig = { url: 'https://dev.ci2.divisosofttech.com:9999',
 
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

@@ -1,15 +1,13 @@
-import { OrderService } from 'src/app/services/order.service';
-import { IonSlides, IonRefresher, PopoverController, NavController, Platform, IonSplitPane } from '@ionic/angular';
+import { IonSlides, IonRefresher, PopoverController, NavController, Platform} from '@ionic/angular';
 import { ViewChild, OnDestroy } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { StockCurrent,  Category, Store } from 'src/app/api/models';
 import { HotelMenuPopoverComponent } from 'src/app/components/hotel-menu-popover/hotel-menu-popover.component';
-import { Util } from 'src/app/services/util';
-import { NGXLogger } from 'ngx-logger';
 import { MapComponent } from 'src/app/components/map/map.component';
 import { ClosedPipe } from 'src/app/pipes/closed.pipe';
+import { LogService } from 'src/app/services/log.service';
 
 @Component({
   selector: 'app-store',
@@ -27,7 +25,7 @@ export class StorePage implements OnInit , OnDestroy {
 
   stockCurrents: StockCurrent[] = [];
 
-  tempStockCurrents = [];
+  tempStockCurrents: StockCurrent[] = [];
 
   currentSegment = 'menu';
 
@@ -58,8 +56,7 @@ export class StorePage implements OnInit , OnDestroy {
     private queryResource: QueryResourceService,
     private route: ActivatedRoute,
     private popover: PopoverController,
-    private logger: NGXLogger,
-    private util: Util,
+    private logger: LogService,
     private platform: Platform,
     private navController: NavController,
     private closedPipe: ClosedPipe
@@ -94,7 +91,7 @@ export class StorePage implements OnInit , OnDestroy {
       .findStoreByRegisterNumberUsingGET(this.storeId)
       .subscribe(
         result => {
-          this.logger.info('Got Store ', result.name, result);
+          this.logger.info(this,'Got Store ', result.name, result);
           this.store = result;
           this.showRestaurantLoading = false;
           this.checkPreorderStatus();
@@ -118,7 +115,7 @@ export class StorePage implements OnInit , OnDestroy {
       })
       .subscribe(
         result => {
-          this.logger.info('Got Categories Entry', result);
+          this.logger.info(this,'Got Categories Entry', result);
           this.entry = result;
         },
         err => {
@@ -133,13 +130,14 @@ export class StorePage implements OnInit , OnDestroy {
         iDPcode: this.storeId
       })
       .subscribe(result => {
-        this.logger.info('Got Categories', result);
+        this.logger.info(this,this,'Got Categories', result);
         result.content.forEach(c => {
           this.categories.push(c);
         });
         ++i;
         if (i < result.totalPages) {
-          this.getCategories(i);
+          // this.getCategories(i);
+          this.categoryLoading=false; 
         } else {
           this.categoryLoading = false;
         }
@@ -175,7 +173,7 @@ export class StorePage implements OnInit , OnDestroy {
         this.showCategoryWiseProducts = true;
       } else {
         this.stockCurrents = data.data.result.filter(s => s !== null);
-        this.logger.info(
+        this.logger.info(this,
           'Got StockCurrent of ',
           this.selectedCategory,
           this.stockCurrents
@@ -187,7 +185,7 @@ export class StorePage implements OnInit , OnDestroy {
   }
 
   navigateBasket() {
-    this.logger.info('Routing to basket');
+    this.logger.info(this,'Routing to basket');
     this.navController.navigateForward('/basket');
   }
 
@@ -230,8 +228,8 @@ export class StorePage implements OnInit , OnDestroy {
   }
 
   toggleFabButton(val) {
-    this.logger.info(val, '----');
-    this.logger.info('Hiding Fab Button');
+    this.logger.info(this,val, '----');
+    this.logger.info(this,'Hiding Fab Button');
     this.showCatgeoryFilterFab = val;
   }
 

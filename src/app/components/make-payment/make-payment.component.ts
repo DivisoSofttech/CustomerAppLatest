@@ -1,8 +1,10 @@
-import { NGXLogger } from 'ngx-logger';
 import { OrderService } from 'src/app/services/order.service';
-import { Component, OnInit, Input } from '@angular/core';
-import { ModalController, NavController, ToastController, Platform } from '@ionic/angular';
+import { Component, OnInit} from '@angular/core';
+import { NavController, Platform, ModalController } from '@ionic/angular';
+import { LogService } from 'src/app/services/log.service';
+import { PaymentNavService } from 'src/app/services/payment-nav.service';
 import { ProcessPaymentComponent } from '../process-payment/process-payment.component';
+
 
 @Component({
   selector: 'app-make-payment',
@@ -21,41 +23,39 @@ export class MakePaymentComponent implements OnInit {
   ];
 
   constructor(
-    private modalController: ModalController,
     private navController: NavController,
-    private logger: NGXLogger,
+    private logger: LogService,
     private orderService: OrderService,
-    private platform: Platform
+    private platform: Platform,
+    private  modalController: ModalController,
+    private paymentNavService: PaymentNavService
   ) { }
 
-  dismiss() {
-    this.orderService.paymentMethod = this.paymentMethod;
-    this.modalController.dismiss();
-  }
-
-  async presentModal() {
-    this.dismiss();
-    const modal = await this.modalController.create({
-      component: ProcessPaymentComponent
-    });
-    return await modal.present();
-  }
-
   ngOnInit() {
-     if (this.orderService.paymentMethod === 'card') {
-      this.paymentMethod = this.orderService.paymentMethod;
-      this.paymentOptions = [];
-      this.paymentOptions.push( { name: 'Cash On Delivery', value: 'cod' , isChecked: false , icon: 'cash'});
-      this.paymentOptions.push({ name: 'Credit/Debit Card', value: 'card' , isChecked: true , icon: 'card'});
-    }
-     this.toBePaid = this.orderService.order.grandTotal;
-     if (this.platform.is('android') || this.platform.is('ios')) {
-      this.logger.info(' android ios platform');
+    this.getTotal();
+    this.checkPlatform();
+  }
+
+  getTotal() {
+    this.toBePaid = this.orderService.order.grandTotal;
+  }
+
+  checkPlatform() {
+    if (this.platform.is('android') || this.platform.is('ios')) {
+      this.logger.info(this,'Paypal Supported [Android , IOS]');
       this.paymentOptions.push({ name: 'Paypal Wallet/Card', value: 'paypal' , isChecked: false , icon: 'wallet'});
     } else if (this.platform.is('desktop') || this.platform.is('pwa')) {
-      console.log('This is a browser platform ');
-      // this.paymentOptions.push({name: 'Paypal Wallet', value: 'paypal', isChecked: false});
+      this.logger.info(this,'Paypal not Supported [Browser, PWA]')
     }
+  }
+
+  navigateForward() {
+    this.orderService.paymentMethod = this.paymentMethod;
+    this.paymentNavService.navigateTo(ProcessPaymentComponent)
+  }
+
+  navigateBack() {
+    this.modalController.dismiss()
   }
 
   returnToSale() {

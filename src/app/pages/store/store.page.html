@@ -51,6 +51,7 @@
           <ion-col size="12" size-lg="12" class="ion-no-padding">
             <div class="bg-white">
               <ion-segment
+                mode="md"
                 color="success"
                 (ionChange)="segmentChanged($event)"
                 [(ngModel)]="currentSegment"
@@ -85,8 +86,7 @@
                         no-margin
                         no-padding
                       >
-                        <ion-col size="12" class="ion-no-padding"
-                        >
+                        <ion-col size="12" class="ion-no-padding">
                           <ion-item color="primary">
                             <ion-text>
                               {{selectedCategory}}
@@ -106,18 +106,23 @@
                         </ion-col>
                       </ion-row>
                       <ion-row>
-                          <ion-col size="12" class="ion-no-padding">
-                              <ion-spinner
-                              name="circles"
-                              class="center"
-                              *ngIf="categoryLoading"
-                            ></ion-spinner>
-                            <div
+                        <ion-col size="12" class="ion-no-padding">
+                          <ion-spinner
+                            name="circles"
+                            class="center"
+                            *ngIf="categoryLoading"
+                          ></ion-spinner>
+                          <div
                             class="categories"
                             *ngIf="showCategoryWiseProducts === true"
                           >
-                            <div class="category" *ngFor="let category of categories">
-                              <ion-list>
+                            <div
+                              class="category"
+                              *ngFor="let category of categories"
+                            >
+                              <ion-list
+                                [style.display]="(selectedCategory === 'All' || selectedCategory === category.name)?true:false"
+                              >
                                 <ion-item color="primary" lines="none">
                                   <ion-avatar>
                                     <ion-img
@@ -135,11 +140,11 @@
                                   [category]="category"
                                   [store]="store"
                                 >
-                                </app-category-wise-products-card> </ion-list
-                              >
+                                </app-category-wise-products-card>
+                              </ion-list>
                             </div>
                           </div>
-                          </ion-col>
+                        </ion-col>
                       </ion-row>
                     </ion-grid>
                   </ng-container>
@@ -185,10 +190,7 @@
           <app-cart (viewClick)="navigateBasket()"></app-cart>
         </ion-row>
       </ion-col>
-      <ion-col
-        size-lg="4"
-        class="showSideReview br-left ion-no-padding"
-      >
+      <ion-col size-lg="4" class="showSideReview br-left ion-no-padding">
         <ion-item color="light" lines="full">
           <ion-label *ngIf="store !== undefined"
             >Reviews

@@ -13,6 +13,7 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { SharedDataService } from './shared-data.service';
 import { KeycloakService } from './security/keycloak.service';
 import { DecimalPipe } from '@angular/common';
+import { PaymentNavService } from './payment-nav.service';
 
 
 @Injectable({
@@ -39,7 +40,7 @@ export class OrderService implements OnInit , OnDestroy {
     private util: Util,
     private sharedData: SharedDataService,
     private keycloakService: KeycloakService,
-    private decimalPipe: DecimalPipe
+    private decimalPipe: DecimalPipe,
   ) {
     this.getCustomer();
   }

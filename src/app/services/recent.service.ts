@@ -2,6 +2,7 @@ import { Injectable, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { NGXLogger } from 'ngx-logger';
 import { SharedDataService } from './shared-data.service';
+import { Store } from '../api/models';
 
 const recentKey = 'recent';
 
@@ -18,6 +19,16 @@ export class Recent {
   providedIn: 'root'
 })
 export class RecentService implements OnInit{
+
+  currentStore: Store;
+
+  setCurrentStore(store) {
+    this.currentStore = store;
+  }
+
+  getCurrentStore() {
+    return this.currentStore;
+  }
 
   recents:any[] = [];
 

@@ -1,17 +1,16 @@
-import { NGXLogger } from 'ngx-logger';
 import { Util } from './services/util';
 import { KeycloakService } from './services/security/keycloak.service';
 import { Component, HostListener } from '@angular/core';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
-import { Platform, MenuController, ModalController } from '@ionic/angular';
+import { Platform,ModalController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { GuestUserService } from './services/security/guest-user.service';
 import { HistoryListComponent } from './components/history-list/history-list.component';
 import { Router, NavigationEnd } from '@angular/router';
-import { ErrorService } from './services/error.service';
 import { LogService } from './services/log.service';
+import {APP_SIDE_MENU} from './configs/app-side-menu';
 
 
 @Component({
@@ -23,23 +22,7 @@ export class AppComponent {
 
   guest = true;
 
-  public appPages = [
-    {
-      title: 'Home',
-      url: '/restaurant',
-      icon: 'business'
-    },
-    {
-      title: 'Basket',
-      url: '/basket',
-      icon: 'cart'
-    },
-    {
-      title: 'Profile',
-      url: '/profile',
-      icon: 'person'
-    }
-  ];
+  appPages;
 
   browser = false;
   keyCloakUser: any;
@@ -55,12 +38,12 @@ export class AppComponent {
     private keycloakService: KeycloakService,
     private modalController: ModalController,
     private screenOrientation: ScreenOrientation,
-    private errorService: ErrorService,
     private localNotifications: LocalNotifications,
     private router: Router,
     private guestUserService: GuestUserService,
   ) {
 
+    this.appPages = APP_SIDE_MENU;
     this.toggleFilterView('/restaurant');
     this.router.events.subscribe((val) => {
       if(val instanceof NavigationEnd) {
@@ -73,19 +56,6 @@ export class AppComponent {
     if (this.platform.is('pwa') || this.platform.is('cordova')) {
       this.browser = true;
     }
-    this.checkInternetConnection(this.errorService);
-  }
-
-  checkInternetConnection(errorService: ErrorService) {
-    window.addEventListener('offline', function(event){
-      errorService.setNetworkStatus(false);
-      errorService.showErrorModal();
-    });
-    window.addEventListener('online', function(event){
-      errorService.setNetworkStatus(true);
-      errorService.modal.dismiss();
-      this.location.reload();
-    });
   }
 
   toggleFilterView(val) {
@@ -108,8 +78,6 @@ export class AppComponent {
   onResize(event) {
     this.toggleFilterView(this.router.url);
   }
-
-
 
   getUser() {
     this.keycloakService.getUserChangedSubscription()

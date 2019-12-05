@@ -3,7 +3,7 @@
     <ion-title>Do You Have Food Allergy</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="dismiss()">
-        <ion-icon name="close"></ion-icon>
+        <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -11,8 +11,11 @@
 <div class="container">
   <ion-item>
     <ion-label position="floating">Allergy Message</ion-label>
-      <ion-textarea aria-placeholder="enter you allergy message here..." [(ngModel)]="msg">
-      </ion-textarea>
+    <ion-textarea
+      placeholder="Enter you allergy message here..."
+      [(ngModel)]="msg"
+    >
+    </ion-textarea>
   </ion-item>
 </div>
 <ion-footer>

@@ -91,6 +91,7 @@
     "ngx-countdown": "^8.0.1",
     "ngx-img-cropper": "^8.0.1",
     "ngx-logger": "^4.0.3",
+    "ngx-material-timepicker": "^5.2.3",
     "ngx-socket-io": "^3.0.1",
     "npm": "^6.7.0",
     "rxjs": "~6.5.1",
@@ -156,8 +157,8 @@
     },
     "platforms": [
       "browser",
-      "android",
-      "ios"
+      "ios",
+      "android"
     ]
   }
 }

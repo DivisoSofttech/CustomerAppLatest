@@ -1,7 +1,7 @@
 <ion-header>
     <ion-toolbar>
         <ion-buttons>
-            <ion-button (click)="showMakePayment()">
+            <ion-button (click)="navigateBack()">
                 <ion-icon name="arrow-back" slot="icon-only" ></ion-icon>
             </ion-button>
             <ion-title>Process Payment...</ion-title>
@@ -9,7 +9,7 @@
     </ion-toolbar>
 </ion-header>
 <ion-content>
-    <app-braintree-card-payment *ngIf="provider==='braintree'"></app-braintree-card-payment>
-    <app-paypal-payment *ngIf="provider==='paypal'"></app-paypal-payment>
+    <app-braintree-card-payment *ngIf="provider==='braintree'" (dismissEvent)="navigateBack()"></app-braintree-card-payment>
+    <app-paypal-payment *ngIf="provider==='paypal'" (dismissEvent)="navigateBack()"></app-paypal-payment>
     <app-razorpay-payment *ngIf="provider==='razorpay'"></app-razorpay-payment>
 </ion-content>

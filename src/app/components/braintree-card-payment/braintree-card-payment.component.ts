@@ -1,11 +1,9 @@
 import { ModalDisplayUtilService } from './../../services/modal-display-util.service';
 import { ModalController } from '@ionic/angular';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import * as braintree from 'braintree-web';
 import { OrderService } from 'src/app/services/order.service';
 import { Util } from 'src/app/services/util';
-import { MakePaymentComponent } from '../make-payment/make-payment.component';
-import { PaymentSuccessfullInfoComponent } from '../payment-successfull-info/payment-successfull-info.component';
 
 @Component({
   selector: 'app-braintree-card-payment',
@@ -13,6 +11,9 @@ import { PaymentSuccessfullInfoComponent } from '../payment-successfull-info/pay
   styleUrls: ['./braintree-card-payment.component.scss'],
 })
 export class BraintreeCardPaymentComponent implements OnInit {
+
+
+  @Output() dismissEvent = new EventEmitter();
 
   cardholdersName;
   hostedFieldsInstance: braintree.HostedFields;
@@ -85,7 +86,9 @@ export class BraintreeCardPaymentComponent implements OnInit {
           }
           // can add custom code for custom validations here
         });
-      });
+      }).catch(err=> {
+        this.dismissEvent.emit();
+      })
     });
   });
 });
@@ -111,16 +114,19 @@ export class BraintreeCardPaymentComponent implements OnInit {
           loader.dismiss();
         }, (err) => {
           loader.dismiss();
+          this.dismissEvent.emit();
           this.util.createToast('Something went wrong try again', 'information-circle-outline');
           this.displayModalService.navigateToBasket();
         });
       }, (err) => {
+        this.dismissEvent.emit();
         this.util.createToast('Something went wrong try again', 'information-circle-outline');
         this.displayModalService.navigateToBasket();
       });
     });
       // submit payload.nonce to the server from here
     }).catch((error) => {
+      this.dismissEvent.emit();
       console.log(error);
       this.util.createToast('Payment failed please try again', 'information-circle-outline');
       // perform custom validation here or log errors

@@ -22,8 +22,8 @@
   <app-loading *ngIf="showHistoryLoading === true" [type]="'history'"></app-loading>
 
   <ion-list *ngIf="orders.length > 0 && stores !== undefined && showHistoryLoading === false">
-    <div *ngFor="let order of orders">
-        <ion-item [lines]="lineFlag" class="order" *ngIf="order.status?.name === 'payment-processed' || order.status?.name === 'delivered'"   margin (click)="showOrderDetails(order)">
+    <ng-container *ngFor="let order of orders">
+        <ion-item [lines]="lineFlag" class="order" *ngIf="order.status.name === 'payment-processed' || order.status?.name === 'delivered'"   margin (click)="showOrderDetails(order)">
             <ion-thumbnail mode="ios" class="image" slot="start" *ngIf="stores[order.storeId] !== null && stores[order.storeId].imageContentType !== undefined">
               <ion-img [src]="
                   stores[order.storeId].imageLink
@@ -49,7 +49,7 @@
             </ion-label>
             <ion-badge mode="ios" slot="end">{{ order.orderId }}</ion-badge>
           </ion-item>
-    </div>
+        </ng-container>
     
   </ion-list>
 

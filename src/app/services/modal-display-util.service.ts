@@ -2,8 +2,8 @@ import { ProcessPaymentComponent } from './../components/process-payment/process
 import { PaymentSuccessfullInfoComponent } from './../components/payment-successfull-info/payment-successfull-info.component';
 import { Injectable } from '@angular/core';
 import { ModalController, PopoverController, NavController } from '@ionic/angular';
-import { MakePaymentComponent } from '../components/make-payment/make-payment.component';
 import { WaitInformatonPopoverComponent } from '../components/wait-informaton-popover/wait-informaton-popover.component';
+import { PaymentflowNavComponent } from '../components/paymentflow-nav/paymentflow-nav.component';
 
 @Injectable({
   providedIn: 'root'
@@ -13,13 +13,6 @@ export class ModalDisplayUtilService {
   constructor(private modalController: ModalController,
               private popoverController: PopoverController,
               private navController: NavController) { }
-
-  async presentMakePayment() {
-    const modal = await this.modalController.create({
-      component: MakePaymentComponent
-    });
-    return await modal.present();
-  }
 
   async presentModal() {
     const modal = await this.modalController.create({

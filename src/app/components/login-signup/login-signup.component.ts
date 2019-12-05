@@ -172,12 +172,12 @@ export class LoginSignupComponent implements OnInit {
   createUserIfNotExists(reference) {
       this.logger.info('Checking if User Exists in MicroService Else Create');
       this.queryResourceService
-        .checkUserExistsUsingGET(reference)
+        .checkUserExistsByIdpcodeUsingGET(reference)
         .subscribe(
           isUserExists => {
             this.logger.info('IsUserExists ', isUserExists);
             if (isUserExists === true) {
-              this.queryResourceService.findCustomerByReferenceUsingGET(reference)
+              this.queryResourceService.findCustomerByIdpCodeUsingGET(reference)
             .subscribe(customer => {
               this.logger.info('Got Customer', customer);
               this.storage.set('customer' , customer);

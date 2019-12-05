@@ -11,14 +11,20 @@ export class LogService {
       ) { }
     
     info(_this: Object , ...msg) {
+      if(_this) {
         this.logger.info(_this.constructor.name ,'>>>>>>', ...msg)
+      }
     }
     
     error(_this,...msg) {
-      this.logger.error(_this.constructor.name ,'>>>>>>', ...msg)
+      if(_this) {
+        this.logger.error(_this.constructor.name ,'>>>>>>', ...msg)
+      }
     }
 
     fatal(_this: Object , ...msg) {
-      this.logger.fatal(_this.constructor.name ,'>>>>>>', ...msg)
+      if(_this) {
+        this.logger.fatal(_this.constructor.name ,'>>>>>>', ...msg)
+      }
     }    
 }

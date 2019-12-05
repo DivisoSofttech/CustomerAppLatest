@@ -1,9 +1,8 @@
 import { ModalDisplayUtilService } from './../../services/modal-display-util.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { OrderService } from 'src/app/services/order.service';
 import { Util } from 'src/app/services/util';
 import { SharedDataService } from 'src/app/services/shared-data.service';
-import { DecimalPipe } from '@angular/common';
 
 declare var RazorpayCheckout;
 
@@ -13,15 +12,17 @@ declare var RazorpayCheckout;
   styleUrls: ['./razorpay-payment.component.scss']
 })
 export class RazorpayPaymentComponent implements OnInit {
+  
+  @Output() dismissEvent = new EventEmitter();
+
+  user: any;
+
   constructor(
     private orderService: OrderService,
     private util: Util,
     private displayModalService: ModalDisplayUtilService,
-    private sharedDataService: SharedDataService,
-    private decimalPipe: DecimalPipe
+    private sharedDataService: SharedDataService
   ) {}
-
-  user: any;
 
   payWithRazorPay() {
     this.util.createLoader().then(loader => {
@@ -67,6 +68,7 @@ export class RazorpayPaymentComponent implements OnInit {
                     paymentLoader.dismiss();
                   },
                   err => {
+                    this.dismissEvent.emit();
                     paymentLoader.dismiss();
                     displayService.navigateToBasket();
                   }
@@ -76,6 +78,7 @@ export class RazorpayPaymentComponent implements OnInit {
         };
         // tslint:disable-next-line: only-arrow-functions
         const cancelCallback = function(error) {
+          this.dismissEvent.emit();
           // alert(error.description + ' (Error ' + error.code + ')');
           // this.presentMakePayment();
           // this.util.createToast('Payment failed please try again', 'information-circle-outline');

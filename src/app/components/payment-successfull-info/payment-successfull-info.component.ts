@@ -8,6 +8,7 @@ import { NGXLogger } from 'ngx-logger';
 import { QueryResourceService } from 'src/app/api/services';
 import { Util } from 'src/app/services/util';
 import { OrderSummaryComponent } from '../order-summary/order-summary.component';
+import { LogService } from 'src/app/services/log.service';
 
 @Component({
   selector: 'app-payment-successfull-info',
@@ -29,43 +30,38 @@ export class PaymentSuccessfullInfoComponent implements OnInit , OnDestroy {
     private cartService: CartService,
     private navController: NavController,
     private orderService: OrderService,
-    private logger: NGXLogger,
+    private logger: LogService,
     private queryResource: QueryResourceService,
     private util: Util,
     private sharedData: SharedDataService,
     private notificationService: NotificationService
   ) { }
 
-  async dismiss() {
-    this.logger.info('Closing the PaymentSuccessfullModal');
+  async continueShopping() {
+    this.logger.info(this,'Closing the PaymentSuccessfullModal');
     this.cartService.emptyCart();
     this.orderService.resource = {};
     this.orderService.offer = undefined;
     this.orderService.deliveryInfo = {};
     this.sharedData.getData('user').then(user => {
       this.notificationService.getNotificationCount(user.preferred_username);
+      this.dismiss();
     });
-    this.modalController.getTop()
-    .then(data => {
-      console.log(data);
-      this.modalController.dismiss();
-    });
-    this.navController.navigateBack('/restaurant');
   }
 
   ngOnInit() {
+    this.getRequiredDetails();
+  }
+
+  getRequiredDetails() {
     this.currentShop = this.cartService.currentShop;
     this.cartService.emptyCart();
     this.getOrder();
     this.total = this.orderService.order.grandTotal;
     this.method = this.orderService.paymentMethod;
     this.ref = this.orderService.order.orderId;
-    this.logger.info('Order in OrderService', this.orderService.order);
+    this.logger.info(this,'Order in OrderService', this.orderService.order);
     this.sharedData.deleteData('checkout');
-  }
-
-  ngOnDestroy(): void {
-    this.logger.info('PaymentSuccessFull Destroyed');
   }
 
   getOrder() {
@@ -74,7 +70,7 @@ export class PaymentSuccessfullInfoComponent implements OnInit , OnDestroy {
         loader.present();
         this.queryResource.findOrderByOrderIdUsingGET(this.ref)
           .subscribe(data => {
-            this.logger.info('Order is ', data);
+            this.logger.info(this,'Order is ', data);
             this.order = data;
             loader.dismiss();
           },
@@ -94,9 +90,8 @@ export class PaymentSuccessfullInfoComponent implements OnInit , OnDestroy {
 
       modal.onDidDismiss()
       .then((data) => {
-        this.logger.info('Modal Dismissed PaymentSuccessfull' , data);
         if (data.data) {
-          this.dismiss();
+          this.continueShopping();
         }
       });
       await modal.present();
@@ -104,7 +99,19 @@ export class PaymentSuccessfullInfoComponent implements OnInit , OnDestroy {
     } else {
       this.getOrder();
     }
+  }
 
+  dismiss() {
+    this.modalController.dismiss();
+    this.goHome();
+  }
+
+  goHome() {
+    this.navController.navigateRoot('/');
+  }
+
+  ngOnDestroy(): void {
+    this.logger.info('PaymentSuccessFull Destroyed');
   }
 
 }

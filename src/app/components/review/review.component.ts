@@ -121,7 +121,8 @@ export class ReviewComponent implements OnInit {
         this.review.storeId= this.store.id;
         this.review.userName = this.username;
         this.review.date = new Date().toISOString();
-        if (this.review.review !== '' && this.review.review !== null) {
+        if (this.review.review !== '' && this.review.review !== null &&
+        this.review.rating > 0) {
           this.logger.info("Saving" , this.review,this.store);
           this.commandResource
             .createUserRatingReviewUsingPOST(this.review)
@@ -142,7 +143,7 @@ export class ReviewComponent implements OnInit {
             );
         } else {
           loader.dismiss();
-          this.util.createToast('Review field can\'t be empty.');
+          this.util.createToast('Review and Rating field can\'t be empty.');
         }
       });
     });

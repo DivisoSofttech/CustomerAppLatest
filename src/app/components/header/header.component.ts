@@ -103,7 +103,7 @@ export class HeaderComponent implements OnInit , OnDestroy {
   getUserProfile() {
     this.storage.get('user')
     .then(user => {
-      this.queryResource.findCustomerByReferenceUsingGET(user.preferred_username)
+      this.queryResource.findCustomerByIdpCodeUsingGET(user.preferred_username)
       .subscribe(customer => {
         this.customer = customer;
       });

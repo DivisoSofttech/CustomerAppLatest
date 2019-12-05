@@ -16,8 +16,7 @@ const routes: Routes = [
   { path: 'store/:id', loadChildren: './pages/store/store.module#StorePageModule' , canActivate: [AuthGuardService]},
   { path: 'basket', loadChildren: './pages/basket/basket.module#BasketPageModule' , canActivate: [AuthGuardService]},
   { path: 'profile', loadChildren: './pages/profile/profile.module#ProfilePageModule' , canActivate: [AuthGuardService]},
-  { path: 'checkout', component: CheckoutComponent , canActivate: [AuthGuardService]},
-
+  { path: 'checkout', component: CheckoutComponent , canActivate: [AuthGuardService]}
 ];
 
 @NgModule({

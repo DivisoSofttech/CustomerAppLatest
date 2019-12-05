@@ -11,6 +11,7 @@ import { OrderService } from 'src/app/services/order.service';
 import { Platform, ModalController } from '@ionic/angular';
 import { Util } from 'src/app/services/util';
 import { PaymentSuccessfullInfoComponent } from '../payment-successfull-info/payment-successfull-info.component';
+import { PaymentNavService } from 'src/app/services/payment-nav.service';
 
 @Component({
   selector: 'app-paypal-payment',
@@ -25,7 +26,8 @@ export class PaypalPaymentComponent implements OnInit {
               private platform: Platform,
               private util: Util,
               private modalController: ModalController,
-              private displayModalService: ModalDisplayUtilService
+              private displayModalService: ModalDisplayUtilService,
+              private paymentNavService: PaymentNavService
 
     ) { }
 
@@ -85,7 +87,7 @@ export class PaypalPaymentComponent implements OnInit {
                     this.orderService.processPayment(res.response.id, 'success', 'paypal')
                     .subscribe(resource => {
                       this.orderService.resource = resource;
-                      this.displayModalService.presentPaymentSuccessfullInfo();
+                      this.paymentNavService.navigateTo(PaymentSuccessfullInfoComponent);
                       loader.dismiss();
                     }, (err) => {
                       loader.dismiss();
@@ -98,7 +100,7 @@ export class PaypalPaymentComponent implements OnInit {
                     console.log(
                       'Error or render dialog closed without being successful'
                     );
-                    this.displayModalService.presentMakePayment();
+                    // this.displayModalService.presentMakePayment();
                     this.util.createToast('Payment failed please try again', 'information-circle-outline');
                     // Error or render dialog closed without being successful
                   }
@@ -106,7 +108,7 @@ export class PaypalPaymentComponent implements OnInit {
               },
               () => {
                 console.log('Error in configuration');
-                this.displayModalService.presentMakePayment();
+                // this.displayModalService.presentMakePayment();
                 this.util.createToast('Payment failed please try again', 'information-circle-outline');
                 // Error in configuration
               }
@@ -123,7 +125,7 @@ export class PaypalPaymentComponent implements OnInit {
             modal.dismiss();
           });
           // Error in initialization, maybe PayPal isn't supported or something else
-          this.displayModalService.presentMakePayment();
+          this.paymentNavService.pop();
           this.util.createToast('Payment failed please try again', 'information-circle-outline');
 
         }
@@ -145,19 +147,6 @@ export class PaypalPaymentComponent implements OnInit {
   });
   }
 
-  async presentPaymentSuccessfullInfo() {
-    this.modalController.dismiss();
-    const modal = await this.modalController.create({
-      component: PaymentSuccessfullInfoComponent
-    });
-    return await modal.present();
-  }
-  async presentMakePayment() {
-    const modal = await this.modalController.create({
-      component: MakePaymentComponent
-    });
-    return await modal.present();
-  }
   ngOnInit() {
     if (this.platform.is('android') || this.platform.is('ios')) {
       console.log('This is a browser routed paypalsdk android ios ');

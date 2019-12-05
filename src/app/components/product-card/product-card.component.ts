@@ -5,9 +5,9 @@ import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { StockCurrent, AuxilaryLineItem, ComboLineItem, Discount, OrderLine, AuxilaryOrderLine } from 'src/app/api/models';
 import { PopoverController, IonInput } from '@ionic/angular';
 import { QueryResourceService } from 'src/app/api/services';
-import { NGXLogger } from 'ngx-logger';
 import { ShowAuxilaryModalComponent } from '../show-auxilary-modal/show-auxilary-modal.component';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
+import { LogService } from 'src/app/services/log.service';
 
 @Component({
   selector: 'app-product-card',
@@ -65,7 +65,7 @@ export class ProductCardComponent implements OnInit, OnDestroy {
     private queryResource: QueryResourceService,
     private router: Router,
     private cartService: CartService,
-    private logger: NGXLogger,
+    private logger: LogService,
     private keycloakService: KeycloakService
   ) { }
 
@@ -82,7 +82,7 @@ export class ProductCardComponent implements OnInit, OnDestroy {
     if (this.type === 'full') {
       this.keycloakSubscrption = this.keycloakService.getUserChangedSubscription()
         .subscribe((data: any) => {
-          this.logger.info('Checking If guest : RestaurantCardComponet');
+          this.logger.info(this,'Checking If guest : RestaurantCardComponet');
           if (data !== null) {
             if (data.preferred_username === 'guest') {
               this.showFavourite = false;
@@ -121,7 +121,7 @@ export class ProductCardComponent implements OnInit, OnDestroy {
         data.content.forEach(a => {
           this.auxilaries.push(a);
         });
-        this.logger.info('Got Auxilary For Product ', this.stockCurrent.product.name, data.content);
+        this.logger.info(this,'Got Auxilary For Product ', this.stockCurrent.product.name, data.content);
         ++i;
         if (i < data.totalPages) {
           this.getAuxilaries(i);
@@ -140,7 +140,7 @@ export class ProductCardComponent implements OnInit, OnDestroy {
         data.content.forEach(a => {
           this.comboLineItems.push(a);
         });
-        this.logger.info('Got ComboLineItem For Product ', this.stockCurrent.product.name, data.content);
+        this.logger.info(this,'Got ComboLineItem For Product ', this.stockCurrent.product.name, data.content);
         ++i;
         if (i < data.totalPages) {
           this.getComboItems(i);
@@ -178,11 +178,11 @@ export class ProductCardComponent implements OnInit, OnDestroy {
      });
     } else {
       if (this.auxilaries.length > 0 && this.stockCurrent.product.isAuxilaryItem === false) {
-        this.logger.info('Add Auxilary Items ', this.auxilaries);
+        this.logger.info(this,'Add Auxilary Items ', this.auxilaries);
         this.cartService.addAuxilary(this.stockCurrent.product, this.auxilaries);
         this.showAddAuxilaryPopover();
       } else {
-        this.logger.info('No Auxilary Items ', this.auxilaries);
+        this.logger.info(this,'No Auxilary Items ', this.auxilaries);
         this.cartService.addProduct(stock.product, stock, this.store);
       }  
     }

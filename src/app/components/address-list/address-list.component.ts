@@ -1,10 +1,9 @@
 import { Component, OnInit, Input} from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { QueryResourceService } from 'src/app/api/services';
-import { NGXLogger } from 'ngx-logger';
 import { AddAddressComponent } from '../add-address/add-address.component';
-import { Storage } from '@ionic/storage';
 import { SharedDataService } from 'src/app/services/shared-data.service';
+import { LogService } from 'src/app/services/log.service';
 
 @Component({
   selector: 'app-address-list',
@@ -15,7 +14,7 @@ export class AddressListComponent implements OnInit {
  
   @Input() mode="modal";
 
-  customer;
+  user;
 
   addresses: any = [];
 
@@ -27,20 +26,20 @@ export class AddressListComponent implements OnInit {
 
   constructor(
     private modalController: ModalController,
-    private logger: NGXLogger,
+    private logger: LogService,
     private queryResourceService: QueryResourceService,
-    private sharedData: SharedDataService
+    private sharedDataService: SharedDataService
   ){}
 
   ngOnInit(){
-    this.getCustomer();
+    this.getUser();
   }
 
-  getCustomer() {
-    this.sharedData.getData('user')
+  getUser() {
+    this.sharedDataService.getData('user')
     .then(data => {
-      this.customer = data;
-      this.sharedData.getData('address')
+      this.user = data;
+      this.sharedDataService.getData('address')
       .then(addresses => {
         if(addresses === null) {
           this.getAllAdress(0);
@@ -54,7 +53,7 @@ export class AddressListComponent implements OnInit {
   }
 
   getAddress() {
-    this.sharedData.getData('address')
+    this.sharedDataService.getData('address')
     .then(addresses => {
       if(addresses != null)
       this.selectedAddress = addresses.selectedAddress
@@ -62,21 +61,24 @@ export class AddressListComponent implements OnInit {
   }
 
   updateStorageData(data) {
-    this.sharedData.getData('address')
+    this.sharedDataService.getData('address')
     .then(addresses => {
       if(addresses !== null) {
         if(addresses.selectedAddress.id === data.data.id) {
           addresses.selectedAddress = data.data;
         }
         addresses.all = this.addresses;
-        this.sharedData.saveToStorage('address' , addresses);  
+        this.sharedDataService.saveToStorage('address' , addresses)
+        .then(()=> {
+          this.dismissData(data.data);
+        });  
       }
     });
   }
 
   getAllAdress(i) {
     this.queryResourceService.getAllSavedAddressUsingGET({
-      customerId: this.customer.preferred_username,
+      customerId: this.user.preferred_username,
       page: i
     })
     .subscribe(paddress => {
@@ -127,15 +129,9 @@ export class AddressListComponent implements OnInit {
       if(data.data !== undefined) {
         this.addresses.push(data.data);
         this.updateStorageData(data);
-        this.modalController.getTop()
-        .then(element => {
-          this.dismissData(data.data);
-        });  
       }
     })
-  
     await modal.present();
-  
   }
 
   dismiss() {
@@ -143,7 +139,7 @@ export class AddressListComponent implements OnInit {
   }
 
   dismissData(address) {
-    this.sharedData.saveToStorage('address' , 
+    this.sharedDataService.saveToStorage('address' , 
     {
       'all': this.addresses,
       'selectedAddress': address

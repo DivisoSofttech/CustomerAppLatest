@@ -217,6 +217,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
   addToCart() {
     this.cartService.addShop(this.store);
     this.orderLines.forEach(o => {
+      // Delete Id Of Each OrderLine.
       delete o.id;
       if (this.auxilaryOrderLines[o.id] === undefined) {
        delete o.requiedAuxilaries;

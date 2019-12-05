@@ -1,13 +1,10 @@
 import { OrderService } from './../../services/order.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-
 import { Util } from 'src/app/services/util';
-import { ModalController, NavController } from '@ionic/angular';
 import { PaymentSuccessfullInfoComponent } from '../payment-successfull-info/payment-successfull-info.component';
 import { Subscription } from 'rxjs';
-import { MakePaymentComponent } from '../make-payment/make-payment.component';
-
-
+import { LogService } from 'src/app/services/log.service';
+import { PaymentNavService } from 'src/app/services/payment-nav.service';
 
 @Component({
   selector: 'app-process-payment',
@@ -22,90 +19,81 @@ export class ProcessPaymentComponent implements OnInit, OnDestroy {
 
   paymentId: string;
   provider: string;
+  loader;
+
   constructor(
+    private paymentNav: PaymentNavService,
     private orderService: OrderService,
     private util: Util,
-    private modalController: ModalController,
-    private navController: NavController
-    ) {}
-
-
-
+    private logger: LogService
+  ) { }
 
   ngOnInit() {
+    this.startPayment();
+  }
 
-    if (this.orderService.paymentMethod === 'paypal') {
-      console.log('Paypal Method');
-      this.provider = 'paypal';
-    } else if (this.orderService.paymentMethod === 'cod') {
-      console.log('Cash on elivery option ');
-      this.util.createCustomLoader('lines', 'Payment processing').then(loader => {
-        loader.present();
-        this.behaviouralSubjectSubscription = this.orderService.orderResourceBehaviour.subscribe(resources => {
-        console.log('Subscription called');
-        if (this.orderService.resource.nextTaskName === 'Process Payment') {
-
-          this.codPaymentSubscription = this.orderService.processPayment('pay-cod', 'success', 'cod')
-          .subscribe(resource => {
-            console.log('process payment Subscribed');
-            console.log('resource payment process is ', resource.nextTaskName);
-            this.orderService.resource = resource;
-            this.behaviouralSubjectSubscription.unsubscribe();
-            this.orderService.orderResourceBehaviour.next(resource.nextTaskName);
-            this.presentPaymentSuccessfullInfo();
-            loader.dismiss();
-          }, (err) => {
-             loader.dismiss();
-             this.behaviouralSubjectSubscription.unsubscribe();
-             console.log('Error occured cod payment');
-             this.util.createToast('Something went wrong try again', 'information-circle-outline');
-             this.navigateToBasket();
-          });
-        } else {
-          loader.present();
-        }
-      });
-    });
-    } else if (this.orderService.paymentMethod === 'card') {
-      console.log('Razorpay payment ');
-      this.provider = 'razorpay';
-    } else if (this.orderService.paymentMethod === 'braintree') {
-      console.log('Payment method is Braintree ');
-      this.provider = 'braintree';
+  startPayment() {
+    switch (this.orderService.paymentMethod) {
+      case 'paypal': this.setProvider('paypal'); break;
+      case 'cod': this.initiateCashOnDelivery(); break;
+      case 'card': this.setProvider('razorpay'); break;
+      case 'braintree': this.setProvider('braintree'); break;
     }
   }
 
-  async showMakePayment() {
-    console.log('showmakepayment called');
-    this.modalController.dismiss();
-    const modal = await this.modalController.create({
-      component: MakePaymentComponent,
-      backdropDismiss: false
-    });
-    return await modal.present();
+  setProvider(provider) {
+    this.logger.info(this, 'Setting Payment Provider As', provider);
+    this.provider = provider;
+  }
+
+  processPayment() {
+    if (this.orderService.resource.nextTaskName === 'Process Payment') {
+      this.codPaymentSubscription = this.orderService.processPayment('pay-cod', 'success', 'cod')
+        .subscribe(resource => {
+          console.log('process payment Subscribed');
+          console.log('resource payment process is ', resource.nextTaskName);
+          this.orderService.resource = resource;
+          this.behaviouralSubjectSubscription.unsubscribe();
+          this.orderService.orderResourceBehaviour.next(resource.nextTaskName);
+          this.navigateForward();
+          this.loader.dismiss();
+        }, (err) => {
+          this.loader.dismiss();
+          this.logger.error(this, 'Payment Failed Dismissing');
+          this.behaviouralSubjectSubscription.unsubscribe();
+          console.log('Error occured cod payment');
+          this.util.createToast('Something went wrong try again', 'information-circle-outline');
+          this.navigateBack();
+        });
+    } else {
+      this.loader.present();
+    }
+  }
+
+  initiateCashOnDelivery() {
+    this.util.createCustomLoader('lines', 'Payment processing').then(loader => {
+      this.loader = loader;
+      loader.present();
+      this.behaviouralSubjectSubscription = this.orderService.orderResourceBehaviour.subscribe(resources => {
+        this.processPayment();
+      },
+        err => {
+          this.logger.error(this, 'Payment Failed Dismissing');
+          this.navigateBack();
+        });
+    })
+  }
+
+  navigateBack() {
+    this.paymentNav.pop();
+  }
+
+  navigateForward() {
+    this.paymentNav.nav.push(PaymentSuccessfullInfoComponent)
   }
 
   ngOnDestroy() {
-    console.log('Ng destroy calls process payment');
-    if (this.codPaymentSubscription !== undefined) {
-      this.codPaymentSubscription.unsubscribe();
-    }
-
-    if (this.behaviouralSubjectSubscription !== undefined) {
-      console.log('Ng destroy calls process payment behavioural sub');
-      this.behaviouralSubjectSubscription.unsubscribe();
-    }
-  }
-  navigateToBasket() {
-    this.navController.navigateForward('basket');
-  }
-  
-  async presentPaymentSuccessfullInfo() {
-    this.modalController.dismiss();
-    const modal = await this.modalController.create({
-      component: PaymentSuccessfullInfoComponent,
-      backdropDismiss: false
-    });
-    return await modal.present();
+    this.codPaymentSubscription ? this.codPaymentSubscription.unsubscribe() : undefined;
+    this.behaviouralSubjectSubscription ? this.behaviouralSubjectSubscription.unsubscribe() : undefined
   }
 }

@@ -18,7 +18,7 @@ import { Util } from 'src/app/services/util';
 import { OrderService } from 'src/app/services/order.service';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { LoginSignupComponent } from '../login-signup/login-signup.component';
-import { Subscription} from 'rxjs';
+import { Subscription } from 'rxjs';
 import { DecimalPipe, DatePipe } from '@angular/common';
 import { PreorderComponent } from '../preorder/preorder.component';
 import { ClosedPipe } from 'src/app/pipes/closed.pipe';
@@ -87,7 +87,7 @@ export class CartComponent implements OnInit, OnDestroy {
     private popoverController: PopoverController,
     private closedPipe: ClosedPipe,
     private datePipe: DatePipe
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.date = new Date();
@@ -113,18 +113,18 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   routeBasket() {
-    this.logger.info(this,'Firing event');
+    this.logger.info(this, 'Firing event');
     this.loginModal(
       () => {
-        this.logger.info(this,'Emitting View Click');
+        this.logger.info(this, 'Emitting View Click');
         this.viewClick.emit();
       },
-      () => {}
+      () => { }
     );
   }
 
   async loginModal(success, error) {
-    this.logger.info(this,'CartComponent Login Modal');
+    this.logger.info(this, 'CartComponent Login Modal');
     if (this.guest === true) {
       const modal = await this.modalController.create({
         component: LoginSignupComponent,
@@ -154,10 +154,10 @@ export class CartComponent implements OnInit, OnDestroy {
             this.guest = true;
             if (this.viewType === 'full') {
               this.loginModal(
-                () => {},
+                () => { },
                 () => {
                   this.keycloakSubscription.unsubscribe();
-                  this.navController.back();
+                  this.navigateBack();
                 }
               );
             }
@@ -230,15 +230,15 @@ export class CartComponent implements OnInit, OnDestroy {
   async preorderPopover(callback?) {
     const popover = await this.popoverController.create({
       component: PreorderComponent,
-      componentProps: {store: this.store},
+      componentProps: { store: this.store },
       translucent: false,
       backdropDismiss: false
     });
 
     popover.onDidDismiss()
-    .then((data) => {
-      callback(data);
-    }); 
+      .then((data) => {
+        callback(data);
+      });
     await popover.present();
   }
 
@@ -248,119 +248,137 @@ export class CartComponent implements OnInit, OnDestroy {
     // Preorder Should be Avialable
     // And Current Time should be between preorder[fromTime and toTime]
     const currentTime = new Date();
-    this.isOrderAvailable = !this.closedPipe.transform(currentTime,this.store.openingTime,this.store.closingTime)
-    && this.store.preOrderSettings.isPreOrderAvailable
-    && this.closedPipe.transform(currentTime, this.store.preOrderSettings.fromTime,this.store.preOrderSettings.toTime);
+    this.isOrderAvailable = !this.closedPipe.transform(currentTime, this.store.openingTime, this.store.closingTime)
+      && this.store.preOrderSettings.isPreOrderAvailable
+      && this.closedPipe.transform(currentTime, this.store.preOrderSettings.fromTime, this.store.preOrderSettings.toTime);
   }
 
   checkClosedStatus() {
     const currentTime = new Date();
-    this.isClosed = !this.closedPipe.transform(currentTime,this.store.openingTime,this.store.closingTime)
+    this.isClosed = !this.closedPipe.transform(currentTime, this.store.openingTime, this.store.closingTime)
   }
 
   checkRestaurantStatus(deliveryType) {
-    this.logger.info(this,'Checking if Store is Closed',this.store);
+    this.logger.info(this, 'Checking if Store is Closed', this.store);
     this.checkClosedStatus();
     this.checkPreorderStatus();
-    if(this.isClosed && this.isOrderAvailable) {
+    if (this.isClosed && this.isOrderAvailable) {
       this.preorderPopover((data) => {
         console.error(data);
-        if(data.data===true)  this.continue(deliveryType);
+        if (data.data === true) this.continue(deliveryType);
       });
-    } else if(this.isClosed && !this.isOrderAvailable) {
-      this.logger.info(this,'Restaurant is Closed');
+    } else if (this.isClosed && !this.isOrderAvailable) {
+      this.logger.info(this, 'Restaurant is Closed');
     } else {
       this.continue(deliveryType);
     }
   }
 
+  navigateForward() {
+    this.navController.navigateForward('/checkout');
+  }
+
+  navigateBack() {
+    this.navController.back();
+  }
+
+  createNewOrder(deliveryType) {
+    this.logger.info(this, 'Creating new order');
+    const order: Order = {
+      orderLines: this.orderLines,
+      appliedOffers: [],
+      preOrderDate: this.cart.preOrderDate ? this.cart.preOrderDate : null,
+      // tslint:disable-next-line: radix
+      grandTotal: this.cart.total,
+      subTotal: this.cart.subTotal,
+      email: this.customer.email,
+      storeId: this.cart.storeId,
+      customerId: this.customer.preferred_username,
+      allergyNote: this.allergyNote,
+      date: new Date().toISOString()
+    };
+    console.log('Order setting to order service is ', order);
+    this.orderService.setOrder(order);
+    this.logger.info(this, 'Delivery type is ', deliveryType);
+    this.initiateOrderSubcription = this.orderService
+      .initiateOrder()
+      .subscribe(
+        resource => {
+          this.orderService.setOrder(resource.order);
+          this.orderService.setResource(resource.commandResource);
+          // this.cart.orderLines = resource.order.orderLines;
+          this.orderService.orderResourceBehaviour.next(
+            resource.commandResource.nextTaskName
+          );
+          this.logger.info(this, 'Resultant resource is ', resource);
+          this.logger.info(this, 'Order is ', resource.order);
+          this.navigateForward();
+        },
+        error => {
+          // this.orderService.orderResourceBehaviour.thrownError;
+          this.logger.error(
+            'An error has occured while initiating the order ',
+            error
+          );
+          this.util.createToast(
+            'Something went wrong try again',
+            'information-circle-outline'
+          );
+        }
+      );
+  }
+
+  updateOrder() {
+    console.log('Current status is ', this.getStatus());
+    this.orderService.order.status = this.getStatus();
+    this.orderLinesUpdated = [];
+    this.cart.orderLines.forEach(orderLineUpdated => {
+      let updated ;
+      this.orderService.order.orderLines.forEach(orderLine => {
+        if (orderLine.productId === orderLineUpdated.productId) {
+          orderLineUpdated.id = orderLine.id;
+          this.orderLinesUpdated.push(orderLineUpdated);
+          updated = true;
+        }
+      });
+      if (!updated) {
+        this.orderLinesUpdated.push(orderLineUpdated);
+      }
+    });
+    this.orderService.order.orderLines = this.orderLinesUpdated;
+    this.orderService.order.allergyNote = this.allergyNote;
+    this.orderService.order.subTotal = this.cart.subTotal;
+    this.orderService.order.grandTotal = this.cart.total;
+    if (this.orderService.deliveryInfo !== undefined) {
+      this.logger.info(this,'Deliveryinfo exists ');
+      this.orderService.order.deliveryInfo = this.orderService.deliveryInfo;
+    }
+    this.logger.info(this,'Going to Update Order id is', this.orderService.order);
+    this.orderService
+      .updateOrder(this.orderService.order)
+      .subscribe(order => {
+        this.logger.info(this,'Order DTO Updated is ', order);
+        this.orderService.order = order;
+        this.navigateForward();
+      });
+  }
+
   continue(deliveryType) {
-    this.logger.info(this,'In Continue');
+    this.logger.info(this, 'In Continue');
     this.orderService.setShop(this.store);
     this.orderService.setDeliveryType(deliveryType);
     this.orderService.setDeliveryCharge(this.storeSetting.deliveryCharge);
     this.loginModal(
       () => {
         if (this.orderService.resource.nextTaskName === undefined) {
-          this.logger.info(this,'creating new order >>>>>>>>>>>>>');
-          const order: Order = {
-            orderLines: this.orderLines,
-            appliedOffers: [],
-            preOrderDate: this.cart.preOrderDate?this.cart.preOrderDate:null,
-            // tslint:disable-next-line: radix
-            grandTotal: this.cart.total,
-            subTotal: this.cart.subTotal,
-            email: this.customer.email,
-            storeId: this.cart.storeId,
-            customerId: this.customer.preferred_username,
-            allergyNote: this.allergyNote,
-            date: new Date().toISOString()
-          };
-          console.log('Order setting to order service is ', order);
-          this.orderService.setOrder(order);
-          this.logger.info(this,'Delivery type is ', deliveryType);
-          this.initiateOrderSubcription = this.orderService
-            .initiateOrder()
-            .subscribe(
-              resource => {
-                this.orderService.setOrder(resource.order);
-                this.orderService.setResource(resource.commandResource);
-                // this.cart.orderLines = resource.order.orderLines;
-                this.orderService.orderResourceBehaviour.next(
-                  resource.commandResource.nextTaskName
-                );
-                this.logger.info(this,'Resultant resource is ', resource);
-                this.logger.info(this,'Order is ', resource.order);
-              },
-              error => {
-                // this.orderService.orderResourceBehaviour.thrownError;
-                this.logger.error(
-                  'An error has occured while initiating the order ',
-                  error
-                );
-                this.util.createToast(
-                  'Something went wrong try again',
-                  'information-circle-outline'
-                );
-              }
-            );
+          this.createNewOrder(deliveryType);
         } else {
-          console.log('Current status is ', this.getStatus());
-          this.orderService.order.status = this.getStatus();
-          this.orderLinesUpdated = [];
-          this.cart.orderLines.forEach(orderLineUpdated => {
-            let updated ;
-            this.orderService.order.orderLines.forEach(orderLine => {
-              if (orderLine.productId === orderLineUpdated.productId) {
-                orderLineUpdated.id = orderLine.id;
-                this.orderLinesUpdated.push(orderLineUpdated);
-                updated = true;
-              }
-            });
-            if (!updated) {
-              this.orderLinesUpdated.push(orderLineUpdated);
-            }
-          });
-          this.orderService.order.orderLines = this.orderLinesUpdated;
-          this.orderService.order.allergyNote = this.allergyNote;
-          this.orderService.order.subTotal = this.cart.subTotal;
-          this.orderService.order.grandTotal = this.cart.total;
-          if (this.orderService.deliveryInfo !== undefined) {
-            this.logger.info(this,'Deliveryinfo exists ');
-            this.orderService.order.deliveryInfo = this.orderService.deliveryInfo;
-          }
-          this.logger.info(this,'Going to Update Order id is', this.orderService.order);
-          this.orderService
-            .updateOrder(this.orderService.order)
-            .subscribe(order => {
-              this.logger.info(this,'Order DTO Updated is ', order);
-              this.orderService.order = order;
-            });
+          this.updateOrder();
         }
       },
       err => this.logger.error('An Error occured during sign in ', err)
     );
-    this.navController.navigateForward('/checkout');
+  
   }
 
   getStatus(): Status {

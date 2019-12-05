@@ -57,6 +57,7 @@ import { DirectiveModule } from '../directives/directive.module';
 import { OrderSummaryComponent } from './order-summary/order-summary.component';
 import { AddAddressComponent } from './add-address/add-address.component';
 import { PreorderComponent } from './preorder/preorder.component';
+import { PaymentflowNavComponent } from './paymentflow-nav/paymentflow-nav.component';
 
 @NgModule({
   providers: [ClosedPipe,DatePipe],
@@ -110,7 +111,9 @@ import { PreorderComponent } from './preorder/preorder.component';
     NotificationCardComponent,
     PlaceSuggestionComponent,
     OrderSummaryComponent,
-    PreorderComponent
+    PreorderComponent,
+    PaymentflowNavComponent
+    
   ],
 
   imports: [
@@ -173,7 +176,8 @@ import { PreorderComponent } from './preorder/preorder.component';
     NotificationCardComponent,
     PlaceSuggestionComponent,
     OrderSummaryComponent,
-    PreorderComponent
+    PreorderComponent,
+    PaymentflowNavComponent
   ],
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -210,7 +214,8 @@ import { PreorderComponent } from './preorder/preorder.component';
     NotificationCardComponent,
     PlaceSuggestionComponent,
     OrderSummaryComponent,
-    PreorderComponent
+    PreorderComponent,
+    PaymentflowNavComponent
   ]
 })
 export class ComponentsModule { }

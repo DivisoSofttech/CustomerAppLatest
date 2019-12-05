@@ -1,7 +1,7 @@
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { NGXLogger } from 'ngx-logger';
+import { LogService } from './log.service';
 
 export enum FILTER_TYPES {
 
@@ -38,7 +38,7 @@ export class FilterService {
 
   constructor(
     private queryResource: QueryResourceService,
-    private logger: NGXLogger
+    private logger: LogService
   ) { }
 
   public getSubscription() {
@@ -70,41 +70,41 @@ export class FilterService {
   public getStores(pageNumber, success, error?) {
     console.log(this.currentFilter == FILTER_TYPES.TOP_RATED.valueOf());
     if (this.currentFilter == FILTER_TYPES.NO_FILTER.valueOf()) {
-      this.logger.info('Finding All Stores');
+      this.logger.info(this,'Finding All Stores');
       this.getStoreNoFilter(pageNumber, success, error);
     } else if (this.currentFilter == FILTER_TYPES.DELIVERY_TIME.valueOf()) {
       this.getStoreByDeliveryTime(pageNumber, success, error);
     } else if (this.currentFilter == FILTER_TYPES.MIN_AMOUNT.valueOf()) {
       this.getStoreByMinAmount(pageNumber, success, error);
     } else if (this.currentFilter == FILTER_TYPES.DISTANCE_WISE.valueOf()) {
-      this.logger.info('Finding Store By Distance and Location', this.distance);
+      this.logger.info(this,'Finding Store By Distance and Location', this.distance);
       this.getStoreByDistance(pageNumber, success, error);
     } else if (this.currentFilter == FILTER_TYPES.TOP_RATED.valueOf()) {
-      this.logger.info('Finding Store By Rating');
+      this.logger.info(this,'Finding Store By Rating');
       this.getStoreByRating(pageNumber, success, error);
     }
     else if (this.currentFilter == FILTER_TYPES.CUSINE_FILTER.valueOf()) {
-      this.logger.info('Finding Store By Cusines');
+      this.logger.info(this,'Finding Store By Cusines');
       this.getStoreByCusines(pageNumber, success, error);
     }
 
   }
 
   getStoreByMinAmount(pageNumber: any, success: any, error: any) {
-    this.logger.info('Fetching Store by Min Amount');
+    this.logger.info(this,'Fetching Store by Min Amount');
     this.queryResource.findAndSortStoreByMinAmountUsingGET({
       page:pageNumber
     }).subscribe(data => {
       success(data.totalElements,data.totalPages,data.content);
     },
     err=> {
-      this.logger.error('Error Finding Store By Cusine Filter' , err);
+      this.logger.error(this,'Error Finding Store By Cusine Filter' , err);
       error();
     })
   }
 
   private getStoreByCusines(pageNumber, success, error?) {
-    this.logger.info('Fetching Stores Via Cusines' , this.selectedCusines);
+    this.logger.info(this,'Fetching Stores Via Cusines' , this.selectedCusines);
     this.queryResource.facetSearchByStoreTypeNameUsingPOST(
       {
         storeTypeWrapper: {
@@ -117,13 +117,13 @@ export class FilterService {
       success(data.totalElements, data.totalPages, data.content);
     },
     err => {
-      this.logger.error('Error Finding Store By Cusine Filter' , err);
+      this.logger.error(this,'Error Finding Store By Cusine Filter' , err);
       error();
     });
   }
 
   private getStoreByDistance(pageNumber, success, error?) {
-    this.logger.info('Getting STores Via Distance Filter' , this.currentCordinates);
+    this.logger.info(this,'Getting Stores Via Distance Filter' , this.currentCordinates);
     if (this.currentCordinates !== undefined) {
       this.locationBehaviour.next(this.currentCordinates);
       this.queryResource
@@ -137,27 +137,27 @@ export class FilterService {
         success(data.totalElements, data.totalPages, data.content);
       },
       err => {
-        this.logger.error('Error Finding Store By Distance and Location' , err);
+        this.logger.error(this,'Error Finding Store By Distance and Location' , err);
         error();
       });
     }
   }
 
   private getStoreByRating(pageNumber, success, error?) {
-    this.logger.info('Getting STores Via Rating Filter');
+    this.logger.info(this,'Getting STores Via Rating Filter');
     this.queryResource.findStoreByRatingUsingGET(
       {}
     ).subscribe(data => {
       success(data.totalElements, data.totalPages, data.content);
     },
       err => {
-        this.logger.error('Error Finding Store By Distance', err);
+        this.logger.error(this,'Error Finding Store By Distance', err);
         error();
       });
   }
 
   private getStoreNoFilter(pageNumber, success, error?) {
-    this.logger.info('Getting STores Via No Filter');
+    this.logger.info(this,'Getting STores Via No Filter');
     this.queryResource.findAllStoresUsingGET({
       page: pageNumber
     })
@@ -165,13 +165,13 @@ export class FilterService {
         success(data.totalElements, data.totalPages, data.content);
       },
         err => {
-          this.logger.error('Error Finding Stores', err);
+          this.logger.error(this,'Error Finding Stores', err);
           error();
         });
   }
 
   private getStoreByDeliveryTime(pageNumber, success, error?) {
-    this.logger.info('Getting STores Via Delivery Time Filter');
+    this.logger.info(this,'Getting Stores Via Delivery Time Filter');
     this.queryResource.findAndSortStoreByMinAmountUsingGET({
       page: pageNumber
     })
@@ -179,9 +179,8 @@ export class FilterService {
         success(data.totalElements, data.totalPages, data.content);
       },
         err => {
-          this.logger.error('Error Finding Stores', err);
+          this.logger.error(this,'Error Finding Stores', err);
           error();
         });
   }
-
 }

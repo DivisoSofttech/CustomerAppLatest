@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PopoverController, ModalController } from '@ionic/angular';
-import { Store } from 'src/app/api/models';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-allergy',
@@ -9,7 +8,6 @@ import { Store } from 'src/app/api/models';
 })
 export class AllergyComponent implements OnInit {
 
-  store: Store;
   msg: string;
 
   constructor(private modalController: ModalController) { }

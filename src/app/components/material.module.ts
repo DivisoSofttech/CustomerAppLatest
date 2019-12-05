@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+
 import {
   MatTableModule,
   MatStepperModule,
@@ -10,7 +12,7 @@ import {
   MatSelectModule,
   MatIconModule,
   MatPaginatorModule,
-  MatSortModule
+  MatSortModule,
 } from '@angular/material';
 
 @NgModule({
@@ -28,7 +30,8 @@ import {
     MatOptionModule,
     MatSelectModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    NgxMaterialTimepickerModule
   ]
 })
 export class MaterialModule {}

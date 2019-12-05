@@ -29,16 +29,16 @@
                 <ion-skeleton-text animated></ion-skeleton-text>
             </ion-text>
           </ion-col>
-          <ion-col size="8"  *ngIf="auxilaryLoadComplete" >
+          <ion-col size="8"    *ngIf="auxilaryLoadComplete" >
             <ion-buttons>
-              <ion-button (click)="remove(0, stockCurrent)">
+              <ion-button  class="cartButtons" (click)="remove(0, stockCurrent)">
                 <ion-icon name="remove"></ion-icon>
               </ion-button>
-              <ion-button>
+              <ion-button >
                 <ion-label>{{orderCount}}</ion-label>
               </ion-button>
               <!-- <ion-input disabled #orderCountInput class="orderCount" (ionChange)="add(0,stockCurrent)" [placeholder]="orderCount"></ion-input> -->
-              <ion-button (click)="add(0, stockCurrent)" >
+              <ion-button  class="cartButtons" (click)="add(0, stockCurrent)" >
                 <ion-icon name="add"></ion-icon>
               </ion-button>
             </ion-buttons>
@@ -46,6 +46,7 @@
           <ion-col size="4" >
             <ion-buttons class="ion-justify-content-end" >
               <ion-button
+               
                 slot="end"
                 fill="none"
                 (click)="addToFavourite(stockCurrent.product)"

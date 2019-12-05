@@ -90,7 +90,7 @@ export class ProfilePage implements OnInit {
     this.storage.get('user')
     .then(user => {
       this.keyCloakUser = user;
-      this.queryResource.findCustomerByReferenceUsingGET(user.preferred_username)
+      this.queryResource.findCustomerByIdpCodeUsingGET(user.preferred_username)
       .subscribe(customer => {
         this.customer = customer;
         this.queryResource.findContactByIdUsingGET(this.customer.contactId)

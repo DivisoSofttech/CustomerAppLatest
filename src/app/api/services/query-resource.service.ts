@@ -49,10 +49,10 @@ import { OpenTask } from '../models/open-task';
 })
 class QueryResourceService extends __BaseService {
   static readonly findAuxilariesByProductIdUsingGETPath = '/api/query/auxilaries-productId/{productId}';
-  static readonly checkUserExistsUsingGETPath = '/api/query/checkUserExists/{reference}';
+  static readonly checkUserExistsByIdpcodeUsingGETPath = '/api/query/checkUserExistsByIdpcode/{idpCode}';
   static readonly findComboByProductIdUsingGETPath = '/api/query/combos-productId/{productId}';
   static readonly findContactByIdUsingGETPath = '/api/query/contacts/{id}';
-  static readonly findCustomerByReferenceUsingGETPath = '/api/query/customers/findByReference/{reference}';
+  static readonly findCustomerByIdpCodeUsingGETPath = '/api/query/customers/findCustomerByIdpCode/{idpCode}';
   static readonly findAllDeliveryTypesByStoreIdUsingGETPath = '/api/query/deliveryTypes/{storeId}';
   static readonly findDeliveryInfoByStoreIdUsingGETPath = '/api/query/deliveryinfoByStoreId/{storeId}';
   static readonly findDiscountByProductIdUsingGETPath = '/api/query/discount-productId/{productId}';
@@ -163,17 +163,17 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
-   * @param reference reference
+   * @param idpCode idpCode
    * @return OK
    */
-  checkUserExistsUsingGETResponse(reference: string): __Observable<__StrictHttpResponse<boolean>> {
+  checkUserExistsByIdpcodeUsingGETResponse(idpCode: string): __Observable<__StrictHttpResponse<boolean>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
 
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/api/query/checkUserExists/${reference}`,
+      this.rootUrl + `/api/query/checkUserExistsByIdpcode/${idpCode}`,
       __body,
       {
         headers: __headers,
@@ -189,11 +189,11 @@ class QueryResourceService extends __BaseService {
     );
   }
   /**
-   * @param reference reference
+   * @param idpCode idpCode
    * @return OK
    */
-  checkUserExistsUsingGET(reference: string): __Observable<boolean> {
-    return this.checkUserExistsUsingGETResponse(reference).pipe(
+  checkUserExistsByIdpcodeUsingGET(idpCode: string): __Observable<boolean> {
+    return this.checkUserExistsByIdpcodeUsingGETResponse(idpCode).pipe(
       __map(_r => _r.body as boolean)
     );
   }
@@ -292,17 +292,17 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
-   * @param reference reference
+   * @param idpCode idpCode
    * @return OK
    */
-  findCustomerByReferenceUsingGETResponse(reference: string): __Observable<__StrictHttpResponse<CustomerDTO>> {
+  findCustomerByIdpCodeUsingGETResponse(idpCode: string): __Observable<__StrictHttpResponse<CustomerDTO>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
 
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/api/query/customers/findByReference/${reference}`,
+      this.rootUrl + `/api/query/customers/findCustomerByIdpCode/${idpCode}`,
       __body,
       {
         headers: __headers,
@@ -318,11 +318,11 @@ class QueryResourceService extends __BaseService {
     );
   }
   /**
-   * @param reference reference
+   * @param idpCode idpCode
    * @return OK
    */
-  findCustomerByReferenceUsingGET(reference: string): __Observable<CustomerDTO> {
-    return this.findCustomerByReferenceUsingGETResponse(reference).pipe(
+  findCustomerByIdpCodeUsingGET(idpCode: string): __Observable<CustomerDTO> {
+    return this.findCustomerByIdpCodeUsingGETResponse(idpCode).pipe(
       __map(_r => _r.body as CustomerDTO)
     );
   }
