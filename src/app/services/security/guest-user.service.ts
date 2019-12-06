@@ -37,7 +37,7 @@ export class GuestUserService {
     await this.storage.get('user').then(
       async user => {
         if (user && user.preferred_username === 'guest') {
-          await this.keycloakService.logout();
+          await this.keycloakService.logout(false);
           await this.storage.remove('user');
           this.logger.info('guest-logged-out');
         }

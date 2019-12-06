@@ -56,7 +56,6 @@ export class AppComponent {
     this.toggleFilterView('/restaurant');
     this.router.events.subscribe((val) => {
       if(val instanceof NavigationEnd) {
-        this.logger.info(this,'Current URL' , val.url);
         this.toggleFilterView(val.url);      
       }
     });
@@ -95,7 +94,7 @@ export class AppComponent {
 
   toggleFilterView(val) {
     if(window.innerWidth >= 1280)
-    {    this.logger.info(this,'Current Route' , val);
+    {  
         if(val==='/restaurant' || val==='/') {
           this.logger.info(this,'Turning On Filter View')
           this.showFilter = true;
@@ -181,7 +180,11 @@ export class AppComponent {
   }
 
   logout() {
-    this.keycloakService.logout();
+    if(window.innerWidth >= 1280) {
+      this.keycloakService.logout(false);
+    } else {
+      this.keycloakService.logout(true);
+    }
     this.util.createToast('You\'ve been logged out');
     this.guestUserService.logInGuest();
   }

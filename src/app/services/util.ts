@@ -3,14 +3,9 @@ import {
   LoadingController,
   ToastController,
   NavController,
-  ModalController,
-  PopoverController,
   AlertController
 } from '@ionic/angular';
-import { Router } from '@angular/router';
-import { MakePaymentComponent } from '../components/make-payment/make-payment.component';
-import { PaymentSuccessfullInfoComponent } from '../components/payment-successfull-info/payment-successfull-info.component';
-import { WaitInformatonPopoverComponent } from '../components/wait-informaton-popover/wait-informaton-popover.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Injectable()
 export class Util {
@@ -18,9 +13,8 @@ export class Util {
     private loadingController: LoadingController,
     private toastController: ToastController,
     private navController: NavController,
-    private modalController: ModalController,
-    private popoverController: PopoverController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private _snackBar: MatSnackBar
   ) {}
 
   async createLoader(duration?) {
@@ -40,7 +34,17 @@ export class Util {
   }
 
   createToast(msg: string, iconName?: string) {
-    this.toastController
+    const width = window.innerWidth;
+
+    if(width >= 1280) {
+        this._snackBar.open(msg,'', {
+          duration: 2000,
+          horizontalPosition:'right',
+          verticalPosition:'top'
+        });
+    } else {
+
+      this.toastController
       .create({
         message: msg,
         duration: 2000,
@@ -59,6 +63,7 @@ export class Util {
       .then(data => {
         data.present();
       });
+    }
   }
 
   navigateRoot() {

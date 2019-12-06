@@ -50,14 +50,14 @@
                 slot="end"
                 fill="none"
                 (click)="addToFavourite(stockCurrent.product)"
-                *ngIf="!isFavourite && showFavourite">
+                *ngIf="!isFavourite && !isGuest">
                 <ion-icon slot="icon-only" name="heart-empty"></ion-icon>
               </ion-button>
               <ion-button
                 slot="end"
                 fill="none"
                 (click)="removeFromFavourite(stockCurrent.product)"
-                *ngIf="isFavourite && showFavourite">
+                *ngIf="isFavourite && !isGuest">
                 <ion-icon
                   color="danger"
                   slot="icon-only"

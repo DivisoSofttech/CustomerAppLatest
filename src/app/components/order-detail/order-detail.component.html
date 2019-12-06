@@ -10,7 +10,12 @@
 </ion-header>
 
 <ion-content appScrollbarTheme>
-    
+    <ion-item color="primary" lines="full" *ngIf="order.preOrderDate">
+        <ion-label>Preorder Time</ion-label>      
+        <ion-text>
+          {{order.preOrderDate | date:'shortTime'}}
+        </ion-text>
+    </ion-item>
   <mat-horizontal-stepper labelPosition="bottom" #stepper>
       <ng-template matStepperIcon="waiting">
           <mat-icon>done</mat-icon>

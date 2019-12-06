@@ -14,9 +14,9 @@ export class NotificationCardComponent implements OnInit {
 
   @Input() notification: Notification;
 
-  order: Order;
+  @Input() order: Order;
 
-  store;
+  @Input() store;
 
   showLoading = true;
 
@@ -27,26 +27,12 @@ export class NotificationCardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getOrder();
-  }
-
-  getOrder() {
-    this.queryResource.findOrderByOrderIdUsingGET(this.notification.targetId)
-    .subscribe(order => {
-      this.order = order;
-      this.getStore();
-    });
-  }
-
-  getStore() {
-    this.queryResource.findStoreByRegisterNumberUsingGET(this.order.storeId)
-    .subscribe(store => {
-      this.store = store;
+    if(this.store && this.order) {
       this.showLoading = false;
-    }, err => {console.log('Error occured while fetching storeByRegisterNumber');
-    });
+    }
   }
 
+ 
   async showOrderDetails() {
     const modal = await this.modalController.create({
       component: OrderDetailComponent,

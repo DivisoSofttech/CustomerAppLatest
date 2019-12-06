@@ -53,10 +53,12 @@ export class KeycloakService {
 
   subscribeToNotification(data) {
     this.getUserChangedSubscription().next(data);
-    if (!this.isGuest(data.preferred_username)) {
-      this.logger.info(this,'Subscribing to notifications for the user from KC Cons ', data.preferred_username);
-      this.notificationService.connectToNotification();
-      this.notificationService.subscribeToMyNotifications(data.preferred_username);  
+    if(data) {
+      if (!this.isGuest(data.preferred_username)) {
+        this.logger.info(this,'Subscribing to notifications for the user from KC Cons ', data.preferred_username);
+        this.notificationService.connectToNotification();
+        this.notificationService.subscribeToMyNotifications(data.preferred_username);  
+      }  
     }
   }
 
@@ -311,12 +313,14 @@ export class KeycloakService {
     });
   }
 
-  logout() {
+  logout(navigateBack) {
     this.oauthService.logOut();
     this.sharedData.clearAll();
     this.userChangedBehaviour.next(null);
     this.isGuestObservable.next(null);
-    this.util.navigateHome();
+    if(navigateBack) {
+      this.util.navigateHome();
+    }
     this.notificationService.disconnectToMyNotifications();
   }
 }

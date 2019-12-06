@@ -29,10 +29,17 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-    <app-notification-card
-    *ngFor="let notification of notificationSorted[nkey]"
-    [notification]="notification"
-    ></app-notification-card>
+    <ng-container  *ngFor="let notification of notificationSorted[nkey]">
+     <ng-container *ngIf="orders[notification.targetId] && stores[orders[notification.targetId].storeId]">
+        <ng-container *ngIf="orders[notification.targetId].storeId && stores[orders[notification.targetId].storeId].name">
+            <app-notification-card       
+            [notification]="notification"
+            [order]="orders[notification.targetId]"
+            [store]="stores[orders[notification.targetId].storeId]"
+            ></app-notification-card>    
+        </ng-container>
+     </ng-container>
+    </ng-container>
   </ion-list>
 
 

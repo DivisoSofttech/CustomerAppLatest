@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 import {
   MatTableModule,
@@ -31,7 +32,8 @@ import {
     MatSelectModule,
     MatPaginatorModule,
     MatSortModule,
-    NgxMaterialTimepickerModule
+    NgxMaterialTimepickerModule,
+    MatSnackBarModule
   ]
 })
 export class MaterialModule {}

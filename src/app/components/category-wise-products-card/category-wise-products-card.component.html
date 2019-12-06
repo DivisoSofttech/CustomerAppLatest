@@ -3,13 +3,14 @@
 *ngIf="showLoading === true"
  name="dots"
 ></ion-spinner>
-<ion-list *ngIf="stockCurrents.length > 0">
+<ion-list *ngIf="stockCurrents.length > 0" [hidden]="!showData">
   <app-product-card
+  [isGuest]="isGuest"
   *ngFor="let stockCurrent of stockCurrents"
   [store]="store"
   [stockCurrent]="stockCurrent"
 ></app-product-card>
 </ion-list>
-<div *ngIf="stockCurrents.length === 0 && showLoading === false">
+<div *ngIf="stockCurrents.length === 0 && showLoading === false && showData">
     <h3 style="font-family:monospace">Found 0 Products</h3>
   </div>

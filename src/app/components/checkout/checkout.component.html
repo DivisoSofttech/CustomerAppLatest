@@ -21,6 +21,14 @@
       <ion-col size="12" *ngIf="deliveryType==='delivery'">
         <ion-button expand="block" (click)="showAddresses()" class="ion-margin">Change Or Add Address</ion-button>
       </ion-col>
+      <ion-col size="12" *ngIf="order.preOrderDate" class="ion-no-padding">
+          <ion-item lines="full">
+              <ion-label>Preorder Time</ion-label>      
+              <ion-text>
+                {{order.preOrderDate | date:'shortTime'}}
+              </ion-text>
+          </ion-item>
+        </ion-col>
     </ion-row>
     <ion-row>
       <ion-col text-left size="12" class="ion-no-padding col-border-top">

@@ -28,18 +28,6 @@ export class ProductCardComponent implements OnInit, OnDestroy {
 
   @Input() comboLineItems: ComboLineItem[] = [];
 
-  isFavourite = false;
-
-  showFavourite = false;
-
-  @Input() orderCount = 0;
-
-  auxilaryLoadComplete = false;
-
-  discount: Discount;
-
-
-
   @Input() orderLine: OrderLine;
 
   @Input() auxilaryOrderLine: AuxilaryOrderLine[] = [];
@@ -50,9 +38,18 @@ export class ProductCardComponent implements OnInit, OnDestroy {
 
   @Input() auxTotal = 0;
 
+  @Input() orderCount = 0;
+
+  @Input()   isGuest = false;
+
+  isFavourite = false;
+
+  auxilaryLoadComplete = false;
+
+  discount: Discount;
+
 
   @ViewChild('orderCountInput', null) orderCountInput: IonInput;
-  keycloakSubscrption: any;
   auxilariesSubscription: any;
   comboSusbcription: any;
   favouriteSubscription: any;
@@ -66,11 +63,9 @@ export class ProductCardComponent implements OnInit, OnDestroy {
     private router: Router,
     private cartService: CartService,
     private logger: LogService,
-    private keycloakService: KeycloakService
   ) { }
 
   ngOnDestroy() {
-    this.keycloakSubscrption ? this.keycloakSubscrption.unsubscribe():null;
     this.auxilariesSubscription ? this.auxilariesSubscription.unsubscribe() : null;
     this.comboSusbcription ? this.comboSusbcription.unsubscribe() : null;
     this.favouriteSubscription ? this.favouriteSubscription.unsubscribe() : null;
@@ -80,19 +75,6 @@ export class ProductCardComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     if (this.type === 'full') {
-      this.keycloakSubscrption = this.keycloakService.getUserChangedSubscription()
-        .subscribe((data: any) => {
-          this.logger.info(this,'Checking If guest : RestaurantCardComponet');
-          if (data !== null) {
-            if (data.preferred_username === 'guest') {
-              this.showFavourite = false;
-            } else {
-              this.showFavourite = true;
-            }
-          } else {
-            this.showFavourite = false;
-          }
-        });
       this.checkIfAlreadyFavourite();
       this.checkIfOrdered();
       this.getAuxilaries(0);

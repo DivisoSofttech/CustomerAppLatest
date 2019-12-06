@@ -11,6 +11,13 @@
   
   <ion-content appScrollbarTheme>
 
+      <ion-item lines="full" *ngIf="order.preOrderDate">
+          <ion-label>Preorder Time</ion-label>      
+          <ion-text>
+            {{order.preOrderDate | date:'shortTime'}}
+          </ion-text>
+      </ion-item>
+
       <ion-item *ngIf="store" lines="full">
           <ion-avatar mode="ios">
             <ion-img [src]="

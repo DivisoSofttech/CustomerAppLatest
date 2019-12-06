@@ -1,4 +1,4 @@
-import { IonSlides, IonRefresher, PopoverController, NavController, Platform} from '@ionic/angular';
+import { IonSlides, IonRefresher, PopoverController, NavController, Platform, IonInfiniteScroll} from '@ionic/angular';
 import { ViewChild, OnDestroy } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { Component, OnInit } from '@angular/core';
@@ -9,6 +9,7 @@ import { MapComponent } from 'src/app/components/map/map.component';
 import { ClosedPipe } from 'src/app/pipes/closed.pipe';
 import { LogService } from 'src/app/services/log.service';
 import { RecentService } from 'src/app/services/recent.service';
+import { KeycloakService } from 'src/app/services/security/keycloak.service';
 
 @Component({
   selector: 'app-store',
@@ -45,13 +46,19 @@ export class StorePage implements OnInit , OnDestroy {
   @ViewChild(IonSlides, null) ionSlides: IonSlides;
   @ViewChild(IonRefresher, null) IonRefresher: IonRefresher;
   @ViewChild(MapComponent, null) map: MapComponent;
+  @ViewChild(IonInfiniteScroll, null) ionInfiniteScroll: IonInfiniteScroll;
+
   slidesMoving: boolean;
   slidesHeight: number;
   timeNow: Date;
   slideWidthChecker;
   isOrderAvailable: any = true;
   isClosed = false;
+  isGuest = false;
   categoryLoading: boolean = true;
+  keycloakSubscription: any;
+  pageNum: any = 0;
+  categoryShow = {};
 
   constructor(
     private queryResource: QueryResourceService,
@@ -61,10 +68,12 @@ export class StorePage implements OnInit , OnDestroy {
     private platform: Platform,
     private navController: NavController,
     private closedPipe: ClosedPipe,
-    private recentService: RecentService
+    private recentService: RecentService,
+    private keycloakService: KeycloakService
   ) {}
 
   ngOnInit() {
+    this.checkIfGuest();
     this.recentService.setCurrentStore(null);
     this.getStoreId();
     this.getStore();
@@ -73,12 +82,26 @@ export class StorePage implements OnInit , OnDestroy {
     this.timeNow = new Date();
 
     // temp Fix for sliderHeight
+    this.fixSliderHeight();
+  }
+
+  checkIfGuest() {
+    this.keycloakSubscription = this.keycloakService.getUserGuestSubscription()
+    .subscribe(data => {
+      if(data !== null) {
+        this.isGuest= data;
+      } else {
+        this.isGuest = true;
+      }
+    });
+  }
+
+  fixSliderHeight() {
     this.slideWidthChecker =  setInterval(() => {
       if (this.ionSlides !== undefined) {
         this.ionSlides.updateAutoHeight();
       }
-    }, 5000);
-
+    }, 1000);
   }
 
   ngOnDestroy(): void {
@@ -128,26 +151,56 @@ export class StorePage implements OnInit , OnDestroy {
       );
   }
 
-  getCategories(i) {
+  toggleCategoryShow(id) {
+    this.categoryShow[id] = !this.categoryShow[id];
+    this.ionSlides.updateAutoHeight()
+    .then(()=> {
+      document.body.scrollTo(0,0);
+    });
+  }
+
+  getCategories(i , event?) {
     this.queryResource
       .findAllCategoriesUsingGET({
-        iDPcode: this.storeId
+        iDPcode: this.storeId,
+        page: i
       })
       .subscribe(result => {
         this.logger.info(this,this,'Got Categories', result);
+        let j = 0;
         result.content.forEach(c => {
           this.categories.push(c);
+          if(i < 1 && j < 2 && this.platform.width() < 1280 ) {
+            this.categoryShow[c.id] =  true;
+            j++;
+          } else if(i < 1 && j < 4 && this.platform.width() >= 1280 ){
+            this.categoryShow[c.id] =  true;
+            j++;
+          } else {
+            this.categoryShow[c.id] =  false;
+          }
         });
-        ++i;
-        if (i < result.totalPages) {
-          // this.getCategories(i);
-          this.categoryLoading=false; 
-        } else {
-          this.categoryLoading = false;
+        if(i > 0 && event) {
+          event.target.complete()
+        }
+        if(i === result.totalPages) {
+          this.toggleInfiniteScroll();
         }
         this.toggleIonRefresher();
+        this.categoryLoading = false;
       });
   }
+
+  loadMoreCategories(event) {
+    ++this.pageNum;
+    this.logger.info(this,'Fetching More Categories' , this.pageNum);
+    this.getCategories(this.pageNum , event);
+  }
+
+  toggleInfiniteScroll() {
+    this.ionInfiniteScroll.disabled = !this.ionInfiniteScroll.disabled;
+  }
+
 
   async categoryListPopOver(ev: any) {
     this.tempStockCurrents = this.stockCurrents;

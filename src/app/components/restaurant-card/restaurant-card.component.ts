@@ -24,6 +24,8 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
 
   @Input() isPreOrderAvailable = false;
 
+  @Input() isGuest = false;
+
   categories: StoreType[] = [];
 
   deliveryTypes: Type[] = [];
@@ -35,11 +37,9 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
   reviewCount: number = 0;
 
   isFavourite = false;
-  showFavourite = false;
   currentTime: Date;
   deliveryOk: boolean;
 
-  keycloakSubscription: any;
   reviewSubscription: any;
   storeTypeSubscription: any;
   storeDeliveryTypeSubscription: any;
@@ -59,7 +59,6 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
   }
 
   unsubscribeAll() {
-    this.keycloakSubscription?this.keycloakSubscription.unsubscribe():null;
     this.reviewSubscription?this.reviewSubscription.unsubscribe():null;
     this.storeTypeSubscription?this.storeTypeSubscription.unsubscribe():null;
     this.storeDeliveryTypeSubscription?this.storeDeliveryTypeSubscription.unsubscribe():null;
@@ -69,7 +68,6 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
 
     this.logger.info(this,'Current Store ' , this.store)
     this.currentTime = new Date();
-    this.checkIfGuest();
     this.getStoreReview();
     this.getStoreCategory();
     if (this.viewType === 'normal') {
@@ -156,17 +154,6 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
           this.isFavourite = true;
         }
       });
-  }
-
-  checkIfGuest() {
-    this.keycloakSubscription = this.keycloakService.getUserGuestSubscription()
-    .subscribe(data => {
-      if(data !== null) {
-        this.showFavourite = !data;
-      } else {
-        this.showFavourite = false;
-      }
-    });
   }
 
   showHotelMenu(regno) {

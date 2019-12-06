@@ -1,20 +1,19 @@
 <!--Restaurant Card Template Start-->
 <ng-template #restaurantCard>
-    <app-loading
+  <app-loading
     *ngIf="showRestaurantLoading === true"
     [type]="'restaurant-detail'"
-    ></app-loading>
-    <app-restaurant-card
+  ></app-loading>
+  <app-restaurant-card
     *ngIf="store != undefined"
     [store]="store"
     [isPreOrderAvailable]="isOrderAvailable"
     [viewType]="'detailedCard'"
-    >
-    </app-restaurant-card>
+  >
+  </app-restaurant-card>
 </ng-template>
 
 <!--Restaurant Card Template End-->
-
 
 <!--Segment Button Template Start-->
 <ng-template #segmentButtons>
@@ -38,30 +37,25 @@
 </ng-template>
 <!--Segment Button Template Ends-->
 
-
 <!--Product Listing Based on category Start-->
 <ng-template #productListingBasedOnCategory>
-    <ion-col size="12" class="ion-no-padding">
-        <ion-item color="primary">
-          <ion-text>
-            {{selectedCategory}}
-          </ion-text>
-        </ion-item>
-      </ion-col>
-      <ion-col
-        size="12"
-        size-lg="6"
-        *ngFor="let stockCurrent of stockCurrents"
-      >
-        <app-product-card
-          [store]="store"
-          [stockCurrent]="stockCurrent"
-          [type]=""
-        ></app-product-card>
-      </ion-col>
+  <ion-col size="12" class="ion-no-padding">
+    <ion-item color="primary">
+      <ion-text>
+        {{selectedCategory}}
+      </ion-text>
+    </ion-item>
+  </ion-col>
+  <ion-col size="12" size-lg="6" *ngFor="let stockCurrent of stockCurrents">
+    <app-product-card
+      [store]="store"
+      [isGuest]="isGuest"
+      [stockCurrent]="stockCurrent"
+      [type]=""
+    ></app-product-card>
+  </ion-col>
 </ng-template>
 <!--Product Listing Based on category End-->
-
 
 <!--Category Wise Product Listing Start-->
 <ng-template #categoryWiseProductListing>
@@ -73,17 +67,20 @@
         <ion-list
           [style.display]="(selectedCategory === 'All' || selectedCategory === category.name)?true:false"
         >
-          <ion-item color="primary" lines="none">
+          <ion-item color="primary" lines="none" (click)="toggleCategoryShow(category.id)">
             <ion-avatar>
               <ion-img [src]="category.imageLink" class="imageShow"> </ion-img>
             </ion-avatar>
             <ion-label margin>{{category.name | titlecase}}</ion-label>
+            <ion-icon name="arrow-dropup-circle" *ngIf="categoryShow[category.id]" slot="end"></ion-icon>
+            <ion-icon name="arrow-dropdown-circle" *ngIf="!categoryShow[category.id]" slot="end"></ion-icon>
           </ion-item>
           <app-category-wise-products-card
             *ngIf="store !== undefined"
             [category]="category"
             [store]="store"
-          >
+            [isGuest]="isGuest"
+            [showData]="categoryShow[category.id]">
           </app-category-wise-products-card>
         </ion-list>
       </div>
@@ -92,9 +89,8 @@
 </ng-template>
 <!--Category Wise Product Listing End-->
 
-
 <!--------Page Template Start--------->
-<ion-header>
+<ion-header no-border>
   <app-store-header
     *ngIf="store != undefined"
     [name]="store.name"
@@ -121,7 +117,7 @@
   <ion-grid class="ion-no-padding full-height">
     <ion-row class="ion-no-padding full-height">
       <ion-col size="12" size-md="12" size-lg="12" class="ion-no-padding">
-          <ng-container *ngTemplateOutlet="restaurantCard"></ng-container>
+        <ng-container *ngTemplateOutlet="restaurantCard"></ng-container>
       </ion-col>
 
       <ion-col size="12" size-md="12" size-lg="12" class="ion-no-padding">
@@ -134,6 +130,8 @@
             <ion-icon
               *ngIf="!isOrderAvailable && isClosed"
               class="icon-sad"
+              mode="ios"
+              color="danger"
               name="sad"
             ></ion-icon>
             <ng-container *ngIf="isOrderAvailable || !isClosed">
@@ -144,7 +142,9 @@
                   no-margin
                   no-padding
                 >
-                  <ng-container *ngTemplateOutlet="productListingBasedOnCategory"></ng-container>
+                  <ng-container
+                    *ngTemplateOutlet="productListingBasedOnCategory"
+                  ></ng-container>
                 </ion-row>
                 <ion-row>
                   <ng-container
@@ -158,7 +158,7 @@
           <ion-slide>
             <app-review *ngIf="store != undefined" [store]="store"></app-review>
           </ion-slide>
-          
+
           <ion-slide>
             <ion-grid>
               <ion-row *ngIf="store !== undefined">
@@ -172,6 +172,9 @@
                   <ion-text *ngIf="store.info">
                     <p>{{ store.info }}</p>
                   </ion-text>
+                  <ion-text *ngIf="!store.info">
+                    <p>------------------</p>
+                  </ion-text>
                 </ion-col>
               </ion-row>
             </ion-grid>
@@ -181,7 +184,13 @@
     </ion-row>
   </ion-grid>
 
-
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreCategories($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
   <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
     <ion-refresher-content
       pullingIcon="arrow-dropdown"

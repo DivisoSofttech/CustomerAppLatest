@@ -69,6 +69,7 @@
                     *ngFor="let store of stores"
                   >
                     <app-restaurant-card
+                      [isGuest]="isGuest"
                       *ngIf="store.name !== null"
                       [store]="store"
                     ></app-restaurant-card>

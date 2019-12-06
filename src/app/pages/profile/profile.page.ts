@@ -121,7 +121,7 @@ export class ProfilePage implements OnInit {
       }, {
         text: 'Okay',
         handler: () => {
-          this.keycloak.logout();
+          this.keycloak.logout(true);
         }
       }]
     });

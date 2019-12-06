@@ -141,12 +141,14 @@ export class HistoryListComponent implements OnInit {
   }
 
   getStores(id) {
-    this.stores[id] = {};
-    this.queryResource.findStoreByRegisterNumberUsingGET(id)
-    .subscribe(store => {
-      this.logger.info('Fetched Store' , store);
-      this.stores[id] = store;
-    });
+    if(this.stores[id] === undefined) {
+      this.stores[id] = {};
+      this.queryResource.findStoreByRegisterNumberUsingGET(id)
+      .subscribe(store => {
+        this.logger.info('Fetched Store' , store);
+        this.stores[id] = store;
+      });  
+    }
   }
 
   toggleInfiniteScroll() {

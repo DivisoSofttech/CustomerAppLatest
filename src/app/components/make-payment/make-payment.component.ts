@@ -18,7 +18,7 @@ export class MakePaymentComponent implements OnInit {
 
   paymentOptions = [
     { name: 'Cash On Delivery', value: 'cod' , isChecked: false, icon: 'cash'},
-    {name: 'Debit/Credit Card', value: 'card', isChecked: false, icon: 'card'}
+    {name: 'Debit/Credit Card', value: 'braintree', isChecked: false, icon: 'card'}
    // { name: 'Credit Card', value: 'braintree' , isChecked: false, icon: 'card'}
   ];
 

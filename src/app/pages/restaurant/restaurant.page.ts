@@ -11,6 +11,7 @@ import { LocationService } from 'src/app/services/location-service';
 import { ErrorService } from 'src/app/services/error.service';
 import { Store } from 'src/app/api/models';
 import { LogService } from 'src/app/services/log.service';
+import { KeycloakService } from 'src/app/services/security/keycloak.service';
 
 @Component({
   selector: 'app-restaurant',
@@ -35,6 +36,9 @@ export class RestaurantPage implements OnInit {
   @ViewChild(IonRefresher, null) IonRefresher: IonRefresher;
   @ViewChild(FooterComponent, null) footer: FooterComponent;
 
+  keycloakSubscription: any;
+  isGuest = false;
+
 
 
   constructor(
@@ -43,11 +47,13 @@ export class RestaurantPage implements OnInit {
     private logger: LogService,
     private modalController: ModalController,
     private locationService: LocationService,
-    private errorService: ErrorService
+    private errorService: ErrorService,
+    private keycloakService: KeycloakService
   ) { }
 
 
   ngOnInit() {
+    this.checkIfGuest();
     this.getCurrentLocation();
   }
 
@@ -75,6 +81,17 @@ export class RestaurantPage implements OnInit {
         () => {
           this.errorService.showErrorModal(this);
         });
+    });
+  }
+
+  checkIfGuest() {
+    this.keycloakSubscription = this.keycloakService.getUserGuestSubscription()
+    .subscribe(data => {
+      if(data !== null) {
+        this.isGuest= data;
+      } else {
+        this.isGuest = true;
+      }
     });
   }
 

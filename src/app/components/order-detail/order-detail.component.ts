@@ -208,8 +208,9 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     } else if (this.cartService.currentShopId === this.store.id) {
       this.addToCart();
     } else {
-      this.cartService.presentRestaurantCheckout({
-        actionSuccess:this.addToCart()
+      this.cartService.presentRestaurantCheckout(()=>{
+        this.cartService.emptyCart();
+        this.addToCart()
       });
     }
   }

@@ -6,6 +6,7 @@ import { OpenTask, Notification } from 'src/app/api/models';
 import { ModalController, IonInfiniteScroll } from '@ionic/angular';
 import { Util } from 'src/app/services/util';
 import { DatePipe } from '@angular/common';
+import { LogService } from 'src/app/services/log.service';
 
 @Component({
   selector: 'app-notification',
@@ -19,6 +20,8 @@ export class NotificationComponent implements OnInit  , OnDestroy {
   showLoading;
   notificationSubscription;
   pageNumber = 0;
+  stores = {};
+  orders = {};
 
   notificationSorted = {
     'today':[]
@@ -30,7 +33,7 @@ export class NotificationComponent implements OnInit  , OnDestroy {
   constructor(
     private modalController: ModalController,
     private queryResource: QueryResourceService,
-    private logger: NGXLogger,
+    private logger: LogService,
     private storage: Storage,
     private util: Util,
     private datePipe: DatePipe
@@ -57,25 +60,49 @@ export class NotificationComponent implements OnInit  , OnDestroy {
       }
     ).subscribe(notifcatons => {
       notifcatons.body.content.forEach(n => {
-       this.sortNotifications(n);
+        this.getOrder(n.targetId);
+        this.sortNotifications(n);
       });
       this.showLoading = false;
       if(i !== 0) {
         event.target.complete();
       }
       if (i ===notifcatons.body.totalPages) {
-        this.logger.info('Toggle disabled');
+        this.logger.info(this,'Toggle disabled');
         this.toggleInfiniteScroll();
       }
     } ,
     err => {
-      this.logger.info(err);
+      this.logger.info(this,err);
       this.util.createToast('Unable to get Notifications');
       this.showLoading = false;
     });
   }
 
-  sortNotifications(n) {
+  getOrder(id) {
+    this.queryResource.findOrderByOrderIdUsingGET(id)
+    .subscribe(order => {
+      this.orders[id] = order;
+      this.getStore(order.storeId);
+    },
+    err => {
+      this.logger.info(this,'Unable To Fetch Order');
+    });
+  }
+
+  getStore(id) {
+    if(this.stores[id] === undefined) {
+      this.stores[id] = {};
+      this.queryResource.findStoreByRegisterNumberUsingGET(id)
+      .subscribe(store => {
+        this.stores[id] = store;
+      }, err => {console.log('Error occured while fetching storeByRegisterNumber');
+      });
+    }
+  }
+
+
+  sortNotifications(n: Notification) {
     const date1: any = new Date(this.datePipe.transform(n.date,'M/d/yy'))
     const date2: any = new Date(this.datePipe.transform(new Date() , 'M/d/yy'));
     const diffTime = Math.abs(date2 - date1);
