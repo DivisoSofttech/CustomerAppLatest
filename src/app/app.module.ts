@@ -10,7 +10,7 @@ import { AuthInterceptor } from './services/security/auth-interceptor';
 import { ConfigsModule } from './configs/configs.module';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouteReuseStrategy, UrlHandlingStrategy } from '@angular/router';
+import { RouteReuseStrategy} from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
@@ -20,7 +20,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
 import { Util } from './services/util';
-import { Camera } from '@ionic-native/camera/ngx';
 import { ComponentsModule } from './components/components.module';
 import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 import { OrderService } from './services/order.service';
@@ -34,9 +33,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { Sim } from '@ionic-native/sim/ngx';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
-import { BackgroundMode } from '@ionic-native/background-mode/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
-import { ForegroundService } from '@ionic-native/foreground-service/ngx';
 import { BannerComponent } from './components/banner/banner.component';
 import { NotificationComponent } from './components/notification/notification.component';
 import { ErrorService } from './services/error.service';
@@ -47,6 +44,7 @@ import { SharedDataService } from './services/shared-data.service';
 import { RecentService } from './services/recent.service';
 import { LogService } from './services/log.service';
 import { PaymentNavService } from './services/payment-nav.service';
+import { Braintree } from '@ionic-native/braintree/ngx';
 
 const config: SocketIoConfig = { url: 'https://dev.ci2.divisosofttech.com:9999', options: {} };
 
@@ -83,7 +81,6 @@ const config: SocketIoConfig = { url: 'https://dev.ci2.divisosofttech.com:9999',
   ],
 
   providers: [
-    Camera,
     StatusBar,
     ScreenOrientation,
     Util,
@@ -91,9 +88,9 @@ const config: SocketIoConfig = { url: 'https://dev.ci2.divisosofttech.com:9999',
     DecimalPipe,
     LocalNotifications,
     AndroidPermissions,
-    BackgroundMode,
     // ForegroundService,
     PayPal,
+    Braintree,
     Sim,
     InAppBrowser,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

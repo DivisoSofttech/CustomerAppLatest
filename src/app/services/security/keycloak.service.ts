@@ -106,7 +106,7 @@ export class KeycloakService {
   }
 
   async checkUserInRole(user): Promise<boolean> {
-    this.logger.info('Checking User Role ', user);
+    this.logger.info(this,'Checking User Role ', user);
     return await new Promise<boolean>(async (resolve, reject) => {
       await this.keycloakConfig
         .refreshClient()
@@ -117,7 +117,7 @@ export class KeycloakService {
               realm: this.realm
             })
             .then(async roles => {
-              this.logger.info('Available Roles For The User Are ', roles);
+              this.logger.info(this,'Available Roles For The User Are ', roles);
               const rolesAvailable = await roles.realmMappings.filter(
                 mapping => {
                   if (mapping.name === 'customer') {
@@ -125,7 +125,7 @@ export class KeycloakService {
                   }
                 }
               );
-              this.logger.info('Roles Availabel Length is ', rolesAvailable.length);
+              this.logger.info(this,'Roles Availabel Length is ', rolesAvailable.length);
               if (rolesAvailable.length === 1) {
                 resolve(true);
               } else {
@@ -148,7 +148,7 @@ export class KeycloakService {
       new HttpHeaders()
     )
     .then(data => {
-      this.logger.info('Data after authenticate ', data);
+      this.logger.info(this,'Data after authenticate ', data);
       this.sharedData.saveToStorage('user' , data);
       this.userChangedBehaviour.next(data);
       this.isGuestCheck(data);
@@ -200,7 +200,7 @@ export class KeycloakService {
 
   // Kept For Compatability if any components are using this
   isGuest(user): boolean {
-    this.logger.info('Checking if The Current User is Guest');
+    this.logger.info(this,'Checking if The Current User is Guest');
     if (user === 'guest') {
       return true;
     }
@@ -208,7 +208,7 @@ export class KeycloakService {
   }
 
   isGuestCheck(user) {
-    this.logger.info('Checking if The Current User is Guest');
+    this.logger.info(this,'Checking if The Current User is Guest');
     if (user.preferred_username === 'guest') {
       this.isGuestObservable.next(true);
     } else {

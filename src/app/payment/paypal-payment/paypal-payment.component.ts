@@ -1,4 +1,4 @@
-import { ModalDisplayUtilService } from './../../services/modal-display-util.service';
+import { ModalDisplayUtilService } from '../../services/modal-display-util.service';
 import { MakePaymentComponent } from 'src/app/components/make-payment/make-payment.component';
 import { Component, OnInit } from '@angular/core';
 import {
@@ -10,7 +10,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { OrderService } from 'src/app/services/order.service';
 import { Platform, ModalController } from '@ionic/angular';
 import { Util } from 'src/app/services/util';
-import { PaymentSuccessfullInfoComponent } from '../payment-successfull-info/payment-successfull-info.component';
+import { PaymentSuccessfullInfoComponent } from '../../components/payment-successfull-info/payment-successfull-info.component';
 import { PaymentNavService } from 'src/app/services/payment-nav.service';
 
 @Component({

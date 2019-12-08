@@ -163,10 +163,12 @@
             <ion-grid>
               <ion-row *ngIf="store !== undefined">
                 <ion-col size="12" *ngIf="store.location !== null">
-                  <app-map
+                  <!--
+                    Force Closes the App 
+                    <app-map
                     [showActiveLocation]="'false'"
                     [coords]="store.location"
-                  ></app-map>
+                  ></app-map> -->
                 </ion-col>
                 <ion-col size="12" *ngIf="store !== undefined">
                   <ion-text *ngIf="store.info">

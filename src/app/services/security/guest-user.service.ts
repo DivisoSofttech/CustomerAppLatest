@@ -1,7 +1,7 @@
-import { NGXLogger } from 'ngx-logger';
 import { Storage } from '@ionic/storage';
 import { KeycloakService } from './keycloak.service';
 import { Injectable } from '@angular/core';
+import { LogService } from '../log.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class GuestUserService {
   constructor(
     private keycloakService: KeycloakService,
     private storage: Storage,
-    private logger: NGXLogger,
+    private logger: LogService,
   ) { }
 
   private credentials = {
@@ -22,15 +22,16 @@ export class GuestUserService {
   async logInGuest() {
     await this.keycloakService.authenticateAndAuthorize(this.credentials,
       (success) => {
-        this.logger.info('guest-logged-in');
+        this.logger.info(this, 'guest-logged-in');
         this.keycloakService.getCurrentUserDetails()
-        .then(data => {
-          this.keycloakService.getUserChangedSubscription().next(data);
-        });
-    }, (failure) => {
-    }, (err) => {
-
-    });
+          .then(data => {
+            this.keycloakService.getUserChangedSubscription().next(data);
+          });
+      }, (failure) => {
+        this.logger.error(this, 'Error in Guest Login')
+      }, (err) => {
+        this.logger.error(this, 'Error in Guest Login')
+      });
   }
 
   async logOutGuest() {
@@ -39,7 +40,7 @@ export class GuestUserService {
         if (user && user.preferred_username === 'guest') {
           await this.keycloakService.logout(false);
           await this.storage.remove('user');
-          this.logger.info('guest-logged-out');
+          this.logger.info(this,'guest-logged-out');
         }
       }
     );

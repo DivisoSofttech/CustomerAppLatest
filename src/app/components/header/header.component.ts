@@ -2,12 +2,12 @@ import { NotificationComponent } from 'src/app/components/notification/notificat
 import { IonInfiniteScroll,IonSearchbar,ModalController} from '@ionic/angular';
 import { Store } from './../../api/models/store';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
-import {Component,OnInit,ViewChild,OnDestroy} from '@angular/core';
-import { NGXLogger } from 'ngx-logger';
+import {Component,OnInit,ViewChild,OnDestroy, Input} from '@angular/core';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { Storage } from '@ionic/storage';
 import { RecentService, RecentType } from 'src/app/services/recent.service';
+import { LogService } from 'src/app/services/log.service';
 
 @Component({
   selector: 'app-header',
@@ -38,29 +38,27 @@ export class HeaderComponent implements OnInit , OnDestroy {
 
   @ViewChild(IonInfiniteScroll, null) infiniteScroll: IonInfiniteScroll;
   @ViewChild('restaurantSearch', null) restaurantSearch: IonSearchbar;
-  keycloakSubscription: any;
-  notificationsOn = false;
+  @Input() notificationsOn = false;
   notificationCount = 0;
 
   constructor(
     private queryResource: QueryResourceService,
-    private logger: NGXLogger,
+    private logger: LogService,
     private modalController: ModalController,
     private notificationService: NotificationService,
-    private keycloakService: KeycloakService,
+  
     private storage: Storage,
     private recentService: RecentService
   ) {}
 
   ngOnInit() {
-    this.logger.info('Initializing', HeaderComponent.name);
+    this.logger.info(this,'Initializing', HeaderComponent.name);
     this.getNotificationCount();
-    this.checkUser();
     this.getRecents();
   }
 
   ngOnDestroy(): void {
-    this.keycloakSubscription.unsubscribe();
+
   }
 
   getRecents() {
@@ -83,22 +81,6 @@ export class HeaderComponent implements OnInit , OnDestroy {
     this.restaurantSearch.debounce = this.searchDebounceTime;
   }
 
-  checkUser() {
-    this.keycloakSubscription = this.keycloakService.getUserChangedSubscription()
-    .subscribe((data: any) => {
-      this.logger.info('Checking If guest : HeaderComponet' , data);
-      if (data !== null && data !== undefined ) {
-        if (data.preferred_username === 'guest') {
-          this.notificationsOn = false;
-        } else {
-          // this.getUserProfile();
-          this.notificationsOn = true;
-        }
-      } else {
-        this.notificationsOn = false;
-      }
-    });
-  }
 
   getUserProfile() {
     this.storage.get('user')
@@ -118,7 +100,7 @@ export class HeaderComponent implements OnInit , OnDestroy {
   }
 
   toggleSearchBar() {
-    this.logger.info('SearchBar Toggled - View', this.showSearchBar);
+    this.logger.info(this,'SearchBar Toggled - View', this.showSearchBar);
     this.showSearchBar = !this.showSearchBar;
     this.showSearchPane = !this.showSearchPane;
     if (this.showSearchBar === true) {
@@ -127,7 +109,7 @@ export class HeaderComponent implements OnInit , OnDestroy {
   }
 
   toggleInfiniteScroll() {
-    this.logger.info('InfiniteScroll Toggled ', this.infiniteScroll.disabled);
+    this.logger.info(this,'InfiniteScroll Toggled ', this.infiniteScroll.disabled);
     this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
   }
 
@@ -169,7 +151,7 @@ export class HeaderComponent implements OnInit , OnDestroy {
   search(event) {
     if (this.searchTerm.replace(/\s/g, '').length) {
       this.showLoading = true;
-      this.logger.info('Getting Restaurants By Name');
+      this.logger.info(this,'Getting Restaurants By Name');
       this.storeSearchResults = [];
       if(this.searchTerm !=='') {
         this.getSearchResults(0);
@@ -180,7 +162,7 @@ export class HeaderComponent implements OnInit , OnDestroy {
   }
 
   loadMoreData(event) {
-    this.logger.info('Loading More Data');
+    this.logger.info(this,'Loading More Data');
     this.pageCount++;
     this.getSearchResults(this.pageCount);
   }

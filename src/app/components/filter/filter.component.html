@@ -3,7 +3,7 @@
     <ion-buttons>
       <ion-title>Sort and Filter</ion-title>
     </ion-buttons>
-    <ion-buttons slot="end">
+    <ion-buttons slot="end" *ngIf="showClose">
       <ion-button (click)="closeEvent()">
         <ion-icon name="close"></ion-icon>
       </ion-button>

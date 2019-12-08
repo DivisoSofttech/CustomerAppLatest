@@ -2,7 +2,6 @@ import { OrderService } from 'src/app/services/order.service';
 import { NGXLogger } from 'ngx-logger';
 import { Store } from './../../api/models/store';
 import { QueryResourceService } from 'src/app/api/services';
-import { Storage } from '@ionic/storage';
 import { Component, OnInit } from '@angular/core';
 import { CartService } from 'src/app/services/cart.service';
 import { NavController } from '@ionic/angular';
@@ -24,7 +23,6 @@ export class BasketPage implements OnInit {
     private  queryResource: QueryResourceService,
     private logger: NGXLogger,
     private orderService: OrderService,
-    private navController: NavController
   ) { }
 
   ngOnInit() {

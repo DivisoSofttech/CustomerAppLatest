@@ -14,6 +14,8 @@ export class FilterComponent implements OnInit , OnDestroy {
 
   @Output() closeFilter = new EventEmitter();
 
+  @Input() showClose = true;
+
   filterTypes = FILTER_TYPES;
 
   cusines = [];

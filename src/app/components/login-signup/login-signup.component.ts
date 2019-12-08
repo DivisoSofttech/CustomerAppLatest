@@ -9,6 +9,7 @@ import { Storage } from '@ionic/storage';
 import { PhoneNumberVerficationComponent } from '../phone-number-verfication/phone-number-verfication.component';
 import { ForgetPasswordComponent } from '../forget-password/forget-password.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LogService } from 'src/app/services/log.service';
 
 @Component({
   selector: 'app-login-signup',
@@ -16,15 +17,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./login-signup.component.scss'],
 })
 export class LoginSignupComponent implements OnInit {
-  
+
   username = '';
   password = '';
   email = '';
   phone = 0;
-  
+
   numberValid = false;
   numberCode = 0;
-  
+
   loginTab = true;
   value = 'login';
   keycloakUserid;
@@ -35,7 +36,7 @@ export class LoginSignupComponent implements OnInit {
   showFormErrors = {
     'username': false,
     'password': false,
-    'email':false
+    'email': false
   };
 
   @ViewChild('slides', null) slides: IonSlides;
@@ -50,16 +51,16 @@ export class LoginSignupComponent implements OnInit {
     private commandResourceService: CommandResourceService,
     private util: Util,
     private modalController: ModalController,
-    private logger: NGXLogger,
+    private logger: LogService,
     private storage: Storage,
     private formBuilder: FormBuilder
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.signupForm = this.formBuilder.group({
-      username: [this.username ,  Validators.compose([Validators.required, Validators.pattern(/^[a-z0-9_-]{3,15}$/)])],
-      email: [this.email ,  Validators.compose([Validators.required , Validators.email])],
-      password: [this.password ,  Validators.compose([Validators.required,Validators.minLength(6), Validators.maxLength(15)])]
+      username: [this.username, Validators.compose([Validators.required, Validators.pattern(/^[a-z0-9_-]{3,15}$/)])],
+      email: [this.email, Validators.compose([Validators.required, Validators.email])],
+      password: [this.password, Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(15)])]
     })
   }
 
@@ -70,14 +71,14 @@ export class LoginSignupComponent implements OnInit {
   }
 
   login() {
-    this.logger.info('LoginCalled++++++++++++++++++++');
+    this.logger.info(this, 'Login Called');
     this.util.createLoader()
       .then(loader => {
         loader.present();
         this.keycloakService.authenticateAndAuthorize({ username: this.username, password: this.password },
           () => {
             loader.dismiss();
-            this.logger.info('Logged in+++++++');
+            this.logger.info(this, 'Logged in+++++++');
             this.util.createToast('Logged in successfully', 'checkmark-circle-outline');
             this.createUserIfNotExists(this.username);
           }, () => {
@@ -98,18 +99,18 @@ export class LoginSignupComponent implements OnInit {
     this.password = this.signupForm.value.password;
     const modal = await this.modalController.create({
       component: PhoneNumberVerficationComponent,
-      componentProps: {number: this.numberCode + this.phone},
+      componentProps: { number: this.numberCode + this.phone },
       cssClass: 'full-height'
     });
 
     modal.onDidDismiss()
-    .then((data: any) => {
-      this.logger.info('onDismissCalled+++++++');
-      console.log('---------' , data.data.numberVerified);
-      if (data.data.numberVerified === true) {
+      .then((data: any) => {
+        this.logger.info(this, 'onDismissCalled+++++++');
+        console.log('---------', data.data.numberVerified);
+        if (data.data.numberVerified === true) {
           this.signup();
         }
-    });
+      });
 
     modal.present();
   }
@@ -127,19 +128,19 @@ export class LoginSignupComponent implements OnInit {
   }
 
   signup() {
-    this.logger.info('signup+++++++');
+    this.logger.info(this, 'signup+++++++');
     this.util.createCustomLoader('lines', 'Logging in')
       .then(loader => {
         loader.present();
         const user = { username: this.username, email: this.email };
         this.keycloakService.createAccount(user, this.password,
           (res) => {
-            this.logger.info('keycloakService.createAccount+++++++');
+            this.logger.info(this, 'keycloakService.createAccount+++++++');
             loader.dismiss();
             this.keycloakUserid = res.id;
             this.keycloakService.authenticateUser({ username: this.username, password: this.password }
               , () => {
-                this.logger.info('Success callack navgating to route');
+                this.logger.info(this, 'Success callack navgating to route');
                 this.dismissTrue();
                 this.util.navigateHome();
               });
@@ -154,8 +155,8 @@ export class LoginSignupComponent implements OnInit {
               this.util.createToast('Cannot Register User. Please Try Later');
             }
           });
-          // Remove this later
-        });
+        // Remove this later
+      });
   }
 
   isLoggedIn() {
@@ -165,60 +166,69 @@ export class LoginSignupComponent implements OnInit {
         this.util.navigateRoot();
       })
       .catch(() => {
-        this.logger.info('Not Logged In');
+        this.logger.info(this, 'Not Logged In');
       });
   }
 
   createUserIfNotExists(reference) {
-      this.logger.info('Checking if User Exists in MicroService Else Create');
-      this.queryResourceService
-        .checkUserExistsByIdpcodeUsingGET(reference)
-        .subscribe(
-          isUserExists => {
-            this.logger.info('IsUserExists ', isUserExists);
-            if (isUserExists === true) {
-              this.queryResourceService.findCustomerByIdpCodeUsingGET(reference)
-            .subscribe(customer => {
-              this.logger.info('Got Customer', customer);
-              this.storage.set('customer' , customer);
-              if(this.type === 'modal') {
-                this.dismissTrue();
-              }  
-              this.keycloakService.getCurrentUserDetails()
-              .then(data => {
-              this.keycloakService.getUserChangedSubscription().next(data);
-              if(this.type !== 'modal')
-              this.navigateRoot();
+    this.logger.info(this, 'Checking if User Exists in MicroService');
+    this.queryResourceService
+      .checkUserExistsByIdpcodeUsingGET(reference)
+      .subscribe(
+        isUserExists => {
+          this.logger.info(this, 'User Exists => ', isUserExists);
+          if (isUserExists === true) {
+            this.queryResourceService.findCustomerByIdpCodeUsingGET(reference)
+              .subscribe(customer => {
+                this.logger.info(this, 'Got Customer', customer);
+                this.storage.set('customer', customer);
+                if (this.type === 'modal') {
+                  this.logger.info('Login Success Dismissing Login Page');
+                  this.dismissTrue();
+                }
+                this.keycloakService.getCurrentUserDetails()
+                  .then(data => {
+                    this.keycloakService.getUserChangedSubscription().next(data);
+                    if (this.type !== 'modal'){
+                      this.logger.info('Login Success Navigating To Root Page');
+                      this.navigateRoot();
+                    }
+                  });
               });
-        });
-      } else {
-        this.logger.info('User is not exists creating new user');
-        this.commandResourceService
-                .createCustomerUsingPOST({
-                  idpCode: this.username,
-                  name: this.username,
-                  email: this.email,
-                  mobileNumber: this.phone,
-                  phoneCode: this.numberCode,
-                  idpSub: this.keycloakUserid
-                })
-                .subscribe(
-                  customer => {
-                    this.logger.info('Customer Created', customer);
-                    this.storage.set('customer' , customer);
-                  },
-                  error => {
-                    this.logger.info(error);
-                    this.util.createToast('Server is Unreachable');
-                  }
-                );
-      }
-  },
-          err => {
+          } else {
+            this.createNewUser();
           }
-        );
+        },
+        err => {
+          this.logger.info(this,'Cannot Verify Whether The User Exists Or Not');
+        }
+      );
   }
 
+  createNewUser() {
+    this.logger.info(this, 'User Does not exists Creating new user');
+    this.commandResourceService
+      .createCustomerUsingPOST({
+        idpCode: this.username,
+        name: this.username,
+        email: this.email,
+        mobileNumber: this.phone,
+        phoneCode: this.numberCode,
+        idpSub: this.keycloakUserid
+      })
+      .subscribe(
+        customer => {
+          this.logger.info(this, 'Customer Created', customer);
+          this.storage.set('customer', customer);
+          if(this.type === 'modal') this.dismissTrue();
+          else this.navigateRoot();
+        },
+        error => {
+          this.logger.info(this, error);
+          this.util.createToast('Server is Unreachable');
+        }
+      );
+  }
   // View Related Methods
 
   loginDisabled(): boolean {
@@ -230,8 +240,8 @@ export class LoginSignupComponent implements OnInit {
   }
 
   registerDisabled(): boolean {
-    if(!this.signupForm.valid || this.numberValid === false) {
-      return true;      
+    if (!this.signupForm.valid || this.numberValid === false) {
+      return true;
     }
     return false;
   }
@@ -261,7 +271,7 @@ export class LoginSignupComponent implements OnInit {
     console.log('Event', event);
     this.numberValid = event.valid;
     this.numberCode = event.extra.numberCode;
-    this.phone = event.value.slice(event.extra.numberCode.toString().length , event.value.length);
+    this.phone = event.value.slice(event.extra.numberCode.toString().length, event.value.length);
   }
 
   setSlideValue(): number {

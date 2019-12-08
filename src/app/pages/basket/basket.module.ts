@@ -8,6 +8,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { BasketPage } from './basket.page';
+import { DirectiveModule } from 'src/app/directives/directive.module';
 
 const routes: Routes = [
   {
@@ -22,6 +23,7 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     ComponentsModule,
+    DirectiveModule,
     RouterModule.forChild(routes)
   ],
   declarations: [BasketPage],

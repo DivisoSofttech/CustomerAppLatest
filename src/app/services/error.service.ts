@@ -28,9 +28,10 @@ export class ErrorService {
 
   async showErrorModal(component?) {
 
-    if(this.modal !== undefined) {
-      this.modalController.dismiss();
-    }
+    // if(this.modal !== undefined) {
+    //   this.modalController.dismiss();
+    // }
+    
     this.logger.info('Showing Error Modal');
     this.component = component;
     this.modal = await this.modalController.create({
@@ -42,7 +43,11 @@ export class ErrorService {
 
     this.modal.onDidDismiss()
     .then(()=> {
-      this.component.ngOnInit();
+      if(this.component) {
+        this.component.ngOnInit();
+      } else {
+        location.reload();
+      }
     })
   
     await this.modal.present();

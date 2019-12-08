@@ -1,3 +1,82 @@
+
+<ng-template #signin>
+  <ion-grid margin-top>
+    <ion-row justify-content-center text-center class="centre">
+      <ion-col size="6" justify-content-center>
+        <div class="circle">
+          <ion-icon class="large-icon" name="person"></ion-icon>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row justify-content-center class="centre">
+      <ion-col text-center class="container-box">
+        <ion-item class="item-inner">
+          <ion-label color="medium" position="floating">Username or Email</ion-label>
+          <ion-input [(ngModel)]="username" background="light"></ion-input>
+        </ion-item>
+        <ion-item class="item-inner">
+          <ion-label color="medium" position="floating">Password</ion-label>
+          <ion-input [(ngModel)]="password" type="password"></ion-input>
+        </ion-item>
+        <ion-button [disabled]="loginDisabled()" (click)="login()" expand="block" margin-top margin-bottom>Login
+        </ion-button>
+        <ion-button (click)="forgetPasswordModal()" expand="block" margin-top margin-bottom>Forget password?
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ng-template>
+
+
+<ng-template #register>
+  <ion-grid margin-top>
+    <ion-row justify-content-center>
+      <ion-col size="6" text-center>
+        <div class="circle">
+          <ion-icon class="large-icon" name="person"></ion-icon>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row justify-content-center class="centre">
+      <ion-col text-center class="container-box">
+        <form [formGroup]="signupForm">
+          <ion-item class="item-inner">
+            <ion-label color="medium" position="floating">Username</ion-label>
+            <ion-input (ionChange)="showErrors('username')" formControlName="username" background="light"></ion-input>
+          </ion-item>
+          <ion-item lines="full" *ngIf="signupForm.get('username').invalid && showFormErrors['username']">
+              <ion-label color="danger">Username should not contain spaces</ion-label>
+          </ion-item>
+          <ion-item class="item-inner">
+            <ion-label color="medium" position="floating">Email</ion-label>
+            <ion-input (ionChange)="showErrors('email')" formControlName="email" background="light"></ion-input>
+          </ion-item>
+          <ion-item lines="full" *ngIf="signupForm.get('email').invalid && showFormErrors['email']">
+              <ion-label color="danger">Invalid Email</ion-label>
+          </ion-item>
+          <app-intl-number-input (validEvent)="checkNumber($event)">
+          </app-intl-number-input>
+          <ion-item class="item-inner">
+            <ion-label color="medium" position="floating">Password</ion-label>
+            <ion-input (ionChange)="showErrors('password')" formControlName="password" [type]="passwordFieldType"></ion-input>
+            <ion-icon name="eye" slot="end" class="showPasswordIcon" *ngIf="!showPasswordText"
+            (click)="showPassword(true)"></ion-icon>           
+            <ion-icon name="eye-off" slot="end" class="showPasswordIcon" *ngIf="showPasswordText"
+            (click)="showPassword(false)"></ion-icon>           
+          </ion-item>
+          <ion-item lines="full" *ngIf="signupForm.get('password').invalid && showFormErrors['password']">
+              <ion-label color="danger">Password should be 6 - 8 characters long</ion-label>
+          </ion-item>
+          <ion-button [disabled]="registerDisabled()" (click)="signupModal()" expand="block" margin-top margin-bottom>
+            Register</ion-button>
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ng-template>
+
+
+
 <ion-header>
   <ion-toolbar>
     <ion-title>Login</ion-title>
@@ -24,77 +103,10 @@
 <ion-content padding class="mobile">
   <ion-slides #slides (ionSlideDidChange)="slideChange()">
     <ion-slide>
-      <ion-grid margin-top>
-        <ion-row justify-content-center text-center class="centre">
-          <ion-col size="6" justify-content-center>
-            <div class="circle">
-              <ion-icon class="large-icon" name="person"></ion-icon>
-            </div>
-          </ion-col>
-        </ion-row>
-        <ion-row justify-content-center class="centre">
-          <ion-col text-center class="container-box">
-            <ion-item class="item-inner">
-              <ion-label color="medium" position="floating">Username or Email</ion-label>
-              <ion-input [(ngModel)]="username" background="light"></ion-input>
-            </ion-item>
-            <ion-item class="item-inner">
-              <ion-label color="medium" position="floating">Password</ion-label>
-              <ion-input [(ngModel)]="password" type="password"></ion-input>
-            </ion-item>
-            <ion-button [disabled]="loginDisabled()" (click)="login()" expand="block" margin-top margin-bottom>Login
-            </ion-button>
-            <ion-button (click)="forgetPasswordModal()" expand="block" margin-top margin-bottom>Forget password?
-            </ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+      <ng-content *ngTemplateOutlet="signin"></ng-content>
     </ion-slide>
     <ion-slide>
-      <ion-grid margin-top>
-        <ion-row justify-content-center>
-          <ion-col size="6" text-center>
-            <div class="circle">
-              <ion-icon class="large-icon" name="person"></ion-icon>
-            </div>
-          </ion-col>
-        </ion-row>
-        <ion-row justify-content-center class="centre">
-          <ion-col text-center class="container-box">
-            <form [formGroup]="signupForm">
-              <ion-item class="item-inner">
-                <ion-label color="medium" position="floating">Username</ion-label>
-                <ion-input (ionChange)="showErrors('username')" formControlName="username" background="light"></ion-input>
-              </ion-item>
-              <ion-item lines="full" *ngIf="signupForm.get('username').invalid && showFormErrors['username']">
-                  <ion-label color="danger">Username should not contain spaces</ion-label>
-              </ion-item>
-              <ion-item class="item-inner">
-                <ion-label color="medium" position="floating">Email</ion-label>
-                <ion-input (ionChange)="showErrors('email')" formControlName="email" background="light"></ion-input>
-              </ion-item>
-              <ion-item lines="full" *ngIf="signupForm.get('email').invalid && showFormErrors['email']">
-                  <ion-label color="danger">Invalid Email</ion-label>
-              </ion-item>
-              <app-intl-number-input (validEvent)="checkNumber($event)">
-              </app-intl-number-input>
-              <ion-item class="item-inner">
-                <ion-label color="medium" position="floating">Password</ion-label>
-                <ion-input (ionChange)="showErrors('password')" formControlName="password" [type]="passwordFieldType"></ion-input>
-                <ion-icon name="eye" slot="end" class="showPasswordIcon" *ngIf="!showPasswordText"
-                (click)="showPassword(true)"></ion-icon>           
-                <ion-icon name="eye-off" slot="end" class="showPasswordIcon" *ngIf="showPasswordText"
-                (click)="showPassword(false)"></ion-icon>           
-              </ion-item>
-              <ion-item lines="full" *ngIf="signupForm.get('password').invalid && showFormErrors['password']">
-                  <ion-label color="danger">Password should be 6 - 8 characters long</ion-label>
-              </ion-item>
-              <ion-button [disabled]="registerDisabled()" (click)="signupModal()" expand="block" margin-top margin-bottom>
-                Register</ion-button>
-            </form>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+     <ng-content *ngTemplateOutlet="register"></ng-content>
     </ion-slide>
   </ion-slides>
 </ion-content>

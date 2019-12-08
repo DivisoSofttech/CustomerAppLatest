@@ -27,10 +27,9 @@
     "@angular/router": "~8.1.3",
     "@angular/service-worker": "~8.1.3",
     "@ionic-native/android-permissions": "^5.15.0",
-    "@ionic-native/background-mode": "^5.14.0",
+    "@ionic-native/braintree": "^5.17.1",
     "@ionic-native/camera": "^5.11.0",
     "@ionic-native/core": "^5.0.0",
-    "@ionic-native/foreground-service": "^5.15.0",
     "@ionic-native/geolocation": "^5.12.0",
     "@ionic-native/google-maps": "^5.5.0",
     "@ionic-native/in-app-browser": "^5.12.0",
@@ -50,16 +49,13 @@
     "card.io.cordova.mobilesdk": "^2.1.0",
     "com.paypal.cordova.mobilesdk": "^3.5.0",
     "cordova": "^7.1.0",
-    "cordova-android": "^8.0.0",
+    "cordova-android": "^6.4.0",
     "cordova-android-support-gradle-release": "^3.0.1",
-    "cordova-browser": "5.0.4",
-    "cordova-ios": "^5.0.1",
+    "cordova-ios": "^4.5.5",
     "cordova-plugin-android-permissions": "^1.0.2",
-    "cordova-plugin-background-mode": "^0.7.3",
     "cordova-plugin-badge": "^0.8.8",
-    "cordova-plugin-camera": "^4.1.0",
+    "cordova-plugin-braintree": "^0.5.1",
     "cordova-plugin-device": "^2.0.3",
-    "cordova-plugin-foreground-service": "^1.1.2",
     "cordova-plugin-geolocation": "^4.0.2",
     "cordova-plugin-googlemaps": "^2.6.2",
     "cordova-plugin-inappbrowser": "^3.1.0",
@@ -137,9 +133,6 @@
       },
       "cordova-plugin-ionic-keyboard": {},
       "cordova-sqlite-storage": {},
-      "cordova-plugin-camera": {
-        "ANDROID_SUPPORT_V4_VERSION": "27.+"
-      },
       "cordova-plugin-geolocation": {},
       "com.paypal.cordova.mobilesdk": {},
       "cordova-plugin-inappbrowser": {},
@@ -147,16 +140,13 @@
       "cordova-plugin-sim": {},
       "cordova-plugin-sms-receive": {},
       "cordova-plugin-local-notification": {},
-      "cordova-plugin-background-mode": {},
       "cordova-plugin-android-permissions": {},
-      "cordova-plugin-foreground-service": {},
       "cordova-android-support-gradle-release": {
         "ANDROID_SUPPORT_VERSION": "27.+"
       },
       "cordova-plugin-googlemaps": {}
     },
     "platforms": [
-      "browser",
       "ios",
       "android"
     ]

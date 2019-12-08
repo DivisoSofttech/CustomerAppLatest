@@ -1,4 +1,4 @@
-import { ModalDisplayUtilService } from './../../services/modal-display-util.service';
+import { ModalDisplayUtilService } from '../../services/modal-display-util.service';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { OrderService } from 'src/app/services/order.service';
 import { Util } from 'src/app/services/util';

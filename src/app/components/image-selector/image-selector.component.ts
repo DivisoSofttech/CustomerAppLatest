@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Camera } from '@ionic-native/camera/ngx';
 import { ModalController } from '@ionic/angular';
 import { CropperSettings, ImageCropperComponent } from 'ngx-img-cropper';
 
@@ -14,7 +13,6 @@ export class ImageSelectorComponent implements OnInit {
   cropper: ImageCropperComponent;
   cropperSettings: CropperSettings;
   constructor(
-    private camera: Camera,
     private modalController: ModalController
   ) {
     this.cropperSettings = new CropperSettings();
