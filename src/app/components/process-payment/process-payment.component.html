@@ -9,6 +9,6 @@
     </ion-toolbar>
 </ion-header>
 <ion-content>
-    <app-braintree-card-payment *ngIf="provider==='card'" (successEvent)="navigateForward()" (dismissEvent)="navigateBack()"></app-braintree-card-payment>
-    <app-paypal-payment *ngIf="provider==='paypal'" (successEvent)="navigateForward()" (dismissEvent)="navigateBack()"></app-paypal-payment>
+    <app-braintree-card-payment *ngIf="provider==='card'" (successEvent)="navigateForward()" (dismissEvent)="errorInPayment()"></app-braintree-card-payment>
+    <app-paypal-payment *ngIf="provider==='paypal'" (successEvent)="navigateForward()" (dismissEvent)="errorInPayment()"></app-paypal-payment>
 </ion-content>

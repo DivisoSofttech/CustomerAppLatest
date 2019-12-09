@@ -104,12 +104,4 @@ export class BraintreeCardPaymentComponent implements OnInit {
 
     })
   }
-
-
-
-
-
-
-
-
 }

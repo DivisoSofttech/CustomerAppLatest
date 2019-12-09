@@ -85,9 +85,12 @@ export class ProcessPaymentComponent implements OnInit, OnDestroy {
   }
 
   navigateBack() {
-    this.util.createToast('Error in Payment');
     this.paymentNav.pop();
-    this.util.createToast('Error Processing Payment');
+  }
+
+  errorInPayment() {
+    this.util.createToast('Error in Payment');
+    this.navigateBack();
   }
 
   navigateForward() {
