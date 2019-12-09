@@ -9,7 +9,6 @@
     </ion-toolbar>
 </ion-header>
 <ion-content>
-    <app-braintree-card-payment *ngIf="provider==='braintree'" (successEvent)="navigateForward()" (dismissEvent)="navigateBack()"></app-braintree-card-payment>
+    <app-braintree-card-payment *ngIf="provider==='card'" (successEvent)="navigateForward()" (dismissEvent)="navigateBack()"></app-braintree-card-payment>
     <app-paypal-payment *ngIf="provider==='paypal'" (successEvent)="navigateForward()" (dismissEvent)="navigateBack()"></app-paypal-payment>
-    <app-razorpay-payment (successEvent)="navigateForward()" (dismissEvent)="navigateBack()" *ngIf="provider==='razorpay'"></app-razorpay-payment>
 </ion-content>

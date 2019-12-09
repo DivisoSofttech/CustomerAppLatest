@@ -1,5 +1,4 @@
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
-import { RazorpayPaymentComponent } from '../payment/razorpay-payment/razorpay-payment.component';
 import { BraintreeCardPaymentComponent } from '../payment/braintree-card-payment/braintree-card-payment.component';
 import { NotificationComponent } from './notification/notification.component';
 import { PaymentSuccessfullInfoComponent } from './payment-successfull-info/payment-successfull-info.component';
@@ -205,7 +204,6 @@ import {  PaymentProvidersModule } from '../payment/payment-providers.module';
     PaymentflowNavComponent,
 
     PaypalPaymentComponent,
-    RazorpayPaymentComponent,
     BraintreeCardPaymentComponent
   ]
 })

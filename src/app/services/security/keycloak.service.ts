@@ -1,5 +1,4 @@
 import { NotificationService } from './../notification.service';
-import { NGXLogger } from 'ngx-logger';
 import { Util } from './../util';
 import { KeycloakAdminConfig } from './../../configs/keycloak.admin.config';
 import { OAuthService } from 'angular-oauth2-oidc';
@@ -138,6 +137,25 @@ export class KeycloakService {
     });
   }
 
+  async isUserLoggedIn() {
+    return this.isAuthenticated()
+    .then((isAuthenticated) => {
+      if(isAuthenticated) {
+        return this.getCurrentUserDetails()
+        .then((data:any) => {
+          if(data.preferred_username !== 'guest') {
+            return true;
+          } else {
+            return false;
+          }
+        })
+      }
+    })
+    .catch(() => {
+      return false;
+    });
+  }
+
 
   async authenticateUser(credentials: any, success: any) {
     this.logger.info(this,'Authenticating User')
@@ -172,26 +190,27 @@ export class KeycloakService {
         this.userChangedBehaviour.next(data);
         this.isGuestCheck(data);
         this.customer = data;
-        this.checkUserInRole(this.customer.sub)
-          .then(hasRoleCustomer => {
-            if (hasRoleCustomer) {
-              this.logger.info(this,'Success callback');
-              success();
-              if (!this.isGuest(credentials.username)) {
-                 console.log('IsNotGuest');
-                 this.notificationService.connectToNotification();
-                 this.notificationService.subscribeToMyNotifications(credentials.username);
-              }
-            } else {
-              this.oauthService.logOut();
-              this.logger.info(this,'Failure callback');
-              failure();
-            }
-          })
-          .catch(error => {
-            failure();
-            this.logger.error(this,'Error in authentication', error);
-            });
+        success();
+        // this.checkUserInRole(this.customer.sub)
+        //   .then(hasRoleCustomer => {
+        //     if (hasRoleCustomer) {
+        //       this.logger.info(this,'Success callback');
+        //       success();
+        //       if (!this.isGuest(credentials.username)) {
+        //          console.log('IsNotGuest');
+        //          this.notificationService.connectToNotification();
+        //          this.notificationService.subscribeToMyNotifications(credentials.username);
+        //       }
+        //     } else {
+        //       this.oauthService.logOut();
+        //       this.logger.info(this,'Failure callback');
+        //       failure();
+        //     }
+        //   })
+        //   .catch(error => {
+        //     failure();
+        //     this.logger.error(this,'Error in authentication', error);
+        //     });
       })
       .catch(err=> {
         failure();

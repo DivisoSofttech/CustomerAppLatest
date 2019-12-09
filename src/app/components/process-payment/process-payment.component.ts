@@ -36,8 +36,8 @@ export class ProcessPaymentComponent implements OnInit, OnDestroy {
     switch (this.orderService.paymentMethod) {
       case 'paypal': this.setProvider('paypal'); break;
       case 'cod': this.initiateCashOnDelivery(); break;
-      case 'card': this.setProvider('razorpay'); break;
-      case 'braintree': this.setProvider('braintree'); break;
+      case 'card': this.setProvider('card'); break;
+      default:break;
     }
   }
 

@@ -1,7 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { OrderService } from 'src/app/services/order.service';
 import { LogService } from 'src/app/services/log.service';
-import { Braintree, ApplePayOptions, PaymentUIOptions, PaymentUIResult } from '@ionic-native/braintree/ngx';
 import { Util } from 'src/app/services/util';
 import { Platform } from '@ionic/angular';
 
@@ -21,12 +20,6 @@ export class BraintreeCardPaymentComponent implements OnInit {
 
   token = '';
 
-  options = {
-    primaryDescription: "Your Item",
-    amount: '0',
-    currency: 'EUR'
-  };
-
   instanceWeb;
 
   optionsWeb = {
@@ -36,35 +29,25 @@ export class BraintreeCardPaymentComponent implements OnInit {
     amount:'0',
     currency: 'EUR'
   };
+
   hidePurchase: boolean;
 
 
   constructor(
     private orderService: OrderService,
     private logger: LogService,
-    private braintreeNative: Braintree,
     private util: Util,
     private platform: Platform
   ) { }
 
   ngOnInit() {
-
     this.optionsWeb.amount = this.orderService.order.grandTotal.toString();
-    this.options.amount = this.orderService.order.grandTotal.toString();
-
     if(this.platform.is('android' || 'ios')) {
-      this.logger.info(this, 'Using Braintree Native');
-      this.logger.info(this,'To Be Paid' , this.options.amount)
-      this.createToken(()=> {
-        this.initializeBrainTreePlugin();
-      })
-    } else {
-      this.logger.info(this, 'Using Braintree Web');
-      this.logger.info(this,'To Be Paid' , this.optionsWeb.amount);
-      this.createToken(() => {
-        this.createUiWeb();
-      })  
+     delete this.optionsWeb.paypal
     }
+    this.createToken((loader) => {
+      this.createUiWeb(loader);
+    })  
   }
 
   createToken(success) {
@@ -73,8 +56,7 @@ export class BraintreeCardPaymentComponent implements OnInit {
       loader.present();
       this.orderService.createBraintreeClientAuthToken().subscribe(token => {
         this.token = token;
-        loader.dismiss();
-        success();
+        success(loader);
       },err=> {
         loader.dismiss();
         this.dismissEvent.emit();
@@ -82,34 +64,15 @@ export class BraintreeCardPaymentComponent implements OnInit {
     })
   }
 
-  createUiWeb() {
+  createUiWeb(loader) {
     this.logger.info('SetUp Braintree Web');
     this.optionsWeb.authorization = this.token;
     braintree.dropin.create(this.optionsWeb, (err, instance) => {
-      console.log('SetUp Finished');
+      loader.dismiss();
       this.instanceWeb = instance;
     })
   }
 
-  createUiNative() {
-    return this.braintreeNative.presentDropInPaymentUI(this.options);
-  }
-
-
-  initializeBrainTreePlugin() {
-    const _this = this;
-    this.braintreeNative.initialize(this.token)
-      .then(() => this.createUiNative())
-      .then((result: PaymentUIResult) => {
-
-        if (result.userCancelled) {
-          console.log("User cancelled payment dialog.");
-        } else {
-          this.requestPayment(result.nonce);
-        }
-      })
-      .catch((error: string) => console.error(error));
-  }
 
   payWeb() {
     this.instanceWeb.requestPaymentMethod((err, payload)=>{

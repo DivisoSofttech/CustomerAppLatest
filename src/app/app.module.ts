@@ -44,7 +44,6 @@ import { SharedDataService } from './services/shared-data.service';
 import { RecentService } from './services/recent.service';
 import { LogService } from './services/log.service';
 import { PaymentNavService } from './services/payment-nav.service';
-import { Braintree } from '@ionic-native/braintree/ngx';
 
 const config: SocketIoConfig = { url: 'https://dev.ci2.divisosofttech.com:9999', options: {} };
 
@@ -90,7 +89,6 @@ const config: SocketIoConfig = { url: 'https://dev.ci2.divisosofttech.com:9999',
     AndroidPermissions,
     // ForegroundService,
     PayPal,
-    Braintree,
     Sim,
     InAppBrowser,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

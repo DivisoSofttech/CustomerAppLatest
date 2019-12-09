@@ -63,6 +63,7 @@ export class LoginSignupComponent implements OnInit {
     })
   }
 
+
   // Login and Register Methods
 
   showErrors(ekey) {
@@ -158,16 +159,7 @@ export class LoginSignupComponent implements OnInit {
       });
   }
 
-  isLoggedIn() {
-    this.keycloakService
-      .isAuthenticated()
-      .then(() => {
-        this.util.navigateRoot();
-      })
-      .catch(() => {
-        this.logger.info(this, 'Not Logged In');
-      });
-  }
+  
 
   createUserIfNotExists(reference) {
     this.logger.info(this, 'Checking if User Exists in MicroService');
