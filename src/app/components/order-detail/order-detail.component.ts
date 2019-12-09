@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { MatStepper, MatHorizontalStepper } from '@angular/material';
 import { MAT_STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { LogService } from 'src/app/services/log.service';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-order-detail',
@@ -26,6 +27,8 @@ export class OrderDetailComponent implements OnInit{
   @Input() order: Order;
 
   @Input() ShowContinueShopping = false;
+
+  @Input() modalType = false;
 
   products: Product[] = [];
 
@@ -55,6 +58,7 @@ export class OrderDetailComponent implements OnInit{
     private logger: LogService,
     private queryResource: QueryResourceService,
     private cartService: CartService,
+    private modalController: ModalController
   ) { }
 
   @ViewChild(MatHorizontalStepper, null) stepper: MatStepper;
@@ -236,5 +240,9 @@ export class OrderDetailComponent implements OnInit{
 
   dismiss() {
    this.backEvent.emit();
+  }
+
+  modalDismiss() {
+    this.modalController.dismiss();
   }
 }

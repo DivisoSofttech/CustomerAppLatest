@@ -1,7 +1,10 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons>
-      <ion-button (click)="dismiss()">
+      <ion-button (click)="dismiss()" *ngIf="!modalType">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+      <ion-button (click)="modalDismiss()" *ngIf="modalType">
         <ion-icon name="arrow-back"></ion-icon>
       </ion-button>
       <ion-title>Order Details</ion-title>

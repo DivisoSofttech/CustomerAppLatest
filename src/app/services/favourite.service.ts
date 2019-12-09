@@ -78,13 +78,17 @@ export class FavouriteService {
       if(i < data.totalPages) {
         i++;
         data.content.forEach(fs => {
-          this.queryResource.findProductUsingGET(fs.productId)
-          .subscribe(product => {
-            this.favourites.push({data: product , route: '' , type: 'product'});
-            this.favouriteSubject.next(this.favourites);
-          });
+         this.getStore(fs.productId);
         });
       }
+    });
+  }
+
+  getStore(id) {
+    this.queryResource.findProductUsingGET(id)
+    .subscribe(product => {
+      this.favourites.push({data: product , route: '' , type: 'product'});
+      this.favouriteSubject.next(this.favourites);
     });
   }
 
