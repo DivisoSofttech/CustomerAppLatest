@@ -13,8 +13,8 @@
       <ion-content appScrollbarTheme>
         <ion-list>
           <ion-menu-toggle auto-hide="false">
-            <ion-item lines="full" *ngFor="let p of appPages" [routerDirection]="'root'" [routerLink]="[p.url]">
-              <ion-icon slot="start" [name]="p.icon"></ion-icon>
+            <ion-item [ngClass]="{'highlight': currentUrl===p.url}" lines="full" *ngFor="let p of appPages" [routerDirection]="'root'" [routerLink]="[p.url]">
+              <ion-icon [ngClass]="{'highlight': currentUrl===p.url}" slot="start" [name]="p.icon"></ion-icon>
               <ion-label>
                 {{p.title}}
               </ion-label>

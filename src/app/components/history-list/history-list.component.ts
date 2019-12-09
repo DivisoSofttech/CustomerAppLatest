@@ -1,13 +1,11 @@
 import { ModalController, IonInfiniteScroll, NavController } from '@ionic/angular';
 import { MakePaymentComponent } from './../make-payment/make-payment.component';
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services';
 import { Order, OpenTask, CommandResource } from 'src/app/api/models';
 import { NGXLogger } from 'ngx-logger';
 import { OrderService } from 'src/app/services/order.service';
 import { Util } from 'src/app/services/util';
-import { OrderDetailComponent } from '../order-detail/order-detail.component';
-
 
 
 @Component({
@@ -15,7 +13,7 @@ import { OrderDetailComponent } from '../order-detail/order-detail.component';
   templateUrl: './history-list.component.html',
   styleUrls: ['./history-list.component.scss'],
 })
-export class HistoryListComponent implements OnInit {
+export class HistoryListComponent implements OnInit , OnDestroy {
 
   @Input() viewType = 'minimal';
 
@@ -24,6 +22,8 @@ export class HistoryListComponent implements OnInit {
   stores = {};
 
   showHistoryLoading = true;
+
+  selectedOrder;
 
   @Input() lineFlag = "full";
   @Input() keyCloakUser;
@@ -77,6 +77,11 @@ export class HistoryListComponent implements OnInit {
     return await modal.present();
   }
 
+  showOrderDetails(order) {
+    if(this.stores[order.storeId])
+    this.selectedOrder = order;
+  }
+
   getOrders(i, event) {
     this.logger.info('Page ' , i);
     this.queryResource.findOrdersByCustomerIdUsingGET({
@@ -88,17 +93,15 @@ export class HistoryListComponent implements OnInit {
     .subscribe(porders => {
       this.showHistoryLoading = false;
       porders.content.forEach(o => {
-        console.log('Order retreived is ', o);
-        
         this.orders.push(o);
         if (this.stores[o.storeId] === undefined) {
           this.getStores(o.storeId);
-        }
-        if ( i !== 0) {
-          event.target.complete();
-        }
+        }     
       });
-      ++i;
+      if ( i !== 0 && event) {
+        this.logger.info(this,'Loading Page ' , i);
+        event.target.complete();
+      }
       if (i === porders.totalPages) {
         this.logger.info('Toggle disabled');
         this.toggleInfiniteScroll();
@@ -111,34 +114,6 @@ export class HistoryListComponent implements OnInit {
     });
   }
 
-  async showOrderDetails(porder) {
-    if(this.stores[porder.storeId].name !== undefined) {
-      const modal = await this.modalController.create({
-        component: OrderDetailComponent,
-        componentProps: {order: porder , store: this.stores[porder.storeId]}
-      });
-      
-      modal.onDidDismiss()
-      .then(data => {
-        if(data.data) {
-          // Fix to dismiss This modal
-          this.modalController.getTop()
-          .then(mod => {
-            mod.dismiss();
-            this.modalController.getTop()
-            .then((mod2)=> {
-              mod2.dismiss();
-              this.navController.navigateForward('/basket');
-            });
-          })
-        }
-      });
-      
-      modal.present();  
-    } else {
-
-    }
-  }
 
   getStores(id) {
     if(this.stores[id] === undefined) {
@@ -165,10 +140,24 @@ export class HistoryListComponent implements OnInit {
 
   }
 
-  async dismiss() {
-    await this.modalController.getTop()
-    .then(modal=> {
-      modal.dismiss();
-    });
+  showList() {
+    this.selectedOrder = undefined;
+  }
+
+  dismiss() {
+    return this.modalController.dismiss();
+  }
+
+  navigateToBasket() {
+    this.logger.info(this,'Navigating to basket');
+    this.modalController.dismiss()
+    .then(()=>{
+      this.navController.navigateForward('/basket');
+    })
+  }
+
+  ngOnDestroy(): void {
+    this.logger.info(this,'Destroying HistoryList')
+    
   }
 }

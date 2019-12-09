@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 import { NGXLogger } from 'ngx-logger';
 import { QueryResourceService, CommandResourceService } from '../api/services';
 import { KeycloakService } from './security/keycloak.service';
+import { LogService } from './log.service';
 
 export class Favourite {
     route: string;
@@ -34,13 +35,12 @@ export class FavouriteService {
 
   constructor(
     private storage: Storage,
-    private oauthService: OAuthService,
-    private logger: NGXLogger,
+    private logger: LogService,
     private queryResource: QueryResourceService,
     private commandResource: CommandResourceService,
     private keycloakService: KeycloakService
   ) {
-    this.logger.info('Favourite Service Created');
+    this.logger.info(this,'Favourite Service Created');
 
     this.keycloakService.getUserChangedSubscription()
       .subscribe(user => {
@@ -66,7 +66,7 @@ export class FavouriteService {
   }
 
   retrieveProductFav(i) {
-    this.logger.info('Getting Favourite Products');
+    this.logger.info(this,'Getting Favourite Products');
     this.queryResource.findFavouriteProductsByCustomerReferenceUsingGET(
       {
         reference: this.username,
@@ -74,7 +74,7 @@ export class FavouriteService {
       }
     )
     .subscribe(data => {
-      this.logger.info('Got Favotite Product Page ' , i , data.content);
+      this.logger.info(this,'Got Favotite Product Page ' , i , data.content);
       if(i < data.totalPages) {
         i++;
         data.content.forEach(fs => {
@@ -89,7 +89,7 @@ export class FavouriteService {
   }
 
   retrieveStoresFav(i) {
-    this.logger.info('Getting Favourite Stores');
+    this.logger.info(this,'Getting Favourite Stores');
     this.queryResource.findFavouriteStoresByCustomerReferenceUsingGET(
       {
         reference: this.username,
@@ -97,7 +97,7 @@ export class FavouriteService {
       }
     )
     .subscribe(data => {
-        this.logger.info('Got Favotite Store Page ' , i , data.content);
+        this.logger.info(this,'Got Favotite Store Page ' , i , data.content);
         if (i < data.totalPages) {
           i++;
           data.content.forEach(fs => {
@@ -123,7 +123,7 @@ export class FavouriteService {
   }
 
   addToFavouriteProduct(product: Product , route) {
-    this.logger.info('Adding to favourites' , product.id , this.customerId);
+    this.logger.info(this,'Adding to favourites' , product.id , this.customerId);
     this.commandResource.createFavouriteProductUsingPOST({
       productId: product.id,
       customerId: this.customerId
@@ -135,7 +135,7 @@ export class FavouriteService {
   }
 
   addToFavouriteStore(store: Store , route) {
-    this.logger.info('Adding to favourites' , store.id , this.customerId);
+    this.logger.info(this,'Adding to favourites' , store.id , this.customerId);
     this.commandResource.createFavouriteStoreUsingPOST({
       storeId: store.id,
       customerId: this.customerId
@@ -169,7 +169,7 @@ export class FavouriteService {
         });
         break;
 
-        default: this.logger.warn('Unknown Type Error');
+        default: this.logger.warn(this,'Unknown Type Error');
     }
   }
 

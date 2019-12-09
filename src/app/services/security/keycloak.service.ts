@@ -209,10 +209,14 @@ export class KeycloakService {
 
   isGuestCheck(user) {
     this.logger.info(this,'Checking if The Current User is Guest');
-    if (user.preferred_username === 'guest') {
-      this.isGuestObservable.next(true);
+    if(user) {
+      if (user.preferred_username === 'guest') {
+        this.isGuestObservable.next(true);
+      } else {
+        this.isGuestObservable.next(false);
+      }  
     } else {
-      this.isGuestObservable.next(false);
+      this.isGuestObservable.next(true);
     }
   }
 

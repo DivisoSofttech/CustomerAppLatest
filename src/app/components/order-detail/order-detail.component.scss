@@ -21,3 +21,22 @@ h2 , h1 {
   .cl-grey {
       color: grey;
   }
+
+  .footer {
+    position: fixed;
+    width: 100%;
+    bottom: 0px;
+    height: 100px;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .footer ion-button {
+      width: 100%;
+  }
+
+  .content {
+      padding-bottom: 200px;
+  }

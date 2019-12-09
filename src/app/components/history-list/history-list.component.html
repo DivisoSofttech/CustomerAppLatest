@@ -1,4 +1,9 @@
-<ion-header *ngIf="viewType==='modal'">
+<app-order-detail *ngIf="selectedOrder" [order]="selectedOrder" [store]="stores[selectedOrder.storeId]" 
+(backEvent)="showList()"
+(reorderEvent)="navigateToBasket()"
+></app-order-detail>
+
+<ion-header *ngIf="viewType === 'modal' && !selectedOrder">
   <ion-toolbar>
     <ion-buttons>
       <ion-title>
@@ -12,54 +17,104 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content>
-  <div class="vertical-align-center h30" *ngIf="orders.length === 0 && showHistoryLoading === false">
-    <ion-text text-center>
-      <p>No Orders</p>
-    </ion-text>
-  </div>
-
-  <app-loading *ngIf="showHistoryLoading === true" [type]="'history'"></app-loading>
-
-  <ion-list *ngIf="orders.length > 0 && stores !== undefined && showHistoryLoading === false">
-    <ng-container *ngFor="let order of orders">
-        <ion-item [lines]="lineFlag" class="order" *ngIf="order.status.name === 'payment-processed' || order.status?.name === 'delivered'"   margin (click)="showOrderDetails(order)">
-            <ion-thumbnail mode="ios" class="image" slot="start" *ngIf="stores[order.storeId] !== null && stores[order.storeId].imageContentType !== undefined">
-              <ion-img [src]="
-                  stores[order.storeId].imageLink
-                "></ion-img>
+<ion-content *ngIf="!selectedOrder">
+        <div
+        class="vertical-align-center h30"
+        *ngIf="orders.length === 0 && showHistoryLoading === false"
+      >
+        <ion-text text-center>
+          <p>No Orders</p>
+        </ion-text>
+      </div>
+    
+      <app-loading
+        *ngIf="showHistoryLoading === true"
+        [type]="'history'"
+      ></app-loading>
+    
+      <ion-list
+        *ngIf="
+          orders.length > 0 && stores !== undefined && showHistoryLoading === false
+        "
+      >
+        <ng-container *ngFor="let order of orders">
+          <ion-item
+            [lines]="lineFlag"
+            class="order"
+            *ngIf="
+              order.status.name === 'payment-processed-unapproved' ||
+              order.status?.name === 'delivered' ||
+              order.status.name === 'payment-processed-approved'
+            "
+            margin
+            (click)="showOrderDetails(order)"
+          >
+            <ion-thumbnail
+              mode="ios"
+              class="image"
+              slot="start"
+              *ngIf="
+                stores[order.storeId] !== null &&
+                stores[order.storeId].imageContentType !== undefined
+              "
+            >
+              <ion-img [src]="stores[order.storeId].imageLink"></ion-img>
             </ion-thumbnail>
-            <ion-icon slot="start" name="image" class="icon-big" *ngIf="stores[order.storeId] === null || stores[order.storeId].imageContentType === undefined"></ion-icon>
-            <ion-label *ngIf="order.status">
+            <ion-icon
+              slot="start"
+              name="image"
+              class="icon-big"
+              *ngIf="
+                stores[order.storeId] === null ||
+                stores[order.storeId].imageContentType === undefined
+              "
+            ></ion-icon>
+            <ion-label>
               <h2 *ngIf="stores[order.storeId] !== null">
                 {{ stores[order.storeId].name }}
               </h2>
-              <p>
-                <span class="custom-span" *ngIf="order.status.name ==='created'
-                || order.status.name ==='approved' || order.status.name ==='unapproved'
-                || order.status.name ==='payment-processed'"><b>
-                  Order Placed
-                </b></span>
-                <span class="custom-span" *ngIf="order.status.name ==='delivered'"><b>
-                  Delivered
-                </b></span>
-              </p>
+              <ion-text
+              color="warning"
+                *ngIf="order.status.name === 'payment-processed-unapproved'"
+              >
+                <b> Order Placed</b>
+              </ion-text>
+              <ion-text 
+              color="primary"
+               *ngIf="order.status.name === 'payment-processed-approved'">
+                <b>Order Approved</b>
+              </ion-text>
+              <ion-text
+              color="success"
+               *ngIf="order.status.name === 'delivered'">
+               <b>Delivered</b>
+              </ion-text>
               <p>{{ order.date | date: "medium" }}</p>
               <p>&#8364;{{ order.grandTotal | number: "1.2-2" }}</p>
             </ion-label>
             <ion-badge mode="ios" slot="end">{{ order.orderId }}</ion-badge>
           </ion-item>
         </ng-container>
-    
-  </ion-list>
+      </ion-list>    
 
-  <ion-infinite-scroll threshold="500px" (ionInfinite)="loadMoreData($event)" loadingSpinner="bubbles"
-    loadingText="Loading Users...">
+  <ion-infinite-scroll
+    (ionInfinite)="loadMoreData($event)"
+    loadingSpinner="bubbles"
+    loadingText="..."
+    threshold="20px"
+  >
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 
   <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
-    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+    >
     </ion-refresher-content>
   </ion-refresher>
 </ion-content>
+
+
+

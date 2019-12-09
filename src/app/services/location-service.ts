@@ -1,9 +1,9 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable} from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { MapsAPILoader, GoogleMapsAPIWrapper } from '@agm/core';
+import { MapsAPILoader} from '@agm/core';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { NGXLogger } from 'ngx-logger';
 import { SharedDataService } from './shared-data.service';
+import { LogService } from './log.service';
 
 declare var google: any;
 
@@ -23,19 +23,19 @@ export class LocationService {
   constructor(
     private mapsAPILoader: MapsAPILoader,
     private geolocation: Geolocation,
-    private logger: NGXLogger,
+    private logger: LogService,
     private sharedData: SharedDataService
   ) {
-    this.logger.info('Location Service Created');
+    this.logger.info(this,'Location Service Created');
     this.mapsAPILoader.load().then(() => {
       this.autoCompleteService = new google.maps.places.AutocompleteService();
       this.sharedData.getData('location')
       .then(location => {
         if(location !== null) {
-          this.logger.info("Fetching Existing Location From Storage");
+          this.logger.info(this,"Fetching Existing Location From Storage");
           this.positionAddressObservable.next(location)  
         } else {
-          this.logger.info("Fetching Current Location");
+          this.logger.info(this,"Fetching Current Location");
           this.getCurrentLoactionAddress((data,coords)=> {})    
         }
       })
@@ -55,7 +55,7 @@ export class LocationService {
   }
 
   getPredictions(searchTerm: string): Observable<any[]> {
-    this.logger.info('Getting Predictions');
+    this.logger.info(this,'Getting Predictions');
     return new Observable(observer => {
       this.autoCompleteService.getPlacePredictions(
         { input: searchTerm },
@@ -85,7 +85,7 @@ export class LocationService {
     this.geocoder = new google.maps.Geocoder();
     this.geocoder.geocode({placeId}, async (results, status) => {
       if (status !== 'OK') {
-        this.logger.error('Geocoder failed due to: ' + status);
+        this.logger.error(this,'Geocoder failed due to: ' + status);
         return;
       }
       latlon = [

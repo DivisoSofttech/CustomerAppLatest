@@ -1,28 +1,31 @@
-import { Component, OnInit, Input, OnDestroy, ViewChild } from '@angular/core';
-import { NGXLogger } from 'ngx-logger';
+import { Component, OnInit, Input, OnDestroy, ViewChild, EventEmitter, Output } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services';
 import { Order, OrderLine, Product, Store, CommandResource, AuxilaryOrderLine, Offer } from 'src/app/api/models';
 import { CartService } from 'src/app/services/cart.service';
-import { ModalController, NavController } from '@ionic/angular';
-import { OrderService } from 'src/app/services/order.service';
 import { Subscription } from 'rxjs';
-import { Util } from 'src/app/services/util';
-import { MakePaymentComponent } from '../make-payment/make-payment.component';
-import { MatStepper } from '@angular/material';
-import { MAT_STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
+import { MatStepper, MatHorizontalStepper } from '@angular/material';
+import { MAT_STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { LogService } from 'src/app/services/log.service';
 
 @Component({
   selector: 'app-order-detail',
   templateUrl: './order-detail.component.html',
   styleUrls: ['./order-detail.component.scss'],
   providers: [{
-    provide: MAT_STEPPER_GLOBAL_OPTIONS, useValue: {displayDefaultIndicatorType: false}
+    provide: MAT_STEPPER_GLOBAL_OPTIONS, useValue: { displayDefaultIndicatorType: false }
   }]
 })
-export class OrderDetailComponent implements OnInit, OnDestroy {
- 
+export class OrderDetailComponent implements OnInit{
+
+  @Output() backEvent = new EventEmitter();
+
+  @Output() reorderEvent = new EventEmitter();
+
+  @Output() continueEvent = new EventEmitter();
 
   @Input() order: Order;
+
+  @Input() ShowContinueShopping = false;
 
   products: Product[] = [];
 
@@ -44,162 +47,157 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
   total = {};
 
   addressString: String;
+  orderPlaced: boolean;
+  orderApproved: boolean;
+  orderDelivered: boolean;
 
   constructor(
-    private logger: NGXLogger,
+    private logger: LogService,
     private queryResource: QueryResourceService,
     private cartService: CartService,
-    private modalController: ModalController,
-    private orderService: OrderService,
-    private util: Util
   ) { }
 
-  @ViewChild('stepper' , null) stepper: MatStepper;
+  @ViewChild(MatHorizontalStepper, null) stepper: MatStepper;
 
-  ngAfterViewInit() {
-    if(this.order.status.name === 'created') {
+  initStepper() {
+    if (this.orderPlaced) {
       this.stepper.selected.state = 'done';
-    } else if(this.order.status.name === 'approved' || this.order.status.name === 'payment-processed') {
+    } else if (this.orderApproved) {
       this.stepper.selected.state = 'done';
       this.stepper.next();
       this.stepper.selected.state = 'done';
-    } else if(this.order.status.name === 'delivered') {
+    } else if (this.orderDelivered) {
       this.stepper.selected.state = 'done';
       this.stepper.next();
       this.stepper.selected.state = 'done';
       this.stepper.next();
       this.stepper.selected.completed = true;
-    }  
+    }
   }
 
   ngOnInit() {
     this.logger.info(this.order);
     this.getOrderLines(0);
     this.getAppliedOffers(this.order.id);
+    this.formatAddress();
+    this.checkOrderType();
+  }
+
+  ngAfterViewInit() {
+    this.initStepper();
+  }
+
+
+  formatAddress() {
     this.addressString = '';
-    for(let key in this.order.deliveryInfo.deliveryAddress) {
-      if(this.order.deliveryInfo.deliveryAddress[key] !== null) {
+    for (let key in this.order.deliveryInfo.deliveryAddress) {
+      if (this.order.deliveryInfo.deliveryAddress[key] !== null) {
         this.addressString += this.order.deliveryInfo.deliveryAddress[key] + ',';
       }
     }
-    if(this.addressString.endsWith(',')) {
-      this.addressString = this.addressString.slice(0,this.addressString.length-1);
+    if (this.addressString.endsWith(',')) {
+      this.addressString = this.addressString.slice(0, this.addressString.length - 1);
     }
   }
 
 
-  async presentMakePayment() {
-    await this.modalController.dismiss();
-    const modal = await this.modalController.create({
-      component: MakePaymentComponent
-    });
-    return await modal.present();
-  }
+  checkOrderType() {
+    switch (this.order.status.name) {
 
-  completePayment() {
-    this.util.createLoader(100000).then(loader => {
-    loader.present();
-    this.orderService.order = this.order;
-    this.taskDetailsSubscription = this.queryResource.getTaskDetailsUsingGET(
-      {taskName: 'Process Payment', orderId: this.order.orderId, storeId: this.order.customerId})
-      .subscribe(openTask => {
-        console.log('Open task is ', openTask);
-        const resource: CommandResource = {
-          nextTaskId: openTask.taskId,
-          nextTaskName: openTask.taskName,
-          orderId: this.order.orderId
-        };
-        this.orderService.resource = resource;
-        loader.dismiss();
-        this.dismiss();
-        this.presentMakePayment();
-      });
-    });
-  }
-
-  ngOnDestroy() {
-    console.log('Ng Destroy calls in orderDetail component');
-    this.taskDetailsSubscription !== undefined?this.taskDetailsSubscription.unsubscribe():null;
-    this.orderLinesByOrderIdSubscription !== undefined?this.orderLinesByOrderIdSubscription.unsubscribe():null
-    this.productByProductIdSubscrption !== undefined?this.productByProductIdSubscrption.unsubscribe():null;
-    this.auxilayByProductIdSubscription !==undefined?this.auxilayByProductIdSubscription.unsubscribe():null;
+      case 'payment-processed-unapproved':
+        this.orderPlaced = true;
+        this.orderApproved = false;
+        this.orderDelivered = false;
+        break;
+      case 'payment-processed-approved':
+        this.orderPlaced = false;
+        this.orderApproved = true;
+        this.orderDelivered = false;
+        break;
+      case 'delivered':
+        this.orderPlaced = false;
+        this.orderApproved = false;
+        this.orderDelivered = true;
+        break;
+      default:break;
+    }
   }
 
   getOrderDetails() {
     this.queryResource.getOrderAggregatorUsingGET(this.order.orderId)
-    .subscribe(data => {
-      this.logger.error(data);
-    })
+      .subscribe(data => {
+        this.logger.error(this,data);
+      })
   }
 
   getOrderLines(i) {
     this.orderLinesByOrderIdSubscription = this.queryResource.findAllOrderLinesByOrderIdUsingGET({
       orderId: this.order.id
     })
-    .subscribe(orderLines => {
-      orderLines.content.forEach(o => {
-        this.total[o.id] = 0;
-        this.orderLines.push(o);
-        this.auxilariesProducts[o.productId] = [];
-        this.auxilaryOrderLines[o.id] = [];
-        this.getProducts(o.productId);
-        this.getAuxilaryOrderLines(o,0);
+      .subscribe(orderLines => {
+        orderLines.content.forEach(o => {
+          this.total[o.id] = 0;
+          this.orderLines.push(o);
+          this.auxilariesProducts[o.productId] = [];
+          this.auxilaryOrderLines[o.id] = [];
+          this.getProducts(o.productId);
+          this.getAuxilaryOrderLines(o, 0);
+        });
+        i++;
+        if (i < orderLines.totalPages) {
+          this.getOrderLines(i);
+        } else {
+          this.logger.info(this,'Completed Fetching OrderLines')
+        }
       });
-      i++;
-      if(i < orderLines.totalPages) {
-        this.getOrderLines(i);
-      } else {
-        this.logger.info('Completed Fetching OrderLines')
-      }
-    });
   }
 
   getAppliedOffers(id) {
     this.queryResource.findOfferLinesByOrderIdUsingGET(id)
       .subscribe(offerLines => {
-      this.logger.info('OfferLines for the order is ', offerLines);
-      this.offer = offerLines;
-    });
+        this.logger.info(this,'OfferLines for the order is ', offerLines);
+        this.offer = offerLines;
+      });
   }
 
-  getAuxilaryOrderLines(o , i) {
+  getAuxilaryOrderLines(o, i) {
     this.queryResource.findAuxilaryOrderLineByOrderLineIdUsingGET({
       orderLineId: o.id
     })
-    .subscribe(auxLines => {
-      auxLines.content.forEach(auxLine => {
-        this.total[o.id] += auxLine.total;
-        this.auxilaryOrderLines[o.id].push(auxLine);
-        this.getAuxilaryProduct(o.productId,auxLine.productId)
-      });
-      i++;
-      if(i < auxLines.totalPages) {
-        this.getAuxilaryOrderLines(o,i);
-      } else {
-        this.logger.info('Fetched All Auxilaries');
-      }
-    })
+      .subscribe(auxLines => {
+        auxLines.content.forEach(auxLine => {
+          this.total[o.id] += auxLine.total;
+          this.auxilaryOrderLines[o.id].push(auxLine);
+          this.getAuxilaryProduct(o.productId, auxLine.productId)
+        });
+        i++;
+        if (i < auxLines.totalPages) {
+          this.getAuxilaryOrderLines(o, i);
+        } else {
+          this.logger.info(this,'Fetched All Auxilaries');
+        }
+      })
   }
 
   getProducts(id) {
-   this.productByProductIdSubscrption =  this.queryResource.findProductByIdUsingGET(id)
-    .subscribe(data => {
-      this.products[data.id] = data;
-    });
+    this.productByProductIdSubscrption = this.queryResource.findProductByIdUsingGET(id)
+      .subscribe(data => {
+        this.products[data.id] = data;
+      });
   }
 
-  getAuxilaryProduct(pid , id) {
+  getAuxilaryProduct(pid, id) {
     this.queryResource.findProductByIdUsingGET(id)
-    .subscribe(auxProduct => {
-      this.logger.info(auxProduct.name , 'for' , pid);
+      .subscribe(auxProduct => {
+        this.logger.info(auxProduct.name, 'for', pid);
 
         //Hack to Make Product Usable in Places Where AuxilaryLineItem 
-      // is used Just add auxilaryItem key to the object
+        // is used Just add auxilaryItem key to the object
 
-      auxProduct['auxilaryItem']  = auxProduct;
-      this.auxilariesProducts[pid+''][id+''] = auxProduct;
+        auxProduct['auxilaryItem'] = auxProduct;
+        this.auxilariesProducts[pid + ''][id + ''] = auxProduct;
 
-    })
+      })
   }
 
   reorder() {
@@ -208,7 +206,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
     } else if (this.cartService.currentShopId === this.store.id) {
       this.addToCart();
     } else {
-      this.cartService.presentRestaurantCheckout(()=>{
+      this.cartService.presentRestaurantCheckout(() => {
         this.cartService.emptyCart();
         this.addToCart()
       });
@@ -221,18 +219,22 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
       // Delete Id Of Each OrderLine.
       delete o.id;
       if (this.auxilaryOrderLines[o.id] === undefined) {
-       delete o.requiedAuxilaries;
+        delete o.requiedAuxilaries;
       } else {
         o.requiedAuxilaries = this.auxilaryOrderLines[o.id];
         this.cartService.auxilaryItems[o.productId] = this.auxilariesProducts[o.productId];
       }
       this.cartService.addOrder(o);
     });
-    this.modalController.dismiss(true);
+    this.reorderEvent.emit();
 
   }
 
+  continue() {
+    this.continueEvent.emit();
+  }
+
   dismiss() {
-    this.modalController.dismiss();
+   this.backEvent.emit();
   }
 }

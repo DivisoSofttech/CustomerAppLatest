@@ -1,6 +1,5 @@
-import { NGXLogger } from 'ngx-logger';
 import { KeycloakService } from './../../services/security/keycloak.service';
-import { IonSlides, MenuController, ModalController } from '@ionic/angular';
+import { IonSlides,ModalController } from '@ionic/angular';
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { CommandResourceService } from 'src/app/api/services';

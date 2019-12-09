@@ -1,5 +1,5 @@
-import { ProcessPaymentComponent } from './../components/process-payment/process-payment.component';
-import { PaymentSuccessfullInfoComponent } from './../components/payment-successfull-info/payment-successfull-info.component';
+import { ProcessPaymentComponent } from '../components/process-payment/process-payment.component';
+import { PaymentSuccessfullInfoComponent } from '../components/payment-successfull-info/payment-successfull-info.component';
 import { Injectable } from '@angular/core';
 import { ModalController, PopoverController, NavController } from '@ionic/angular';
 import { WaitInformatonPopoverComponent } from '../components/wait-informaton-popover/wait-informaton-popover.component';

@@ -21,7 +21,7 @@ import { PageOfFavouriteStore } from '../models/page-of-favourite-store';
 import { PageOfCategory } from '../models/page-of-category';
 import { PageOfOrderLine } from '../models/page-of-order-line';
 import { PageOfAuxilaryOrderLine } from '../models/page-of-auxilary-order-line';
-import { ResultBucket } from '../models/result-bucket';
+import { PageOfResultBucket } from '../models/page-of-result-bucket';
 import { Offer } from '../models/offer';
 import { Product } from '../models/product';
 import { PageOfProduct } from '../models/page-of-product';
@@ -832,7 +832,7 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  findCategoryAndCountBystoreIdUsingGETResponse(params: QueryResourceService.FindCategoryAndCountBystoreIdUsingGETParams): __Observable<__StrictHttpResponse<Array<ResultBucket>>> {
+  findCategoryAndCountBystoreIdUsingGETResponse(params: QueryResourceService.FindCategoryAndCountBystoreIdUsingGETParams): __Observable<__StrictHttpResponse<PageOfResultBucket>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -853,7 +853,7 @@ class QueryResourceService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Array<ResultBucket>>;
+        return _r as __StrictHttpResponse<PageOfResultBucket>;
       })
     );
   }
@@ -870,9 +870,9 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  findCategoryAndCountBystoreIdUsingGET(params: QueryResourceService.FindCategoryAndCountBystoreIdUsingGETParams): __Observable<Array<ResultBucket>> {
+  findCategoryAndCountBystoreIdUsingGET(params: QueryResourceService.FindCategoryAndCountBystoreIdUsingGETParams): __Observable<PageOfResultBucket> {
     return this.findCategoryAndCountBystoreIdUsingGETResponse(params).pipe(
-      __map(_r => _r.body as Array<ResultBucket>)
+      __map(_r => _r.body as PageOfResultBucket)
     );
   }
 
@@ -1284,7 +1284,7 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  findStoreTypeAndCountUsingGETResponse(params: QueryResourceService.FindStoreTypeAndCountUsingGETParams): __Observable<__StrictHttpResponse<Array<ResultBucket>>> {
+  findStoreTypeAndCountUsingGETResponse(params: QueryResourceService.FindStoreTypeAndCountUsingGETParams): __Observable<__StrictHttpResponse<PageOfResultBucket>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -1304,7 +1304,7 @@ class QueryResourceService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Array<ResultBucket>>;
+        return _r as __StrictHttpResponse<PageOfResultBucket>;
       })
     );
   }
@@ -1319,9 +1319,9 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  findStoreTypeAndCountUsingGET(params: QueryResourceService.FindStoreTypeAndCountUsingGETParams): __Observable<Array<ResultBucket>> {
+  findStoreTypeAndCountUsingGET(params: QueryResourceService.FindStoreTypeAndCountUsingGETParams): __Observable<PageOfResultBucket> {
     return this.findStoreTypeAndCountUsingGETResponse(params).pipe(
-      __map(_r => _r.body as Array<ResultBucket>)
+      __map(_r => _r.body as PageOfResultBucket)
     );
   }
 

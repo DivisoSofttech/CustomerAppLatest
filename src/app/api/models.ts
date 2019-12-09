@@ -62,6 +62,7 @@ export { PageOfNotification } from './models/page-of-notification';
 export { PageOfOrder } from './models/page-of-order';
 export { PageOfOrderLine } from './models/page-of-order-line';
 export { PageOfProduct } from './models/page-of-product';
+export { PageOfResultBucket } from './models/page-of-result-bucket';
 export { PageOfStockCurrent } from './models/page-of-stock-current';
 export { PageOfStore } from './models/page-of-store';
 export { PageOfStoreType } from './models/page-of-store-type';

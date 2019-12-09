@@ -1,8 +1,9 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { OrderService } from 'src/app/services/order.service';
 import { LogService } from 'src/app/services/log.service';
-import { Platform } from '@ionic/angular';
 import { Braintree, ApplePayOptions, PaymentUIOptions, PaymentUIResult } from '@ionic-native/braintree/ngx';
+import { Util } from 'src/app/services/util';
+import { Platform } from '@ionic/angular';
 
 declare var braintree;
 
@@ -16,29 +17,37 @@ export class BraintreeCardPaymentComponent implements OnInit {
 
   @Output() dismissEvent = new EventEmitter();
 
-  token;
+  @Output() successEvent = new EventEmitter();
 
-  showLoading = true;
+  token = '';
 
   options = {
     amount: "49.99",
     primaryDescription: "Your Item",
-    currency:'EUR'
+    currency: 'EUR'
   };
+
+  instanceWeb;
+
+  optionsWeb = {
+    authorization: this.token,
+    selector: '#dropin-container',
+    paypal: { flow: 'vault' },
+    currency: 'EUR'
+  };
+  hidePurchase: boolean;
 
 
   constructor(
     private orderService: OrderService,
     private logger: LogService,
-    private platform: Platform,
-    private braintreeNative: Braintree
+    private braintreeNative: Braintree,
+    private util: Util,
+    private platform: Platform
   ) { }
 
   ngOnInit() {
-    // this.logger.info(this, 'Using Braintree Web');
-    // this.createToken(() => {
-    //   this.createUiWeb();
-    // })  
+
     if(this.platform.is('android' || 'ios')) {
       this.logger.info(this, 'Using Braintree Native');
       this.createToken(()=> {
@@ -53,49 +62,83 @@ export class BraintreeCardPaymentComponent implements OnInit {
   }
 
   createToken(success) {
-    this.orderService.createBraintreeClientAuthToken().subscribe(token => {
-      this.token = token;
-      success();
-    });
-  }
-
-  createUiWeb() {
-    var button = document.querySelector('#submit-button');
-    braintree.dropin.create({
-      authorization: this.token,
-      selector: '#dropin-container',
-      paypal: { flow: 'vault' },
-    }, function (err, instance) {
-
-      button.addEventListener('click', function () {
-        instance.requestPaymentMethod(function (err, payload) {
-          console.log('braintree payload ', payload);
-        });
-      })
+    this.util.createLoader()
+    .then(loader => {
+      loader.present();
+      this.orderService.createBraintreeClientAuthToken().subscribe(token => {
+        this.token = token;
+        loader.dismiss();
+        success();
+      },err=> {
+        loader.dismiss();
+        this.dismissEvent.emit();
+      });  
     })
   }
 
-  initializeBrainTreePlugin() {
-    const _this = this;
-    this.braintreeNative.initialize(this.token)
-    .then(() => this.createUiNative())
-    .then((result: PaymentUIResult) => {
-      
-    if (result.userCancelled) {
-      console.log("User cancelled payment dialog.");
-    } else {
-      console.log("User successfully completed payment!");
-      console.log("Payment Nonce: " + result.nonce);
-      console.log("Payment Result.", result);
-    }
-  })
-  .catch((error: string) => console.error(error));
-    
+  createUiWeb() {
+    this.logger.info('SetUp Braintree Web');
+    this.optionsWeb.authorization = this.token;
+    braintree.dropin.create(this.optionsWeb, (err, instance) => {
+      console.log('SetUp Finished');
+      this.instanceWeb = instance;
+    })
   }
 
   createUiNative() {
     return this.braintreeNative.presentDropInPaymentUI(this.options);
   }
+
+
+  initializeBrainTreePlugin() {
+    const _this = this;
+    this.braintreeNative.initialize(this.token)
+      .then(() => this.createUiNative())
+      .then((result: PaymentUIResult) => {
+
+        if (result.userCancelled) {
+          console.log("User cancelled payment dialog.");
+        } else {
+          this.requestPayment(result.nonce);
+        }
+      })
+      .catch((error: string) => console.error(error));
+  }
+
+  payWeb() {
+    this.instanceWeb.requestPaymentMethod((err, payload)=>{
+      this.requestPayment(payload);
+    });
+  }
+
+  requestPayment(payload) {
+    this.hidePurchase = true;
+    this.util.createLoader()
+    .then(loader => {
+      loader.present();
+      this.orderService.createBraintreeTransaction(payload)
+      .subscribe(response => {
+        this.logger.info(this,'Braintree Transaction Creation Successfull' , response);
+        this.orderService.processPayment(response.transactionId, 'success', 'braintree')
+          .subscribe(resource => {
+            this.logger.info(this,'Braintree Payment Successfull' , resource);
+            this.orderService.resource = resource;
+            loader.dismiss();
+            this.successEvent.emit();
+          }, 
+          (err) => {
+            loader.dismiss();
+            this.dismissEvent.emit();
+          });
+      }, (err) => {
+        loader.dismiss();
+        this.dismissEvent.emit();
+      });
+
+    })
+  }
+
+
 
 
 

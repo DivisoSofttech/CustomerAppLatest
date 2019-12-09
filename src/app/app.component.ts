@@ -34,6 +34,7 @@ export class AppComponent {
   showReview = false;
 
   store;
+  currentUrl: string;
 
   constructor(
     private platform: Platform,
@@ -56,6 +57,7 @@ export class AppComponent {
     this.toggleFilterView('/restaurant');
     this.router.events.subscribe((val) => {
       if(val instanceof NavigationEnd) {
+        this.currentUrl = val.url;
         this.toggleFilterView(val.url);      
       }
     });
@@ -174,7 +176,8 @@ export class AppComponent {
   async showPreviousOrders() {
     const modal = await this.modalController.create({
       component: HistoryListComponent,
-      componentProps: { keyCloakUser: this.keyCloakUser, viewType: 'modal' }
+      componentProps: { keyCloakUser: this.keyCloakUser, viewType: 'modal' },
+      backdropDismiss:false
     });
     await modal.present();
   }

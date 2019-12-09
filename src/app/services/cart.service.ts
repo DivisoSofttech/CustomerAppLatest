@@ -4,10 +4,9 @@ import { BehaviorSubject } from 'rxjs';
 import { AlertController, NavController } from '@ionic/angular';
 import { QueryResourceService } from '../api/services';
 import { Util } from './util';
-import { NGXLogger } from 'ngx-logger';
 import { SharedDataService } from './shared-data.service';
-import { OrderService } from './order.service';
 import { DecimalPipe } from '@angular/common';
+import { LogService } from './log.service';
 
 @Injectable({
   providedIn: 'root'
@@ -32,16 +31,15 @@ export class CartService {
 
   constructor(
     private alertController: AlertController,
-    private navController: NavController,
     private queryResource: QueryResourceService,
     private util: Util,
-    private logger: NGXLogger,
+    private logger: LogService,
     private sharedData: SharedDataService,
     private decimalPipe: DecimalPipe
   ) {
     this.observableTickets = new BehaviorSubject<OrderLine[]>(this.orderLines);
     this.observablePrice = new BehaviorSubject<number>(this.subTotal);
-    this.logger.info('Cart Service Created');
+    this.logger.info(this,'Cart Service Created');
     if (this.currentShopId === 0) {
       this.getCartDetailsFromSharedMemory();
     }
@@ -172,7 +170,7 @@ export class CartService {
           .subscribe(
             success => {
               loader.dismiss();
-              this.logger.info('Got Store Delivery Types ', success.content);
+              this.logger.info(this,'Got Store Delivery Types ', success.content);
               this.currentDeliveryTypes = success.content;
               this.behaviourDeliveryTypes.next(this.currentDeliveryTypes);
               this.sharedData.getData('cart')
@@ -290,7 +288,7 @@ export class CartService {
 
   addOrder(order: OrderLine) {
     this.orderLines.push(order);
-    this.logger.info(this.orderLines.length);
+    this.logger.info(this,this.orderLines.length);
     this.updateCart();
   }
 

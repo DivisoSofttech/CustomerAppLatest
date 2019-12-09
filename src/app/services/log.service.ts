@@ -27,4 +27,10 @@ export class LogService {
         this.logger.fatal(_this.constructor.name ,'>>>>>>', ...msg)
       }
     }    
+
+    warn(_this: Object , ...msg) {
+      if(_this) {
+        this.logger.warn(_this.constructor.name ,'>>>>>>', ...msg)
+      }
+    }    
 }

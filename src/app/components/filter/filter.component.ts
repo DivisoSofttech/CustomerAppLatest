@@ -39,7 +39,7 @@ export class FilterComponent implements OnInit , OnDestroy {
     .subscribe(data => {
       this.currentFilterType = data;
     });
-    this.getCategories();
+    this.getCusines(0);
   }
 
   closeEvent() {
@@ -71,17 +71,25 @@ export class FilterComponent implements OnInit , OnDestroy {
     this.closeEvent();
   }
 
-  getCategories() {
-    this.queryResource.findStoreTypeAndCountUsingGET({}).subscribe(data => {
+  getCusines(i) {
+    this.queryResource.findStoreTypeAndCountUsingGET({
+      page:i
+    }).subscribe(data => {
       if (data !== undefined) {
         this.logger.info("Fetched Categories" , data);
-        data.forEach(c => {
-          this.cusines.push({
-            key: c.key,
-            checked: false,
-            doCount: c.docCount
-          })
-        })
+        if(data) {
+          data.content.forEach(c => {
+            this.cusines.push({
+              key: c.key,
+              checked: false,
+              doCount: c.docCount
+            })
+          });
+          ++i;
+          if(i < data.totalPages) {
+            this.getCusines(i);
+          }  
+        }
       }
     });
   }

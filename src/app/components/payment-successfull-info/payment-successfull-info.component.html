@@ -1,8 +1,14 @@
-<ion-header no-border>
+<app-order-detail *ngIf="selectedOrder" [order]="selectedOrder" [store]="currentShop" 
+(backEvent)="showPaymentSuccessFull()"
+(continueEvent)="continueShopping()"
+[ShowContinueShopping] = "true"
+></app-order-detail>
+
+<ion-header no-border *ngIf="!selectedOrder">
   <ion-toolbar>
   </ion-toolbar>
 </ion-header>
-<ion-content>
+<ion-content *ngIf="!selectedOrder">
   <ion-grid>
     <ion-row>
       <ion-col size="12" class="ion-text-center">

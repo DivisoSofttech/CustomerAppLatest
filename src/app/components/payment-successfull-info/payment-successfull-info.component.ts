@@ -4,10 +4,8 @@ import { OrderService } from './../../services/order.service';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ModalController, NavController, IonButton } from '@ionic/angular';
 import { CartService } from 'src/app/services/cart.service';
-import { NGXLogger } from 'ngx-logger';
 import { QueryResourceService } from 'src/app/api/services';
 import { Util } from 'src/app/services/util';
-import { OrderSummaryComponent } from '../order-summary/order-summary.component';
 import { LogService } from 'src/app/services/log.service';
 
 @Component({
@@ -24,6 +22,7 @@ export class PaymentSuccessfullInfoComponent implements OnInit , OnDestroy {
   order;
 
   currentShop;
+  selectedOrder: any;
 
   constructor(
     private modalController: ModalController,
@@ -80,26 +79,17 @@ export class PaymentSuccessfullInfoComponent implements OnInit , OnDestroy {
       });
   }
 
-  async showOrderDetails() {
-
-    if (this.order !== null) {
-      const modal = await this.modalController.create({
-        component: OrderSummaryComponent,
-        componentProps: { order: this.order, store: this.currentShop }
-      });
-
-      modal.onDidDismiss()
-      .then((data) => {
-        if (data.data) {
-          this.continueShopping();
-        }
-      });
-      await modal.present();
-
-    } else {
-      this.getOrder();
+  showOrderDetails() {
+    if(this.currentShop) {
+      this.selectedOrder = this.order;
     }
   }
+
+  showPaymentSuccessFull() {
+    this.selectedOrder = undefined;
+  }
+
+
 
   dismiss() {
     this.modalController.dismiss();

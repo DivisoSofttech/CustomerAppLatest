@@ -54,7 +54,6 @@ import { MaterialModule } from './material.module';
 import { NotificationCardComponent } from './notification-card/notification-card.component';
 import { PlaceSuggestionComponent } from './place-suggestion/place-suggestion.component';
 import { DirectiveModule } from '../directives/directive.module';
-import { OrderSummaryComponent } from './order-summary/order-summary.component';
 import { AddAddressComponent } from './add-address/add-address.component';
 import { PreorderComponent } from './preorder/preorder.component';
 import { PaymentflowNavComponent } from './paymentflow-nav/paymentflow-nav.component';
@@ -108,7 +107,6 @@ import {  PaymentProvidersModule } from '../payment/payment-providers.module';
     ForgetPasswordComponent,
     NotificationCardComponent,
     PlaceSuggestionComponent,
-    OrderSummaryComponent,
     PreorderComponent,
     PaymentflowNavComponent
     
@@ -169,7 +167,6 @@ import {  PaymentProvidersModule } from '../payment/payment-providers.module';
     ForgetPasswordComponent,
     NotificationCardComponent,
     PlaceSuggestionComponent,
-    OrderSummaryComponent,
     PreorderComponent,
     PaymentflowNavComponent
   ],
@@ -204,7 +201,6 @@ import {  PaymentProvidersModule } from '../payment/payment-providers.module';
     ErrorComponent,
     NotificationCardComponent,
     PlaceSuggestionComponent,
-    OrderSummaryComponent,
     PreorderComponent,
     PaymentflowNavComponent,
 
