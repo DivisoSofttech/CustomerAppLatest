@@ -14,6 +14,8 @@ declare var braintree;
 export class BraintreeCardPaymentComponent implements OnInit {
 
 
+  showLoading = true;
+
   @Output() dismissEvent = new EventEmitter();
 
   @Output() successEvent = new EventEmitter();
@@ -45,30 +47,26 @@ export class BraintreeCardPaymentComponent implements OnInit {
     if(this.platform.is('android' || 'ios')) {
      delete this.optionsWeb.paypal
     }
-    this.createToken((loader) => {
-      this.createUiWeb(loader);
+    this.createToken(() => {
+      this.createUiWeb();
     })  
   }
 
   createToken(success) {
-    this.util.createLoader()
-    .then(loader => {
-      loader.present();
       this.orderService.createBraintreeClientAuthToken().subscribe(token => {
         this.token = token;
-        success(loader);
+        success();
       },err=> {
-        loader.dismiss();
+        this.showLoading = false;
         this.dismissEvent.emit();
       });  
-    })
   }
 
-  createUiWeb(loader) {
+  createUiWeb() {
     this.logger.info('SetUp Braintree Web');
     this.optionsWeb.authorization = this.token;
     braintree.dropin.create(this.optionsWeb, (err, instance) => {
-      loader.dismiss();
+      this.showLoading = false;
       this.instanceWeb = instance;
     })
   }
