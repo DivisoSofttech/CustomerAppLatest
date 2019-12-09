@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, OnDestroy, ViewChild, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, EventEmitter, Output } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services';
-import { Order, OrderLine, Product, Store, CommandResource, AuxilaryOrderLine, Offer } from 'src/app/api/models';
+import { Order, OrderLine, Product, Store, AuxilaryOrderLine, Offer } from 'src/app/api/models';
 import { CartService } from 'src/app/services/cart.service';
 import { Subscription } from 'rxjs';
 import { MatStepper, MatHorizontalStepper } from '@angular/material';
@@ -80,7 +80,7 @@ export class OrderDetailComponent implements OnInit{
   }
 
   ngOnInit() {
-    this.logger.info(this.order);
+    this.logger.info(this,this.order);
     this.getOrderLines(0);
     this.getAppliedOffers(this.order.id);
     this.formatAddress();

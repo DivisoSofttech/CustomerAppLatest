@@ -22,8 +22,8 @@ export class BraintreeCardPaymentComponent implements OnInit {
   token = '';
 
   options = {
-    amount: "49.99",
     primaryDescription: "Your Item",
+    amount: '0',
     currency: 'EUR'
   };
 
@@ -33,6 +33,7 @@ export class BraintreeCardPaymentComponent implements OnInit {
     authorization: this.token,
     selector: '#dropin-container',
     paypal: { flow: 'vault' },
+    amount:'0',
     currency: 'EUR'
   };
   hidePurchase: boolean;
@@ -48,13 +49,18 @@ export class BraintreeCardPaymentComponent implements OnInit {
 
   ngOnInit() {
 
+    this.optionsWeb.amount = this.orderService.order.grandTotal.toString();
+    this.options.amount = this.orderService.order.grandTotal.toString();
+
     if(this.platform.is('android' || 'ios')) {
       this.logger.info(this, 'Using Braintree Native');
+      this.logger.info(this,'To Be Paid' , this.options.amount)
       this.createToken(()=> {
         this.initializeBrainTreePlugin();
       })
     } else {
       this.logger.info(this, 'Using Braintree Web');
+      this.logger.info(this,'To Be Paid' , this.optionsWeb.amount);
       this.createToken(() => {
         this.createUiWeb();
       })  
