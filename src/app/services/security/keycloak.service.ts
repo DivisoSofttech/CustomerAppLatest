@@ -191,6 +191,10 @@ export class KeycloakService {
         this.isGuestCheck(data);
         this.customer = data;
         success();
+        if(!this.isGuest(credentials.username)) {
+          this.notificationService.connectToNotification();
+          this.notificationService.subscribeToMyNotifications(credentials.username);  
+        }
         // this.checkUserInRole(this.customer.sub)
         //   .then(hasRoleCustomer => {
         //     if (hasRoleCustomer) {
