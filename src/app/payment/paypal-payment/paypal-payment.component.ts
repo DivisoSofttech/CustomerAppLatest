@@ -1,6 +1,5 @@
 import { ModalDisplayUtilService } from '../../services/modal-display-util.service';
-import { MakePaymentComponent } from 'src/app/components/make-payment/make-payment.component';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import {
   PayPal,
   PayPalPayment,
@@ -19,6 +18,10 @@ import { PaymentNavService } from 'src/app/services/payment-nav.service';
   styleUrls: ['./paypal-payment.component.scss'],
 })
 export class PaypalPaymentComponent implements OnInit {
+
+  @Output() dismissEvent = new EventEmitter();
+
+  @Output() successEvent = new EventEmitter();
 
   constructor(private iab: InAppBrowser,
               private payPal: PayPal,

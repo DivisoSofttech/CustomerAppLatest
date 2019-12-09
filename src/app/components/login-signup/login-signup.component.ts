@@ -77,10 +77,9 @@ export class LoginSignupComponent implements OnInit {
         loader.present();
         this.keycloakService.authenticateAndAuthorize({ username: this.username, password: this.password },
           () => {
-            loader.dismiss();
             this.logger.info(this, 'Logged in+++++++');
             this.util.createToast('Logged in successfully', 'checkmark-circle-outline');
-            this.createUserIfNotExists(this.username);
+            this.createUserIfNotExists(this.username , loader);
           }, () => {
             loader.dismiss();
             this.util.createToast('You are not authorized / Please signup');
@@ -161,7 +160,7 @@ export class LoginSignupComponent implements OnInit {
 
   
 
-  createUserIfNotExists(reference) {
+  createUserIfNotExists(reference , loader?) {
     this.logger.info(this, 'Checking if User Exists in MicroService');
     this.queryResourceService
       .checkUserExistsByIdpcodeUsingGET(reference)
@@ -174,7 +173,8 @@ export class LoginSignupComponent implements OnInit {
                 this.logger.info(this, 'Got Customer', customer);
                 this.storage.set('customer', customer);
                 if (this.type === 'modal') {
-                  this.logger.info('Login Success Dismissing Login Page');
+                  loader?loader.dismiss():'';
+                  this.logger.info(this,'Login Success Dismissing Login Page');
                   this.dismissTrue();
                 }
                 this.keycloakService.getCurrentUserDetails()
