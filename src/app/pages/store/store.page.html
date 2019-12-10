@@ -67,20 +67,33 @@
         <ion-list
           [style.display]="(selectedCategory === 'All' || selectedCategory === category.name)?true:false"
         >
-          <ion-item color="primary" lines="none" (click)="toggleCategoryShow(category.id)">
+          <ion-item
+            color="primary"
+            lines="none"
+            (click)="toggleCategoryShow(category.id)"
+          >
             <ion-avatar>
               <ion-img [src]="category.imageLink" class="imageShow"> </ion-img>
             </ion-avatar>
             <ion-label margin>{{category.name | titlecase}}</ion-label>
-            <ion-icon name="arrow-dropup-circle" *ngIf="categoryShow[category.id]" slot="end"></ion-icon>
-            <ion-icon name="arrow-dropdown-circle" *ngIf="!categoryShow[category.id]" slot="end"></ion-icon>
+            <ion-icon
+              name="arrow-dropup-circle"
+              *ngIf="categoryShow[category.id]"
+              slot="end"
+            ></ion-icon>
+            <ion-icon
+              name="arrow-dropdown-circle"
+              *ngIf="!categoryShow[category.id]"
+              slot="end"
+            ></ion-icon>
           </ion-item>
           <app-category-wise-products-card
             *ngIf="store !== undefined"
             [category]="category"
             [store]="store"
             [isGuest]="isGuest"
-            [showData]="categoryShow[category.id]">
+            [showData]="categoryShow[category.id]"
+          >
           </app-category-wise-products-card>
         </ion-list>
       </div>
@@ -163,12 +176,10 @@
             <ion-grid>
               <ion-row *ngIf="store !== undefined">
                 <ion-col size="12" *ngIf="store.location !== null">
-                  <!--
-                    Force Closes the App 
-                    <app-map
+                  <app-map
                     [showActiveLocation]="'false'"
                     [coords]="store.location"
-                  ></app-map> -->
+                  ></app-map>
                 </ion-col>
                 <ion-col size="12" *ngIf="store !== undefined">
                   <ion-text *ngIf="store.info">
@@ -186,7 +197,10 @@
     </ion-row>
   </ion-grid>
 
-  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreCategories($event)">
+  <ion-infinite-scroll
+    threshold="100px"
+    (ionInfinite)="loadMoreCategories($event)"
+  >
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
       loadingText="Loading more data..."
