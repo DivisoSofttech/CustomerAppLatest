@@ -143,7 +143,7 @@ export class StorePage implements OnInit , OnDestroy {
       .subscribe(
         result => {
           this.logger.info(this,'Got Categories Entry', result);
-          this.entry = result.content;
+          this.entry = result;
         },
         err => {
           this.logger.fatal('Error Fetching Categories Entry', err);

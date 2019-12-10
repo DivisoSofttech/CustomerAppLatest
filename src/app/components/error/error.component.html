@@ -1,40 +1,23 @@
-<ion-header no-border>
-
-</ion-header>
+<ion-header no-border> </ion-header>
 
 <ion-content>
+  <div id="notfound" *ngIf="isOnline">
+    <div class="notfound">
+      <div class="notfound-404">
+        <h1>Oops!</h1>
+        <h2>Internal Server Error</h2>
+      </div>
+      <a href="#" (click)="refresh()">Go TO Homepage</a>
+    </div>
+  </div>
 
-  <ion-grid>
-
-    <ion-row class="ion-justify-content-center ion-text-center">
-      <ion-col size="12">
-          <ion-icon name="alert" color="primary" *ngIf="isOnline"></ion-icon>
-          <ion-icon name="planet" color="primary" *ngIf="!isOnline"></ion-icon>
-      </ion-col>
-    </ion-row>
-
-    <ion-row class="ion-justify-content-center ion-text-center" *ngIf="isOnline">
-      <ion-label>
-        <h1>Oh No !</h1>
-        <h1>Something Went Wrong</h1>
-        <h1>Please Try Again</h1>
-      </ion-label>
-    </ion-row>
-
-    <ion-row class="ion-justify-content-center ion-text-center" *ngIf="!isOnline">
-      <ion-label>
-      <h1> No Internet Connection</h1>
-      </ion-label>
-    </ion-row>
-
-    <ion-row class="ion-justify-content-center ion-text-center" >
-      <ion-col size="12">
-        <ion-button color="success" (click)="refresh()">
-          TRY AGAIN
-        </ion-button>
-      </ion-col>
-    </ion-row>
-
-  </ion-grid>
-
+  <div id="notfound" *ngIf="!isOnline">
+    <div class="notfound">
+      <div class="notfound-404">
+        <ion-icon name="planet" color="primary" *ngIf="!isOnline"></ion-icon>
+        <h2>Check Your Internet Connection</h2>
+      </div>
+      <a href="#" (click)="refresh()">Try Again</a>
+    </div>
+  </div>
 </ion-content>

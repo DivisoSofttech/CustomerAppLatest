@@ -46,13 +46,13 @@ export class AddressListComponent implements OnInit {
         } else {
           this.addresses = addresses.all;
           this.showLoading = false;
-          this.getAddress();
+          this.getAddressFromLocalStorage();
         }
       })
     });
   }
 
-  getAddress() {
+  getAddressFromLocalStorage() {
     this.sharedDataService.getData('address')
     .then(addresses => {
       if(addresses != null)
