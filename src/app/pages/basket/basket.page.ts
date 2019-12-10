@@ -38,7 +38,7 @@ export class BasketPage implements OnInit {
     .subscribe(store => {
       if(this.store !== undefined) {
         this.store = store;
-        this.orderService.acceptType = store.storeSettings.orderAcceptType;
+        this.orderService.acceptType = store?store.storeSettings.orderAcceptType:null;
         console.log(' Accept type is ', this.orderService.acceptType);  
       }
     });

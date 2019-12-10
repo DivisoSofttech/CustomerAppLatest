@@ -67,9 +67,9 @@ export class FavouriteService {
 
   retrieveProductFav(i) {
     this.logger.info(this,'Getting Favourite Products');
-    this.queryResource.findFavouriteProductsByCustomerReferenceUsingGET(
+    this.queryResource.findFavouriteProductsByCustomerIdpCodeUsingGET(
       {
-        reference: this.username,
+        idpCode: this.username,
         page: i,
       }
     )
@@ -94,9 +94,9 @@ export class FavouriteService {
 
   retrieveStoresFav(i) {
     this.logger.info(this,'Getting Favourite Stores');
-    this.queryResource.findFavouriteStoresByCustomerReferenceUsingGET(
+    this.queryResource.findFavouriteStoresByCustomerIdpCodeUsingGET(
       {
-        reference: this.username,
+        idpCode: this.username,
         page: i
       }
     )

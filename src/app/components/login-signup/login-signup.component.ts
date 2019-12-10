@@ -143,7 +143,7 @@ export class LoginSignupComponent implements OnInit {
                 this.dismissTrue();
                 this.util.navigateHome();
               });
-            this.createUserIfNotExists(this.username);
+            this.createUserIfNotExists(this.username,loader);
           },
           (err) => {
             loader.dismiss();
@@ -172,8 +172,8 @@ export class LoginSignupComponent implements OnInit {
               .subscribe(customer => {
                 this.logger.info(this, 'Got Customer', customer);
                 this.storage.set('customer', customer);
+                loader?loader.dismiss():'';
                 if (this.type === 'modal') {
-                  loader?loader.dismiss():'';
                   this.logger.info(this,'Login Success Dismissing Login Page');
                   this.dismissTrue();
                 }

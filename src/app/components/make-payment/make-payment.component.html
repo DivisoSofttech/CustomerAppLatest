@@ -1,5 +1,5 @@
 <ion-header no-border>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-buttons>
       <ion-button (click)="navigateBack()">
         <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
@@ -10,12 +10,12 @@
 </ion-header>
 <ion-content>
 
-  <ion-card color="primary" class="ion-no-margin">
+  <ion-card>
     <ion-card-content>
       <ion-grid>
         <ion-row class="ion-margin-vertical">
           <ion-col text-center>
-            <ion-text color="light">
+            <ion-text>
               <h1 class="font-big"><b>&euro;{{toBePaid}}</b></h1>
               <p class="font-medium">Total amount due</p>
             </ion-text>

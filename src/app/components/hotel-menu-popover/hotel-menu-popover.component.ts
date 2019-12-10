@@ -31,7 +31,6 @@ export class HotelMenuPopoverComponent implements OnInit {
 
     this.util.createLoader()
     .then(loader => {
-      loader.present();
       this.selectedCategory = category.key;
       this.getProducts(0 , loader);
     });
@@ -46,7 +45,7 @@ export class HotelMenuPopoverComponent implements OnInit {
       categoryName: this.selectedCategory
     })
       .subscribe(data => {
-        loader.dismiss();
+      
         this.logger.info('Category ' , this.selectedCategory , ' Produts ' , data);
         data.content.forEach(p => {
           this.products.push(p);
@@ -62,7 +61,7 @@ export class HotelMenuPopoverComponent implements OnInit {
         }
       },
       err => {
-        loader.dismiss();
+
       });
   }
 

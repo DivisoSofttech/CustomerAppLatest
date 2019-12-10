@@ -24,6 +24,8 @@ export class BraintreeCardPaymentComponent implements OnInit {
 
   instanceWeb;
 
+  grandTotal = '';
+
   optionsWeb = {
     authorization: this.token,
     selector: '#dropin-container',
@@ -43,6 +45,8 @@ export class BraintreeCardPaymentComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
+    this.grandTotal = this.orderService.order.grandTotal.toString();
     this.optionsWeb.amount = this.orderService.order.grandTotal.toString();
     if(this.platform.is('android' || 'ios')) {
      delete this.optionsWeb.paypal
@@ -74,7 +78,12 @@ export class BraintreeCardPaymentComponent implements OnInit {
 
   payWeb() {
     this.instanceWeb.requestPaymentMethod((err, payload)=>{
-      this.requestPayment(payload);
+      this.logger.info(this,'Braintree Payload',payload)
+      if(payload) {
+        this.requestPayment(payload);
+      } else {
+        this.util.createToast('Fill in the card details');
+      }
     });
   }
 

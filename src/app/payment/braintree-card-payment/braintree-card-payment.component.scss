@@ -3,7 +3,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: white;
 }
 
 .bgBlue {
@@ -12,5 +11,9 @@
 
 .fontBig {
   font-size: 80px;
+}
+
+ion-card {
+  width: 100%;
 }
 

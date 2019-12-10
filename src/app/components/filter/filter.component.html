@@ -50,7 +50,7 @@
                   <ion-list>
                     <ion-item *ngFor="let t of cusines">
                     <ion-checkbox color="dark" value="t.key" [(ngModel)]="t.checked" [checked]="t.checked" slot="start"></ion-checkbox>
-                    <ion-label>{{t.key}}{{t.docCount}}</ion-label>
+                    <ion-label>{{t.key}}({{t.docCount}})</ion-label>
                   </ion-item>
                   </ion-list>
                 </ion-col>      

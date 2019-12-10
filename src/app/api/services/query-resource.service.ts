@@ -57,8 +57,8 @@ class QueryResourceService extends __BaseService {
   static readonly findDeliveryInfoByStoreIdUsingGETPath = '/api/query/deliveryinfoByStoreId/{storeId}';
   static readonly findDiscountByProductIdUsingGETPath = '/api/query/discount-productId/{productId}';
   static readonly facetSearchByStoreTypeNameUsingPOSTPath = '/api/query/facetSearchByStoreTypeName';
-  static readonly findFavouriteProductsByCustomerReferenceUsingGETPath = '/api/query/favouriteproductsbycustomerreference/{reference}';
-  static readonly findFavouriteStoresByCustomerReferenceUsingGETPath = '/api/query/favouritestoresbycustomerreference/{reference}';
+  static readonly findFavouriteProductsByCustomerIdpCodeUsingGETPath = '/api/query/favouriteproductsbycustomeridpcode/{idpCode}';
+  static readonly findFavouriteStoresByCustomerIdpCodeUsingGETPath = '/api/query/favouritestoresbycustomeridpcode/{idpCode}';
   static readonly findAllCategoriesUsingGETPath = '/api/query/findAllCategories/{iDPcode}';
   static readonly findAllOrderLinesByOrderIdUsingGETPath = '/api/query/findAllOrderLinesByOrderId/{orderId}';
   static readonly findAuxilaryOrderLineByOrderLineIdUsingGETPath = '/api/query/findAuxilaryOrderLineByOrderLineId/{orderLineId}';
@@ -535,9 +535,9 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
-   * @param params The `QueryResourceService.FindFavouriteProductsByCustomerReferenceUsingGETParams` containing the following parameters:
+   * @param params The `QueryResourceService.FindFavouriteProductsByCustomerIdpCodeUsingGETParams` containing the following parameters:
    *
-   * - `reference`: reference
+   * - `idpCode`: idpCode
    *
    * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    *
@@ -547,7 +547,7 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  findFavouriteProductsByCustomerReferenceUsingGETResponse(params: QueryResourceService.FindFavouriteProductsByCustomerReferenceUsingGETParams): __Observable<__StrictHttpResponse<PageOfFavouriteProduct>> {
+  findFavouriteProductsByCustomerIdpCodeUsingGETResponse(params: QueryResourceService.FindFavouriteProductsByCustomerIdpCodeUsingGETParams): __Observable<__StrictHttpResponse<PageOfFavouriteProduct>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -557,7 +557,7 @@ class QueryResourceService extends __BaseService {
     if (params.page != null) __params = __params.set('page', params.page.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/api/query/favouriteproductsbycustomerreference/${params.reference}`,
+      this.rootUrl + `/api/query/favouriteproductsbycustomeridpcode/${params.idpCode}`,
       __body,
       {
         headers: __headers,
@@ -573,9 +573,9 @@ class QueryResourceService extends __BaseService {
     );
   }
   /**
-   * @param params The `QueryResourceService.FindFavouriteProductsByCustomerReferenceUsingGETParams` containing the following parameters:
+   * @param params The `QueryResourceService.FindFavouriteProductsByCustomerIdpCodeUsingGETParams` containing the following parameters:
    *
-   * - `reference`: reference
+   * - `idpCode`: idpCode
    *
    * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    *
@@ -585,16 +585,16 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  findFavouriteProductsByCustomerReferenceUsingGET(params: QueryResourceService.FindFavouriteProductsByCustomerReferenceUsingGETParams): __Observable<PageOfFavouriteProduct> {
-    return this.findFavouriteProductsByCustomerReferenceUsingGETResponse(params).pipe(
+  findFavouriteProductsByCustomerIdpCodeUsingGET(params: QueryResourceService.FindFavouriteProductsByCustomerIdpCodeUsingGETParams): __Observable<PageOfFavouriteProduct> {
+    return this.findFavouriteProductsByCustomerIdpCodeUsingGETResponse(params).pipe(
       __map(_r => _r.body as PageOfFavouriteProduct)
     );
   }
 
   /**
-   * @param params The `QueryResourceService.FindFavouriteStoresByCustomerReferenceUsingGETParams` containing the following parameters:
+   * @param params The `QueryResourceService.FindFavouriteStoresByCustomerIdpCodeUsingGETParams` containing the following parameters:
    *
-   * - `reference`: reference
+   * - `idpCode`: idpCode
    *
    * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    *
@@ -604,7 +604,7 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  findFavouriteStoresByCustomerReferenceUsingGETResponse(params: QueryResourceService.FindFavouriteStoresByCustomerReferenceUsingGETParams): __Observable<__StrictHttpResponse<PageOfFavouriteStore>> {
+  findFavouriteStoresByCustomerIdpCodeUsingGETResponse(params: QueryResourceService.FindFavouriteStoresByCustomerIdpCodeUsingGETParams): __Observable<__StrictHttpResponse<PageOfFavouriteStore>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -614,7 +614,7 @@ class QueryResourceService extends __BaseService {
     if (params.page != null) __params = __params.set('page', params.page.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/api/query/favouritestoresbycustomerreference/${params.reference}`,
+      this.rootUrl + `/api/query/favouritestoresbycustomeridpcode/${params.idpCode}`,
       __body,
       {
         headers: __headers,
@@ -630,9 +630,9 @@ class QueryResourceService extends __BaseService {
     );
   }
   /**
-   * @param params The `QueryResourceService.FindFavouriteStoresByCustomerReferenceUsingGETParams` containing the following parameters:
+   * @param params The `QueryResourceService.FindFavouriteStoresByCustomerIdpCodeUsingGETParams` containing the following parameters:
    *
-   * - `reference`: reference
+   * - `idpCode`: idpCode
    *
    * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    *
@@ -642,8 +642,8 @@ class QueryResourceService extends __BaseService {
    *
    * @return OK
    */
-  findFavouriteStoresByCustomerReferenceUsingGET(params: QueryResourceService.FindFavouriteStoresByCustomerReferenceUsingGETParams): __Observable<PageOfFavouriteStore> {
-    return this.findFavouriteStoresByCustomerReferenceUsingGETResponse(params).pipe(
+  findFavouriteStoresByCustomerIdpCodeUsingGET(params: QueryResourceService.FindFavouriteStoresByCustomerIdpCodeUsingGETParams): __Observable<PageOfFavouriteStore> {
+    return this.findFavouriteStoresByCustomerIdpCodeUsingGETResponse(params).pipe(
       __map(_r => _r.body as PageOfFavouriteStore)
     );
   }
@@ -2752,14 +2752,14 @@ module QueryResourceService {
   }
 
   /**
-   * Parameters for findFavouriteProductsByCustomerReferenceUsingGET
+   * Parameters for findFavouriteProductsByCustomerIdpCodeUsingGET
    */
-  export interface FindFavouriteProductsByCustomerReferenceUsingGETParams {
+  export interface FindFavouriteProductsByCustomerIdpCodeUsingGETParams {
 
     /**
-     * reference
+     * idpCode
      */
-    reference: string;
+    idpCode: string;
 
     /**
      * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -2778,14 +2778,14 @@ module QueryResourceService {
   }
 
   /**
-   * Parameters for findFavouriteStoresByCustomerReferenceUsingGET
+   * Parameters for findFavouriteStoresByCustomerIdpCodeUsingGET
    */
-  export interface FindFavouriteStoresByCustomerReferenceUsingGETParams {
+  export interface FindFavouriteStoresByCustomerIdpCodeUsingGETParams {
 
     /**
-     * reference
+     * idpCode
      */
-    reference: string;
+    idpCode: string;
 
     /**
      * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
