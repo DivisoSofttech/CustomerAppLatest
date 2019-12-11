@@ -15,8 +15,9 @@ ion-content {
 }
 
 .overflowScroll {
-    height: 100% !important;
+    height: 90% !important;
     overflow: scroll;
+    margin-bottom:10%;
 }
 
 .full-height , .full-height ion-row {

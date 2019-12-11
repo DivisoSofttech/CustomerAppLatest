@@ -55,6 +55,7 @@ export class RestaurantPage implements OnInit {
   ngOnInit() {
     this.checkIfGuest();
     this.getCurrentLocation();
+    this.getStores();
   }
 
   async getStores() {
@@ -65,9 +66,9 @@ export class RestaurantPage implements OnInit {
       this.toggleInfiniteScroll();
       this.filter.getStores(0, (totalElements, totalPages, stores) => {
 
-        this.logger.info('Got Stores ', stores);
+        this.logger.info(this,'Got Stores ', stores);
         if (totalPages > 1) {
-          this.logger.info('Enabling Infinite Scroll');
+          this.logger.info(this,'Enabling Infinite Scroll');
           this.toggleInfiniteScroll();
         }
         this.stores = [];
@@ -75,7 +76,7 @@ export class RestaurantPage implements OnInit {
           this.stores.push(s);
         });
         this.showLoading = false;
-        this.logger.info("Disabling Loader",this.showLoading);
+        this.logger.info(this,"Disabling Loader",this.showLoading);
         this.toggleIonRefresher();
       },
         () => {
@@ -96,11 +97,11 @@ export class RestaurantPage implements OnInit {
   }
 
   loadMoreStores(event) {
-    this.logger.info('Load More Stores if exists');
+    this.logger.info(this,'Load More Stores if exists');
     ++this.page;
     this.filter.getStores(this.page, (totalElements, totalPages, stores) => {
       event.target.complete();
-      this.logger.info('Got Stores Page :', this.page,'----', stores ,);
+      this.logger.info(this,'Got Stores Page :', this.page,'----', stores ,);
       if (this.page === totalPages) {
         this.toggleInfiniteScroll();
       }
@@ -115,7 +116,7 @@ export class RestaurantPage implements OnInit {
   }
 
   doRefresh(event) {
-    this.logger.info('Refreshing Page');
+    this.logger.info(this,'Refreshing Page');
     this.getStores();
   }
 
@@ -124,14 +125,14 @@ export class RestaurantPage implements OnInit {
   }
 
   toggleIonRefresher() {
-    this.logger.info('Disableing Ion Refresher');
+    this.logger.info(this,'Disableing Ion Refresher');
     this.IonRefresher.complete();
   }
 
   toggleFilteromponent(event) {
     this.showFilters = !this.showFilters;
     if (!this.showFilters) {
-      this.logger.info(this,'Closed Filter');
+      this.logger.info(this,this,'Closed Filter');
       this.footer.setcurrentRoute('restaurant');
       this.footer.filterHide = false;
     } else {
@@ -151,12 +152,18 @@ export class RestaurantPage implements OnInit {
         );
         modal.onDidDismiss()
           .then(data => {
-            if(data !== undefined)
-            if (data.data !== undefined && data.data.data !== 'current') {
-              this.updatedLocation(data);
-            } else if (data.data !== undefined && data.data.data === 'current') {
-              this.logger.info('Setting Current Location ', data.data);
-              this.currentPlaceName = '';
+            if(data !== undefined && data.data !== undefined) {
+              this.toggleInfiniteScroll();
+              if(data.data.currentLocation && data.data.locationChanged) {
+                this.logger.info(this,'Setting Current Location ', data);
+                this.filter.setFilter(FILTER_TYPES.DISTANCE_WISE);
+              } else if(!data.data.currentLocation && !data.data.distanceChanged) {
+                this.logger.info(this,'Updating Current Location ' , data);
+                this.updatedLocation(data);
+              } else if(data.data.distanceChanged) {
+                this.logger.info(this,'Distance Changed ', data);
+                this.filter.setFilter(FILTER_TYPES.DISTANCE_WISE);
+              }
             }
           });
         modal.present()
@@ -167,12 +174,12 @@ export class RestaurantPage implements OnInit {
   }
 
   updatedLocation(data) {
-    this.logger.info('Changed Current Location - LatLon ', data);
+    this.logger.info(this,'Changed Current Location - LatLon ', data);
     this.filter.setCoordinates(data.data.latLon);
     this.currentPlaceName = data.data.name;
-    this.logger.info('Setting Distance_wise Filter');
+    this.logger.info(this,'Setting Distance_wise Filter');
     this.filter.setFilter(FILTER_TYPES.DISTANCE_WISE);
-    this.logger.info('Getting Stores');
+    this.logger.info(this,'Getting Stores');
   }
 
   // Fix for Footer
@@ -181,15 +188,15 @@ export class RestaurantPage implements OnInit {
   }
 
   async getCurrentLocation() {
-    this.logger.info('Getting Current Location');
+    this.logger.info(this,'Getting Current Location');
     this.locationService.getLocation()
     .subscribe(value => {
       if(value !== null) {
+        this.logger.info(this,'Fetching Stores for Address' , value);
         this.currentPlaceName = value.name;
         this.filter.setCoordinates(value.coords);
-        this.getStores();
-        this.logger.info('Current Place Name ', this.currentPlaceName);
-        this.logger.info('Getting LatLon for current Location', value.coords);    
+        this.logger.info(this,'Current Place Name ', this.currentPlaceName);
+        this.logger.info(this,'Getting LatLon for current Location', value.coords);    
       }
     });
   }

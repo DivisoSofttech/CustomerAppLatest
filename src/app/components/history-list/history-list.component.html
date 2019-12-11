@@ -17,7 +17,7 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content *ngIf="!selectedOrder">
+<ion-content *ngIf="!selectedOrder" appScrollbarTheme>
         <div
         class="vertical-align-center h30"
         *ngIf="orders.length === 0 && showHistoryLoading === false"
@@ -77,17 +77,17 @@
               color="warning"
                 *ngIf="order.status.name === 'payment-processed-unapproved'"
               >
-                <b> Order Placed</b>
+                Order Placed
               </ion-text>
               <ion-text 
               color="primary"
                *ngIf="order.status.name === 'payment-processed-approved'">
-                <b>Order Approved</b>
+                  Order Approved
               </ion-text>
               <ion-text
               color="success"
                *ngIf="order.status.name === 'delivered'">
-               <b>Delivered</b>
+               Delivered
               </ion-text>
               <p>{{ order.date | date: "medium" }}</p>
               <p>&#8364;{{ order.grandTotal | number: "1.2-2" }}</p>

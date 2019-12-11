@@ -43,7 +43,8 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card *ngFor="let review of rateReviews">
+  <ng-container *ngFor="let review of rateReviews">
+    <ion-card >
       <ion-item lines="full">
           <ion-avatar slot="start">
             <ion-img
@@ -79,5 +80,8 @@
       </ion-grid>
 
   </ion-card>
+  </ng-container>
+  
+  
 
 </ion-list>

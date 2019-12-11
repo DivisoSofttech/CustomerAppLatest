@@ -47,7 +47,7 @@
     "card.io.cordova.mobilesdk": "^2.1.0",
     "com.paypal.cordova.mobilesdk": "^3.5.0",
     "cordova": "^7.1.0",
-    "cordova-android": "^6.4.0",
+    "cordova-android": "^8.0.0",
     "cordova-android-support-gradle-release": "^3.0.1",
     "cordova-browser": "5.0.4",
     "cordova-ios": "^4.5.5",

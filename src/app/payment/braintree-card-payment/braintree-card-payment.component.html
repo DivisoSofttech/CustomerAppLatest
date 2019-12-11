@@ -10,10 +10,10 @@
     <ion-col size="12" class="priceCol" [hidden]="!showLoading">
       <ion-spinner color="primary" name="crescent"></ion-spinner>
     </ion-col>
-    <ion-col size="12" class="ion-padding" [hidden]="showLoading">
+    <ion-col size="12" class="ion-padding mg-50" [hidden]="showLoading">
       <div id="dropin-container"></div>
     </ion-col>
-    <ion-col size="12" class="ion-padding">
+    <ion-col size="12" class="ion-padding posFixed">
       <ion-button
         expand="block"
         *ngIf="instanceWeb && !hidePurchase"

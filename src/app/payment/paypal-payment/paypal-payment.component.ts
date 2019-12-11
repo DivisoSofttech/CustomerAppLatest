@@ -110,6 +110,7 @@ export class PaypalPaymentComponent implements OnInit {
                 );
               },
               () => {
+                this.dismissEvent.emit();
                 console.log('Error in configuration');
                 // this.displayModalService.presentMakePayment();
                 this.util.createToast('Payment failed please try again', 'information-circle-outline');
@@ -118,6 +119,7 @@ export class PaypalPaymentComponent implements OnInit {
             );
         },
         () => {
+          this.dismissEvent.emit();
           console.log('OnRejectionPaypal&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
                     console.log(
             'Error in initialization, maybe PayPal isn\'t supported or something else'

@@ -1,8 +1,7 @@
-import { NGXLogger } from 'ngx-logger';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
-import { Component, OnInit, Input, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { OpenTask, Notification } from 'src/app/api/models';
+import { Notification } from 'src/app/api/models';
 import { ModalController, IonInfiniteScroll } from '@ionic/angular';
 import { Util } from 'src/app/services/util';
 import { DatePipe } from '@angular/common';
@@ -43,6 +42,7 @@ export class NotificationComponent implements OnInit  , OnDestroy {
     this.showLoading = true;
     this.getUser();
   }
+  
 
   getUser() {
     this.storage.get('user')
@@ -120,7 +120,6 @@ export class NotificationComponent implements OnInit  , OnDestroy {
     }
   }
 
-  
   dismiss() {
     this.modalController.dismiss();
   }
@@ -132,6 +131,11 @@ export class NotificationComponent implements OnInit  , OnDestroy {
   }
 
   async refresh(event) {
+    this.notifications = [];  
+    this.notificationSorted = {
+      'today':[]
+    };
+    this.notificationSortedKeys = ['today']
     this.logger.info('Dorefresh is working');
     await this.getUser();
     event.target.complete();

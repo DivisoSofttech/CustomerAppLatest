@@ -2,6 +2,7 @@ import { QueryResourceService } from 'src/app/api/services/query-resource.servic
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { LogService } from './log.service';
+import { LocationService } from './location-service';
 
 export enum FILTER_TYPES {
 
@@ -38,7 +39,8 @@ export class FilterService {
 
   constructor(
     private queryResource: QueryResourceService,
-    private logger: LogService
+    private logger: LogService,
+    private location: LocationService
   ) { }
 
   public getSubscription() {

@@ -31,12 +31,13 @@
 <ion-content>
 
   <ion-buttons>
-    <ion-searchbar #placeSearch debounce="1500" placeholder="Enter Location Name"
+    <ion-searchbar #placeSearch  placeholder="Enter Location Name"
       (ionCancel)="close()" (ionChange)="getPlacePredictions($event)"></ion-searchbar>
   </ion-buttons>
 
   <!--List Of Available place Suggestions-->
   <ion-spinner color="primary" name="dots" *ngIf="showSpinner"></ion-spinner>
+
   <ion-list *ngIf="searchTerm === '' && recents.length > 0">
     <ion-list-header>
       <ion-label>
@@ -50,10 +51,11 @@
     </ion-item>
   </ion-list>
 
-  <ion-list *ngIf="places.length > 0 && !showSpinner">
+  <ion-list *ngIf="places.length > 0">
     <ion-item *ngFor="let place of places" (click)="selectPlace(place)">
       {{ place.description }}</ion-item>
   </ion-list>
+
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="getCurrentLocation()">
       <ion-icon name="locate"></ion-icon>

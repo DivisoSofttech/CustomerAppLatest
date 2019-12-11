@@ -1,12 +1,12 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { LocationService } from 'src/app/services/location-service';
 import { ModalController, Platform } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
 import { Subscription } from 'rxjs';
 import { RecentService, RecentType } from 'src/app/services/recent.service';
 import { FilterService, FILTER_TYPES } from 'src/app/services/filter.service';
 import { SharedDataService } from 'src/app/services/shared-data.service';
+import { LogService } from 'src/app/services/log.service';
 
 @Component({
   selector: 'app-place-suggestion',
@@ -27,16 +27,18 @@ export class PlaceSuggestionComponent implements OnInit , OnDestroy {
 
   distance = 10;
 
+  oldDistance = 0;
+
   private unregisterBackAction: Subscription;
 
   constructor(
-    private logger: NGXLogger,
+    private logger: LogService,
     private locationService: LocationService,
     private modalController: ModalController,
     private sharedData: SharedDataService,
-    private platform: Platform,
     private recentService: RecentService,
-    private filter: FilterService
+    private filter: FilterService,
+    private changeDetectorRef: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -45,6 +47,7 @@ export class PlaceSuggestionComponent implements OnInit , OnDestroy {
     .then(data => {
       if(data !== null) {
         this.distance = data;
+        this.oldDistance = data;
       }
     })
   }
@@ -52,13 +55,12 @@ export class PlaceSuggestionComponent implements OnInit , OnDestroy {
   distanceChanged(event) {
     this.sharedData.saveToStorage('distance_filter' , this.distance);
     this.filter.distance = event.detail.value;
-    this.filter.setFilter(FILTER_TYPES.DISTANCE_WISE);
   }
 
   getRecents() {
     this.recentService.getRecentLocations()
     .subscribe(data => {
-      this.logger.info('Found Recent Locations ' , data);
+      this.logger.info(this,'Found Recent Locations ' , data);
       if(data !== null) {
         this.recents = data;
       }
@@ -75,54 +77,65 @@ export class PlaceSuggestionComponent implements OnInit , OnDestroy {
 
   closeCurrent() {
     this.modalController.dismiss({
-      data: 'current'
+      currentLocation:true,
+      distanceChanged:true,
+      locationChanged: true
     });
   }
 
   getPlacePredictions(event) {
     if (event.detail.value.replace(/\s/g, '').length) {
-      this.logger.info('Getting Place Suggestions' , event);
+      this.logger.info(this,'Getting Place Suggestions' , event);
       this.places = [];
       this.searchTerm = event.detail.value;
-      this.logger.info(event.detail.value);
+      this.logger.info(this,event.detail.value);
       const searchterm = event.detail.value;
       if (searchterm === '' || searchterm === null) {
         return;
       } else {
-        this.logger.info('Finding Places Searchterm ', searchterm);
+        this.logger.info(this,'Finding Places Searchterm ', searchterm);
         this.showSpinner = true;
         this.locationService.getPredictions(searchterm).subscribe(res => {
-          this.logger.info('Got Place Suggestions', res);
+          this.logger.info(this,'Got Place Suggestions', res);
           this.places = res;
+          this.logger.info(this,'Assigned Places', res);
           this.showSpinner=false;
+          this.changeDetectorRef.detectChanges();
+          this.logger.info(this,'Spinner Disabled' , this.showSpinner);
         });    
     }
     }
   }
 
   selectPlace(place) {
-    this.logger.info('Place Selected', place);
+    this.logger.info(this,'Place Selected', place);
     this.places = [];
     this.currentPlaceName = place.description;
     const found = this.recents.some(el => el.data.description === place.description);
     if(!found) {
       this.saveToRecent({data:place , type:RecentType.LOCATION});
     }
-    this.logger.info('Getting LatLon for selected Location');
+    this.logger.info(this,'Getting LatLon for selected Location');
     this.locationService
       .geocodeAddress(place.place_id)
       .then(data => {
-        this.logger.info('Found LatLon for selected Location', data);
+        this.logger.info(this,'Found LatLon for selected Location', data);
         // Dismiss Data here
         this.filter.distance = this.distance;
         this.sharedData.saveToStorage('location',{
           latLon: data,
           name: this.currentPlaceName,
-          coords:data
+          coords:data,
+          currentLocation: false,
+          distanceChanged: true,
+          locationChanged: true
         })
         this.modalController.dismiss({
           latLon: data,
-          name: this.currentPlaceName
+          name: this.currentPlaceName,
+          currentLocation: false,
+          distanceChanged: false,
+          locationChanged: true
         });
       })
       .catch(err => {
@@ -136,7 +149,11 @@ export class PlaceSuggestionComponent implements OnInit , OnDestroy {
   }
 
   dismiss() {
-    this.modalController.dismiss();
+    this.modalController.dismiss({
+      distanceChanged: this.distance !== this.oldDistance?true:false,
+      currentLocation: true,
+      locationChanged: false
+    });
   }
 
   ngOnDestroy() {

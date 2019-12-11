@@ -123,15 +123,14 @@ export class ReviewComponent implements OnInit {
         this.review.storeId= this.store.id;
         this.review.userName = this.username;
         this.review.date = new Date().toISOString();
-        if (this.review.review !== '' && this.review.review !== null &&
-        this.review.rating > 0) {
+        if (this.review.rating > 0) {
           this.logger.info("Saving" , this.review,this.store);
           this.commandResource
             .createUserRatingReviewUsingPOST(this.review)
             .subscribe(
-              async result => {
+              result => {
                 this.logger.info(result);
-                await this.getRatingReview(0);
+                this.getRatingReview(0);
                 this.rateReviews = [];
                 this.review.review = '';
                 loader.dismiss();

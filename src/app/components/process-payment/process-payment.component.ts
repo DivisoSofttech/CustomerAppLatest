@@ -5,6 +5,7 @@ import { PaymentSuccessfullInfoComponent } from '../payment-successfull-info/pay
 import { Subscription } from 'rxjs';
 import { LogService } from 'src/app/services/log.service';
 import { PaymentNavService } from 'src/app/services/payment-nav.service';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-process-payment',
@@ -25,7 +26,8 @@ export class ProcessPaymentComponent implements OnInit, OnDestroy {
     private paymentNav: PaymentNavService,
     private orderService: OrderService,
     private util: Util,
-    private logger: LogService
+    private logger: LogService,
+    private navController: NavController
   ) { }
 
   ngOnInit() {
@@ -94,6 +96,7 @@ export class ProcessPaymentComponent implements OnInit, OnDestroy {
   }
 
   navigateForward() {
+    this.navController.navigateForward('/restaurant');
     this.paymentNav.nav.setRoot(PaymentSuccessfullInfoComponent);
   }
 

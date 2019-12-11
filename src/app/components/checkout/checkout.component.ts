@@ -36,7 +36,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     private util: Util,
     private modalController: ModalController,
     private navController: NavController,
-    private displayModalService: ModalDisplayUtilService,
     private sharedData: SharedDataService,
     private errorService: ErrorService,
     private popoverController: PopoverController
@@ -114,7 +113,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   async startPayment() {
     const modal = await this.modalController.create({
-      component: PaymentflowNavComponent
+      component: PaymentflowNavComponent,
+      backdropDismiss: false
     });
     return await modal.present();
   }

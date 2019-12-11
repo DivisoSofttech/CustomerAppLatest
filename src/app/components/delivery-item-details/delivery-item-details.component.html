@@ -2,7 +2,7 @@
 *ngIf="orders.length > 0 && productsGot === false"
 [type]="'delivery'"></app-loading>
 
-<ion-list can-swipe="true" *ngIf="orders.length > 0 && productsGot === true" class="page-parent
+<ion-list can-swipe="true" *ngIf="orders.length > 0 && productsGot === true" class="page-parent margin-bottom
   desktop-full-width">
   <ion-card *ngFor="let orderLine of orders">
     <!--Main Product Start -->

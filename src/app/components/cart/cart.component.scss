@@ -4,13 +4,16 @@
 }
 
 ion-footer {
-    position: sticky;
+    position: bottom;
     z-index: 1000;
     width: 100%;
     bottom: 0px;
     padding: 1px;
+    height: 80px;
     background: white;
+    position: fixed;
 }
+
 
 .round-button {
     border-radius: 41px;

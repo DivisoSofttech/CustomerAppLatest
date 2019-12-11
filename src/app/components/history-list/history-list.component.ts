@@ -1,4 +1,4 @@
-import { ModalController, IonInfiniteScroll, NavController } from '@ionic/angular';
+import { ModalController, IonInfiniteScroll, NavController, Platform } from '@ionic/angular';
 import { MakePaymentComponent } from './../make-payment/make-payment.component';
 import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services';
@@ -37,11 +37,20 @@ export class HistoryListComponent implements OnInit , OnDestroy {
     private logger: LogService,
     private modalController: ModalController,
     private navController:NavController,
-    private util: Util
+    private util: Util,
+    private platform: Platform
       ) { }
 
+  
   ngOnInit() {
     this.getOrders(0, 'event');
+    this.backButtonHandler();
+  }
+
+  backButtonHandler() {
+    this.platform.backButton.subscribe(() => {
+      this.selectedOrder = undefined;
+    });
   }
 
   confirmOrder(order: Order) {
