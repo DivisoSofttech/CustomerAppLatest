@@ -1,4 +1,3 @@
-import { NGXLogger } from 'ngx-logger';
 import { DeliveryItemDetailsComponent } from './../delivery-item-details/delivery-item-details.component';
 import { Order } from './../../api/models/order';
 import { AllergyComponent } from './../allergy/allergy.component';
@@ -83,10 +82,8 @@ export class CartComponent implements OnInit, OnDestroy {
     private navController: NavController,
     private logger: LogService,
     private util: Util,
-    private decimalPipe: DecimalPipe,
     private popoverController: PopoverController,
     private closedPipe: ClosedPipe,
-    private datePipe: DatePipe
   ) { }
 
   ngOnInit() {
@@ -259,12 +256,12 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   checkRestaurantStatus(deliveryType) {
+
     this.logger.info(this, 'Checking if Store is Closed', this.store);
-    this.checkClosedStatus();
     this.checkPreorderStatus();
+    this.checkClosedStatus();
     if (this.isClosed && this.isOrderAvailable) {
       this.preorderPopover((data) => {
-        console.error(data);
         if (data.data === true) this.continue(deliveryType);
       });
     } else if (this.isClosed && !this.isOrderAvailable) {

@@ -62,7 +62,10 @@
   <ion-col size="12" class="ion-no-padding">
     <ion-spinner name="circles" class="center" *ngIf="categoryLoading">
     </ion-spinner>
-    <div class="categories" *ngIf="showCategoryWiseProducts === true">
+    <div *ngIf="emptyStore" class="emptystore ">
+      Empty Store
+    </div>
+    <div class="categories" *ngIf="showCategoryWiseProducts === true && !emptyStore">
       <div class="category" *ngFor="let category of categories">
         <ion-list
           [style.display]="(selectedCategory === 'All' || selectedCategory === category.name)?true:false"

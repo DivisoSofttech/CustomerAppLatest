@@ -20,6 +20,12 @@
     padding-top:250px;
   }
 
+  .posSticky {
+    position: sticky;
+    top: 0px;
+    z-index: 1000;
+  }
+
   @media (min-width: 1280px) and (max-width: 2280px) {
     //CSS
 
@@ -33,3 +39,4 @@
       background: white;
     }
   }
+

@@ -37,6 +37,8 @@ export class StorePage implements OnInit , OnDestroy {
 
   showCategoryWiseProducts = true;
 
+  emptyStore = false;
+
   categories: Category[] = [];
 
   entry = [];
@@ -168,6 +170,9 @@ export class StorePage implements OnInit , OnDestroy {
       .subscribe(result => {
         this.logger.info(this,this,'Got Categories', result);
         let j = 0;
+        if(i === 0 && result.content.length === 0) {
+          this.emptyStore = true;
+        }
         result.content.forEach(c => {
           this.categories.push(c);
           if(i < 1 && j < 2 && this.platform.width() < 1280 ) {

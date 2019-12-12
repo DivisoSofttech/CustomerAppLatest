@@ -42,10 +42,7 @@ export class PaymentSuccessfullInfoComponent implements OnInit , OnDestroy {
     this.orderService.resource = {};
     this.orderService.offer = undefined;
     this.orderService.deliveryInfo = {};
-    this.sharedData.getData('user').then(user => {
-      this.notificationService.getNotificationCount(user.preferred_username);
-      this.dismiss();
-    });
+    this.dismiss();
   }
 
   ngOnInit() {
