@@ -32,14 +32,14 @@ export class PreorderComponent implements OnInit {
 
   ngOnInit() {
 
-    this.logger.info(this,'>>>>>>>>>>>FromTime',this.store.openingTime, ' toTime>>>>>>>>>>>',this.store.closingTime);
+    this.logger.info(this, '>>>>>>>>>>>FromTime', this.store.openingTime, ' toTime>>>>>>>>>>>', this.store.closingTime);
 
     let ftime = moment(this.store.openingTime);
-    let ttime =  moment(this.store.closingTime);
-  
+    let ttime = moment(this.store.closingTime);
+
     this.fromTime = ftime.format("hh:mm")
     this.toTime = ttime.format("hh:mm");
-    this.logger.info(this,'From Time>>>>>',this.fromTime ,' toTime>>>>>>', this.toTime);
+    this.logger.info(this, 'From Time>>>>>', this.fromTime, ' toTime>>>>>>', this.toTime);
   }
 
   test() {
@@ -48,15 +48,27 @@ export class PreorderComponent implements OnInit {
 
 
   dismissTrue() {
-    this.logger.info(this,'Selected Time in 12 Hours' , this.selectedTime);
-    const tempDate = new Date('01/01/1970 ');
-    this.logger.info(this,'Selected Time in Date Format' , tempDate);
-    this.selectedTime = tempDate.toISOString();
-    this.logger.info(this,'Selected Time in IsoString' , this.selectedTime);
-    this.cartService.preOrderDate=this.selectedTime;
+    const tempTime = moment('2017-03-13 ' + this.convert12to24(this.selectedTime))
+    this.logger.info(this,'Seleceted Time After Conversion' , tempTime.toDate());
+    this.cartService.preOrderDate = tempTime.toDate().toISOString();
     this.popoverController.dismiss(true);
   }
 
+  convert12to24(time12h) {
+    const [time, modifier] = time12h.split(' ');
+
+    let [hours, minutes] = time.split(':');
+
+    if (hours === '12') {
+      hours = '00';
+    }
+
+    if (modifier === 'PM') {
+      hours = parseInt(hours, 10) + 12;
+    }
+
+    return `${hours}:${minutes}`;
+  }
 
   dismiss() {
     this.popoverController.dismiss();

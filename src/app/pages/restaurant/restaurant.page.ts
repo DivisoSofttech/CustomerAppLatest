@@ -195,6 +195,7 @@ export class RestaurantPage implements OnInit {
         this.logger.info(this,'Fetching Stores for Address' , value);
         this.currentPlaceName = value.name;
         this.filter.setCoordinates(value.coords);
+        this.filter.setFilter(FILTER_TYPES.DISTANCE_WISE);
         this.logger.info(this,'Current Place Name ', this.currentPlaceName);
         this.logger.info(this,'Getting LatLon for current Location', value.coords);    
       }

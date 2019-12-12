@@ -327,6 +327,7 @@ export class CartComponent implements OnInit, OnDestroy {
   updateOrder() {
     console.log('Current status is ', this.getStatus());
     this.orderService.order.status = this.getStatus();
+    this.orderService.order.preOrderDate = this.cart.preOrderDate ? this.cart.preOrderDate : null,
     this.orderLinesUpdated = [];
     this.cart.orderLines.forEach(orderLineUpdated => {
       let updated ;

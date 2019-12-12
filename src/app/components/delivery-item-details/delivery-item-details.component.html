@@ -119,7 +119,7 @@
       <ion-text text-start>Delivery charge</ion-text>
       <ion-label text-center> </ion-label>
       <ion-label text-end *ngIf="storeSetting.deliveryCharge === 0">Free</ion-label>
-      <ion-label text-end *ngIf="storeSetting.deliveryCharge !== 0">+ &euro;{{ storeSetting.deliveryCharge | number: "1.1-2" }}</ion-label>
+      <ion-label text-end *ngIf="storeSetting.deliveryCharge !== 0">+ &euro;{{ storeSetting.deliveryCharge | number: "1.2-2" }}</ion-label>
     </ion-item>
     <ion-item *ngIf="storeSetting !== undefined" lines="full">
        <ion-label text-start>

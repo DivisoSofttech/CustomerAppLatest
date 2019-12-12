@@ -274,6 +274,7 @@ export class CartService {
     this.orderLines = [];
     this.currentShopId = 0;
     this.currentShop = undefined;
+    this.preOrderDate = null;
     this.sharedData.deleteData('cart');
     this.updateCart();
   }

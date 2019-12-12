@@ -1,12 +1,11 @@
 import { CartService } from '../../services/cart.service';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { OrderLine, Store, Order, AuxilaryLineItem, Offer } from 'src/app/api/models';
+import { OrderLine, Store,AuxilaryLineItem, Offer } from 'src/app/api/models';
 import { QueryResourceService } from 'src/app/api/services';
 import { NGXLogger } from 'ngx-logger';
 import { ShowAuxilaryModalComponent } from '../show-auxilary-modal/show-auxilary-modal.component';
 import { PopoverController } from '@ionic/angular';
 import { OrderService } from 'src/app/services/order.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { DecimalPipe } from '@angular/common';
 import { Util } from 'src/app/services/util';
 import { ErrorService } from 'src/app/services/error.service';
@@ -79,9 +78,8 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
       this.storeSetting = this.cart.currentShop.storeSettings;
       this.subTotal = this.cart.subTotal;
       if (this.storeSetting !== undefined) {
-        this.logger.info('Adding Delivery Charge With Subtotal' , this.subTotal , this.storeSetting.deliveryCharge);
         this.total = this.decimalPipe.transform((Number(this.subTotal) + this.storeSetting.deliveryCharge), '1.2-2' );
-
+        this.logger.info('Adding Delivery Charge With Subtotal' ,Number(this.subTotal),'--', this.subTotal , this.storeSetting.deliveryCharge);
       }
       this.store = this.cart.currentShop;
       this.auxilaryItems = this.cart.auxilaryItems;
@@ -93,6 +91,7 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
   setCartTotal() {
     this.cart.total = this.total;
   }
+
   increaseProductCount(product , orderLine) {
 
     this.cart.increase(orderLine , product);

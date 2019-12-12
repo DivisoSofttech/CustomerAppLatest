@@ -4,7 +4,6 @@ import { Component, OnInit, OnDestroy} from '@angular/core';
 import { OrderService } from 'src/app/services/order.service';
 import { Order } from 'src/app/api/models';
 import { ModalController, PopoverController, NavController } from '@ionic/angular';
-import { ModalDisplayUtilService } from 'src/app/services/modal-display-util.service';
 import { Subscription } from 'rxjs';
 import { AddressListComponent } from '../address-list/address-list.component';
 import { ErrorService } from 'src/app/services/error.service';
