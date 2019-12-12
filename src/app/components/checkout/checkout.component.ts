@@ -11,6 +11,7 @@ import { ErrorService } from 'src/app/services/error.service';
 import { LogService } from 'src/app/services/log.service';
 import { PaymentflowNavComponent } from '../paymentflow-nav/paymentflow-nav.component';
 import { WaitInformatonPopoverComponent } from '../wait-informaton-popover/wait-informaton-popover.component';
+import { QueryResourceService } from 'src/app/api/services';
 
 @Component({
   selector: 'app-checkout',
@@ -38,6 +39,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     private navController: NavController,
     private sharedData: SharedDataService,
     private errorService: ErrorService,
+    private queryResource: QueryResourceService,
     private popoverController: PopoverController
   ) { }
 
@@ -75,6 +77,18 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   getCustomer() {
     this.logger.info(this.orderService.customer);
     this.customer = this.orderService.customer;
+    this.sharedData.getData('customer')
+    .then(customer => {
+      this.sharedData.getData('contact')
+      .then(data => {
+        if(!data) {
+          this.queryResource.findContactByIdUsingGET(customer.contactId)
+          .subscribe(contact => {
+            this.sharedData.saveToStorage('contact',contact);
+          });
+        }
+      })  
+    })
     this.getAddress();
   }
 

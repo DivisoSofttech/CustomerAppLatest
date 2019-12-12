@@ -80,7 +80,7 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
       this.subTotal = this.cart.subTotal;
       if (this.storeSetting !== undefined) {
         this.logger.info('Adding Delivery Charge With Subtotal' , this.subTotal , this.storeSetting.deliveryCharge);
-        this.total = this.decimalPipe.transform((this.subTotal + this.storeSetting.deliveryCharge), '1.2-2' );
+        this.total = this.decimalPipe.transform((Number(this.subTotal) + this.storeSetting.deliveryCharge), '1.2-2' );
 
       }
       this.store = this.cart.currentShop;
@@ -203,7 +203,7 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
     this.util.createCustomLoader('circles', 'Fetching Offers').then(loader => {
     loader.present();
     let offerPrice;
-    offerPrice = this.decimalPipe.transform(this.subTotal, '1.1-2');
+    offerPrice = this.decimalPipe.transform(Number(this.subTotal), '1.1-2');
     this.orderService.claimMyOffer(offerPrice)
     .then(orderBehaviour => {
       orderBehaviour.subscribe(response => {

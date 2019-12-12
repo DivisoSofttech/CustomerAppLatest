@@ -1,20 +1,15 @@
 import { CartService } from 'src/app/services/cart.service';
 import { Injectable, OnInit, OnDestroy } from '@angular/core';
 import { CommandResourceService } from '../api/services';
-import { CommandResource, Order, DeliveryInfo, Address, Offer } from '../api/models';
+import { CommandResource, Order, DeliveryInfo, Offer } from '../api/models';
 import { Storage } from '@ionic/storage';
 import { NGXLogger } from 'ngx-logger';
 import { Util } from './util';
-import { PaymentSuccessfullInfoComponent } from '../components/payment-successfull-info/payment-successfull-info.component';
-import { ModalController } from '@ionic/angular';
-import { MakePaymentComponent } from '../components/make-payment/make-payment.component';
 import { BehaviorSubject } from 'rxjs';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { SharedDataService } from './shared-data.service';
 import { KeycloakService } from './security/keycloak.service';
 import { DecimalPipe } from '@angular/common';
-import { PaymentNavService } from './payment-nav.service';
-
 
 @Injectable({
   providedIn: 'root'
@@ -131,8 +126,8 @@ export class OrderService implements OnInit , OnDestroy {
   deleteAuxilaryOrderLine(auxilaryOrderLineId) {
     this.logger.info('Entering into delete auxilary with id ', auxilaryOrderLineId);
     return this.commandResourceService.deleteAuxilaryOrderLineUsingDELETE(auxilaryOrderLineId);
-
   }
+  
   initiatePaypalPayment() {
     return this.commandResourceService.initiatePaymentUsingPOST({
       intent: 'sale',
@@ -199,8 +194,8 @@ export class OrderService implements OnInit , OnDestroy {
   }
 
   setOrder(order) {
-    order.grandTotal = this.decimalPipe.transform(order.grandTotal, '1.2-2');
-    order.subTotal = this.decimalPipe.transform(order.subTotal, '1.2-2');
+    order.grandTotal = this.decimalPipe.transform(Number(order.grandTotal), '1.2-2');
+    order.subTotal = this.decimalPipe.transform(Number(order.subTotal), '1.2-2');
     this.order = order;
   }
 

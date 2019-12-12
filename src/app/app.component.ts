@@ -13,6 +13,8 @@ import { LogService } from './services/log.service';
 import {APP_SIDE_MENU} from './configs/app-side-menu';
 import { RecentService } from './services/recent.service';
 import { ErrorService } from './services/error.service';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
 
 
 @Component({
@@ -51,6 +53,7 @@ export class AppComponent {
     private router: Router,
     private guestUserService: GuestUserService,
   ) {
+    registerLocaleData(localeFr, 'fr');
 
     this.getCurrentStore();
     this.appPages = APP_SIDE_MENU;

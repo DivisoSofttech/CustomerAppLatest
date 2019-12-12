@@ -18,7 +18,6 @@ import { OrderService } from 'src/app/services/order.service';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { LoginSignupComponent } from '../login-signup/login-signup.component';
 import { Subscription } from 'rxjs';
-import { DecimalPipe, DatePipe } from '@angular/common';
 import { PreorderComponent } from '../preorder/preorder.component';
 import { ClosedPipe } from 'src/app/pipes/closed.pipe';
 import { LogService } from 'src/app/services/log.service';

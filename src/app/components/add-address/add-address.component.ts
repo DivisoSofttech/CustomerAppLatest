@@ -5,6 +5,7 @@ import { CommandResourceService } from 'src/app/api/services';
 import { Util } from 'src/app/services/util';
 import { SharedDataService } from 'src/app/services/shared-data.service';
 import { LogService } from 'src/app/services/log.service';
+import { ContactDTO } from 'src/app/api/models';
 
 @Component({
   selector: 'app-add-address',
@@ -21,6 +22,8 @@ export class AddAddressComponent implements OnInit {
 
   user;
 
+  contact: ContactDTO;
+
   constructor(
     private modalController: ModalController,
     private commandResourceService: CommandResourceService,
@@ -35,6 +38,17 @@ export class AddAddressComponent implements OnInit {
     this.createAddressForm();
   }
 
+  getContact() {
+    this.sharedDataService.getData('contact')
+    .then(contact => {
+      if(contact) {
+        this.contact = contact;
+        this.addressForm.patchValue({'email': this.contact.email});
+        this.addressForm.patchValue({'phone':this.contact.mobileNumber})
+        this.addressForm.patchValue({'name':this.user.name})
+      }
+    })
+  }
 
   createAddressForm() {
     this.addressForm = this.formBuilder.group({
@@ -56,6 +70,7 @@ export class AddAddressComponent implements OnInit {
     this.sharedDataService.getData('user')
       .then(_user => {
         this.user = _user;
+        this.getContact();
       });
   }
 

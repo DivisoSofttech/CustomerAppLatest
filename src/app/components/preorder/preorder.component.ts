@@ -19,6 +19,10 @@ export class PreorderComponent implements OnInit {
 
   @Input() store: Store;
 
+  hourArray = [];
+
+  minuteArray = [];
+
   constructor(
     private popoverController: PopoverController,
     private logger: LogService,
@@ -32,14 +36,14 @@ export class PreorderComponent implements OnInit {
 
     let ftime = moment(this.store.openingTime);
     let ttime =  moment(this.store.closingTime);
-
-    if(ftime.isAfter(ttime)) {
-      this.logger.info(this,'Adding one day tot ttime')
-      ttime.add(1,'day');
-    }
-    this.fromTime = ftime.format()
-    this.toTime = ttime.format();
+  
+    this.fromTime = ftime.format("hh:mm")
+    this.toTime = ttime.format("hh:mm");
     this.logger.info(this,'From Time>>>>>',this.fromTime ,' toTime>>>>>>', this.toTime);
+  }
+
+  test() {
+    console.error('sksjkjsk');
   }
 
 

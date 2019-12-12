@@ -29,6 +29,8 @@ export class CartService {
   behaviourStore = new BehaviorSubject<Store>(this.currentShop);
   preOrderDate;
 
+  dataSaveTimer = null;
+  
   constructor(
     private alertController: AlertController,
     private queryResource: QueryResourceService,
@@ -47,11 +49,11 @@ export class CartService {
     });
   }
 
-  saveCartDetailsToSharedMemory() {
+  async saveCartDetailsToSharedMemory() {
     this.observableTickets.subscribe(data => {
       if (data !== undefined && data !== null) {
         if (data.length !== 0) {
-          this.sharedData.saveToStorage('cart', {
+        this.sharedData.saveToStorage('cart', {
             storeId: this.storeId,
             orderLines: this.orderLines,
             currentShop: this.currentShop,
@@ -256,7 +258,16 @@ export class CartService {
     // });
     this.observableTickets.next(this.orderLines);
     this.observablePrice.next(this.subTotal);
-    this.saveCartDetailsToSharedMemory();
+    
+    if(!this.dataSaveTimer) {
+      this.logger.info(this,'Setting Timer to Save Cart Details');
+      this.dataSaveTimer = setTimeout(()=>{
+        this.logger.info('Save Cart Details To Memory');
+        this.saveCartDetailsToSharedMemory();
+        clearTimeout(this.dataSaveTimer);
+        this.dataSaveTimer = null;
+      },10000);
+    }
   }
 
   emptyCart() {
