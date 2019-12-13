@@ -10,6 +10,7 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { SharedDataService } from './shared-data.service';
 import { KeycloakService } from './security/keycloak.service';
 import { DecimalPipe } from '@angular/common';
+import { NoCommaPipe } from '../pipes/no-comma.pipe';
 
 @Injectable({
   providedIn: 'root'
@@ -28,14 +29,11 @@ export class OrderService implements OnInit , OnDestroy {
   keycloakSubscription: any;
   constructor(
     private commandResourceService: CommandResourceService,
-    private storage: Storage,
-    private cart: CartService,
     private logger: NGXLogger,
-    private oauthService: OAuthService,
     private util: Util,
-    private sharedData: SharedDataService,
     private keycloakService: KeycloakService,
     private decimalPipe: DecimalPipe,
+    private noCommaPipe: NoCommaPipe
   ) {
     this.getCustomer();
   }
@@ -196,6 +194,8 @@ export class OrderService implements OnInit , OnDestroy {
   setOrder(order) {
     order.grandTotal = this.decimalPipe.transform(Number(order.grandTotal), '1.2-2');
     order.subTotal = this.decimalPipe.transform(Number(order.subTotal), '1.2-2');
+    order.grandTotal = this.noCommaPipe.transform(order.grandTotal);
+    order.subTotal = this.noCommaPipe.transform(order.subTotal);
     this.order = order;
   }
 

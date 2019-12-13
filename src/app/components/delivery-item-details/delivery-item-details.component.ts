@@ -9,6 +9,7 @@ import { OrderService } from 'src/app/services/order.service';
 import { DecimalPipe } from '@angular/common';
 import { Util } from 'src/app/services/util';
 import { ErrorService } from 'src/app/services/error.service';
+import { NoCommaPipe } from 'src/app/pipes/no-comma.pipe';
 
 @Component({
   selector: 'app-delivery-item-details',
@@ -57,8 +58,9 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
     private popover: PopoverController,
     private orderService: OrderService,
     private decimalPipe: DecimalPipe,
+    private noCommaPipe: NoCommaPipe,
     private util: Util,
-    private errorService: ErrorService
+    private errorService: ErrorService,
   ) {}
 
   ngOnInit() {
@@ -77,9 +79,11 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
       this.orders = data;
       this.storeSetting = this.cart.currentShop.storeSettings;
       this.subTotal = this.cart.subTotal;
-      if (this.storeSetting !== undefined) {
-        this.total = this.decimalPipe.transform((Number(this.subTotal) + this.storeSetting.deliveryCharge), '1.2-2' );
-        this.logger.info('Adding Delivery Charge With Subtotal' ,Number(this.subTotal),'--', this.subTotal , this.storeSetting.deliveryCharge);
+      this.subTotal = this.noCommaPipe.transform(this.subTotal);
+      if (this.storeSetting !== undefined) {  
+        this.total = this.decimalPipe.transform((this.subTotal + this.storeSetting.deliveryCharge), '1.2-2' );
+        this.total = this.noCommaPipe.transform(this.total);
+        this.logger.info('Adding Delivery Charge With Subtotal' ,this.subTotal,'--', this.subTotal , this.storeSetting.deliveryCharge);
       }
       this.store = this.cart.currentShop;
       this.auxilaryItems = this.cart.auxilaryItems;
@@ -203,6 +207,7 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
     loader.present();
     let offerPrice;
     offerPrice = this.decimalPipe.transform(Number(this.subTotal), '1.1-2');
+    offerPrice = this.noCommaPipe.transform(offerPrice);
     this.orderService.claimMyOffer(offerPrice)
     .then(orderBehaviour => {
       orderBehaviour.subscribe(response => {
@@ -216,10 +221,11 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
           this.logger.info('One offer available ', response.promoCode);
           this.offer = response;
           this.total = this.decimalPipe.transform(this.total - response.orderDiscountAmount, '1.2-2');
+          this.total = this.noCommaPipe.transform(this.total);
           this.setCartTotal();
           const myOffer: Offer = {
             offerRef : response.promoCode,
-            orderDiscountAmount: parseFloat(this.decimalPipe.transform(response.orderDiscountAmount, '1.1-2')),
+            orderDiscountAmount: this.noCommaPipe.transform(this.decimalPipe.transform(response.orderDiscountAmount, '1.1-2')),
             description: response.claimedDate
           };
           this.orderService.setOffer(myOffer);

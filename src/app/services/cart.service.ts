@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Product, StockCurrent, OrderLine, Store, AuxilaryLineItem } from '../api/models';
 import { BehaviorSubject } from 'rxjs';
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController} from '@ionic/angular';
 import { QueryResourceService } from '../api/services';
 import { Util } from './util';
 import { SharedDataService } from './shared-data.service';
@@ -262,11 +262,11 @@ export class CartService {
     if(!this.dataSaveTimer) {
       this.logger.info(this,'Setting Timer to Save Cart Details');
       this.dataSaveTimer = setTimeout(()=>{
-        this.logger.info('Save Cart Details To Memory');
+        console.error('Save Cart Details To Memory');
         this.saveCartDetailsToSharedMemory();
         clearTimeout(this.dataSaveTimer);
         this.dataSaveTimer = null;
-      },10000);
+      },5000);
     }
   }
 

@@ -45,7 +45,7 @@ export class AddAddressComponent implements OnInit {
         this.contact = contact;
         this.addressForm.patchValue({'email': this.contact.email});
         this.addressForm.patchValue({'phone':this.contact.mobileNumber})
-        this.addressForm.patchValue({'name':this.user.name})
+        this.addressForm.patchValue({'name':this.user.preferred_username})
       }
     })
   }

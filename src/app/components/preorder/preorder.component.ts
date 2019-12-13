@@ -5,6 +5,7 @@ import { DatePipe } from '@angular/common';
 import { CartService } from 'src/app/services/cart.service';
 import { LogService } from 'src/app/services/log.service';
 import * as moment from 'moment';
+import { Util } from 'src/app/services/util';
 
 @Component({
   selector: 'app-preorder',
@@ -27,7 +28,8 @@ export class PreorderComponent implements OnInit {
     private popoverController: PopoverController,
     private logger: LogService,
     private cartService: CartService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private util: Util
   ) { }
 
   ngOnInit() {
@@ -38,20 +40,44 @@ export class PreorderComponent implements OnInit {
     let ttime = moment(this.store.closingTime);
 
     this.fromTime = ftime.format("hh:mm")
-    this.toTime = ttime.format("hh:mm");
+    this.toTime = ttime.format("hh:mm a");
     this.logger.info(this, 'From Time>>>>>', this.fromTime, ' toTime>>>>>>', this.toTime);
   }
 
-  test() {
-    console.error('sksjkjsk');
-  }
-
-
   dismissTrue() {
-    const tempTime = moment('2017-03-13 ' + this.convert12to24(this.selectedTime))
-    this.logger.info(this,'Seleceted Time After Conversion' , tempTime.toDate());
-    this.cartService.preOrderDate = tempTime.toDate().toISOString();
-    this.popoverController.dismiss(true);
+    let ftime = moment(this.store.openingTime).format('hh:mm a');
+    let ttime = moment(this.store.closingTime).format('hh:mm a');
+    let stime = moment(this.selectedTime).format('hh:mm a');
+
+    let fdate = moment('2019-12-12' + ' ' + ftime);
+    let tdate = moment('2019-12-12' + ' ' + ttime);
+    let sdate = moment('2019-12-12' + ' ' + stime);
+
+    if (tdate.isBefore(fdate)) {
+      this.logger.info(this, 'Adding One day to Closing Time')
+      tdate = moment('2019-12-13' + ' ' + ttime);
+      if (sdate.isBefore(fdate)) {
+        this.logger.info(this, 'Adding One day to Selected Time')
+        sdate = moment('2019-12-13' + ' ' + stime);
+      }
+    }
+
+    console.error(fdate);
+    console.error(tdate);
+    console.error(sdate);
+
+    this.selectedTime = stime;
+    console.error(sdate.isAfter(fdate) , sdate.isBefore(tdate))
+
+    if (sdate.isAfter(fdate) && sdate.isBefore(tdate)) {
+      const tempTime = moment('2017-03-13 ' + stime);
+      this.logger.info(this, 'Seleceted Time After Conversion', tempTime.toDate());
+      this.cartService.preOrderDate = tempTime.toDate().toISOString();
+      this.popoverController.dismiss(true);
+    } else {
+      this.util.createToast('Select a Time Betwee ' + `${this.fromTime}` + ' ' + `${this.selectedTime}` + `${this.toTime}`)
+    }
+
   }
 
   convert12to24(time12h) {

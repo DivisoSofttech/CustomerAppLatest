@@ -26,7 +26,7 @@ export class FilterComponent implements OnInit , OnDestroy {
 
   filterServiceSubscription;
 
-  type='sort';
+  type='cusine';
 
   constructor(
     private filter: FilterService,

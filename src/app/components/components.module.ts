@@ -57,9 +57,10 @@ import { AddAddressComponent } from './add-address/add-address.component';
 import { PreorderComponent } from './preorder/preorder.component';
 import { PaymentflowNavComponent } from './paymentflow-nav/paymentflow-nav.component';
 import {  PaymentProvidersModule } from '../payment/payment-providers.module';
+import { NoCommaPipe } from '../pipes/no-comma.pipe';
 
 @NgModule({
-  providers: [ClosedPipe,DatePipe],
+  providers: [ClosedPipe,DatePipe,    NoCommaPipe],
   declarations: [
 
     ImageSelectorComponent,

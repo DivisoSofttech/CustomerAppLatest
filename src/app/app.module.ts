@@ -44,12 +44,13 @@ import { SharedDataService } from './services/shared-data.service';
 import { RecentService } from './services/recent.service';
 import { LogService } from './services/log.service';
 import { PaymentNavService } from './services/payment-nav.service';
+import { NoCommaPipe } from './pipes/no-comma.pipe';
 
 const config: SocketIoConfig = { url: 'https://dev.ci2.divisosofttech.com:9999', options: {} };
 
 @NgModule({
 
-  declarations: [AppComponent],
+  declarations: [AppComponent, NoCommaPipe],
 
   entryComponents: [BannerComponent, NotificationComponent, HistoryListComponent],
 
@@ -103,6 +104,7 @@ const config: SocketIoConfig = { url: 'https://dev.ci2.divisosofttech.com:9999',
     OrderService,
     CartService,
     DecimalPipe,
+    NoCommaPipe,
     RecentService,
     ErrorService,
     LogService,

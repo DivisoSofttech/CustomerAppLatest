@@ -121,14 +121,18 @@ lines="full"
 <ion-footer *ngIf="viewType === 'full'
 && orderLines.length > 0">
 <ion-button
-class="ion-margin round-button" *ngIf="currentSegment==='delivery'"
+class="ion-margin round-button" *ngIf="currentSegment==='delivery' && enableContinue"
 [disabled]="neededCheckOutAmount !== 0"
 color="primary" expand="full" (click)="checkRestaurantStatus('delivery')"
 >Continue</ion-button
 >
-<ion-button *ngIf="currentSegment==='collection'"
+<ion-button *ngIf="currentSegment==='collection' && enableContinue"
 color="primary" expand="full" (click)="checkRestaurantStatus('collection')"
 class="ion-margin round-button"
 >Continue</ion-button
 >
+<ion-button *ngIf="!enableContinue" color="primary" expand="full"
+class="ion-margin round-button">
+  <ion-spinner name="circles"></ion-spinner>
+</ion-button>
 </ion-footer>

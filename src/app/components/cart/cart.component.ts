@@ -21,6 +21,7 @@ import { Subscription } from 'rxjs';
 import { PreorderComponent } from '../preorder/preorder.component';
 import { ClosedPipe } from 'src/app/pipes/closed.pipe';
 import { LogService } from 'src/app/services/log.service';
+import { NoCommaPipe } from 'src/app/pipes/no-comma.pipe';
 
 @Component({
   selector: 'app-cart',
@@ -28,6 +29,7 @@ import { LogService } from 'src/app/services/log.service';
   styleUrls: ['./cart.component.scss']
 })
 export class CartComponent implements OnInit, OnDestroy {
+
   @Input() viewType = 'minimal';
 
   @Input() store: Store;
@@ -72,6 +74,7 @@ export class CartComponent implements OnInit, OnDestroy {
   deliveryMode: any;
   isOrderAvailable: any = true;
   isClosed: boolean = false;
+  enableContinue: boolean = true;
 
   constructor(
     private cart: CartService,
@@ -83,6 +86,7 @@ export class CartComponent implements OnInit, OnDestroy {
     private util: Util,
     private popoverController: PopoverController,
     private closedPipe: ClosedPipe,
+    private noCommaPipe: NoCommaPipe
   ) { }
 
   ngOnInit() {
@@ -97,6 +101,7 @@ export class CartComponent implements OnInit, OnDestroy {
       });
     }
   }
+
 
   ngOnDestroy() {
     console.log('Cart ngDestroy calls');
@@ -260,8 +265,13 @@ export class CartComponent implements OnInit, OnDestroy {
     this.checkPreorderStatus();
     this.checkClosedStatus();
     if (this.isClosed && this.isOrderAvailable) {
+      this.enableContinue = false;
       this.preorderPopover((data) => {
-        if (data.data === true) this.continue(deliveryType);
+        if (data.data === true){
+          this.continue(deliveryType)
+        } else {
+          this.enableContinue = true;
+        }
       });
     } else if (this.isClosed && !this.isOrderAvailable) {
       this.logger.info(this, 'Restaurant is Closed');
@@ -271,6 +281,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   navigateForward() {
+    this.enableContinue =true;
     this.navController.navigateForward('/checkout');
   }
 
@@ -285,8 +296,8 @@ export class CartComponent implements OnInit, OnDestroy {
       appliedOffers: [],
       preOrderDate: this.cart.preOrderDate ? this.cart.preOrderDate : null,
       // tslint:disable-next-line: radix
-      grandTotal: this.cart.total,
-      subTotal: this.cart.subTotal,
+      grandTotal: this.noCommaPipe.transform(this.cart.total),
+      subTotal: this.noCommaPipe.transform(this.cart.subTotal),
       email: this.customer.email,
       storeId: this.cart.storeId,
       customerId: this.customer.preferred_username,
@@ -311,6 +322,7 @@ export class CartComponent implements OnInit, OnDestroy {
           this.navigateForward();
         },
         error => {
+          this.enableContinue = true;
           // this.orderService.orderResourceBehaviour.thrownError;
           this.logger.error(
             'An error has occured while initiating the order ',
@@ -344,8 +356,10 @@ export class CartComponent implements OnInit, OnDestroy {
     });
     this.orderService.order.orderLines = this.orderLinesUpdated;
     this.orderService.order.allergyNote = this.allergyNote;
-    this.orderService.order.subTotal = this.cart.subTotal;
-    this.orderService.order.grandTotal = this.cart.total;
+    this.orderService.order.subTotal = this.noCommaPipe.transform(this.cart.subTotal);
+    this.orderService.order.grandTotal = this.noCommaPipe.transform(this.cart.total);
+
+    console.error(this.orderService.order);
     if (this.orderService.deliveryInfo !== undefined) {
       this.logger.info(this,'Deliveryinfo exists ');
       this.orderService.order.deliveryInfo = this.orderService.deliveryInfo;
@@ -357,6 +371,9 @@ export class CartComponent implements OnInit, OnDestroy {
         this.logger.info(this,'Order DTO Updated is ', order);
         this.orderService.order = order;
         this.navigateForward();
+      },
+      err=> {
+        this.enableContinue =true;
       });
   }
 
