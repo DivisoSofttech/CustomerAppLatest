@@ -103,6 +103,7 @@ export class PaypalPaymentComponent implements OnInit {
                     console.log(
                       'Error or render dialog closed without being successful'
                     );
+                    this.dismissEvent.emit();
                     // this.displayModalService.presentMakePayment();
                     this.util.createToast('Payment failed please try again', 'information-circle-outline');
                     // Error or render dialog closed without being successful
@@ -131,6 +132,7 @@ export class PaypalPaymentComponent implements OnInit {
           });
           // Error in initialization, maybe PayPal isn't supported or something else
           this.paymentNavService.pop();
+          this.dismissEvent.emit();
           this.util.createToast('Payment failed please try again', 'information-circle-outline');
 
         }

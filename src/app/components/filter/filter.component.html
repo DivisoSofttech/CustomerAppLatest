@@ -1,4 +1,4 @@
-<ion-header *ngIf="showFilters === false">
+<ion-header *ngIf="showFilters">
   <ion-toolbar>
     <ion-buttons>
       <ion-title>Sort and Filter</ion-title>
@@ -10,7 +10,7 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content *ngIf="showFilters === false">
+<ion-content *ngIf="showFilters">
   <ion-grid class="ion-no-padding full-height">
     <ion-row>
       <ion-col size="5" class="ion-no-padding">
@@ -48,7 +48,7 @@
                 </ion-col>  
                 <ion-col size="12" class="ion-no-padding" *ngIf="type==='cusine'">
                   <ion-list>
-                    <ion-item *ngFor="let t of cusines">
+                    <ion-item lines="full" *ngFor="let t of cusines">
                     <ion-checkbox color="dark" value="t.key" [(ngModel)]="t.checked" [checked]="t.checked" slot="start"></ion-checkbox>
                     <ion-label>{{t.key}}({{t.docCount}})</ion-label>
                   </ion-item>
@@ -60,7 +60,7 @@
     </ion-row>
   </ion-grid>
 </ion-content>
-<ion-footer>
-  <ion-button (click)="setFilterType()" color="success" class="ion-margin" expand="block">Apply</ion-button>
+<ion-footer *ngIf="showFilters">
+  <ion-button  (click)="setFilterType()" color="success" class="ion-margin" expand="block">Apply</ion-button>
   <ion-button (click)="clearFiter()" class="ion-margin" expand="block">CLEAR ALL</ion-button>
 </ion-footer>

@@ -33,6 +33,14 @@
             (click)="showPlaceSelectionModal()"
           ></ion-icon>
         </ion-item>
+        <ion-item lines="full" *ngIf="filterString !== '' && filterString !== undefined">
+          <ion-label slot="start">
+            <small> Filters Applied </small>
+          </ion-label>
+          <ion-badge slot="end">
+            {{filterString}}
+          </ion-badge>
+        </ion-item>
 
         <ion-grid no-padding no-margin>
           <ion-row no-padding no-margin>
@@ -56,7 +64,7 @@
                   >
                     <ion-label class="font-20">
                       <h1>
-                       No Store Found(0);
+                        No Store Found(0);
                       </h1>
                     </ion-label>
                   </ion-col>
@@ -106,6 +114,7 @@
 <ion-footer>
   <app-filter
     *ngIf="showFilters"
+    [showClose]="true"
     (closeFilter)="toggleFilteromponent($event)"
   ></app-filter>
   <app-footer (filter)="toggleFilteromponent('open')"></app-footer>

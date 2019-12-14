@@ -1,20 +1,21 @@
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
-import { IonInfiniteScroll,IonSearchbar,ModalController} from '@ionic/angular';
+import { IonInfiniteScroll, IonSearchbar, ModalController, Platform } from '@ionic/angular';
 import { Store } from './../../api/models/store';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
-import {Component,OnInit,ViewChild,OnDestroy, Input} from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, Input } from '@angular/core';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { Storage } from '@ionic/storage';
 import { RecentService, RecentType } from 'src/app/services/recent.service';
 import { LogService } from 'src/app/services/log.service';
+import { resolveSanitizationFn } from '@angular/compiler/src/render3/view/template';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit , OnDestroy {
+export class HeaderComponent implements OnInit, OnDestroy {
 
   storeSearchResults: Store[] = [];
 
@@ -32,42 +33,50 @@ export class HeaderComponent implements OnInit , OnDestroy {
 
   customer;
 
-  recents:any[] = [];
-
-  searchDebounceTime = 1500;
+  recents: any[] = [];
 
   @ViewChild(IonInfiniteScroll, null) infiniteScroll: IonInfiniteScroll;
   @ViewChild('restaurantSearch', null) restaurantSearch: IonSearchbar;
   @Input() notificationsOn = false;
   notificationCount = 0;
+  backButtonSubscription: any;
 
   constructor(
     private queryResource: QueryResourceService,
     private logger: LogService,
     private modalController: ModalController,
     private notificationService: NotificationService,
-  
+    private platform: Platform,
     private storage: Storage,
     private recentService: RecentService
-  ) {}
+  ) { }
 
   ngOnInit() {
-    this.logger.info(this,'Initializing', HeaderComponent.name);
+    this.logger.info(this, 'Initializing', HeaderComponent.name);
     this.getNotificationCount();
     this.getRecents();
+    this.backButtonHandler();
   }
 
   ngOnDestroy(): void {
+    this.backButtonSubscription?this.backButtonSubscription.unsubscribe():null;
+  }
 
+  backButtonHandler() {
+    this.backButtonSubscription = this.platform.backButton.subscribe(() => {
+      if (this.showSearchBar) {
+        this.showSearchBar = false;
+      }
+    });
   }
 
   getRecents() {
     this.recentService.getRecentRestaurantSearchTerms()
-    .subscribe(data => {
-      if(data !== null) {
-        this.recents = data;
-      }
-    })
+      .subscribe(data => {
+        if (data !== null) {
+          this.recents = data;
+        }
+      })
   }
 
   textCleared() {
@@ -76,20 +85,19 @@ export class HeaderComponent implements OnInit , OnDestroy {
   }
 
   selectSerachTerm(searchTerm) {
-    this.restaurantSearch.debounce = 100;
+    this.storeSearchResults = [];
     this.restaurantSearch.value = searchTerm;
-    this.restaurantSearch.debounce = this.searchDebounceTime;
   }
 
 
   getUserProfile() {
     this.storage.get('user')
-    .then(user => {
-      this.queryResource.findCustomerByIdpCodeUsingGET(user.preferred_username)
-      .subscribe(customer => {
-        this.customer = customer;
+      .then(user => {
+        this.queryResource.findCustomerByIdpCodeUsingGET(user.preferred_username)
+          .subscribe(customer => {
+            this.customer = customer;
+          });
       });
-    });
   }
 
   getNotificationCount() {
@@ -100,16 +108,19 @@ export class HeaderComponent implements OnInit , OnDestroy {
   }
 
   toggleSearchBar() {
-    this.logger.info(this,'SearchBar Toggled - View', this.showSearchBar);
+    this.logger.info(this, 'SearchBar Toggled - View', this.showSearchBar);
     this.showSearchBar = !this.showSearchBar;
     this.showSearchPane = !this.showSearchPane;
     if (this.showSearchBar === true) {
       this.restaurantSearch.setFocus();
+    } else {
+      this.storeSearchResults = [];
+      this.searchTerm = '';
     }
   }
 
   toggleInfiniteScroll() {
-    this.logger.info(this,'InfiniteScroll Toggled ', this.infiniteScroll.disabled);
+    this.logger.info(this, 'InfiniteScroll Toggled ', this.infiniteScroll.disabled);
     this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
   }
 
@@ -119,8 +130,8 @@ export class HeaderComponent implements OnInit , OnDestroy {
 
   getSearchResults(i) {
     const found = this.recents.some(el => el.data === this.searchTerm);
-    if(!found) {
-      this.recentService.saveRecent({data:this.searchTerm , type:RecentType.STORE});
+    if (!found) {
+      this.recentService.saveRecent({ data: this.searchTerm, type: RecentType.STORE });
     }
     this.queryResource
       .headerUsingGET({
@@ -130,17 +141,19 @@ export class HeaderComponent implements OnInit , OnDestroy {
       .subscribe(
         result => {
           this.showLoading = false;
-          if (result.content.length === 0) {
-            return;
-          } else {
-            ++i;
-            if (result.totalPages === i) {
-              this.toggleInfiniteScroll();
-            }
+          if (result.content.length !== 0) {
             result.content.forEach(s => {
               this.storeSearchResults.push(s);
             });
           }
+
+          ++i;
+          if (result.totalPages === i ||  result.totalPages !== 0) {
+            this.toggleInfiniteScroll();
+          } else {
+            this.getSearchResults(i);
+          }
+
         },
         err => {
           this.showLoading = false;
@@ -151,18 +164,19 @@ export class HeaderComponent implements OnInit , OnDestroy {
   search(event) {
     if (this.searchTerm.replace(/\s/g, '').length) {
       this.showLoading = true;
-      this.logger.info(this,'Getting Restaurants By Name');
+      this.logger.info(this, 'Getting Restaurants By Name');
       this.storeSearchResults = [];
-      if(this.searchTerm !=='') {
+      if (this.searchTerm !== '') {
         this.getSearchResults(0);
       } else {
+        this.storeSearchResults = [];
         this.showLoading = false;
-      }  
+      }
     }
   }
 
   loadMoreData(event) {
-    this.logger.info(this,'Loading More Data');
+    this.logger.info(this, 'Loading More Data');
     this.pageCount++;
     this.getSearchResults(this.pageCount);
   }

@@ -30,6 +30,7 @@ export class PlaceSuggestionComponent implements OnInit , OnDestroy {
   oldDistance = 0;
 
   private unregisterBackAction: Subscription;
+  backButtonSubscription: any;
 
   constructor(
     private logger: LogService,
@@ -38,7 +39,8 @@ export class PlaceSuggestionComponent implements OnInit , OnDestroy {
     private sharedData: SharedDataService,
     private recentService: RecentService,
     private filter: FilterService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private platform: Platform
   ) { }
 
   ngOnInit() {
@@ -50,6 +52,17 @@ export class PlaceSuggestionComponent implements OnInit , OnDestroy {
         this.oldDistance = data;
       }
     })
+    this.backButtonHandler();
+  }
+
+  ngOnDestroy(): void {
+    this.backButtonSubscription?this.backButtonSubscription.unsubscribe():null;
+  }
+
+  backButtonHandler() {
+    this.backButtonSubscription = this.platform.backButton.subscribe(() => {
+     this.dismiss();
+    });
   }
 
   distanceChanged(event) {
@@ -155,10 +168,5 @@ export class PlaceSuggestionComponent implements OnInit , OnDestroy {
       locationChanged: false
     });
   }
-
-  ngOnDestroy() {
- 
-  }
-
 
 }

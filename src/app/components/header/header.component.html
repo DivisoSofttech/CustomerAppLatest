@@ -22,7 +22,7 @@
 
   <!--SearchBar Restaurant-->
   <ion-buttons [ngClass]="(showSearchBar === true)?'':'hidden'">
-    <ion-searchbar #restaurantSearch showCancelButton="always" debounce="1500"
+    <ion-searchbar #restaurantSearch showCancelButton="always" debounce="500"
       placeholder="Search Restaurants"
       [(ngModel)]="searchTerm"
       (ionCancel)="toggleSearchBar()"
@@ -50,7 +50,7 @@
           </ion-item>      
     </div>
   </ion-list>
-  <ion-grid *ngIf="!showLoading">
+  <ion-grid class="resultGrid" *ngIf="!showLoading">
     <ion-row *ngIf="storeSearchResults.length > 0">
       <ion-item color="light" class="full-width">
         <ion-label slot="start">{{storeSearchResults.length + ' Restaurant Found'}}</ion-label>

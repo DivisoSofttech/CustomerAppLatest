@@ -1,10 +1,8 @@
 
 import { FilterService , FILTER_TYPES} from './../../services/filter.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Util } from 'src/app/services/util';
-import { IonInfiniteScroll, IonRefresher, ModalController} from '@ionic/angular';
-import { NGXLogger } from 'ngx-logger';
-import { MapComponent } from 'src/app/components/map/map.component';
+import { IonInfiniteScroll, IonRefresher, ModalController, Platform} from '@ionic/angular';
 import { FooterComponent } from 'src/app/components/footer/footer.component';
 import { PlaceSuggestionComponent } from 'src/app/components/place-suggestion/place-suggestion.component';
 import { LocationService } from 'src/app/services/location-service';
@@ -12,13 +10,14 @@ import { ErrorService } from 'src/app/services/error.service';
 import { Store } from 'src/app/api/models';
 import { LogService } from 'src/app/services/log.service';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
+import { SharedDataService } from 'src/app/services/shared-data.service';
 
 @Component({
   selector: 'app-restaurant',
   templateUrl: './restaurant.page.html',
   styleUrls: ['./restaurant.page.scss']
 })
-export class RestaurantPage implements OnInit {
+export class RestaurantPage implements OnInit , OnDestroy {
 
   showLoading = true;
 
@@ -30,7 +29,7 @@ export class RestaurantPage implements OnInit {
 
   currentPlaceName = '';
 
-  currentFilter = FILTER_TYPES.DISTANCE_WISE;
+  filterString;
 
   @ViewChild(IonInfiniteScroll, null) ionInfiniteScroll: IonInfiniteScroll;
   @ViewChild(IonRefresher, null) IonRefresher: IonRefresher;
@@ -38,6 +37,7 @@ export class RestaurantPage implements OnInit {
 
   keycloakSubscription: any;
   isGuest = false;
+  backButtonSubscription: any;
 
 
 
@@ -48,7 +48,9 @@ export class RestaurantPage implements OnInit {
     private modalController: ModalController,
     private locationService: LocationService,
     private errorService: ErrorService,
-    private keycloakService: KeycloakService
+    private keycloakService: KeycloakService,
+    private sharedData: SharedDataService,
+    private platform: Platform
   ) { }
 
 
@@ -58,30 +60,52 @@ export class RestaurantPage implements OnInit {
     this.getStores();
   }
 
-  async getStores() {
-    this.filter.getSubscription().subscribe(data => {
-      this.currentFilter = data;
-      this.showLoading = true;
-      this.stores = [];
-      this.toggleInfiniteScroll();
-      this.filter.getStores(0, (totalElements, totalPages, stores) => {
+  ngOnDestroy(): void {
+    this.backButtonSubscription?this.backButtonSubscription.unsubscribe():null;
+  }
 
-        this.logger.info(this,'Got Stores ', stores);
-        if (totalPages > 1) {
-          this.logger.info(this,'Enabling Infinite Scroll');
-          this.toggleInfiniteScroll();
+  backButtonHandler() {
+    this.backButtonSubscription = this.platform.backButton.subscribe(() => {
+      this.showFilters=false;
+    });
+  }
+
+  async getStores() {
+    this.filter.getSubscription().subscribe((data: FILTER_TYPES) => {
+
+    
+      if(data !== undefined) {
+        if(data.valueOf() == FILTER_TYPES.MIN_AMOUNT.valueOf()) {
+          this.filterString="min amount";
+        } else if(data.valueOf() == FILTER_TYPES.TOP_RATED.valueOf()) {
+          this.filterString="Top rated";
+        } else if(data.valueOf() == FILTER_TYPES.CUSINE_FILTER.valueOf()) {
+          this.filterString="Cusines";
+        } else {
+          this.filterString='';
         }
+        this.showLoading = true;
         this.stores = [];
-        stores.forEach(s => {
-          this.stores.push(s);
-        });
-        this.showLoading = false;
-        this.logger.info(this,"Disabling Loader",this.showLoading);
-        this.toggleIonRefresher();
-      },
-        () => {
-          this.errorService.showErrorModal(this);
-        });
+        this.toggleInfiniteScroll();
+        this.filter.getStores(0, (totalElements, totalPages, stores) => {
+  
+          this.logger.info(this,'Got Stores ', stores);
+          if (totalPages > 1) {
+            this.logger.info(this,'Enabling Infinite Scroll');
+            this.toggleInfiniteScroll();
+          }
+          this.stores = [];
+          stores.forEach(s => {
+            this.stores.push(s);
+          });
+          this.showLoading = false;
+          this.logger.info(this,"Disabling Loader",this.showLoading);
+          this.toggleIonRefresher();
+        },
+          () => {
+            this.errorService.showErrorModal(this);
+          });  
+      }
     });
   }
 
@@ -130,12 +154,12 @@ export class RestaurantPage implements OnInit {
   }
 
   toggleFilteromponent(event) {
-    this.showFilters = !this.showFilters;
-    if (!this.showFilters) {
-      this.logger.info(this,this,'Closed Filter');
+    if(event === 'close') {
+      this.showFilters = false;
+      this.footer.filterHide = false;      
       this.footer.setcurrentRoute('restaurant');
-      this.footer.filterHide = false;
     } else {
+      this.showFilters = true;
       this.footer.filterHide = true;
     }
   }
@@ -154,6 +178,7 @@ export class RestaurantPage implements OnInit {
           .then(data => {
             if(data !== undefined && data.data !== undefined) {
               this.toggleInfiniteScroll();
+              this.sharedData.deleteData('filter');
               if(data.data.currentLocation && data.data.locationChanged) {
                 this.logger.info(this,'Setting Current Location ', data);
                 this.filter.setFilter(FILTER_TYPES.DISTANCE_WISE);
@@ -192,10 +217,15 @@ export class RestaurantPage implements OnInit {
     this.locationService.getLocation()
     .subscribe(value => {
       if(value !== null) {
-        this.logger.info(this,'Fetching Stores for Address' , value);
         this.currentPlaceName = value.name;
         this.filter.setCoordinates(value.coords);
-        this.filter.setFilter(FILTER_TYPES.DISTANCE_WISE);
+        this.sharedData.getData('filter')
+        .then(data => {
+          if(!data) {
+            this.logger.info(this,'Fetching Stores for Address' , value);
+            this.filter.setFilter(FILTER_TYPES.DISTANCE_WISE);
+          }
+        })
         this.logger.info(this,'Current Place Name ', this.currentPlaceName);
         this.logger.info(this,'Getting LatLon for current Location', value.coords);    
       }

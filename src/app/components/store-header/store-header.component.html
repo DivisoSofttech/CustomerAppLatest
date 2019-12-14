@@ -16,7 +16,7 @@
 <ion-toolbar [ngClass]="showSearchBar === true?'':'hidden'">
   <ion-searchbar
     showCancelButton="always"
-    debounce="1500"
+    debounce="1000"
     [(ngModel)]="searchTerm"
     (ionCancel)="toggleSearchBar()"
     (ionClear)="textCleared()"
@@ -34,7 +34,7 @@
     </ion-item>
   </ion-list>
 
-  <ion-grid>
+  <ion-grid class="resultGrid">
     <ion-row>
       <ion-col size="12" class="ion-text-center mg-top-30" *ngIf="showLoading">
         <ion-spinner color="primary" name="dots"></ion-spinner>

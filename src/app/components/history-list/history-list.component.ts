@@ -30,6 +30,7 @@ export class HistoryListComponent implements OnInit , OnDestroy {
   @ViewChild(IonInfiniteScroll, null) inifinitScroll: IonInfiniteScroll;
 
   pageNumber = 0;
+  backButtonSubscription: any;
 
   constructor(
     private queryResource: QueryResourceService,
@@ -48,8 +49,13 @@ export class HistoryListComponent implements OnInit , OnDestroy {
   }
 
   backButtonHandler() {
-    this.platform.backButton.subscribe(() => {
-      this.selectedOrder = undefined;
+    this.backButtonSubscription = this.platform.backButton.subscribe((event) => {
+      console.log
+      if(this.selectedOrder) {
+        this.selectedOrder = undefined;
+      } else {
+        this.dismiss();
+      }
     });
   }
 
@@ -167,7 +173,6 @@ export class HistoryListComponent implements OnInit , OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.logger.info(this,'Destroying HistoryList')
-    
+    this.backButtonSubscription?this.backButtonSubscription.unsubscribe():null;
   }
 }

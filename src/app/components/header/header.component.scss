@@ -13,11 +13,13 @@ ion-spinner {
 }
 
 .container {
-    height:81vh;
     position:fixed;
     background:white;
     opacity: 1;
-    margin-bottom: 50px;
+}
+
+.resultGrid {
+    padding-bottom: 120px;
 }
 
 .avatar {

@@ -2,7 +2,7 @@ import { Util } from './../../services/util';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { StockCurrent } from 'src/app/api/models';
-import { IonInfiniteScroll, IonSearchbar } from '@ionic/angular';
+import { IonInfiniteScroll, IonSearchbar, Platform } from '@ionic/angular';
 import { NGXLogger } from 'ngx-logger';
 import { RecentService, RecentType } from 'src/app/services/recent.service';
 import { LogService } from 'src/app/services/log.service';
@@ -39,34 +39,46 @@ export class StoreHeaderComponent implements OnInit {
   @Input() store;
 
   @ViewChild(IonInfiniteScroll, null) infiniteScroll: IonInfiniteScroll;
-  @ViewChild(IonSearchbar , null) searchBar: IonSearchbar;
+  @ViewChild(IonSearchbar, null) searchBar: IonSearchbar;
+  backButtonSubscription: any;
 
   constructor(
     private queryResource: QueryResourceService,
-    private util: Util,
+    private platform: Platform,
     private logger: LogService,
     private recentService: RecentService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.getRecents();
+    this.backButtonHandler();
   }
 
-  
-  getRecents() {
-    this.logger.info(this,"Fetching Recents From Storage");
-    this.recentService.getRecentProductSearchTerms()
-    .subscribe(data => {
-      if(data !== null) {
-        this.recents = data;
+  ngOnDestroy(): void {
+    this.backButtonSubscription?this.backButtonSubscription.unsubscribe():null;
+  }
+
+  backButtonHandler() {
+    this.backButtonSubscription = this.platform.backButton.subscribe(() => {
+      if (this.showSearchBar) {
+        this.showSearchBar = false;
       }
-    })
+    });
+  }
+
+
+  getRecents() {
+    this.logger.info(this, "Fetching Recents From Storage");
+    this.recentService.getRecentProductSearchTerms()
+      .subscribe(data => {
+        if (data !== null) {
+          this.recents = data;
+        }
+      })
   }
 
   selectSerachTerm(searchTerm) {
-    this.searchBar.debounce = 100;
     this.searchBar.value = searchTerm;
-    this.searchBar.debounce = 1500;
   }
 
   toggleSearchBar() {
@@ -74,8 +86,11 @@ export class StoreHeaderComponent implements OnInit {
     this.showSearchBar = !this.showSearchBar;
     this.showSearchPane = !this.showSearchPane;
     this.searchEnable.emit(!this.showSearchBar);
-    if(this.showSearchBar) {
+    if (this.showSearchBar) {
       this.searchBar.setFocus();
+    } else {
+      this.stockCurrents = [];
+      this.searchTerm = '';
     }
   }
 
@@ -84,7 +99,7 @@ export class StoreHeaderComponent implements OnInit {
   }
 
   getProductsByName(i) {
-    if(this.searchTerm !== '') {
+    if (this.searchTerm !== '') {
       this.showLoading = true;
       this.queryResource
         .findStockCurrentByProductNameAndStoreIdUsingGET({
@@ -94,18 +109,17 @@ export class StoreHeaderComponent implements OnInit {
         })
         .subscribe(data => {
           this.showLoading = false;
-          if (data.content.length === 0) {
-            // this.util.createToast('Sorry, couldn\'t find any match');
-            return;
-          } else {
-            ++i;
-            this.logger.info('Found products For ' , this.searchTerm , data.content , 'page ' , i);
-            if (i === data.totalPages) {
-              this.toggleInfiniteScroll();
-            }
+          if (data.content.length !== 0) {
             data.content.forEach(s => {
               this.stockCurrents.push(s);
             });
+          }
+          ++i;
+          this.logger.info('Found products For ', this.searchTerm, data.content, 'page ', i);
+          if (i === data.totalPages || data.totalPages === 0) {
+            this.toggleInfiniteScroll();
+          } else {
+            this.getProductsByName(i);
           }
         }, err => {
           this.showLoading = false;
@@ -113,23 +127,19 @@ export class StoreHeaderComponent implements OnInit {
     } else {
       this.showLoading = false;
     }
- 
+
   }
 
-  textCleared() {
-    this.searchBar.debounce = 100;
-    this.searchBar.debounce = 1500;
-  }
 
   searchProducts(event) {
     if (this.searchTerm.replace(/\s/g, '').length) {
       this.stockCurrents = [];
       this.showLoading = true;
       const found = this.recents.some(el => el.data === this.searchTerm);
-      if(!found) {
-        this.recentService.saveRecent({data:this.searchTerm , type: RecentType.PRODUCT})
+      if (!found) {
+        this.recentService.saveRecent({ data: this.searchTerm, type: RecentType.PRODUCT })
       }
-      this.getProductsByName(0);  
+      this.getProductsByName(0);
     }
   }
 

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { LogService } from './log.service';
 import { LocationService } from './location-service';
+import { SharedDataService } from './shared-data.service';
 
 export enum FILTER_TYPES {
 
@@ -25,8 +26,7 @@ export enum FILTER_TYPES {
 export class FilterService {
 
 
-  // Change to FILTER_TYPES.DISTANCE_WISE
-  private currentFilter = FILTER_TYPES.DISTANCE_WISE;
+  private currentFilter;
   private filterBehaviour = new BehaviorSubject<any>(this.currentFilter);
 
 
@@ -40,8 +40,30 @@ export class FilterService {
   constructor(
     private queryResource: QueryResourceService,
     private logger: LogService,
-    private location: LocationService
-  ) { }
+    private location: LocationService,
+    private shareData: SharedDataService
+  ) { 
+    this.shareData.getData('filter')
+    .then(data => {
+      if(data) {
+        switch(data.type) {
+
+          case 'cusine':
+            console.error('slksllsklsklkslslk');
+            const tempArray = [];
+            data.cusines.forEach(c => {
+              tempArray.push(c.key);
+            })
+            this.setSelectedCusines(tempArray);
+            this.setFilter(data.currentFilterType);
+            break;
+          case 'sort':
+              this.setFilter(data.currentFilterType);
+            break;
+        }
+      }
+    })
+  }
 
   public getSubscription() {
     return this.filterBehaviour;
@@ -70,7 +92,6 @@ export class FilterService {
   }
 
   public getStores(pageNumber, success, error?) {
-    console.log(this.currentFilter == FILTER_TYPES.TOP_RATED.valueOf());
     if (this.currentFilter == FILTER_TYPES.NO_FILTER.valueOf()) {
       this.logger.info(this,'Finding All Stores');
       this.getStoreNoFilter(pageNumber, success, error);
