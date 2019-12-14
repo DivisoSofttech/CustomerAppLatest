@@ -6,41 +6,47 @@
     <ion-row class="ion-no-padding ion-no-margin full-height">
       <ion-col size="12" size-md="12" class="ion-no-padding ion-no-margin">
         <app-banner></app-banner>
-        <ion-item lines="none" color="light" class="posSticky">
-          <ion-label slot="start">
-            <span class="font-20 heading-one">What's Nearby! </span>
-          </ion-label>
-          <ion-label
-            class="pointer"
-            text-right
-            *ngIf="currentPlaceName!==''"
-            (click)="showPlaceSelectionModal()"
+        <div class="posSticky">
+          <ion-item lines="none" color="light">
+            <ion-label slot="start">
+              <span class="font-20 heading-one">What's Nearby! </span>
+            </ion-label>
+            <ion-label
+              class="pointer"
+              text-right
+              *ngIf="currentPlaceName!==''"
+              (click)="showPlaceSelectionModal()"
+            >
+              <p class="font-20 heading-one">{{ currentPlaceName}}</p>
+            </ion-label>
+            <ion-label
+              slot="end"
+              class="ion-text-center"
+              *ngIf="currentPlaceName===''"
+            >
+              <ion-spinner name="dots"></ion-spinner>
+            </ion-label>
+            <ion-icon
+              class="pointer"
+              name="create"
+              slot="end"
+              *ngIf="currentPlaceName!==''"
+              (click)="showPlaceSelectionModal()"
+            ></ion-icon>
+          </ion-item>
+          <ion-item
+            color="light"
+            lines="full"
+            *ngIf="filterString !== '' && filterString !== undefined"
           >
-            <p class="font-20 heading-one">{{ currentPlaceName}}</p>
-          </ion-label>
-          <ion-label
-            slot="end"
-            class="ion-text-center"
-            *ngIf="currentPlaceName===''"
-          >
-            <ion-spinner name="dots"></ion-spinner>
-          </ion-label>
-          <ion-icon
-            class="pointer"
-            name="create"
-            slot="end"
-            *ngIf="currentPlaceName!==''"
-            (click)="showPlaceSelectionModal()"
-          ></ion-icon>
-        </ion-item>
-        <ion-item lines="full" *ngIf="filterString !== '' && filterString !== undefined">
-          <ion-label slot="start">
-            <small> Filters Applied </small>
-          </ion-label>
-          <ion-badge slot="end">
-            {{filterString}}
-          </ion-badge>
-        </ion-item>
+            <ion-label slot="start">
+              Filters Applied
+            </ion-label>
+            <ion-badge slot="end">
+              {{filterString}}
+            </ion-badge>
+          </ion-item>
+        </div>
 
         <ion-grid no-padding no-margin>
           <ion-row no-padding no-margin>
