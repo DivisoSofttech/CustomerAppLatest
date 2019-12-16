@@ -54,7 +54,7 @@ export class AddAddressComponent implements OnInit {
     this.addressForm = this.formBuilder.group({
       name: [this.address.name, Validators.compose([Validators.required])],
       phone: [this.address.phone, Validators.compose([Validators.required])],
-      pincode: [this.address.pincode, Validators.compose([Validators.required])],
+      pincode: [this.address.pincode],
       houseNoOrBuildingName: [this.address.houseNoOrBuildingName, Validators.compose([Validators.required])],
 
       addressType: [this.address.addressType],

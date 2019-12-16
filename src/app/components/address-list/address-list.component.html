@@ -4,11 +4,10 @@
     <ion-spinner name="crescent"></ion-spinner>
   </ion-list>
   <ion-list
-    lines="full"
     *ngIf="addresses !== undefined || addresses.length !== 0"
   >
     <ion-grid class="ion-no-padding">
-      <ion-row  *ngFor="let address of addresses">
+      <ion-row class="rowLine"  *ngFor="let address of addresses">
         <ion-col size="10" class="ion-no-padding">
             <ion-item
             line="none"
@@ -20,8 +19,10 @@
               [checked]="selectedAddress.id === address.id"
             ></ion-radio>
             <ion-label   class="custom-padding">
+              <p *ngIf="address.addressType">({{address.addressType | titlecase}})</p>
               <h1>{{ address.name | titlecase }}</h1>
               <h2>{{ address.houseNoOrBuildingName }}</h2>
+              <h3>{{selectedAddress.city}}</h3>
               <h3>{{ address.landmark }}</h3>
               <h4>{{ address.pincode }}</h4>
             </ion-label>
@@ -44,16 +45,6 @@
       <p>No Saved Addresses</p>
     </ion-text>
   </ion-list>
-  <ion-button
-    *ngIf="mode === 'modal'"
-    expand="block"
-    class="ion-margin"
-    (click)="addAddressModal()"
-    color="primary"
-  >
-    Add Address
-    <ion-icon name="add"></ion-icon>
-  </ion-button>
 </ng-template>
 <!--Address List Template End-->
 
@@ -73,6 +64,18 @@
 <ion-content *ngIf="mode === 'modal'">
   <ng-container *ngTemplateOutlet="addressList"></ng-container>
 </ion-content>
+<ion-footer *ngIf="mode === 'modal'">
+  <ion-button
+  *ngIf="mode === 'modal'"
+  expand="block"
+  class="ion-margin"
+  (click)="addAddressModal()"
+  color="primary"
+>
+  Add Address
+  <ion-icon name="add"></ion-icon>
+</ion-button>
+</ion-footer>
 
 <div *ngIf="mode === 'component'">
   <ng-container *ngTemplateOutlet="addressList"></ng-container>

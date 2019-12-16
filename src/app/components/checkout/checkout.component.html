@@ -11,11 +11,13 @@
     <ion-row *ngIf="deliveryType==='delivery'">
       <ion-col style="padding: 25px;" size="12" *ngIf="selectedAddress !== undefined">
           <ion-label>
-              <h1>{{selectedAddress.name}}</h1>
-              <h2>{{selectedAddress.houseNoOrBuildingName}}</h2>
-              <h2>{{selectedAddress.landmark}}</h2>
-              <h2>{{selectedAddress.roadNameAreaOrStreet}}</h2>
-              <h2>{{selectedAddress.postCode}}</h2>
+            <address>
+              <p>{{selectedAddress.name | titlecase}}</p>
+              <p>{{selectedAddress.houseNoOrBuildingName}}</p>
+              <p>{{selectedAddress.city}}</p>
+              <p>{{selectedAddress.landmark}}</p>
+              <p *ngIf="selectedAddress.pincode">{{selectedAddress.pincode}}</p>
+             </address>
             </ion-label>
       </ion-col>
       <ion-col size="12" *ngIf="deliveryType==='delivery'">

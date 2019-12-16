@@ -1,9 +1,8 @@
-import { Util } from './../../services/util';
+
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { StockCurrent } from 'src/app/api/models';
 import { IonInfiniteScroll, IonSearchbar, Platform } from '@ionic/angular';
-import { NGXLogger } from 'ngx-logger';
 import { RecentService, RecentType } from 'src/app/services/recent.service';
 import { LogService } from 'src/app/services/log.service';
 

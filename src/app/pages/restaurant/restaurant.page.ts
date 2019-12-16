@@ -1,4 +1,3 @@
-
 import { FilterService , FILTER_TYPES} from './../../services/filter.service';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Util } from 'src/app/services/util';
@@ -29,6 +28,8 @@ export class RestaurantPage implements OnInit , OnDestroy {
 
   currentPlaceName = '';
 
+  currentFilter;
+
   filterString;
 
   @ViewChild(IonInfiniteScroll, null) ionInfiniteScroll: IonInfiniteScroll;
@@ -38,7 +39,8 @@ export class RestaurantPage implements OnInit , OnDestroy {
   keycloakSubscription: any;
   isGuest = false;
   backButtonSubscription: any;
-
+  hideFooter: boolean = false;
+  currentLatLon: any;
 
 
   constructor(
@@ -75,6 +77,8 @@ export class RestaurantPage implements OnInit , OnDestroy {
 
     
       if(data !== undefined) {
+
+        this.currentFilter = data;
         if(data.valueOf() == FILTER_TYPES.MIN_AMOUNT.valueOf()) {
           this.filterString="min amount";
         } else if(data.valueOf() == FILTER_TYPES.TOP_RATED.valueOf()) {
@@ -119,6 +123,15 @@ export class RestaurantPage implements OnInit , OnDestroy {
       }
     });
   }
+
+  searchClicked(event) {
+    if(event) {
+      this.hideFooter = true;
+    } else {
+      this.hideFooter = false;
+    }
+  }
+
 
   loadMoreStores(event) {
     this.logger.info(this,'Load More Stores if exists');
@@ -219,6 +232,7 @@ export class RestaurantPage implements OnInit , OnDestroy {
       if(value !== null) {
         this.currentPlaceName = value.name;
         this.filter.setCoordinates(value.coords);
+        this.currentLatLon = value.coords?value.latLon:value.coords;
         this.sharedData.getData('filter')
         .then(data => {
           if(!data) {

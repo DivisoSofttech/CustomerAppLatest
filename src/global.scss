@@ -51,6 +51,17 @@
   width: 125px;
 }
 
+address p:first-child {
+  font-size: 25px !important;
+  font-weight: 400;
+}
+
+address p {
+  font-style: normal;
+  font-size: 20px !important;
+  color: black;
+}
+
 .hidden {
   display: none;
 }

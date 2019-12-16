@@ -83,27 +83,12 @@ export class OrderDetailComponent implements OnInit{
     this.logger.info(this,this.order);
     this.getOrderLines(0);
     this.getAppliedOffers(this.order.id);
-    this.formatAddress();
     this.checkOrderType();
   }
 
   ngAfterViewInit() {
     this.initStepper();
   }
-
-
-  formatAddress() {
-    this.addressString = '';
-    for (let key in this.order.deliveryInfo.deliveryAddress) {
-      if (this.order.deliveryInfo.deliveryAddress[key] !== null) {
-        this.addressString += this.order.deliveryInfo.deliveryAddress[key] + ',';
-      }
-    }
-    if (this.addressString.endsWith(',')) {
-      this.addressString = this.addressString.slice(0, this.addressString.length - 1);
-    }
-  }
-
 
   checkOrderType() {
     switch (this.order.status.name) {

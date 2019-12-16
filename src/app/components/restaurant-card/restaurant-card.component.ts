@@ -7,6 +7,7 @@ import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { StoreType, Type, DeliveryInfo } from 'src/app/api/models';
 import { LogService } from 'src/app/services/log.service';
 import { Util } from 'src/app/services/util';
+import { LocationService } from 'src/app/services/location-service';
 
 @Component({
   selector: 'app-restaurant-card',
@@ -45,13 +46,14 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
   storeDeliveryTypeSubscription: any;
   deliveryInfoSubscription: any;
 
+  @Input() currentLatLon = [];
+
   constructor(
     private favourite: FavouriteService,
     private queryResource: QueryResourceService,
     private nav: NavController,
     private logger: LogService,
-    private keycloakService: KeycloakService,
-    private util: Util
+    private locationService: LocationService,
   ) { }
 
   ngOnDestroy() {
@@ -63,6 +65,8 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
     this.storeTypeSubscription?this.storeTypeSubscription.unsubscribe():null;
     this.storeDeliveryTypeSubscription?this.storeDeliveryTypeSubscription.unsubscribe():null;
   }
+
+
 
   ngOnInit() {
 
@@ -77,6 +81,13 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
     }
   }
 
+  getDistance() {
+    this.locationService.calculateDistance(
+      this.currentLatLon,
+      this.store.location.split(',')
+    )
+  }
+  
   getStoreCategory() {
     this.logger.info('Getting Category', this.store.regNo);
     this.storeTypeSubscription = this.queryResource

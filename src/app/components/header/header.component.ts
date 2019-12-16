@@ -2,7 +2,7 @@ import { NotificationComponent } from 'src/app/components/notification/notificat
 import { IonInfiniteScroll, IonSearchbar, ModalController, Platform } from '@ionic/angular';
 import { Store } from './../../api/models/store';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
-import { Component, OnInit, ViewChild, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { Storage } from '@ionic/storage';
@@ -38,6 +38,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @ViewChild(IonInfiniteScroll, null) infiniteScroll: IonInfiniteScroll;
   @ViewChild('restaurantSearch', null) restaurantSearch: IonSearchbar;
   @Input() notificationsOn = false;
+  @Output() searchEvent = new EventEmitter();
   notificationCount = 0;
   backButtonSubscription: any;
 
@@ -113,9 +114,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.showSearchPane = !this.showSearchPane;
     if (this.showSearchBar === true) {
       this.restaurantSearch.setFocus();
+      this.searchEvent.emit(true);
     } else {
       this.storeSearchResults = [];
       this.searchTerm = '';
+      this.searchEvent.emit(false);
     }
   }
 
