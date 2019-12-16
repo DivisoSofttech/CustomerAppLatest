@@ -151,7 +151,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           }
 
           ++i;
-          if (result.totalPages === i ||  result.totalPages !== 0) {
+          if (result.totalPages >= i ||  result.totalPages !== 0) {
             this.toggleInfiniteScroll();
           } else {
             this.getSearchResults(i);
@@ -180,7 +180,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   loadMoreData(event) {
     this.logger.info(this, 'Loading More Data');
-    this.pageCount++;
+    ++this.pageCount;
     this.getSearchResults(this.pageCount);
   }
 

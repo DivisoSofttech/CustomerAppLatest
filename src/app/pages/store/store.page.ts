@@ -61,6 +61,7 @@ export class StorePage implements OnInit , OnDestroy {
   keycloakSubscription: any;
   pageNum: any = 0;
   categoryShow = {};
+  showFooter: any = true;
 
   constructor(
     private queryResource: QueryResourceService,
@@ -289,10 +290,11 @@ export class StorePage implements OnInit , OnDestroy {
     this.IonRefresher.complete();
   }
 
-  toggleFabButton(val) {
+  toggleFabButtonAndFooter(val) {
     this.logger.info(this,val, '----');
     this.logger.info(this,'Hiding Fab Button');
     this.showCatgeoryFilterFab = val;
+    this.showFooter = val;
   }
 
 

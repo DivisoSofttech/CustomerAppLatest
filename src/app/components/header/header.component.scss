@@ -16,6 +16,7 @@ ion-spinner {
     position:fixed;
     background:white;
     opacity: 1;
+    height: calc(100% - 55px);
 }
 
 .resultGrid {

@@ -26,9 +26,9 @@
     >
   </div>
   <div class="footer" *ngIf="ShowContinueShopping">
-      <ion-button expand="block" class="ion-margin" (click)="continue()"
-        >Continue Shopping</ion-button
-      >
+    <ion-button expand="block" class="ion-margin" (click)="continue()"
+      >Continue Shopping</ion-button
+    >
   </div>
 </ion-content>
 
@@ -237,14 +237,20 @@
     <ion-card-content class="ion-no-padding pd-10">
       <ng-container *ngIf="order.deliveryInfo !== null">
         <ion-label>
-         <address>
-           <p *ngIf="order.deliveryInfo.deliveryAddress.addressType">({{order.deliveryInfo.deliveryAddress.addressType}})</p>
-          <p>{{order.deliveryInfo.deliveryAddress.name | titlecase}}</p>
-          <p>{{order.deliveryInfo.deliveryAddress.houseNoOrBuildingName}}</p>
-          <p>{{order.deliveryInfo.deliveryAddress.city}}</p>
-          <p>{{order.deliveryInfo.deliveryAddress.landmark}}</p>
-          <p *ngIf="order.deliveryInfo.deliveryAddress.pincode">{{order.deliveryInfo.deliveryAddress.pincode}}</p>
-         </address>
+          <address>
+            <p *ngIf="order.deliveryInfo.deliveryAddress.addressType">
+              <small>({{ order.deliveryInfo.deliveryAddress.addressType | titlecase}})</small>
+            </p>
+            <p>{{ order.deliveryInfo.deliveryAddress.name | titlecase }}</p>
+            <p>
+              {{ order.deliveryInfo.deliveryAddress.houseNoOrBuildingName }}
+            </p>
+            <p>{{ order.deliveryInfo.deliveryAddress.city }}</p>
+            <p>{{ order.deliveryInfo.deliveryAddress.landmark }}</p>
+            <p *ngIf="order.deliveryInfo.deliveryAddress.pincode">
+              {{ order.deliveryInfo.deliveryAddress.pincode }}
+            </p>
+          </address>
         </ion-label>
       </ng-container>
     </ion-card-content>

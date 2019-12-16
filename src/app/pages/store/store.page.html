@@ -112,7 +112,7 @@
     [name]="store.name"
     [storeId]="store.regNo"
     [store]="store"
-    (searchEnable)="toggleFabButton($event)"
+    (searchEnable)="toggleFabButtonAndFooter($event)"
     (categoryfilterClicked)="categoryListPopOver($event)"
   ></app-store-header>
 </ion-header>
@@ -221,6 +221,7 @@
 </ion-content>
 
 <ion-footer
+  [hidden]="!showFooter"
   class="animated animation-duration"
   [ngClass]="currentSegment === 'menu' ? 'slideInUp': 'slideOutDown'"
 >
