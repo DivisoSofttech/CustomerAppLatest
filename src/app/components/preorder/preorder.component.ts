@@ -39,7 +39,7 @@ export class PreorderComponent implements OnInit {
     let ftime = moment(this.store.openingTime);
     let ttime = moment(this.store.closingTime);
 
-    this.fromTime = ftime.format("hh:mm")
+    this.fromTime = ftime.format("hh:mm a")
     this.toTime = ttime.format("hh:mm a");
     this.logger.info(this, 'From Time>>>>>', this.fromTime, ' toTime>>>>>>', this.toTime);
   }
@@ -75,7 +75,7 @@ export class PreorderComponent implements OnInit {
       this.cartService.preOrderDate = tempTime.toDate().toISOString();
       this.popoverController.dismiss(true);
     } else {
-      this.util.createToast('Select a Time Betwee ' + `${this.fromTime}` + ' ' + `${this.selectedTime}` + `${this.toTime}`)
+      this.util.createToast('Select a Time Betwee ' + `${this.fromTime}` + ' to ' + `${this.toTime}`)
     }
 
   }

@@ -95,4 +95,10 @@ export class BannerComponent implements OnInit , OnDestroy {
     );
     this.showLoading = false;
     }
+
+    refresh() {
+      this.bannerSubscription.unsubscribe();
+      this.banners = [];
+      this.ngOnInit();
+    }
 }

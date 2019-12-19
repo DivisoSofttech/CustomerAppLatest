@@ -147,7 +147,6 @@ export class IntlNumberInputComponent implements OnInit {
       .then(data => {
         if (data.data !== undefined) {
           this.selectedCountry = data.data;
-          console.log('Selected', data);
         }
         this.checkIfValid();
       });
@@ -168,16 +167,13 @@ export class IntlNumberInputComponent implements OnInit {
   }
 
   checkIfValid() {
-    console.log('checking number', this.selectedCountry.code);
     try {
       if (this.selectedCountry.code !== '') {
         const pnumb = this.putil.parseAndKeepRawInput(this.phoneNumber.toString(), this.selectedCountry.code);
         if (this.putil.isValidNumber(pnumb)) {
-          console.log('Valid Number');
           this.numberValid = true;
           this.codeValid = true;
         } else {
-          console.log('Invalid Number');
           this.numberValid = false;
           this.codeValid = true;
         }
@@ -185,7 +181,6 @@ export class IntlNumberInputComponent implements OnInit {
         this.codeValid = false;
       }
 
-      console.log('Here');
       this.validEvent.emit({
         valid: this.numberValid && this.codeValid,
         value: this.selectedCountry.numberCode + this.phoneNumber.toString(),

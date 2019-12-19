@@ -72,7 +72,7 @@ export class LoginSignupComponent implements OnInit {
 
   login() {
     this.logger.info(this, 'Login Called');
-    this.util.createLoader()
+    this.util.createLoader(3000)
       .then(loader => {
         loader.present();
         this.keycloakService.authenticateAndAuthorize({ username: this.username, password: this.password },

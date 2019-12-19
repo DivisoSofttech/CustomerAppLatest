@@ -10,6 +10,7 @@ import { Store } from 'src/app/api/models';
 import { LogService } from 'src/app/services/log.service';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { SharedDataService } from 'src/app/services/shared-data.service';
+import { BannerComponent } from 'src/app/components/banner/banner.component';
 
 @Component({
   selector: 'app-restaurant',
@@ -35,10 +36,12 @@ export class RestaurantPage implements OnInit , OnDestroy {
   @ViewChild(IonInfiniteScroll, null) ionInfiniteScroll: IonInfiniteScroll;
   @ViewChild(IonRefresher, null) IonRefresher: IonRefresher;
   @ViewChild(FooterComponent, null) footer: FooterComponent;
+  @ViewChild(BannerComponent, null) banner: BannerComponent;
 
   keycloakSubscription: any;
   isGuest = false;
   backButtonSubscription: any;
+  filterSubscription:any;
   hideFooter: boolean = false;
   currentLatLon: any;
 
@@ -73,7 +76,7 @@ export class RestaurantPage implements OnInit , OnDestroy {
   }
 
   async getStores() {
-    this.filter.getSubscription().subscribe((data: FILTER_TYPES) => {
+    this.filterSubscription = this.filter.getSubscription().subscribe((data: FILTER_TYPES) => {
 
     
       if(data !== undefined) {
@@ -153,7 +156,10 @@ export class RestaurantPage implements OnInit , OnDestroy {
   }
 
   doRefresh(event) {
+    this.page = 0;
+    this.filterSubscription.unsubscribe();
     this.logger.info(this,'Refreshing Page');
+    this.banner.refresh();
     this.getStores();
   }
 
@@ -215,6 +221,7 @@ export class RestaurantPage implements OnInit , OnDestroy {
     this.logger.info(this,'Changed Current Location - LatLon ', data);
     this.filter.setCoordinates(data.data.latLon);
     this.currentPlaceName = data.data.name;
+    this.currentLatLon = data.data.latLon;
     this.logger.info(this,'Setting Distance_wise Filter');
     this.filter.setFilter(FILTER_TYPES.DISTANCE_WISE);
     this.logger.info(this,'Getting Stores');

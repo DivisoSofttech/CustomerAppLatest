@@ -153,7 +153,11 @@ export class HistoryListComponent implements OnInit , OnDestroy {
   }
 
   refresh(event) {
-
+    this.pageNumber = 0;
+    this.orders = [];
+    this.showHistoryLoading = true;
+    this.getOrders(0,event);
+    event.target.complete();
   }
 
   showList() {

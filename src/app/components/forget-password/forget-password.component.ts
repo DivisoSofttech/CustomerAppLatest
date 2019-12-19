@@ -35,6 +35,7 @@ export class ForgetPasswordComponent implements OnInit {
   @ViewChild('timer' , { static: false }) timer: CountdownComponent;
   OTP: string;
   OTPmessage: string;
+  fullNumber: any;
 
 
   constructor(
@@ -97,7 +98,6 @@ export class ForgetPasswordComponent implements OnInit {
     this.logger.info('Senfing OTP');
     if (this.numberValid === true) {
       this.query.findByMobileNumberUsingGET(this.number).subscribe(user => {
-        this.keycloakService.getUser(user.idpSub);
         this.user = user;
         console.log(this.user);
         this.initSMSSender();
@@ -105,14 +105,16 @@ export class ForgetPasswordComponent implements OnInit {
       }, err => {
         if (err.status === '500') {
           this.util.createToast('Unregistered Mobile Number');
+        } else {
+          this.util.createToast('Cannot Find Number');
         }
       });
     }
   }
 
   initSMSSender() {
-    this.commandResource.sendSMSUsingPOST(this.number).subscribe(data => {
-      this.startSMSListener();
+    this.commandResource.sendSMSUsingPOST(this.fullNumber).subscribe(data => {
+      // this.startSMSListener();
     });
   }
 
@@ -178,9 +180,10 @@ export class ForgetPasswordComponent implements OnInit {
   }
 
   checkNumber(event) {
-    this.numberValid  = event.valid;
-    console.log(event);
-    this.number = event.value;
+    this.numberValid  = event.valid
+    let code = event.extra.numberCode;
+    this.fullNumber = event.value;
+    this.number = event.value.slice(code.toString().length , event.value.length);
   }
 
 }

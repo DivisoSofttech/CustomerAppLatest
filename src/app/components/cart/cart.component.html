@@ -1,35 +1,41 @@
-<ion-item class="bg-grey"
-*ngIf="store !== undefined && store !== null && viewType === 'full'"
-lines="full"
+<ion-item
+  *ngIf="store !== undefined && store !== null && viewType === 'full'"
+  lines="full"
 >
-<ion-label>
-  {{store.name}}
-</ion-label></ion-item>
-<ion-grid no-padding margin *ngIf="viewType === 'minimal'" (click)="routeBasket()">
+  <ion-label>
+    {{ store.name | titlecase }}
+  </ion-label></ion-item
+>
+<ion-grid
+  no-padding
+  margin
+  *ngIf="viewType === 'minimal'"
+  (click)="routeBasket()"
+>
   <ion-row>
     <ion-col size="4" text-center no-padding>
       <ion-label class="highlight">{{ cartSize + " Items" }}</ion-label>
     </ion-col>
     <ion-col size="4" text-center no-padding>
       <ion-label class="highlight">{{
-        "Total: " + "&#8364; " + ( subTotal )
+        "Total: " + "&#8364; " + subTotal
       }}</ion-label>
     </ion-col>
     <ion-col size="4" text-center no-padding class="pointer">
-      <ion-label  class="cursor highlight" >View Cart</ion-label>
+      <ion-label class="cursor highlight">View Cart</ion-label>
     </ion-col>
   </ion-row>
 </ion-grid>
 
 <div *ngIf="viewType === 'full'">
   <!--No Orders Start-->
-  <ion-grid *ngIf="orderLines.length === 0" class="bg-grey">
+  <ion-grid *ngIf="orderLines.length === 0">
     <ion-row justify-content-center class="ion-margin-top ">
       <ion-col size="12" text-center>
         <ion-label class="fntbig-cursive">
           Order total
         </ion-label>
-        <ion-text class="fntbig-cursive" >(0 items)</ion-text>
+        <ion-text class="fntbig-cursive">(0 items)</ion-text>
       </ion-col>
     </ion-row>
     <ion-row justify-content-center>
@@ -52,41 +58,51 @@ lines="full"
   <!--No Orders End-->
 
   <!--Orders List Start-->
-  <ion-grid class="bg-grey" *ngIf="orderLines.length > 0">
+  <ion-grid *ngIf="orderLines.length > 0" class="ion-no-padding">
     <ion-row justify-content-center class="ion-margin-top">
       <ion-col size="12" text-center>
         <ion-label class="fntbig-cursive">
           Order total
         </ion-label>
-        <ion-text class="fntbig-cursive">{{ "(" + orderLines.length + " items)" }}</ion-text>
+        <ion-text *ngIf="orderLines.length === 1" class="fntbig-cursive">{{
+          "(" + orderLines.length + " item)"
+        }}</ion-text>
+        <ion-text *ngIf="orderLines.length > 1" class="fntbig-cursive">{{
+          "(" + orderLines.length + " items)"
+        }}</ion-text>
       </ion-col>
     </ion-row>
     <ion-row justify-content-center>
       <ion-col size="12" text-center>
-        <p class="fntbig">&#8364;{{ subTotal  }}</p> 
+        <p class="fntbig">&#8364;{{ subTotal }}</p>
       </ion-col>
     </ion-row>
     <ion-row *ngIf="subTotal < store.minAmount">
       <ion-col size="12" text-center>
-        <ion-text class="cl-red" text-center *ngIf="currentSegment === 'delivery'" 
-          >Spend {{ neededCheckOutAmount  | number: "1.1-2" }} More for delivery</ion-text
+        <ion-text
+          class="cl-red"
+          text-center
+          *ngIf="currentSegment === 'delivery'"
+          >Spend {{ neededCheckOutAmount | number: "1.1-2" }} More for
+          delivery</ion-text
         >
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col size="12">
-      
-      <div *ngIf="!deliveryOk && !collectionOk && orderLines.length > 0"
-        class="vertical-align-center"
-      >
-        <ion-label text-center>
-            Unable to Order From This Restaurant , Does'nt Provide a Delivery Mode
-        </ion-label>
-      </div>
+        <div
+          *ngIf="!deliveryOk && !collectionOk && orderLines.length > 0"
+          class="vertical-align-center"
+        >
+          <ion-label text-center>
+            Unable to Order From This Restaurant , Does'nt Provide a Delivery
+            Mode
+          </ion-label>
+        </div>
       </ion-col>
       <ion-col size="12">
         <ion-item (click)="presentAllergyModal()" lines="full">
-          <ion-icon 
+          <ion-icon
             color="primary"
             class="info-icon"
             name="alert"
@@ -108,31 +124,55 @@ lines="full"
     (ionChange)="segmenChanged($event)"
     *ngIf="orderLines.length !== 0"
   >
-  <ion-segment-button *ngIf="deliveryOk" value="delivery" [checked]="deliveryOk && defaultDelivery">Delivery</ion-segment-button>
-    <ion-segment-button *ngIf="collectionOk" value="collection" [checked]="collectionOk && !defaultDelivery">Collection</ion-segment-button>
+    <ion-segment-button
+      type="button"
+      *ngIf="deliveryOk"
+      value="delivery"
+      [checked]="deliveryOk && defaultDelivery"
+      >Delivery</ion-segment-button
+    >
+    <ion-segment-button
+      type="button"
+      *ngIf="collectionOk"
+      value="collection"
+      [checked]="collectionOk && !defaultDelivery"
+      >Collection</ion-segment-button
+    >
   </ion-segment>
 
   <div>
-    <app-delivery-item-details [currentDeliveryMode]="deliveryMode" *ngIf="!guest && deliveryMode" class="vertical-align-center"></app-delivery-item-details>
+    <app-delivery-item-details
+      [currentDeliveryMode]="deliveryMode"
+      *ngIf="!guest && deliveryMode"
+      class="vertical-align-center"
+    ></app-delivery-item-details>
   </div>
-
 </div>
 
-<ion-footer *ngIf="viewType === 'full'
-&& orderLines.length > 0">
-<ion-button
-class="ion-margin round-button" *ngIf="currentSegment==='delivery' && enableContinue"
-[disabled]="neededCheckOutAmount !== 0"
-color="primary" expand="full" (click)="checkRestaurantStatus('delivery')"
->Continue</ion-button
->
-<ion-button *ngIf="currentSegment==='collection' && enableContinue"
-color="primary" expand="full" (click)="checkRestaurantStatus('collection')"
-class="ion-margin round-button"
->Continue</ion-button
->
-<ion-button *ngIf="!enableContinue" color="primary" expand="full"
-class="ion-margin round-button">
-  <ion-spinner name="circles"></ion-spinner>
-</ion-button>
+<ion-footer *ngIf="viewType === 'full' && orderLines.length > 0">
+  <ion-button
+    class="ion-margin round-button"
+    *ngIf="currentSegment === 'delivery' && enableContinue"
+    [disabled]="neededCheckOutAmount !== 0"
+    color="primary"
+    expand="full"
+    (click)="checkRestaurantStatus('delivery')"
+    >Continue</ion-button
+  >
+  <ion-button
+    *ngIf="currentSegment === 'collection' && enableContinue"
+    color="primary"
+    expand="full"
+    (click)="checkRestaurantStatus('collection')"
+    class="ion-margin round-button"
+    >Continue</ion-button
+  >
+  <ion-button
+    *ngIf="!enableContinue"
+    color="primary"
+    expand="full"
+    class="ion-margin round-button"
+  >
+    <ion-spinner name="circles"></ion-spinner>
+  </ion-button>
 </ion-footer>

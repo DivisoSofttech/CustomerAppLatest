@@ -131,6 +131,7 @@ export class NotificationComponent implements OnInit  , OnDestroy {
   }
 
   async refresh(event) {
+    this.pageNumber = 0;
     this.notifications = [];  
     this.notificationSorted = {
       'today':[]

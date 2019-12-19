@@ -3,11 +3,11 @@ import { Store } from './../../api/models/store';
 import { FavouriteService } from './../../services/favourite.service';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { StoreType, Type, DeliveryInfo } from 'src/app/api/models';
 import { LogService } from 'src/app/services/log.service';
-import { Util } from 'src/app/services/util';
 import { LocationService } from 'src/app/services/location-service';
+
+declare var google: any;
 
 @Component({
   selector: 'app-restaurant-card',
@@ -17,8 +17,8 @@ import { LocationService } from 'src/app/services/location-service';
 export class RestaurantCardComponent implements OnInit, OnDestroy {
 
   @Input() store: Store = {
-    imageLink:'',
-    storeUniqueId:''
+    imageLink: '',
+    storeUniqueId: ''
   };
 
   @Input() viewType: string = 'normal';
@@ -47,6 +47,7 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
   deliveryInfoSubscription: any;
 
   @Input() currentLatLon = [];
+  distance: number;
 
   constructor(
     private favourite: FavouriteService,
@@ -61,19 +62,20 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
   }
 
   unsubscribeAll() {
-    this.reviewSubscription?this.reviewSubscription.unsubscribe():null;
-    this.storeTypeSubscription?this.storeTypeSubscription.unsubscribe():null;
-    this.storeDeliveryTypeSubscription?this.storeDeliveryTypeSubscription.unsubscribe():null;
+    this.reviewSubscription ? this.reviewSubscription.unsubscribe() : null;
+    this.storeTypeSubscription ? this.storeTypeSubscription.unsubscribe() : null;
+    this.storeDeliveryTypeSubscription ? this.storeDeliveryTypeSubscription.unsubscribe() : null;
   }
 
 
 
   ngOnInit() {
 
-    this.logger.info(this,'Current Store ' , this.store)
+    this.logger.info(this, 'Current Store ', this.store)
     this.currentTime = new Date();
     this.getStoreReview();
     this.getStoreCategory();
+    this.getDistance();
     if (this.viewType === 'normal') {
       this.checkIfAlreadyFavourite();
       this.getStoreDeliveryInfo();
@@ -82,12 +84,15 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
   }
 
   getDistance() {
-    this.locationService.calculateDistance(
-      this.currentLatLon,
-      this.store.location.split(',')
-    )
+    let storeLocation = this.store.location.split(',');
+    let currentLatLng = new google.maps.LatLng(this.currentLatLon[0], this.currentLatLon[1]);
+    let restaurantLtLng = new google.maps.LatLng(storeLocation[0], storeLocation[1]);
+    this.distance = this.locationService.calculateDistance(
+      currentLatLng,
+      restaurantLtLng
+    )/1000;
   }
-  
+
   getStoreCategory() {
     this.logger.info('Getting Category', this.store.regNo);
     this.storeTypeSubscription = this.queryResource
@@ -118,7 +123,7 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
   }
 
   getStoreDeliveryInfo() {
-    this.deliveryInfoSubscription = this.queryResource.findDeliveryInfoByStoreIdUsingGET({storeId: this.store.regNo})
+    this.deliveryInfoSubscription = this.queryResource.findDeliveryInfoByStoreIdUsingGET({ storeId: this.store.regNo })
       .subscribe(
         success => {
           this.deliveryInfos = success.content;
@@ -156,7 +161,7 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
       }
     });
   }
-  
+
   checkIfAlreadyFavourite() {
     this.favourite.getFavourites()
       .subscribe(data => {

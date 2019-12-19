@@ -19,12 +19,12 @@
               [checked]="selectedAddress.id === address.id"
             ></ion-radio>
             <ion-label   class="custom-padding">
-              <p *ngIf="address.addressType">({{address.addressType | titlecase}})</p>
               <h1>{{ address.name | titlecase }}</h1>
               <h2>{{ address.houseNoOrBuildingName }}</h2>
               <h3>{{selectedAddress.city}}</h3>
               <h3>{{ address.landmark }}</h3>
               <h4>{{ address.pincode }}</h4>
+              <p *ngIf="address.addressType">({{address.addressType | titlecase}})</p>
             </ion-label>
           </ion-item>
         </ion-col>
@@ -61,7 +61,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="mode === 'modal'">
+<ion-content *ngIf="mode === 'modal'" appScrollbarTheme>
   <ng-container *ngTemplateOutlet="addressList"></ng-container>
 </ion-content>
 <ion-footer *ngIf="mode === 'modal'">

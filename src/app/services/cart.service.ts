@@ -262,7 +262,6 @@ export class CartService {
     if(!this.dataSaveTimer) {
       this.logger.info(this,'Setting Timer to Save Cart Details');
       this.dataSaveTimer = setTimeout(()=>{
-        console.error('Save Cart Details To Memory');
         this.saveCartDetailsToSharedMemory();
         clearTimeout(this.dataSaveTimer);
         this.dataSaveTimer = null;
