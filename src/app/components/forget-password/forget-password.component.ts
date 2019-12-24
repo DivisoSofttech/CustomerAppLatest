@@ -36,6 +36,7 @@ export class ForgetPasswordComponent implements OnInit {
   OTP: string;
   OTPmessage: string;
   fullNumber: any;
+  showOtpExpired: boolean;
 
 
   constructor(
@@ -175,8 +176,14 @@ export class ForgetPasswordComponent implements OnInit {
 
   resend() {
     this.stopSMSListener();
-    this.initSMSSender();
+    this.sendOtp();
     this.timer.restart();
+  }
+
+  timerEvent(event) {
+    if(event.action === 'done') {
+      this.showOtpExpired = true;
+    }
   }
 
   checkNumber(event) {

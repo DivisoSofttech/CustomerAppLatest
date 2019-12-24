@@ -253,9 +253,9 @@ export class CartService {
       this.currentShopId = 0;
     }
     this.calculatePrice();
-    // this.orderLines.forEach(o => {
-    //   o.total = parseFloat(this.decimalPipe.transform(o.total , '1.2-2'));
-    // });
+    this.orderLines.forEach(o => {
+      o.total = parseFloat(this.decimalPipe.transform(o.total , '1.2-2'));
+    });
     this.observableTickets.next(this.orderLines);
     this.observablePrice.next(this.subTotal);
     

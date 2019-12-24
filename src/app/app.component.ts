@@ -15,6 +15,7 @@ import { RecentService } from './services/recent.service';
 import { ErrorService } from './services/error.service';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
+import { CartService } from './services/cart.service';
 
 
 @Component({
@@ -38,13 +39,15 @@ export class AppComponent {
   store;
   currentUrl: string;
 
+  cartSize = 0;
+
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private util: Util,
     private logger: LogService,
-    private errorService: ErrorService,
+    private cartService: CartService,
     private recentService: RecentService,
     private keycloakService: KeycloakService,
     private modalController: ModalController,
@@ -54,7 +57,9 @@ export class AppComponent {
     private guestUserService: GuestUserService,
   ) {
     registerLocaleData(localeFr, 'fr');
-
+    this.cartService.observableTickets.subscribe(data => {
+      this.cartSize = data.length;
+    });
     this.getCurrentStore();
     this.appPages = APP_SIDE_MENU;
     this.toggleFilterView('/restaurant');
@@ -70,19 +75,6 @@ export class AppComponent {
     if (this.platform.is('pwa') || this.platform.is('cordova')) {
       this.browser = true;
     }
-    this.checkInternetConnection(this.errorService);
-  }
-
-  checkInternetConnection(errorService: ErrorService) {
-    window.addEventListener('offline', function(event){
-      errorService.setNetworkStatus(false);
-      errorService.showErrorModal();
-    });
-    window.addEventListener('online', function(event){
-      errorService.setNetworkStatus(true);
-      errorService.modal.dismiss();
-      this.location.reload();
-    });
   }
 
 

@@ -58,6 +58,7 @@ import { PreorderComponent } from './preorder/preorder.component';
 import { PaymentflowNavComponent } from './paymentflow-nav/paymentflow-nav.component';
 import {  PaymentProvidersModule } from '../payment/payment-providers.module';
 import { NoCommaPipe } from '../pipes/no-comma.pipe';
+import { TermsAndPolicyComponent } from './terms-and-policy/terms-and-policy.component';
 
 @NgModule({
   providers: [ClosedPipe,DatePipe,    NoCommaPipe],
@@ -108,8 +109,8 @@ import { NoCommaPipe } from '../pipes/no-comma.pipe';
     NotificationCardComponent,
     PlaceSuggestionComponent,
     PreorderComponent,
-    PaymentflowNavComponent
-    
+    PaymentflowNavComponent,
+    TermsAndPolicyComponent
   ],
 
   imports: [
@@ -127,6 +128,7 @@ import { NoCommaPipe } from '../pipes/no-comma.pipe';
 
   exports: [
 
+    TermsAndPolicyComponent,
     ImageSelectorComponent,
     RatingComponent,
     LoadingComponent,
@@ -203,7 +205,7 @@ import { NoCommaPipe } from '../pipes/no-comma.pipe';
     PlaceSuggestionComponent,
     PreorderComponent,
     PaymentflowNavComponent,
-
+    TermsAndPolicyComponent,
     PaypalPaymentComponent,
     BraintreeCardPaymentComponent
   ]

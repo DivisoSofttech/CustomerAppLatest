@@ -14,6 +14,17 @@ ion-footer {
     position: fixed;
 }
 
+.textCenter {
+    justify-content: center;
+}
+
+.gridD {
+    padding: 10px !important;
+    font-size: 22px !important;
+    border-bottom: 1px solid #3a7df9 !important;
+    color: var(--ion-color-primary) !important;
+}
+
 
 .round-button {
     border-radius: 41px;

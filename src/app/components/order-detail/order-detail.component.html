@@ -34,8 +34,14 @@
 
 <!--Order Status Start-->
 <ng-template #OrderStatus>
-  <ion-item color="danger" lines="full" *ngIf="order.preOrderDate">
+  <ion-item color="danger" lines="full" *ngIf="order.preOrderDate && order.deliveryInfo.deliveryType !== 'collection'">
     <ion-label>Preorder Time</ion-label>
+    <ion-text>
+      {{ order.preOrderDate | date: "shortTime" }}
+    </ion-text>
+  </ion-item>
+  <ion-item color="danger" lines="full" *ngIf="order.preOrderDate && order.deliveryInfo.deliveryType === 'collection'">
+    <ion-label>Collection Time</ion-label>
     <ion-text>
       {{ order.preOrderDate | date: "shortTime" }}
     </ion-text>

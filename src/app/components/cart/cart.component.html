@@ -100,7 +100,7 @@
           </ion-label>
         </div>
       </ion-col>
-      <ion-col size="12">
+      <ion-col size="12" class="ion-no-padding">
         <ion-item (click)="presentAllergyModal()" lines="full">
           <ion-icon
             color="primary"
@@ -120,9 +120,30 @@
   </ion-grid>
   <!--Orders List End-->
 
+  <ion-grid
+  class="ion-no-padding gridD"   
+  *ngIf="orderLines.length !== 0 && (deliveryOk && !collectionOk)">
+    <ion-row  class="textCenter">
+      <ion-label>
+        Delivery
+      </ion-label>
+    </ion-row>
+  </ion-grid
+  >
+
+  <ion-grid   
+   class="ion-no-padding gridD"   
+   *ngIf="orderLines.length !== 0 && (!deliveryOk && collectionOk)">
+    <ion-row class="textCenter">
+      <ion-label>
+       Collection
+      </ion-label>
+    </ion-row>
+  </ion-grid>
+
   <ion-segment
     (ionChange)="segmenChanged($event)"
-    *ngIf="orderLines.length !== 0"
+    *ngIf="orderLines.length !== 0 && deliveryOk && collectionOk"
   >
     <ion-segment-button
       type="button"

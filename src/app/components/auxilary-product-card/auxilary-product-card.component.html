@@ -1,12 +1,7 @@
 <ion-item *ngIf="auxilaryItem !== undefined">
   <ion-thumbnail>
     <ion-img
-      [src]="
-        'data:' +
-        auxilaryItem.imageContentType +
-        ';base64,' +
-        auxilaryItem.image
-      "
+      [src]="auxilaryItem.imageLink"
       class="imageShow"
     >
     </ion-img>

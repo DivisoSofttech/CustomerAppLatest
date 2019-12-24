@@ -22,17 +22,17 @@ export class ErrorService {
     this.component.ngOnInit();
   }
 
-  setNetworkStatus(val) {
-    this.isOnline = val;
+  checkNetworkStatus() {
+    if(navigator.onLine) {
+      this.isOnline = true;
+    } else {
+      this.isOnline = false;
+    }
   }
 
   async showErrorModal(component?) {
 
-    // if(this.modal !== undefined) {
-    //   this.modalController.dismiss();
-    // }
-    
-    this.logger.info('Showing Error Modal');
+    this.checkNetworkStatus();
     this.component = component;
     this.modal = await this.modalController.create({
     component: ErrorComponent,

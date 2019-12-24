@@ -9,6 +9,7 @@ import { PhoneNumberVerficationComponent } from '../phone-number-verfication/pho
 import { ForgetPasswordComponent } from '../forget-password/forget-password.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LogService } from 'src/app/services/log.service';
+import { TermsAndPolicyComponent } from '../terms-and-policy/terms-and-policy.component';
 
 @Component({
   selector: 'app-login-signup',
@@ -42,6 +43,8 @@ export class LoginSignupComponent implements OnInit {
 
   @Input() type = 'page';
 
+  termsChecked = false;
+
   signupForm: FormGroup;
 
   constructor(
@@ -59,8 +62,15 @@ export class LoginSignupComponent implements OnInit {
     this.signupForm = this.formBuilder.group({
       username: [this.username, Validators.compose([Validators.required, Validators.pattern(/^[A-Za-z0-9_-]{3,15}$/)])],
       email: [this.email, Validators.compose([Validators.required, Validators.email])],
-      password: [this.password, Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(15)])]
+      password: [this.password, Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(15)])],
     })
+  }
+
+  async showTermsAndPolicy() {
+    const modal = await this.modalController.create({
+    component: TermsAndPolicyComponent
+    });
+    await modal.present();
   }
 
 
@@ -231,7 +241,7 @@ export class LoginSignupComponent implements OnInit {
   }
 
   registerDisabled(): boolean {
-    if (!this.signupForm.valid || this.numberValid === false) {
+    if (!this.signupForm.valid || this.numberValid === false || !this.termsChecked) {
       return true;
     }
     return false;

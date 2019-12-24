@@ -65,8 +65,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   backButtonHandler() {
     this.backButtonSubscription = this.platform.backButton.subscribe(() => {
-      if (this.showSearchBar) {
+      if (this.showSearchBar && this.showSearchPane) {
         this.showSearchBar = false;
+        this.showSearchPane = false;
       }
     });
   }

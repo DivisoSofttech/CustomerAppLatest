@@ -70,17 +70,34 @@
           <ion-item class="ion-no-padding"  lines="full" *ngIf="signupForm.get('password').invalid && showFormErrors['password']">
               <ion-label color="danger">Password should be 6 - 8 characters long</ion-label>
           </ion-item>
-          <ion-button [disabled]="registerDisabled()" (click)="signupModal()" expand="block" margin-top margin-bottom>
-            Register</ion-button>
-        </form>
+        </form> 
+      </ion-col>
+      <ion-col size="12">
+        <ion-button [disabled]="registerDisabled()" (click)="signupModal()" expand="block" margin-top margin-bottom>
+          Register</ion-button>
+      </ion-col>
+      <ion-col size="12" class="centerAlign">
+        <ion-checkbox class="marginRight" [(ngModel)]="termsChecked"></ion-checkbox>
+        <ion-label>I accept the 
+        </ion-label>
+        <ion-text color="primary" (click)="showTermsAndPolicy()">Terms and Policy</ion-text>
       </ion-col>
     </ion-row>
   </ion-grid>
 </ng-template>
 
 
-
-<ion-header>
+<ion-header class="desktop-only" *ngIf="type==='modal'">
+  <ion-toolbar>
+    <ion-title>Login</ion-title>
+    <ion-buttons slot="end" *ngIf="type!=='page'">
+      <ion-button color="primary" (click)="dismiss()" >
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-header class="mobile-only">
   <ion-toolbar>
     <ion-title>Login</ion-title>
     <ion-buttons slot="end" *ngIf="type!=='page'">
@@ -94,21 +111,21 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-segment (ionChange)="slide($event)" [value]="value" class="mobile slider-tabs" >
-  <ion-segment-button value="login">
-    <ion-label>Login</ion-label>
-  </ion-segment-button>
-  <ion-segment-button value="signup">
-    <ion-label>Register</ion-label>
-  </ion-segment-button>
-</ion-segment>
-
-<ion-content padding class="mobile">
+<ion-content  class="mobile">
+  <ion-segment (ionChange)="slide($event)" [value]="value" class="mobile slider-tabs" >
+    <ion-segment-button value="login">
+      <ion-label>Login</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="signup">
+      <ion-label>Register</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  
   <ion-slides #slides (ionSlideDidChange)="slideChange()">
-    <ion-slide>
+    <ion-slide padding>
       <ng-content *ngTemplateOutlet="signin"></ng-content>
     </ion-slide>
-    <ion-slide>
+    <ion-slide padding>
      <ng-content *ngTemplateOutlet="register"></ng-content>
     </ion-slide>
   </ion-slides>

@@ -13,7 +13,6 @@ ion-button {
   margin-top: 50px;
 }
 
-
 #notfound {
   position: relative;
   height: 100vh;
@@ -24,8 +23,8 @@ ion-button {
   left: 50%;
   top: 50%;
   -webkit-transform: translate(-50%, -50%);
-      -ms-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 .notfound {
@@ -43,7 +42,7 @@ ion-button {
 }
 
 .notfound .notfound-404 h1 {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-size: 236px;
   font-weight: 200;
   margin: 0px;
@@ -53,12 +52,12 @@ ion-button {
   left: 50%;
   top: 50%;
   -webkit-transform: translate(-50%, -50%);
-      -ms-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 .notfound .notfound-404 h2 {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-size: 28px;
   font-weight: 400;
   text-transform: uppercase;
@@ -74,7 +73,7 @@ ion-button {
 }
 
 .notfound a {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   display: inline-block;
   font-weight: 700;
   text-decoration: none;
@@ -90,6 +89,13 @@ ion-button {
 .notfound a:hover {
   color: #ff6300;
   background: #211b19;
+}
+
+.noconnection {
+  font-family: "Montserrat", sans-serif !important;
+  font-weight: bold !important;
+  background: rgba(0, 0, 0, 0.8) !important;
+  color: white !important;
 }
 
 @media only screen and (max-width: 767px) {

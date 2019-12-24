@@ -5,11 +5,6 @@ export const APP_SIDE_MENU = [
       icon: 'business'
     },
     {
-      title: 'Basket',
-      url: '/basket',
-      icon: 'cart'
-    },
-    {
       title: 'Profile',
       url: '/profile',
       icon: 'person'

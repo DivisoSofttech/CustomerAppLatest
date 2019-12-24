@@ -4,13 +4,14 @@
     <ion-spinner name="crescent"></ion-spinner>
   </ion-list>
   <ion-list
+    class="ion-no-padding"
     *ngIf="addresses !== undefined || addresses.length !== 0"
   >
     <ion-grid class="ion-no-padding">
       <ion-row class="rowLine"  *ngFor="let address of addresses">
         <ion-col size="10" class="ion-no-padding">
             <ion-item
-            line="none"
+            lines="none"
             value="{{ address.id }}"
             (click)="dismissData(address)"
           >
@@ -79,4 +80,16 @@
 
 <div *ngIf="mode === 'component'">
   <ng-container *ngTemplateOutlet="addressList"></ng-container>
+</div>
+<div>
+  <ion-button
+  *ngIf="mode === 'component'"
+  expand="block"
+  class="ion-margin"
+  (click)="addAddressModal()"
+  color="primary"
+>
+  Add Address
+  <ion-icon name="add"></ion-icon>
+</ion-button>
 </div>

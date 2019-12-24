@@ -111,6 +111,18 @@ ion-grid.overlay {
 .distanceText {
   color: darkorange;
     font-size: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.rating-small {
+  display: flex;
+  align-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  margin-left: 10px;
+  font-size: 15px;
+  color: black;
 }
 
 

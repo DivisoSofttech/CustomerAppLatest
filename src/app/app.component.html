@@ -19,6 +19,13 @@
                 {{p.title}}
               </ion-label>
             </ion-item>
+            <ion-item lines="full" [routerDirection]="'root'" [routerLink]="'/basket'">
+              <ion-icon slot="start" name="cart"></ion-icon>
+              <ion-label>
+                Basket
+              </ion-label>  
+              <ion-badge class="badge" *ngIf="cartSize>0">{{cartSize}}</ion-badge>
+            </ion-item>
             <ion-item lines="full" (click)="logout()" class="pointer" *ngIf="!guest">
               <ion-icon slot="start" name="power"></ion-icon>
               <ion-label>

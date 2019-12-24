@@ -1,4 +1,4 @@
-<ion-card no-padding id="{{ stockCurrent.product.id }}" *ngIf="type === 'full'">
+<ion-card class="pointer" no-padding id="{{ stockCurrent.product.id }}" *ngIf="type === 'full'">
   <div class="ribbon1" *ngIf="discount!=null && discount.rate !== null && discount.rate > 0">
     <span>
       {{discount.rate}}% off

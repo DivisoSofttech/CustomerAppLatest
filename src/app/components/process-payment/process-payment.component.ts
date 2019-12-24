@@ -5,7 +5,7 @@ import { PaymentSuccessfullInfoComponent } from '../payment-successfull-info/pay
 import { Subscription } from 'rxjs';
 import { LogService } from 'src/app/services/log.service';
 import { PaymentNavService } from 'src/app/services/payment-nav.service';
-import { NavController } from '@ionic/angular';
+import { NavController, Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-process-payment',
@@ -21,13 +21,15 @@ export class ProcessPaymentComponent implements OnInit, OnDestroy {
   paymentId: string;
   provider: string;
   loader;
+  backButtonSubscription: any;
 
   constructor(
     private paymentNav: PaymentNavService,
     private orderService: OrderService,
     private util: Util,
     private logger: LogService,
-    private navController: NavController
+    private navController: NavController,
+    private platform: Platform
   ) { }
 
   ngOnInit() {
@@ -100,7 +102,15 @@ export class ProcessPaymentComponent implements OnInit, OnDestroy {
     this.paymentNav.nav.setRoot(PaymentSuccessfullInfoComponent);
   }
 
+  backButtonHandler() {
+    this.backButtonSubscription = this.platform.backButton.subscribe((event) => {
+      this.loader.dismiss();
+      this.navigateBack();
+    });
+  }
+
   ngOnDestroy() {
+    this.backButtonSubscription? this.backButtonSubscription.unsubscribe():undefined;
     this.codPaymentSubscription ? this.codPaymentSubscription.unsubscribe() : undefined;
     this.behaviouralSubjectSubscription ? this.behaviouralSubjectSubscription.unsubscribe() : undefined
   }

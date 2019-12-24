@@ -307,6 +307,8 @@ export class KeycloakService {
     });
   }
 
+  
+
   getUser(userId) {
     console.log('entered');
     this.keycloakConfig.refreshClient().then(() => {
@@ -324,7 +326,7 @@ export class KeycloakService {
       this.keycloakAdmin.users
         .resetPassword({
           realm: 'graeshoppe',
-          id: user.searchKey,
+          id: user.idpSub,
           credential: {
             temporary: false,
             type: 'password',

@@ -109,14 +109,6 @@ ion-modal.modal-popover {
   }
 }
 
-// ion-popover {
-//   .popover-wrapper {
-//     .popover-content {
-//       width: 80vw;
-//       max-width: 500px;
-//     }
-//   }
-// }
 
 .ios ion-segment {
   border-radius: 0;
@@ -141,12 +133,6 @@ ion-modal.modal-popover {
   border-top: 1px solid grey;
   border-bottom: 1px solid grey;
 }
-
-// .split-pane-ios.split-pane-visible > .split-pane-side,
-// .split-pane-md.split-pane-visible > .split-pane-side {
-//   max-width: 350px;
-//   min-width: 350px;
-// }
 
 .height-65 {
   height: 65%;
@@ -201,14 +187,6 @@ ion-modal.full {
 .invisible-scrollbar::-webkit-scrollbar {
   display: none;
 }
-
-// ion-loading.loader {
-//   .loading-wrapper {
-//     background: rgba(0, 0, 0, 0.02);
-//     color: white;
-//     box-shadow: none;
-//   }
-// }
 
 .pointer {
   cursor: pointer;

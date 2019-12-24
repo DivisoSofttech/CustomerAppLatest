@@ -15,8 +15,11 @@
 <ion-content> 
   <ion-grid class="ion-no-padding">
     <ion-item>
-      <ion-text>
+      <ion-text *ngIf="!isCollection">
         Expected Delivery Time {{fromTime }} - {{toTime}}
+      </ion-text>
+      <ion-text *ngIf="isCollection">
+        Expected Collecting Time {{fromTime }} - {{toTime}}
       </ion-text>
     </ion-item>
     <ion-row>

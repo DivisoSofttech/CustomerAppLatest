@@ -1,5 +1,5 @@
   <app-loading *ngIf="showLoading === true" [type]="'notification'"></app-loading>
-  <ion-item *ngIf="store" lines="full" (click)="showOrderDetails()">
+  <ion-item class="pointer" *ngIf="store" lines="full" (click)="showOrderDetails()">
 
       <ion-thumbnail margin>
           <ion-img

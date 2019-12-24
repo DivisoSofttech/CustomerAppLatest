@@ -42,3 +42,7 @@ h1 {
 .content {
   padding-bottom: 200px;
 }
+
+address p:nth-child(1) {
+  font-size: 10px;
+}

@@ -23,9 +23,10 @@ export class NotificationComponent implements OnInit  , OnDestroy {
   orders = {};
 
   notificationSorted = {
-    'today':[]
+    'today':[],
+    'yesterday':[]
   }
-  notificationSortedKeys = ['today'];
+  notificationSortedKeys = ['today' , 'yesterday'];
 
   @ViewChild(IonInfiniteScroll, null) inifinitScroll: IonInfiniteScroll;
 
@@ -109,6 +110,9 @@ export class NotificationComponent implements OnInit  , OnDestroy {
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
     if(diffDays === 0) {
         this.notificationSorted['today'].push(n);
+    } else if(diffDays === 1)
+    {
+      this.notificationSorted['yesterday'].push(n);
     } else {
       if(this.notificationSortedKeys.includes(this.datePipe.transform(n.date,'M/d/yy'))) {            
         this.notificationSorted[this.datePipe.transform(n.date,'M/d/yy')].push(n);
@@ -134,9 +138,10 @@ export class NotificationComponent implements OnInit  , OnDestroy {
     this.pageNumber = 0;
     this.notifications = [];  
     this.notificationSorted = {
-      'today':[]
+      'today':[],
+      'yesterday':[]
     };
-    this.notificationSortedKeys = ['today']
+    this.notificationSortedKeys = ['today','yesterday']
     this.logger.info('Dorefresh is working');
     await this.getUser();
     event.target.complete();

@@ -228,10 +228,10 @@ export class CartComponent implements OnInit, OnDestroy {
     });
   }
 
-  async preorderPopover(callback?) {
+  async preorderPopover(callback,isCollection) {
     const popover = await this.popoverController.create({
       component: PreorderComponent,
-      componentProps: { store: this.store },
+      componentProps: { store: this.store , isCollection:isCollection },
       translucent: false,
       backdropDismiss: false
     });
@@ -264,15 +264,16 @@ export class CartComponent implements OnInit, OnDestroy {
     this.logger.info(this, 'Checking if Store is Closed', this.store);
     this.checkPreorderStatus();
     this.checkClosedStatus();
-    if (this.isClosed && this.isOrderAvailable) {
+    if (this.isClosed && this.isOrderAvailable || deliveryType==='collection') {
       this.enableContinue = false;
+      const tempDeliverytype = deliveryType==='collection'?true:false; 
       this.preorderPopover((data) => {
         if (data.data === true){
           this.continue(deliveryType)
         } else {
           this.enableContinue = true;
         }
-      });
+      },tempDeliverytype);
     } else if (this.isClosed && !this.isOrderAvailable) {
       this.logger.info(this, 'Restaurant is Closed');
     } else {

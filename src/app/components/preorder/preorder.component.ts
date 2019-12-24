@@ -18,6 +18,8 @@ export class PreorderComponent implements OnInit {
   toTime;
   selectedTime;
 
+  @Input() isCollection = false;
+
   @Input() store: Store;
 
   hourArray = [];
@@ -61,10 +63,6 @@ export class PreorderComponent implements OnInit {
         sdate = moment('2019-12-13' + ' ' + stime);
       }
     }
-
-    console.error(fdate);
-    console.error(tdate);
-    console.error(sdate);
 
     this.selectedTime = stime;
     console.error(sdate.isAfter(fdate) , sdate.isBefore(tdate))

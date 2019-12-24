@@ -112,13 +112,6 @@ export class OrderDetailComponent implements OnInit{
     }
   }
 
-  getOrderDetails() {
-    this.queryResource.getOrderAggregatorUsingGET(this.order.orderId)
-      .subscribe(data => {
-        this.logger.error(this,data);
-      })
-  }
-
   getOrderLines(i) {
     this.orderLinesByOrderIdSubscription = this.queryResource.findAllOrderLinesByOrderIdUsingGET({
       orderId: this.order.id

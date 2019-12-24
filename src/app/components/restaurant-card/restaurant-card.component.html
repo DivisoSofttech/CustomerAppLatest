@@ -35,7 +35,10 @@
               (store.storeAddress.city | titlecase)
             }}</small>
           </h2>
-          <ion-text class="distanceText" *ngIf="distance">{{distance | number:'1.2-2'}}KM Away</ion-text>
+          <ion-text class="distanceText" *ngIf="distance">
+            <ion-icon name="pin"></ion-icon>
+            {{distance | number:'1.2-2'}} km Away
+          </ion-text>
           <h3 class="medium overflow-text-wrap fnt-sserif cl-grey">
             {{ categories | arrayFormater }}
           </h3>
@@ -96,7 +99,12 @@
           *ngIf="store != undefined"
         >
           <ion-buttons>
-            <rating [rate]="store.totalRating" [readonly]="true"></rating>
+            <p class="rating-small">
+              {{ store.totalRating | number: "1.1-1" }}
+              <ion-icon *ngIf="store.totalRating === 0.0" name="star-outline"></ion-icon>
+              <ion-icon *ngIf="store.totalRating > 0.0 && store.totalRating <= 4.0" name="star-half"></ion-icon>
+              <ion-icon *ngIf="store.totalRating === 5.0" name="star"></ion-icon>
+            </p>
             <ion-button *ngIf="reviewCount" disabled>{{
               "(" + reviewCount + ")"
             }}</ion-button>
@@ -181,7 +189,7 @@
               <p class="rating">
                 {{ store.totalRating | number: "1.1-1" }}
                 <ion-icon *ngIf="store.totalRating === 0.0" name="star-outline"></ion-icon>
-                <ion-icon *ngIf="store.totalRating > 4" name="star-half"></ion-icon>
+                <ion-icon *ngIf="store.totalRating > 0.0 && store.totalRating <= 4.0" name="star-half"></ion-icon>
                 <ion-icon *ngIf="store.totalRating === 5.0" name="star"></ion-icon>
               </p>
             </ion-text>
