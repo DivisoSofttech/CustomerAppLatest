@@ -49,8 +49,14 @@
             {{ deliveryTypes | arrayFormater: "only" }}
           </h4>
           <h3 class="small fnt-sserif cl-grey" *ngIf="deliveryInfos.length > 0">
-            Delivering From
-            {{ deliveryInfos[0].startingTime | date: "shortTime" }}
+            <span *ngIf="deliveryInfos[0].type.name === 'delivery'">
+              Delivering From
+              {{ deliveryInfos[0].startingTime | date: "shortTime" }}
+            </span>
+            <span  *ngIf="deliveryInfos[1].type.name === 'delivery'">
+              Delivering From
+              {{ deliveryInfos[1].startingTime | date: "shortTime" }}
+            </span>
           </h3>
           <h3 class="small fnt-sserif cl-grey" *ngIf="store.minAmount">
             {{ "Min spend: &#8364;" + store.minAmount }}
@@ -102,7 +108,7 @@
             <p class="rating-small">
               {{ store.totalRating | number: "1.1-1" }}
               <ion-icon *ngIf="store.totalRating === 0.0" name="star-outline"></ion-icon>
-              <ion-icon *ngIf="store.totalRating > 0.0 && store.totalRating <= 4.0" name="star-half"></ion-icon>
+              <ion-icon *ngIf="store.totalRating > 0.0 && store.totalRating <= 4.9" name="star-half"></ion-icon>
               <ion-icon *ngIf="store.totalRating === 5.0" name="star"></ion-icon>
             </p>
             <ion-button *ngIf="reviewCount" disabled>{{
@@ -189,7 +195,7 @@
               <p class="rating">
                 {{ store.totalRating | number: "1.1-1" }}
                 <ion-icon *ngIf="store.totalRating === 0.0" name="star-outline"></ion-icon>
-                <ion-icon *ngIf="store.totalRating > 0.0 && store.totalRating <= 4.0" name="star-half"></ion-icon>
+                <ion-icon *ngIf="store.totalRating > 0.0 && store.totalRating <= 4.9" name="star-half"></ion-icon>
                 <ion-icon *ngIf="store.totalRating === 5.0" name="star"></ion-icon>
               </p>
             </ion-text>
