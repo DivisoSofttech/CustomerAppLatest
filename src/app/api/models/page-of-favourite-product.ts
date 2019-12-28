@@ -3,6 +3,7 @@ import { FavouriteProduct } from './favourite-product';
 import { Sort } from './sort';
 export interface PageOfFavouriteProduct {
   content?: Array<FavouriteProduct>;
+  empty?: boolean;
   first?: boolean;
   last?: boolean;
   number?: number;

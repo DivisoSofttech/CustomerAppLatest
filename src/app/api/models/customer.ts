@@ -13,5 +13,6 @@ export interface Customer {
   image?: string;
   imageContentType?: string;
   imageLink?: string;
+  loyaltyPoint?: number;
   name?: string;
 }

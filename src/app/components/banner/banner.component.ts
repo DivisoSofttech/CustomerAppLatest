@@ -70,7 +70,7 @@ export class BannerComponent implements OnInit , OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.getBanners();
+    this.getBanners(0);
     this.slides.startAutoplay();
   }
 
@@ -79,14 +79,20 @@ export class BannerComponent implements OnInit , OnDestroy {
   }
 
 
-  getBanners() {
-    this.bannerSubscription = this.queryResource.findStoreBannerUsingGET({}).subscribe(
+  getBanners(i) {
+    this.bannerSubscription = this.queryResource.findPremiumBannersUsingGET({
+      page:i
+    }).subscribe(
       data => {
-        this.logger.info('Banners got', data);
         data.content.forEach(b=>{
           this.banners.push(b);
         });
-        this.showLoading = false;
+        ++i;
+        if(i < data.totalPages) {
+          this.getBanners(i);
+        } else {
+          this.showLoading = false;
+        }
       },
       err => {
         this.showLoading = false;

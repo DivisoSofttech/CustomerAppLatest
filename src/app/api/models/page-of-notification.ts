@@ -3,6 +3,7 @@ import { Notification } from './notification';
 import { Sort } from './sort';
 export interface PageOfNotification {
   content?: Array<Notification>;
+  empty?: boolean;
   first?: boolean;
   last?: boolean;
   number?: number;

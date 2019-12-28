@@ -7,6 +7,7 @@ import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-respo
 import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
+import { PageOfBanner } from '../models/page-of-banner';
 import { PageOfAuxilaryLineItem } from '../models/page-of-auxilary-line-item';
 import { PageOfComboLineItem } from '../models/page-of-combo-line-item';
 import { ContactDTO } from '../models/contact-dto';
@@ -38,7 +39,6 @@ import { ProductDTO } from '../models/product-dto';
 import { PageOfStoreType } from '../models/page-of-store-type';
 import { StoreAddress } from '../models/store-address';
 import { StoreSettings } from '../models/store-settings';
-import { PageOfBanner } from '../models/page-of-banner';
 import { OpenTask } from '../models/open-task';
 
 /**
@@ -48,6 +48,7 @@ import { OpenTask } from '../models/open-task';
   providedIn: 'root',
 })
 class QueryResourceService extends __BaseService {
+  static readonly findPremiumBannersUsingGETPath = '/api/query/administration/premiumBanners';
   static readonly findAuxilariesByProductIdUsingGETPath = '/api/query/auxilaries-productId/{productId}';
   static readonly checkUserExistsByIdpcodeUsingGETPath = '/api/query/checkUserExistsByIdpcode/{idpCode}';
   static readonly findComboByProductIdUsingGETPath = '/api/query/combos-productId/{productId}';
@@ -94,7 +95,7 @@ class QueryResourceService extends __BaseService {
   static readonly findStoreByRatingUsingGETPath = '/api/query/storeByRating';
   static readonly getStoreSettingsUsingGETPath = '/api/query/storeSettings/{IDPCode}';
   static readonly findAllStoresUsingGETPath = '/api/query/stores';
-  static readonly findStoreBannerUsingGETPath = '/api/query/stores/banners';
+  static readonly findBannersByRegNoUsingGETPath = '/api/query/stores/findBannersByRegNo/{regNo}';
   static readonly getTaskDetailsUsingGETPath = '/api/query/taskDetails/{taskName}/{orderId}/{storeId}';
   static readonly getTasksUsingGETPath = '/api/query/tasks';
 
@@ -103,6 +104,58 @@ class QueryResourceService extends __BaseService {
     http: HttpClient
   ) {
     super(config, http);
+  }
+
+  /**
+   * @param params The `QueryResourceService.FindPremiumBannersUsingGETParams` containing the following parameters:
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findPremiumBannersUsingGETResponse(params: QueryResourceService.FindPremiumBannersUsingGETParams): __Observable<__StrictHttpResponse<PageOfBanner>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
+    if (params.size != null) __params = __params.set('size', params.size.toString());
+    if (params.page != null) __params = __params.set('page', params.page.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/administration/premiumBanners`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PageOfBanner>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.FindPremiumBannersUsingGETParams` containing the following parameters:
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findPremiumBannersUsingGET(params: QueryResourceService.FindPremiumBannersUsingGETParams): __Observable<PageOfBanner> {
+    return this.findPremiumBannersUsingGETResponse(params).pipe(
+      __map(_r => _r.body as PageOfBanner)
+    );
   }
 
   /**
@@ -2428,26 +2481,29 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
-   * @param params The `QueryResourceService.FindStoreBannerUsingGETParams` containing the following parameters:
+   * @param params The `QueryResourceService.FindBannersByRegNoUsingGETParams` containing the following parameters:
    *
    * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    *
    * - `size`: Size of a page
    *
+   * - `regNo`: regNo
+   *
    * - `page`: Page number of the requested page
    *
    * @return OK
    */
-  findStoreBannerUsingGETResponse(params: QueryResourceService.FindStoreBannerUsingGETParams): __Observable<__StrictHttpResponse<PageOfBanner>> {
+  findBannersByRegNoUsingGETResponse(params: QueryResourceService.FindBannersByRegNoUsingGETParams): __Observable<__StrictHttpResponse<PageOfBanner>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
     (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
     if (params.size != null) __params = __params.set('size', params.size.toString());
+    if (params.regNo != null) __params = __params.set('regNo', params.regNo.toString());
     if (params.page != null) __params = __params.set('page', params.page.toString());
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/api/query/stores/banners`,
+      this.rootUrl + `/api/query/stores/findBannersByRegNo/${params.regNo}`,
       __body,
       {
         headers: __headers,
@@ -2463,18 +2519,20 @@ class QueryResourceService extends __BaseService {
     );
   }
   /**
-   * @param params The `QueryResourceService.FindStoreBannerUsingGETParams` containing the following parameters:
+   * @param params The `QueryResourceService.FindBannersByRegNoUsingGETParams` containing the following parameters:
    *
    * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
    *
    * - `size`: Size of a page
    *
+   * - `regNo`: regNo
+   *
    * - `page`: Page number of the requested page
    *
    * @return OK
    */
-  findStoreBannerUsingGET(params: QueryResourceService.FindStoreBannerUsingGETParams): __Observable<PageOfBanner> {
-    return this.findStoreBannerUsingGETResponse(params).pipe(
+  findBannersByRegNoUsingGET(params: QueryResourceService.FindBannersByRegNoUsingGETParams): __Observable<PageOfBanner> {
+    return this.findBannersByRegNoUsingGETResponse(params).pipe(
       __map(_r => _r.body as PageOfBanner)
     );
   }
@@ -2620,6 +2678,27 @@ class QueryResourceService extends __BaseService {
 }
 
 module QueryResourceService {
+
+  /**
+   * Parameters for findPremiumBannersUsingGET
+   */
+  export interface FindPremiumBannersUsingGETParams {
+
+    /**
+     * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     */
+    sort?: Array<string>;
+
+    /**
+     * Size of a page
+     */
+    size?: number;
+
+    /**
+     * Page number of the requested page
+     */
+    page?: number;
+  }
 
   /**
    * Parameters for findAuxilariesByProductIdUsingGET
@@ -3443,9 +3522,9 @@ module QueryResourceService {
   }
 
   /**
-   * Parameters for findStoreBannerUsingGET
+   * Parameters for findBannersByRegNoUsingGET
    */
-  export interface FindStoreBannerUsingGETParams {
+  export interface FindBannersByRegNoUsingGETParams {
 
     /**
      * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -3456,6 +3535,11 @@ module QueryResourceService {
      * Size of a page
      */
     size?: number;
+
+    /**
+     * regNo
+     */
+    regNo?: string;
 
     /**
      * Page number of the requested page

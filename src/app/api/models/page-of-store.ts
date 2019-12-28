@@ -3,6 +3,7 @@ import { Store } from './store';
 import { Sort } from './sort';
 export interface PageOfStore {
   content?: Array<Store>;
+  empty?: boolean;
   first?: boolean;
   last?: boolean;
   number?: number;

@@ -3,6 +3,7 @@ import { AuxilaryLineItem } from './auxilary-line-item';
 import { Sort } from './sort';
 export interface PageOfAuxilaryLineItem {
   content?: Array<AuxilaryLineItem>;
+  empty?: boolean;
   first?: boolean;
   last?: boolean;
   number?: number;

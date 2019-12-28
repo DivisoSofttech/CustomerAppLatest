@@ -22,13 +22,10 @@ export class ClosedPipe implements PipeTransform {
     const closingTime = moment(new Date(arg2).setDate(date.getDate()));
     openingTime.set(st);
     closingTime.set(st);
-
+  
     if (closingTime.isBefore(openingTime)) {
-      closingTime.add(1, 'days');
+      closingTime.add(1, 'days');   
     }
-
-    // this.logger.info(now.toString() , '\n' , openingTime.toString() , '\n', closingTime.toString() , '\n\n');
-
     return now.isBetween(openingTime, closingTime);
   }
 }

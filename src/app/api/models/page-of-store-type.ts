@@ -3,6 +3,7 @@ import { StoreType } from './store-type';
 import { Sort } from './sort';
 export interface PageOfStoreType {
   content?: Array<StoreType>;
+  empty?: boolean;
   first?: boolean;
   last?: boolean;
   number?: number;

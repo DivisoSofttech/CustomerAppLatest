@@ -9,22 +9,19 @@
   <ion-card-header (click)="showHotelMenu(store.regNo)">
     <ion-item lines="none">
       <ion-img
-        no-margin
         slot="start"
-        *ngIf="store.imageLink !== ' '"
-        slot="start"
+        *ngIf="store.imageLink !== null"
         [src]="store.imageLink"
-        class="imageShow"
+        class="imageShow ion-no-margin"
       >
       </ion-img>
       <ion-icon
-        no-margin
         slot="start"
         name="image"
-        *ngIf="store.imageLink === ''"
+        *ngIf="store.imageLink === null"
         slot="start"
         [src]="store.imageLink"
-        class="imageShowTemp"
+        class="imageShowTemp ion-no-margin"
       >
       </ion-icon>
       <ion-label style="margin-left:15px">
@@ -49,14 +46,18 @@
             {{ deliveryTypes | arrayFormater: "only" }}
           </h4>
           <h3 class="small fnt-sserif cl-grey" *ngIf="deliveryInfos.length > 0">
-            <span *ngIf="deliveryInfos[0].type.name === 'delivery'">
-              Delivering From
-              {{ deliveryInfos[0].startingTime | date: "shortTime" }}
-            </span>
-            <span  *ngIf="deliveryInfos[1].type.name === 'delivery'">
-              Delivering From
-              {{ deliveryInfos[1].startingTime | date: "shortTime" }}
-            </span>
+            <ng-container *ngIf="deliveryInfos[0]">
+              <span *ngIf="deliveryInfos[0].type.name === 'delivery'">
+                Delivering From
+                {{ deliveryInfos[0].startingTime | date: "shortTime" }}
+              </span>  
+            </ng-container>
+            <ng-container *ngIf="deliveryInfos[1]">
+              <span  *ngIf="deliveryInfos[1].type.name === 'delivery'">
+                Delivering From
+                {{ deliveryInfos[1].startingTime | date: "shortTime" }}
+              </span>  
+            </ng-container>
           </h3>
           <h3 class="small fnt-sserif cl-grey" *ngIf="store.minAmount">
             {{ "Min spend: &#8364;" + store.minAmount }}
@@ -96,7 +97,7 @@
     </ion-item>
   </ion-card-header>
   <ion-card-content *ngIf="store.name" class="ion-no-padding">
-    <ion-grid no-padding>
+    <ion-grid class="ion-no-padding">
       <ion-row>
         <ion-col
           size="10"
@@ -116,7 +117,7 @@
             }}</ion-button>
           </ion-buttons>
         </ion-col>
-        <ion-col size="2" justify-content-center text-center no-padding>
+        <ion-col size="2" justify-content-center text-center class="ion-no-padding">
           <ion-buttons justify-content-center text-center>
             <ion-button
               fill="none"
@@ -141,65 +142,88 @@
 
 <!--Detailed View-->
 <div class="container" *ngIf="viewType === 'detailedCard'">
-  <ion-card
-    color="danger"
-    class="closeCard"
-    *ngIf="!(currentTime | closed: store.openingTime:store.closingTime)"
-  >
-    <ion-card-content>
-      <ion-card-title>Closed</ion-card-title>
-      <ion-card-subtitle>
-        Serving in
-        {{ currentTime | dateDifference: store.openingTime:store.closingTime }}
-      </ion-card-subtitle>
-      <ion-card-subtitle *ngIf="isPreOrderAvailable">
-        <ion-text color="success">
-          <h2><b>Preorder Available </b></h2>
-        </ion-text>
-      </ion-card-subtitle>
-      <ion-card-subtitle
-        *ngIf="
-          !isPreOrderAvailable && store.preOrderSettings.isPreOrderAvailable
-        "
-      >
-        <ion-text color="success">
-          <h2>
-            <b
-              >Preorder Available From
-              {{ store.preOrderSettings.fromTime | date: "shortTime" }} to
-              {{ store.preOrderSettings.toTime | date: "shortTime" }}
-            </b>
-          </h2>
-        </ion-text>
-      </ion-card-subtitle>
-    </ion-card-content>
-  </ion-card>
-  <ion-img
-  *ngIf="store.imageLink"
-  slot="start"
-  [src]="store.imageLink"
-  class="restaurantImage"
-></ion-img>
-  <ion-grid class="overlay">
+ 
+
+  <ion-slides [options]="slideOpts">
+    <ion-slide *ngFor="let banner of banners">
+     <ion-card class="full-width">
+      <img [src]="banner.imageLink"/>
+     </ion-card>
+    </ion-slide>
+  </ion-slides>
+
+  <ion-grid class="overlay ion-no-padding">
     <ion-row>
-      <ion-col size="12">
-          <ion-text>
-              <h2>
-                <strong>{{ store.name | uppercase }}</strong>
-                <small>{{ ", " + (store.storeAddress.city | titlecase) }}</small>
-              </h2>
-              <p>
-                {{ store.openingTime | date: "shortTime" }} to
-                {{ store.closingTime | date: "shortTime" }}
-              </p>
-              <p class="rating">
-                {{ store.totalRating | number: "1.1-1" }}
-                <ion-icon *ngIf="store.totalRating === 0.0" name="star-outline"></ion-icon>
-                <ion-icon *ngIf="store.totalRating > 0.0 && store.totalRating <= 4.9" name="star-half"></ion-icon>
-                <ion-icon *ngIf="store.totalRating === 5.0" name="star"></ion-icon>
-              </p>
+      <ion-col size="12" size-lg="6" class="ion-no-padding">
+        <ion-item>
+          <ion-img
+          slot="start"
+          *ngIf="store.imageLink !== null"
+          [src]="store.imageLink"
+          class="imageShow ion-margin"
+        >
+        </ion-img>
+        <ion-icon
+          slot="start"
+          name="image"
+          *ngIf="store.imageLink === null"
+          [src]="store.imageLink"
+          class="imageShowTemp ion-margin"
+        >
+        </ion-icon>
+        <ion-text>
+          <h2>
+            <strong>{{ store.name | uppercase }}</strong>
+            <small>{{ ", " + (store.storeAddress.city | titlecase) }}</small>
+          </h2>
+          <p>
+            {{ store.openingTime | date: "shortTime" }} to
+            {{ store.closingTime | date: "shortTime" }}
+          </p>
+          <p class="rating">
+            {{ store.totalRating | number: "1.1-1" }}
+            <ion-icon *ngIf="store.totalRating === 0.0" name="star-outline"></ion-icon>
+            <ion-icon *ngIf="store.totalRating > 0.0 && store.totalRating <= 4.9" name="star-half"></ion-icon>
+            <ion-icon *ngIf="store.totalRating === 5.0" name="star"></ion-icon>
+          </p>
+        </ion-text>
+        </ion-item>
+      </ion-col>
+      <ion-col  *ngIf="!(currentTime | closed: store.openingTime:store.closingTime)" class="ion-no-padding" size="12" size-lg="6">
+        <ion-card
+        color="danger"
+        class="closeCard"
+      >
+        <ion-card-content>
+          <ion-card-title>Closed</ion-card-title>
+          <ion-card-subtitle>
+            Serving in
+            {{ currentTime | dateDifference: store.openingTime:store.closingTime }}
+          </ion-card-subtitle>
+          <ion-card-subtitle *ngIf="isPreOrderAvailable">
+            <ion-text color="success">
+              <h2><b>Preorder Available </b></h2>
             </ion-text>
+          </ion-card-subtitle>
+          <ion-card-subtitle
+            *ngIf="
+              !isPreOrderAvailable && store.preOrderSettings.isPreOrderAvailable
+            "
+          >
+            <ion-text color="success">
+              <h2>
+                <b
+                  >Preorder Available From
+                  {{ store.preOrderSettings.fromTime | date: "shortTime" }} to
+                  {{ store.preOrderSettings.toTime | date: "shortTime" }}
+                </b>
+              </h2>
+            </ion-text>
+          </ion-card-subtitle>
+        </ion-card-content>
+      </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>
 </div>
+

@@ -3,6 +3,7 @@ import { Address } from './address';
 import { Sort } from './sort';
 export interface PageOfAddress {
   content?: Array<Address>;
+  empty?: boolean;
   first?: boolean;
   last?: boolean;
   number?: number;

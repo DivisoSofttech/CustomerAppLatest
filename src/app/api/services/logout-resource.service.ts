@@ -27,15 +27,9 @@ class LogoutResourceService extends __BaseService {
   /**
    * @param params The `LogoutResourceService.LogoutUsingPOSTParams` containing the following parameters:
    *
-   * - `principal`:
+   * - `tokenValue`:
    *
-   * - `details`:
-   *
-   * - `credentials`:
-   *
-   * - `authorities[0].authority`:
-   *
-   * - `authenticated`:
+   * - `claims`:
    *
    * @return OK
    */
@@ -43,11 +37,8 @@ class LogoutResourceService extends __BaseService {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    if (params.principal != null) __params = __params.set('principal', params.principal.toString());
-    if (params.details != null) __params = __params.set('details', params.details.toString());
-    if (params.credentials != null) __params = __params.set('credentials', params.credentials.toString());
-    if (params.authorities0Authority != null) __params = __params.set('authorities[0].authority', params.authorities0Authority.toString());
-    if (params.authenticated != null) __params = __params.set('authenticated', params.authenticated.toString());
+    if (params.tokenValue != null) __params = __params.set('tokenValue', params.tokenValue.toString());
+    if (params.claims != null) __params = __params.set('claims', params.claims.toString());
     let req = new HttpRequest<any>(
       'POST',
       this.rootUrl + `/api/logout`,
@@ -68,15 +59,9 @@ class LogoutResourceService extends __BaseService {
   /**
    * @param params The `LogoutResourceService.LogoutUsingPOSTParams` containing the following parameters:
    *
-   * - `principal`:
+   * - `tokenValue`:
    *
-   * - `details`:
-   *
-   * - `credentials`:
-   *
-   * - `authorities[0].authority`:
-   *
-   * - `authenticated`:
+   * - `claims`:
    *
    * @return OK
    */
@@ -93,11 +78,8 @@ module LogoutResourceService {
    * Parameters for logoutUsingPOST
    */
   export interface LogoutUsingPOSTParams {
-    principal?: {};
-    details?: {};
-    credentials?: {};
-    authorities0Authority?: string;
-    authenticated?: boolean;
+    tokenValue?: string;
+    claims?: {};
   }
 }
 

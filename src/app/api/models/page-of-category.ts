@@ -3,6 +3,7 @@ import { Category } from './category';
 import { Sort } from './sort';
 export interface PageOfCategory {
   content?: Array<Category>;
+  empty?: boolean;
   first?: boolean;
   last?: boolean;
   number?: number;

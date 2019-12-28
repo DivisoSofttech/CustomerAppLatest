@@ -3,6 +3,7 @@ import { Type } from './type';
 import { Sort } from './sort';
 export interface PageOfType {
   content?: Array<Type>;
+  empty?: boolean;
   first?: boolean;
   last?: boolean;
   number?: number;

@@ -156,24 +156,25 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       this.behaviouralSubjectSubscription = this.orderService.orderResourceBehaviour.subscribe(resources => {
         if (this.orderService.resource.nextTaskName === 'Collect Delivery Info&Place Order') {
           loader.dismiss();
-          this.collectDeliveryInfoSubscription = this.orderService.collectDeliveryInfo().subscribe((resource) => {
+          this.collectDeliveryInfoSubscription = this.orderService.collectDeliveryInfo().subscribe(
+          
+          (resource) => {
             this.orderService.setResource(resource);
             this.behaviouralSubjectSubscription.unsubscribe();
             this.orderService.orderResourceBehaviour.next(resource.nextTaskName);
             this.logger.info(this, 'Next task name is ' + resource.nextTaskId + ' Next task name '
               + resource.nextTaskName + ' selfid ' + resource.selfId + ' order id is ' + resource.orderId);
+              switch(this.orderService.acceptType) {
+                case 'manual': this.presentWaitInfoPopover();break;
+                default:this.startPayment();
+              }
           }, 
           (err) => {
             this.logger.error(this, 'oops something went wrong while collecting deliveryinfo ', err);
             this.behaviouralSubjectSubscription.unsubscribe();
             this.util.createToast('Something went wrong try again', 'information-circle-outline');
-            this.navigateBack();
             this.errorService.showErrorModal(this);
           });
-          switch(this.orderService.acceptType) {
-            case 'manual': this.presentWaitInfoPopover();break;
-            default:this.startPayment();
-          }
         } else {
           this.logger.info(this, 'In else fail loader present');
           loader.present();

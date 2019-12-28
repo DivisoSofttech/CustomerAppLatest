@@ -3,6 +3,7 @@ import { StockCurrent } from './stock-current';
 import { Sort } from './sort';
 export interface PageOfStockCurrent {
   content?: Array<StockCurrent>;
+  empty?: boolean;
   first?: boolean;
   last?: boolean;
   number?: number;
