@@ -122,13 +122,13 @@ export class ProfilePage implements OnInit {
         text: 'Okay',
         handler: () => {
           this.keycloak.logout(true);
+          this.cartService.emptyCart();
+          this.orderService.resource = {};
+          this.orderService.offer = undefined;
+          this.guestUserService.logInGuest();      
         }
       }]
     });
-    this.cartService.emptyCart();
-    this.orderService.resource = {};
-    this.orderService.offer = undefined;
-    this.guestUserService.logInGuest();
     await alert.present();
   }
 

@@ -49,6 +49,7 @@
 </ng-template>
 <!--Address List Template End-->
 
+<!--Modal View Start-->
 <ion-header *ngIf="mode === 'modal'">
   <ion-toolbar>
     <ion-buttons slot="start">
@@ -77,7 +78,9 @@
   <ion-icon name="add"></ion-icon>
 </ion-button>
 </ion-footer>
+<!--Modal View End-->
 
+<!--Component View Start-->
 <div *ngIf="mode === 'component'">
   <ng-container *ngTemplateOutlet="addressList"></ng-container>
 </div>
@@ -93,3 +96,4 @@
   <ion-icon name="add"></ion-icon>
 </ion-button>
 </div>
+<!--Component View End-->

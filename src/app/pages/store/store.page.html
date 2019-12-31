@@ -130,12 +130,11 @@
     </ion-fab-button>
   </ion-fab>
 
+  <div>
+    <ng-container *ngTemplateOutlet="restaurantCard"></ng-container>
+  </div>
   <ion-grid class="ion-no-padding full-height">
     <ion-row class="ion-no-padding full-height">
-      <ion-col size="12" size-md="12" size-lg="12" class="ion-no-padding">
-        <ng-container *ngTemplateOutlet="restaurantCard"></ng-container>
-      </ion-col>
-
       <ion-col size="12" size-md="12" size-lg="12" class="ion-no-padding">
         <ng-container *ngTemplateOutlet="segmentButtons"></ng-container>
         <ion-slides

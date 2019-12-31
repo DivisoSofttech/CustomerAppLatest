@@ -12,13 +12,9 @@ declare var google: any;
 })
 export class LocationService {
 
-  autoCompleteService: any;
-
-  private currentLat: number;
-  private currentLon: number;
+  private autoCompleteService: any;
   private geocoder: any;
-
-  positionAddressObservable = new BehaviorSubject<any>(null);
+  private positionAddressObservable = new BehaviorSubject<any>(null);
 
   constructor(
     private mapsAPILoader: MapsAPILoader,
@@ -27,31 +23,32 @@ export class LocationService {
     private sharedData: SharedDataService
   ) {
     this.logger.info(this, 'Location Service Created');
+    this.initMapsApi();
+  }
+
+  initMapsApi() {
     this.mapsAPILoader.load().then(() => {
       this.autoCompleteService = new google.maps.places.AutocompleteService();
-      this.sharedData.getData('location')
-        .then(location => {
-          if (location !== null) {
-            this.logger.info(this, "Fetching Existing Location From Storage");
-            this.positionAddressObservable.next(location)
-          } else {
-            this.logger.info(this, "Fetching Current Location");
-            this.getCurrentLoactionAddress((data, coords) => { })
-          }
-        })
+      this.initLocation();
+    });
+  }
+
+  initLocation() {
+    this.sharedData.getData('location')
+    .then(location => {
+      if (location !== null) {
+          this.logger.info(this, "Fetching Existing Location From Storage");
+          this.positionAddressObservable.next(location)
+      } else {
+        this.logger.info(this, "Fetching Current Location");
+        this.getCurrentLoactionAddress((data, coords) => { })
+      }
     });
   }
 
   calculateDistance(from: any, to: any): number {
-    const distance = google.maps.geometry.spherical.computeDistanceBetween(
-      from,
-      to
-    );
+    const distance = google.maps.geometry.spherical.computeDistanceBetween(from,to);
     return distance;
-  }
-
-  getCurrentLocation() {
-    return this.geolocation.getCurrentPosition();
   }
 
   getPredictions(searchTerm: string): Observable<any[]> {
@@ -97,6 +94,10 @@ export class LocationService {
     });
   }
 
+  getCurrentLocation() {
+    return this.geolocation.getCurrentPosition();
+  }
+
   async getCurrentLoactionAddress(func) {
     return this.getCurrentLocation()
       .then(latData => {
@@ -108,11 +109,11 @@ export class LocationService {
             this.geocoder.geocode(
               { latLng: googleMapPos },
               (results, status) => {
-                this.logger.info(this,'Locations All' , results);
+                this.logger.info(this, 'Locations All', results);
                 this.logger.info(this, 'Location Adress ', results[0].address_components[0].short_name);
                 let address = '';
-                results[0].address_components.forEach((addr , i)=>{
-                  if(i < (results[0].address_components.length -1)) {
+                results[0].address_components.forEach((addr, i) => {
+                  if (i < (results[0].address_components.length - 1)) {
                     address = address + addr.short_name + ',';
                   } else {
                     address = address + addr.short_name;

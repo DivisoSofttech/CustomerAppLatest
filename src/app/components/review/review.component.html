@@ -1,8 +1,8 @@
 <ion-item color="light" *ngIf="store !== undefined && viewType==='full'" lines="full">
     <ion-label *ngIf="store !== undefined"
       >Reviews
-      <span *ngIf="store.reviews !== null"
-        >({{store.reviews.review}})</span
+      <span *ngIf="store.userRatingReviews !== null"
+        >({{store.userRatingReviews}})</span
       ></ion-label
     >
   </ion-item>
@@ -37,7 +37,7 @@
 
 <ion-list>
 
-  <ion-card *ngIf="rateReviews.length === 0 && showReviewLoading === false">
+  <ion-card *ngIf="rateReviews.length === 0 && showReviewLoading === false && viewType !== 'full'">
     <ion-card-content class="mfont">
       Reviews (0)
     </ion-card-content>

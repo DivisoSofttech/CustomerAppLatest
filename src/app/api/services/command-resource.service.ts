@@ -71,6 +71,7 @@ class CommandResourceService extends __BaseService {
   static readonly updateReplyUsingPUTPath = '/api/command/replies';
   static readonly deleteReplyUsingDELETEPath = '/api/command/replies/{id}';
   static readonly createTransactionUsingPOSTPath = '/api/command/transaction';
+  static readonly updateLoyaltyPointUsingPOSTPath = '/api/command/updateLoyaltyPoint/{idpCode}/{point}';
   static readonly createUserRatingReviewUsingPOSTPath = '/api/command/user-rating-review';
 
   constructor(
@@ -1239,6 +1240,53 @@ class CommandResourceService extends __BaseService {
   }
 
   /**
+   * @param params The `CommandResourceService.UpdateLoyaltyPointUsingPOSTParams` containing the following parameters:
+   *
+   * - `point`: point
+   *
+   * - `idpCode`: idpCode
+   *
+   * @return OK
+   */
+  updateLoyaltyPointUsingPOSTResponse(params: CommandResourceService.UpdateLoyaltyPointUsingPOSTParams): __Observable<__StrictHttpResponse<CustomerDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/command/updateLoyaltyPoint/${params.idpCode}/${params.point}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<CustomerDTO>;
+      })
+    );
+  }
+  /**
+   * @param params The `CommandResourceService.UpdateLoyaltyPointUsingPOSTParams` containing the following parameters:
+   *
+   * - `point`: point
+   *
+   * - `idpCode`: idpCode
+   *
+   * @return OK
+   */
+  updateLoyaltyPointUsingPOST(params: CommandResourceService.UpdateLoyaltyPointUsingPOSTParams): __Observable<CustomerDTO> {
+    return this.updateLoyaltyPointUsingPOSTResponse(params).pipe(
+      __map(_r => _r.body as CustomerDTO)
+    );
+  }
+
+  /**
    * @param userRatingReviewDTO userRatingReviewDTO
    * @return OK
    */
@@ -1365,6 +1413,22 @@ module CommandResourceService {
      * paymentDTO
      */
     paymentDTO: PaymentDTO;
+  }
+
+  /**
+   * Parameters for updateLoyaltyPointUsingPOST
+   */
+  export interface UpdateLoyaltyPointUsingPOSTParams {
+
+    /**
+     * point
+     */
+    point: number;
+
+    /**
+     * idpCode
+     */
+    idpCode: string;
   }
 }
 

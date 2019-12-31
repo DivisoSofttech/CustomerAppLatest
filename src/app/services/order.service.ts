@@ -1,13 +1,9 @@
-import { CartService } from 'src/app/services/cart.service';
 import { Injectable, OnInit, OnDestroy } from '@angular/core';
 import { CommandResourceService } from '../api/services';
 import { CommandResource, Order, DeliveryInfo, Offer } from '../api/models';
-import { Storage } from '@ionic/storage';
 import { NGXLogger } from 'ngx-logger';
 import { Util } from './util';
 import { BehaviorSubject } from 'rxjs';
-import { OAuthService } from 'angular-oauth2-oidc';
-import { SharedDataService } from './shared-data.service';
 import { KeycloakService } from './security/keycloak.service';
 import { DecimalPipe } from '@angular/common';
 import { NoCommaPipe } from '../pipes/no-comma.pipe';

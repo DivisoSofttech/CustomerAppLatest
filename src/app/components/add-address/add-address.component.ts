@@ -5,7 +5,8 @@ import { CommandResourceService } from 'src/app/api/services';
 import { Util } from 'src/app/services/util';
 import { SharedDataService } from 'src/app/services/shared-data.service';
 import { LogService } from 'src/app/services/log.service';
-import { ContactDTO } from 'src/app/api/models';
+import { ContactDTO, AddressDTO } from 'src/app/api/models';
+import { KeycloakUser } from 'src/app/models/keycloak-user';
 
 @Component({
   selector: 'app-add-address',
@@ -14,15 +15,15 @@ import { ContactDTO } from 'src/app/api/models';
 })
 export class AddAddressComponent implements OnInit {
 
-  @Input() address: any = {};
+  @Input() address: AddressDTO = {};
 
-  @Input() mode = 'create';
+  @Input() mode: string = 'create';
 
   addressForm: FormGroup;
 
-  user;
-
   contact: ContactDTO;
+
+  user: KeycloakUser;
 
   constructor(
     private modalController: ModalController,
@@ -39,9 +40,11 @@ export class AddAddressComponent implements OnInit {
   }
 
   getContact() {
+    this.logger.info(this,'Getting Contact From LocalStorage');
     this.sharedDataService.getData('contact')
     .then(contact => {
       if(contact) {
+        this.logger.info(this,'Getting Contact From LocalStorage Success');
         this.contact = contact;
         this.addressForm.patchValue({'email': this.contact.email});
         this.addressForm.patchValue({'phone':this.contact.mobileNumber})
@@ -67,8 +70,10 @@ export class AddAddressComponent implements OnInit {
   }
 
   getUser() {
+    this.logger.info(this,'Getting User From LocalStorage');
     this.sharedDataService.getData('user')
-      .then(_user => {
+      .then((_user: KeycloakUser) => {
+        this.logger.info(this,'Getting User From LocalStorage Success');
         this.user = _user;
         this.getContact();
       });
@@ -109,10 +114,12 @@ export class AddAddressComponent implements OnInit {
   }
 
   dismiss() {
+    this.logger.info(this,'Component Dismissed');
     this.modalController.dismiss();
   }
 
   dismissData(address) {
+    this.logger.info(this,'Component Dismissed With Data ' , address);
     this.modalController.dismiss(address);
   }
 

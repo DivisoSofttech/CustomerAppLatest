@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { LogService } from 'src/app/services/log.service';
 import { PaymentNavService } from 'src/app/services/payment-nav.service';
 import { NavController, Platform } from '@ionic/angular';
+import { CommandResourceService } from 'src/app/api/services';
 
 @Component({
   selector: 'app-process-payment',
@@ -26,6 +27,7 @@ export class ProcessPaymentComponent implements OnInit, OnDestroy {
   constructor(
     private paymentNav: PaymentNavService,
     private orderService: OrderService,
+    private commandResource: CommandResourceService,
     private util: Util,
     private logger: LogService,
     private navController: NavController,
@@ -98,6 +100,12 @@ export class ProcessPaymentComponent implements OnInit, OnDestroy {
   }
 
   navigateForward() {
+    this.commandResource.updateLoyaltyPointUsingPOST({
+      point: 1,
+      idpCode: this.orderService.customer.regNo
+    }).subscribe(data => {
+      this.logger.info(this,'Loyality Point Success');      
+    })
     this.navController.navigateForward('/restaurant');
     this.paymentNav.nav.setRoot(PaymentSuccessfullInfoComponent);
   }

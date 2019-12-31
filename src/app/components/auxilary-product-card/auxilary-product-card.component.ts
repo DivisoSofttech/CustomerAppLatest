@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { CartService } from 'src/app/services/cart.service';
-import { OrderLine, AuxilaryOrderLine, Product } from 'src/app/api/models';
+import { AuxilaryOrderLine, Product } from 'src/app/api/models';
 
 @Component({
   selector: 'app-auxilary-product-card',
@@ -13,7 +13,7 @@ export class AuxilaryProductCardComponent implements OnInit {
 
   auxilaryOrderLine: AuxilaryOrderLine = {};
 
-  @Output() auxilaryUpdated = new EventEmitter();
+  @Output() auxilaryUpdated: EventEmitter<any> = new EventEmitter();
 
 
   constructor(

@@ -11,8 +11,12 @@ import { Banner } from 'src/app/api/models';
 })
 export class BannerComponent implements OnInit , OnDestroy {
 
-  showLoading = true;
-  @Input() direction = 'horizontal';
+  showLoading: Boolean = true;
+  @Input() direction: string = 'horizontal';
+  @ViewChild('slides', null) slides: IonSlides;
+  banners: Banner[] = [];
+  bannerSubscription: any;
+
 
   slideOpts = {
     preloadImages:true,
@@ -56,12 +60,6 @@ export class BannerComponent implements OnInit , OnDestroy {
       }
     }
   }
-
-
-  @ViewChild('slides', null) slides: IonSlides;
-
-  banners: Banner[] = [];
-  bannerSubscription: any;
 
   constructor(
     private platform: Platform,

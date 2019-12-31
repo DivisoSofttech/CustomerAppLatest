@@ -29,7 +29,6 @@ export class PlaceSuggestionComponent implements OnInit , OnDestroy {
 
   oldDistance = 0;
 
-  private unregisterBackAction: Subscription;
   backButtonSubscription: any;
 
   constructor(

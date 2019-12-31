@@ -4,6 +4,8 @@ import { QueryResourceService } from 'src/app/api/services';
 import { AddAddressComponent } from '../add-address/add-address.component';
 import { SharedDataService } from 'src/app/services/shared-data.service';
 import { LogService } from 'src/app/services/log.service';
+import { KeycloakUser } from 'src/app/models/keycloak-user';
+import { Address, AddressDTO } from 'src/app/api/models';
 
 @Component({
   selector: 'app-address-list',
@@ -12,23 +14,23 @@ import { LogService } from 'src/app/services/log.service';
 })
 export class AddressListComponent implements OnInit {
  
-  @Input() mode="modal";
+  @Input() mode: string = "modal";
 
-  user;
+  user: KeycloakUser;
 
-  addresses: any = [];
+  addresses: Address[] = [];
 
-  selectedAddress = {
+  selectedAddress: AddressDTO = {
     id:0
   };
 
-  showLoading = true;
+  showLoading: Boolean = true;
 
   constructor(
     private modalController: ModalController,
-    private logger: LogService,
     private queryResourceService: QueryResourceService,
-    private sharedDataService: SharedDataService
+    private sharedDataService: SharedDataService,
+    private logger: LogService,
   ){}
 
   ngOnInit(){
@@ -83,7 +85,7 @@ export class AddressListComponent implements OnInit {
     })
     .subscribe(paddress => {
       this.showLoading = false;
-      paddress.content.forEach(a => {
+      paddress.content.forEach((a: Address) => {
         this.addresses.push(a);
       });
       ++i;

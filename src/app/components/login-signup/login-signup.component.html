@@ -72,16 +72,17 @@
           </ion-item>
         </form> 
       </ion-col>
-      <ion-col size="12">
-        <ion-button [disabled]="registerDisabled()" (click)="signupModal()" expand="block" margin-top margin-bottom>
-          Register</ion-button>
-      </ion-col>
       <ion-col size="12" class="centerAlign">
         <ion-checkbox class="marginRight" [(ngModel)]="termsChecked"></ion-checkbox>
         <ion-label>I accept the 
         </ion-label>
         <ion-text color="primary" (click)="showTermsAndPolicy()">Terms and Policy</ion-text>
       </ion-col>
+      <ion-col size="12">
+        <ion-button [disabled]="registerDisabled()" (click)="signupModal()" expand="block" margin-top margin-bottom>
+          Register</ion-button>
+      </ion-col>
+     
     </ion-row>
   </ion-grid>
 </ng-template>

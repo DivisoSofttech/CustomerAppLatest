@@ -283,6 +283,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
   navigateForward() {
     this.enableContinue =true;
+    this.cart.saveCartDetailsToSharedMemory();
     this.navController.navigateForward('/checkout');
   }
 
@@ -303,7 +304,8 @@ export class CartComponent implements OnInit, OnDestroy {
       storeId: this.cart.storeId,
       customerId: this.customer.preferred_username,
       allergyNote: this.allergyNote,
-      date: new Date().toISOString()
+      date: new Date().toISOString(),
+      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
     };
     console.log('Order setting to order service is ', order);
     this.orderService.setOrder(order);

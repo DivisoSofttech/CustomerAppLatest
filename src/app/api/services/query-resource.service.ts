@@ -65,6 +65,7 @@ class QueryResourceService extends __BaseService {
   static readonly findAuxilaryOrderLineByOrderLineIdUsingGETPath = '/api/query/findAuxilaryOrderLineByOrderLineId/{orderLineId}';
   static readonly findCategoryAndCountBystoreIdUsingGETPath = '/api/query/findCategoryAndCountBystoreId/{storeId}';
   static readonly findByMobileNumberUsingGETPath = '/api/query/findCustomerByMobileNumber/{mobileNumber}';
+  static readonly findLoyaltyPointByIdpCodeUsingGETPath = '/api/query/findLoyaltyPointByIdpCode/{idpCode}';
   static readonly findOfferLinesByOrderIdUsingGETPath = '/api/query/findOfferLinesByOrderId/{id}';
   static readonly findProductByIdUsingGETPath = '/api/query/findProductById/{id}';
   static readonly findProductsByCategoryNameUsingGETPath = '/api/query/findProductsByCategoryName/{name}';
@@ -962,6 +963,42 @@ class QueryResourceService extends __BaseService {
   findByMobileNumberUsingGET(mobileNumber: number): __Observable<CustomerDTO> {
     return this.findByMobileNumberUsingGETResponse(mobileNumber).pipe(
       __map(_r => _r.body as CustomerDTO)
+    );
+  }
+
+  /**
+   * @param idpCode idpCode
+   * @return OK
+   */
+  findLoyaltyPointByIdpCodeUsingGETResponse(idpCode: string): __Observable<__StrictHttpResponse<number>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/findLoyaltyPointByIdpCode/${idpCode}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'text'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return (_r as HttpResponse<any>).clone({ body: parseFloat((_r as HttpResponse<any>).body as string) }) as __StrictHttpResponse<number>
+      })
+    );
+  }
+  /**
+   * @param idpCode idpCode
+   * @return OK
+   */
+  findLoyaltyPointByIdpCodeUsingGET(idpCode: string): __Observable<number> {
+    return this.findLoyaltyPointByIdpCodeUsingGETResponse(idpCode).pipe(
+      __map(_r => _r.body as number)
     );
   }
 

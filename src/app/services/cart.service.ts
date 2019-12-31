@@ -103,7 +103,7 @@ export class CartService {
           text: 'Ok',
           cssClass: 'secondary',
           handler: (blah) => {
-           clear();
+            clear();
           }
         }
       ]
@@ -119,7 +119,6 @@ export class CartService {
       this.storeId = this.currentShop.regNo;
       this.getStoreSettings();
       this.getStoreDeliveryType();
-      this.saveCartDetailsToSharedMemory();
     }
 
     if (this.currentShopId === shop.id) {
@@ -129,7 +128,6 @@ export class CartService {
         if (orderLine.productId === product.id) {
           orderLine.quantity++;
           orderLine.total += orderLine.pricePerUnit;
-          this.updateCart();
           added = true;
         }
       });
@@ -141,10 +139,8 @@ export class CartService {
           total: stockCurrent.sellPrice
         };
         this.orderLines.push(orderLine);
-        this.updateCart();
       }
-      this.saveCartDetailsToSharedMemory();
-
+      this.updateCart();
       return true;
 
     } else {
