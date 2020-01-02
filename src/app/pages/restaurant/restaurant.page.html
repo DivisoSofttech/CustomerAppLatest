@@ -84,12 +84,14 @@
                     size-lg="6"
                     *ngFor="let store of stores"
                   >
+                   <ng-container *ngIf="currentLatLon">
                     <app-restaurant-card
-                      [isGuest]="isGuest"
-                      [currentLatLon]="currentLatLon"
-                      *ngIf="store.name !== null"
-                      [store]="store"
-                    ></app-restaurant-card>
+                    [isGuest]="isGuest"
+                    [currentLatLon]="currentLatLon"
+                    *ngIf="store.name !== null"
+                    [store]="store"
+                  ></app-restaurant-card>
+                   </ng-container>
                   </ion-col>
                 </ion-row>
               </ion-grid>

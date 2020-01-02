@@ -5,7 +5,6 @@ export interface Category {
   iDPcode?: string;
   id?: number;
   idpcode?: string;
-  image?: string;
   imageContentType?: string;
   imageLink?: string;
   name?: string;

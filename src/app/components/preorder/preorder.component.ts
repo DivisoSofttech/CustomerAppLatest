@@ -65,8 +65,7 @@ export class PreorderComponent implements OnInit {
     }
 
     this.selectedTime = stime;
-    console.error(sdate.isAfter(fdate) , sdate.isBefore(tdate))
-
+ 
     if (sdate.isAfter(fdate) && sdate.isBefore(tdate)) {
       const tempTime = moment('2017-03-13 ' + stime);
       this.logger.info(this, 'Seleceted Time After Conversion', tempTime.toDate());

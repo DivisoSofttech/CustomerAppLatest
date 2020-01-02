@@ -1,12 +1,9 @@
 import { Component, OnInit, Input, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { NGXLogger } from 'ngx-logger';
 import { LocationService } from 'src/app/services/location-service';
 import { ModalController, Platform } from '@ionic/angular';
-import { Subscription } from 'rxjs';
 import { RecentService, RecentType } from 'src/app/services/recent.service';
-import { FilterService, FILTER_TYPES } from 'src/app/services/filter.service';
-import { SharedDataService } from 'src/app/services/shared-data.service';
 import { LogService } from 'src/app/services/log.service';
+import { LocationModel } from 'src/app/models/location-model';
 
 @Component({
   selector: 'app-place-suggestion',
@@ -25,37 +22,37 @@ export class PlaceSuggestionComponent implements OnInit , OnDestroy {
 
   recents = [];
 
-  distance = 10;
-
-  oldDistance = 0;
+  oldMaxDistance = 0;
 
   backButtonSubscription: any;
+
+  locationSubscription:any;
+
+  locationModel: LocationModel = {
+    latLon: [],
+    name: '',
+    maxDistance:0,
+    fetchedLocation: false
+  };
 
   constructor(
     private logger: LogService,
     private locationService: LocationService,
     private modalController: ModalController,
-    private sharedData: SharedDataService,
     private recentService: RecentService,
-    private filter: FilterService,
     private changeDetectorRef: ChangeDetectorRef,
     private platform: Platform
   ) { }
 
   ngOnInit() {
     this.getRecents();
-    this.sharedData.getData('distance_filter')
-    .then(data => {
-      if(data !== null) {
-        this.distance = data;
-        this.oldDistance = data;
-      }
-    })
+    this.getLocationDetails();
     this.backButtonHandler();
   }
 
   ngOnDestroy(): void {
     this.backButtonSubscription?this.backButtonSubscription.unsubscribe():null;
+    this.locationSubscription?this.locationSubscription.unsubscribe():null;
   }
 
   backButtonHandler() {
@@ -64,9 +61,17 @@ export class PlaceSuggestionComponent implements OnInit , OnDestroy {
     });
   }
 
+  getLocationDetails() {
+    this.locationSubscription = this.locationService.getLocation()
+    .subscribe((location: LocationModel)=>{
+      this.locationModel = location;
+      this.oldMaxDistance = this.locationModel.maxDistance;
+    })
+  }
+
   distanceChanged(event) {
-    this.sharedData.saveToStorage('distance_filter' , this.distance);
-    this.filter.distance = event.detail.value;
+    this.locationModel.maxDistance = event.detail.value;
+    this.locationService.setMaxDistance(this.locationModel.maxDistance);
   }
 
   getRecents() {
@@ -87,13 +92,6 @@ export class PlaceSuggestionComponent implements OnInit , OnDestroy {
     this.modalController.dismiss();
   }
 
-  closeCurrent() {
-    this.modalController.dismiss({
-      currentLocation:true,
-      distanceChanged:true,
-      locationChanged: true
-    });
-  }
 
   getPlacePredictions(event) {
     if (event.detail.value.replace(/\s/g, '').length) {
@@ -132,23 +130,13 @@ export class PlaceSuggestionComponent implements OnInit , OnDestroy {
       .geocodeAddress(place.place_id)
       .then(data => {
         this.logger.info(this,'Found LatLon for selected Location', data);
-        // Dismiss Data here
-        this.filter.distance = this.distance;
-        this.sharedData.saveToStorage('location',{
-          latLon: data,
-          name: this.currentPlaceName,
-          coords:data,
-          currentLocation: false,
-          distanceChanged: true,
-          locationChanged: true
-        })
-        this.modalController.dismiss({
-          latLon: data,
-          name: this.currentPlaceName,
-          currentLocation: false,
-          distanceChanged: false,
-          locationChanged: true
+        this.locationService.setMaxDistance(this.locationModel.maxDistance)
+        this.locationModel.latLon = data;
+        this.locationModel.name = this.currentPlaceName;
+        this.dismiss(true,()=>{
+          this.locationService.setPosition(this.locationModel);
         });
+       
       })
       .catch(err => {
         this.logger.warn('Error Getting LatLon for selected Location', place);
@@ -156,16 +144,33 @@ export class PlaceSuggestionComponent implements OnInit , OnDestroy {
   }
   
   getCurrentLocation() {
-    this.locationService.getCurrentLoactionAddress((data,coords)=> {})    
-    this.closeCurrent();
+    this.dismiss(true,()=>{
+      this.locationModel.fetchedLocation = false;
+      this.locationService.setPosition(this.locationModel);
+      this.locationService.getCurrentLoactionAddress((data,coords)=> { })
+    });   
   }
 
-  dismiss() {
-    this.modalController.dismiss({
-      distanceChanged: this.distance !== this.oldDistance?true:false,
-      currentLocation: true,
-      locationChanged: false
+
+  dismiss(value = false , success?) {
+    this.modalController.dismiss(value)
+    .then(()=>{
+      if(success) {
+        success();
+      }
     });
+  }
+
+  dismissDistanceChanged() {
+  
+    if(this.oldMaxDistance !== this.locationModel.maxDistance) {
+      this.dismiss(true,()=>{
+        this.locationService.setPosition(this.locationModel);
+      });
+    } else {
+      this.dismiss(false);
+    }
+    
   }
 
 }

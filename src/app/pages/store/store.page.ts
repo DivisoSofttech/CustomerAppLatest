@@ -1,5 +1,5 @@
 import { IonSlides, IonRefresher, PopoverController, NavController, Platform, IonInfiniteScroll} from '@ionic/angular';
-import { ViewChild, OnDestroy } from '@angular/core';
+import { ViewChild, OnDestroy, HostListener } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -62,6 +62,7 @@ export class StorePage implements OnInit , OnDestroy {
   pageNum: any = 0;
   categoryShow = {};
   showFooter: any = true;
+  showReview: any = true;
 
   constructor(
     private queryResource: QueryResourceService,
@@ -84,8 +85,24 @@ export class StorePage implements OnInit , OnDestroy {
     this.getCategoriesEntry(0);
     this.timeNow = new Date();
 
+    this.checkPlatformWidth();
+
     // temp Fix for sliderHeight
     this.fixSliderHeight();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.checkPlatformWidth();
+  }
+
+
+  checkPlatformWidth() {
+    if(this.platform.width() >= 1280) {
+      this.showReview = false;
+    } else {
+      this.showReview = true;
+    }
   }
 
   checkIfGuest() {
@@ -256,7 +273,9 @@ export class StorePage implements OnInit , OnDestroy {
     this.currentSegment = event.detail.value;
     if (this.currentSegment === 'menu') {
       this.ionSlides.slideTo(0);
-    } else if (this.currentSegment === 'reviews') {
+    } else if (this.currentSegment === 'reviews' && this.showReview) {
+      this.ionSlides.slideTo(1);
+    } else if(this.currentSegment === 'info' && !this.showReview) {
       this.ionSlides.slideTo(1);
     } else {
       this.ionSlides.slideTo(2);
@@ -271,8 +290,10 @@ export class StorePage implements OnInit , OnDestroy {
       index = num;
       if (index === 0) {
         this.currentSegment = 'menu';
-      } else if (index === 1) {
+      } else if (index === 1 && this.showReview) {
         this.currentSegment = 'reviews';
+      } else if(index === 1 && !this.showReview){
+        this.currentSegment = 'info';
       } else {
         this.currentSegment = 'info';
       }

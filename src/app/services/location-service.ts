@@ -4,6 +4,7 @@ import { MapsAPILoader } from '@agm/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { SharedDataService } from './shared-data.service';
 import { LogService } from './log.service';
+import { LocationModel } from '../models/location-model';
 
 declare var google: any;
 
@@ -14,7 +15,14 @@ export class LocationService {
 
   private autoCompleteService: any;
   private geocoder: any;
-  private positionAddressObservable = new BehaviorSubject<any>(null);
+  private positionAddressObservable: BehaviorSubject<LocationModel> = new BehaviorSubject<LocationModel>(null);
+  private locationModel: LocationModel = {
+    name:'',
+    latLon: [],
+    fetchedLocation: false,
+    maxDistance: 25
+  }
+  
 
   constructor(
     private mapsAPILoader: MapsAPILoader,
@@ -35,7 +43,7 @@ export class LocationService {
 
   initLocation() {
     this.sharedData.getData('location')
-    .then(location => {
+    .then((location: LocationModel) => {
       if (location !== null) {
           this.logger.info(this, "Fetching Existing Location From Storage");
           this.positionAddressObservable.next(location)
@@ -49,6 +57,11 @@ export class LocationService {
   calculateDistance(from: any, to: any): number {
     const distance = google.maps.geometry.spherical.computeDistanceBetween(from,to);
     return distance;
+  }
+
+  setPosition(locationModel) {
+    this.saveServiceDetailsToStorage(locationModel);
+    this.positionAddressObservable.next(locationModel);
   }
 
   getPredictions(searchTerm: string): Observable<any[]> {
@@ -119,16 +132,15 @@ export class LocationService {
                     address = address + addr.short_name;
                   }
                 });
-                this.sharedData.saveToStorage('location', {
-                  coords: [latData.coords.latitude, latData.coords.longitude],
-                  latLon: [latData.coords.latitude, latData.coords.longitude],
-                  name: address
-                });
-                this.positionAddressObservable.next({
-                  coords: [latData.coords.latitude, latData.coords.longitude],
+
+                this.locationModel = {
+                  maxDistance: 25,
                   latLon: [latData.coords.latitude, latData.coords.longitude],
                   name: address,
-                });
+                  fetchedLocation: true
+                }
+                this.saveServiceDetailsToStorage(this.locationModel);
+                this.positionAddressObservable.next(this.locationModel);
                 func(results, latData);
 
               });
@@ -140,4 +152,18 @@ export class LocationService {
   getLocation() {
     return this.positionAddressObservable;
   }
+
+
+  getMaxDistance() {
+    return this.locationModel.maxDistance;
+  }
+
+  setMaxDistance(value) {
+    this.locationModel.maxDistance;
+  }
+
+  saveServiceDetailsToStorage(locationModel: LocationModel) {
+    this.sharedData.saveToStorage('location',locationModel);
+  }
+
 }

@@ -1,10 +1,8 @@
 import { LocationService } from './../../services/location-service';
 import { Component, OnInit, Input } from '@angular/core';
 import {
-  Environment,
   GoogleMapOptions,
   GoogleMaps,
-  MyLocation,
   GoogleMapsAnimation,
   GoogleMap,
   Marker,
@@ -12,9 +10,9 @@ import {
 } from '@ionic-native/google-maps';
 import { Platform } from '@ionic/angular';
 import { Util } from 'src/app/services/util';
-import { FilterService } from 'src/app/services/filter.service';
 import { NGXLogger } from 'ngx-logger';
 import { Store } from 'src/app/api/models';
+import { LocationModel } from 'src/app/models/location-model';
 
 @Component({
   selector: 'app-map',
@@ -37,7 +35,6 @@ export class MapComponent implements OnInit{
   constructor(
     private logger: NGXLogger,
     private platform: Platform,
-    private filter: FilterService, // Filter Service Contains the current latlon of the current
     private util: Util, // or selected location,
     private locationService: LocationService
   ) {}
@@ -60,18 +57,16 @@ export class MapComponent implements OnInit{
   }
 
   getLatLon() {
-    this.filter.getLocationSubscription().subscribe(coords => {
-      this.logger.info('Got Coordinates ', coords);
-      if (coords !== undefined) {
+    this.locationService.getLocation().subscribe((locationModel: LocationModel) => {
+      if (locationModel !== undefined) {
         if (this.mapAlreadyLoaded === false) {
-          this.loadMap(coords);
+          this.loadMap(locationModel.latLon);
           this.mapAlreadyLoaded = true;
         } else {
-          this.updateMap(coords);
+          this.updateMap(locationModel.latLon);
         }
       } else {
         this.locationService.getCurrentLocation().then(latlon => {
-          console.log('iyftudytdyfutu', latlon);
           this.loadMap(latlon.coords.latitude + ',' + latlon.coords.longitude);
           this.mapAlreadyLoaded = true;
         });

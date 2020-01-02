@@ -102,7 +102,7 @@ export class ProcessPaymentComponent implements OnInit, OnDestroy {
   navigateForward() {
     this.commandResource.updateLoyaltyPointUsingPOST({
       point: 1,
-      idpCode: this.orderService.customer.regNo
+      idpCode: this.orderService.user.preferred_username
     }).subscribe(data => {
       this.logger.info(this,'Loyality Point Success');      
     })

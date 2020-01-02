@@ -3,12 +3,10 @@ import { IonInfiniteScroll, IonSearchbar, ModalController, Platform } from '@ion
 import { Store } from './../../api/models/store';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { Component, OnInit, ViewChild, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
-import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { Storage } from '@ionic/storage';
 import { RecentService, RecentType } from 'src/app/services/recent.service';
 import { LogService } from 'src/app/services/log.service';
-import { resolveSanitizationFn } from '@angular/compiler/src/render3/view/template';
 
 @Component({
   selector: 'app-header',

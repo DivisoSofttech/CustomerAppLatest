@@ -7,6 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 import { KeycloakService } from './security/keycloak.service';
 import { DecimalPipe } from '@angular/common';
 import { NoCommaPipe } from '../pipes/no-comma.pipe';
+import { KeycloakUser } from '../models/keycloak-user';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class OrderService implements OnInit , OnDestroy {
   resource: CommandResource = {};
   orderResourceBehaviour: BehaviorSubject<string> = new BehaviorSubject(this.resource.nextTaskName);
   deliveryInfo: DeliveryInfo = {};
-  customer;
+  user: KeycloakUser;
   paymentMethod;
   acceptType = 'automatic';
   shop;
@@ -56,7 +57,7 @@ export class OrderService implements OnInit , OnDestroy {
     await this.util.createLoader().then(async loader => {
       this.keycloakSubscription = this.keycloakService.getUserChangedSubscription()
       .subscribe(data => {
-        this.customer = data;
+        this.user = data;
       })
     });
   }
@@ -68,18 +69,18 @@ export class OrderService implements OnInit , OnDestroy {
   }
 
   async claimMyOffer(totalPrice) {
-    if (!this.customer) {
+    if (!this.user) {
       await this.getCustomer();
     }
     return this.commandResourceService.checkOfferEligibilityUsingPOST({
       orderModel: {
         orderTotal: totalPrice
-      }, customerId: this.customer.preferred_username
+      }, customerId: this.user.preferred_username
     });
   }
 
   processPayment(ref: string, status: string, provider) {
-    if (!this.customer) {
+    if (!this.user) {
       this.getCustomer();
     }
     console.log('Payment reference is ' + ref);
@@ -89,7 +90,7 @@ export class OrderService implements OnInit , OnDestroy {
         status, paymentDTO: {
           amount: this.order.grandTotal,
           payee: this.order.storeId,
-          payer: this.customer.preferred_username,
+          payer: this.user.preferred_username,
           paymentType: this.paymentMethod,
           provider,
           status,
@@ -200,7 +201,7 @@ export class OrderService implements OnInit , OnDestroy {
   }
 
   setCustomer(customer) {
-    this.customer = customer;
+    this.user = customer;
   }
 
   setNote(note) {

@@ -104,7 +104,6 @@ export class CartComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy() {
-    console.log('Cart ngDestroy calls');
     if (this.initiateOrderSubcription !== undefined) {
       this.initiateOrderSubcription.unsubscribe();
     }
@@ -223,7 +222,6 @@ export class CartComponent implements OnInit, OnDestroy {
     });
     modal.present();
     modal.onDidDismiss().then(data => {
-      console.log(data.data);
       this.allergyNote = data.data;
     });
   }
@@ -307,7 +305,7 @@ export class CartComponent implements OnInit, OnDestroy {
       date: new Date().toISOString(),
       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
     };
-    console.log('Order setting to order service is ', order);
+
     this.orderService.setOrder(order);
     this.logger.info(this, 'Delivery type is ', deliveryType);
     this.initiateOrderSubcription = this.orderService
@@ -340,7 +338,6 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   updateOrder() {
-    console.log('Current status is ', this.getStatus());
     this.orderService.order.status = this.getStatus();
     this.orderService.order.preOrderDate = this.cart.preOrderDate ? this.cart.preOrderDate : null,
     this.orderLinesUpdated = [];
@@ -361,8 +358,7 @@ export class CartComponent implements OnInit, OnDestroy {
     this.orderService.order.allergyNote = this.allergyNote;
     this.orderService.order.subTotal = this.noCommaPipe.transform(this.cart.subTotal);
     this.orderService.order.grandTotal = this.noCommaPipe.transform(this.cart.total);
-
-    console.error(this.orderService.order);
+    
     if (this.orderService.deliveryInfo !== undefined) {
       this.logger.info(this,'Deliveryinfo exists ');
       this.orderService.order.deliveryInfo = this.orderService.deliveryInfo;
@@ -399,24 +395,22 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   getStatus(): Status {
-    console.log('Resource getStatus ', this.orderService.resource);
+    this.logger.info(this,'Resource getStatus ', this.orderService.resource);
     let status: Status;
     if (this.orderService.resource.nextTaskName === 'Collect Delivery Info&Place Order') {
-      console.log('in if**');
       status = {
         name: 'unapproved',
         id: 1
       };
     } else {
-      console.log('in else **');
       status = {
         name: 'approved',
         id: 3
       };
     }
-    console.log('status in getStatus ', status);
     return status;
   }
+
   segmenChanged(event) {
     if (this.delivery !== undefined) {
       this.deliveryMode = event.detail.value;

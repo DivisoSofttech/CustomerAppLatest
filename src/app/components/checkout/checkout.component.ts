@@ -66,7 +66,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.logger.info(this, 'OrderInfo', {
       deliveryInfo: this.orderService.deliveryInfo,
       order: this.orderService.order,
-      customer: this.orderService.customer
+      customer: this.orderService.user
     });
     this.getCustomer();
     this.getOrderDetails();
@@ -74,8 +74,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   getCustomer() {
-    this.logger.info(this.orderService.customer);
-    this.customer = this.orderService.customer;
+    this.logger.info(this.orderService.user);
+    this.customer = this.orderService.user;
     this.sharedData.getData('customer')
     .then(customer => {
       this.sharedData.getData('contact')

@@ -20,7 +20,6 @@ export interface Product {
   iDPcode?: string;
   id?: number;
   idpcode?: string;
-  image?: string;
   imageContentType?: string;
   imageLink?: string;
   isActive?: boolean;

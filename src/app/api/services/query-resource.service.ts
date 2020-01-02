@@ -97,6 +97,7 @@ class QueryResourceService extends __BaseService {
   static readonly getStoreSettingsUsingGETPath = '/api/query/storeSettings/{IDPCode}';
   static readonly findAllStoresUsingGETPath = '/api/query/stores';
   static readonly findBannersByRegNoUsingGETPath = '/api/query/stores/findBannersByRegNo/{regNo}';
+  static readonly getSuggestionUsingGETPath = '/api/query/suggest/{data}';
   static readonly getTaskDetailsUsingGETPath = '/api/query/taskDetails/{taskName}/{orderId}/{storeId}';
   static readonly getTasksUsingGETPath = '/api/query/tasks';
 
@@ -2571,6 +2572,42 @@ class QueryResourceService extends __BaseService {
   findBannersByRegNoUsingGET(params: QueryResourceService.FindBannersByRegNoUsingGETParams): __Observable<PageOfBanner> {
     return this.findBannersByRegNoUsingGETResponse(params).pipe(
       __map(_r => _r.body as PageOfBanner)
+    );
+  }
+
+  /**
+   * @param data data
+   * @return OK
+   */
+  getSuggestionUsingGETResponse(data: string): __Observable<__StrictHttpResponse<Array<string>>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/suggest/${data}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<Array<string>>;
+      })
+    );
+  }
+  /**
+   * @param data data
+   * @return OK
+   */
+  getSuggestionUsingGET(data: string): __Observable<Array<string>> {
+    return this.getSuggestionUsingGETResponse(data).pipe(
+      __map(_r => _r.body as Array<string>)
     );
   }
 

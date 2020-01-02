@@ -60,13 +60,13 @@ export class HistoryListComponent implements OnInit , OnDestroy {
   }
 
   confirmOrder(order: Order) {
-    this.logger.info(this,'Confirm order User is ' + this.orderService.customer.preferred_username );
+    this.logger.info(this,'Confirm order User is ' + this.orderService.user.preferred_username );
     this.logger.info(this,'Confirm the order ', order);
     this.orderService.setOrder(order);
     this.orderService.deliveryInfo = order.deliveryInfo;
     this.util.createLoader().then( loader => {
       loader.present();
-      this.queryResource.getTasksUsingGET({name: 'Process Payment', assignee: this.orderService.customer.preferred_username})
+      this.queryResource.getTasksUsingGET({name: 'Process Payment', assignee: this.orderService.user.preferred_username})
       .subscribe(result => {
       this.logger.info(this,'Approved Orders opentasks ', result);
       result.forEach( opentask => {

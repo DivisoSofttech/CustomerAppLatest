@@ -25,8 +25,8 @@ export class CartService {
   auxilaryItems = {};
   currentDeliveryTypes;
   MAX_ORDERS = 10;
-  behaviourDeliveryTypes = new BehaviorSubject<any>(this.currentDeliveryTypes);
-  behaviourStore = new BehaviorSubject<Store>(this.currentShop);
+  behaviourDeliveryTypes: BehaviorSubject<any> = new BehaviorSubject<any>(this.currentDeliveryTypes);
+  behaviourStore: BehaviorSubject<Store> = new BehaviorSubject<Store>(this.currentShop);
   preOrderDate;
 
   dataSaveTimer = null;
@@ -176,7 +176,7 @@ export class CartService {
                   if(data !== null) {
                   data.currentDeliveryTypes = success.content;
                   }
-                  this.saveCartDetailsToSharedMemory();
+                  this.updateCart();
                 });
             },
             err => {
@@ -239,7 +239,7 @@ export class CartService {
     this.subTotal = this.decimalPipe.transform(orderTotal, '1.2-2');
   }
 
-  updateCart() {
+  async updateCart() {
     this.subTotal = 0;
     if (this.orderLines.length === 0) {
       this.currentShop = {
@@ -261,7 +261,7 @@ export class CartService {
         this.saveCartDetailsToSharedMemory();
         clearTimeout(this.dataSaveTimer);
         this.dataSaveTimer = null;
-      },5000);
+      },10000);
     }
   }
 

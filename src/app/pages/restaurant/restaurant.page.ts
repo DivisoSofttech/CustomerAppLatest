@@ -1,5 +1,5 @@
 import { FilterService, FILTER_TYPES } from './../../services/filter.service';
-import { Component, OnInit, ViewChild, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, ChangeDetectorRef, HostListener } from '@angular/core';
 import { Util } from 'src/app/services/util';
 import { IonInfiniteScroll, IonRefresher, ModalController, Platform } from '@ionic/angular';
 import { FooterComponent } from 'src/app/components/footer/footer.component';
@@ -11,6 +11,7 @@ import { LogService } from 'src/app/services/log.service';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { SharedDataService } from 'src/app/services/shared-data.service';
 import { BannerComponent } from 'src/app/components/banner/banner.component';
+import { LocationModel } from 'src/app/models/location-model';
 
 @Component({
   selector: 'app-restaurant',
@@ -70,10 +71,6 @@ export class RestaurantPage implements OnInit, OnDestroy {
     this.getStores();
   }
 
-  // Fix for Footer
-  ionViewDidEnter() {
-    this.footer.setcurrentRoute('restaurant');
-  }
 
   checkIfGuest() {
     this.logger.info(this, 'Checking if guest')
@@ -90,24 +87,26 @@ export class RestaurantPage implements OnInit, OnDestroy {
   getCurrentLocation() {
     this.logger.info(this, 'Getting Current Location');
     this.locationService.getLocation()
-      .subscribe(value => {
+      .subscribe((value: LocationModel) => {
         if (value !== null) {
           this.currentPlaceName = value.name;
-          this.filter.setCoordinates(value.coords);
-          this.currentLatLon = value.coords ? value.latLon : value.coords;
-          // Activate Distance Filter if No Other Filter is Applied
-          this.activateDistanceFilter();
+          this.currentLatLon = value.latLon;
+          this.filter.setLocationData(this.currentLatLon,value.maxDistance);
           this.logger.info(this, 'Current Place Name ', this.currentPlaceName);
-          this.logger.info(this, 'Getting LatLon for current Location', value.coords);
+          // Activate Distance Filter if No Other Filter is Applied
+          if(value.fetchedLocation) {
+            this.activateDistanceFilter();
+          } else {
+            this.currentPlaceName = '';
+          }
         }
-      });
+      }); 
   }
 
-activateDistanceFilter() {
+  activateDistanceFilter() {
     this.sharedData.getData('filter')
     .then(data => {
       if (!data) {
-        
         this.filter.setFilter(FILTER_TYPES.DISTANCE_WISE);
       }
     })
@@ -115,18 +114,19 @@ activateDistanceFilter() {
 
   async getStores() {
     this.filterSubscription = this.filter.getSubscription().subscribe((data: FILTER_TYPES) => {
-
       if (data !== undefined) {
+        this.logger.info(this,"Fetching Stores From Server");
         this.currentFilter = data;
-        if (data.valueOf() == FILTER_TYPES.MIN_AMOUNT.valueOf()) {
-          this.filterString = "Min amount";
-        } else if (data.valueOf() == FILTER_TYPES.TOP_RATED.valueOf()) {
+        if(this.currentFilter == FILTER_TYPES.MIN_AMOUNT) {
+          this.filterString = "Min Amount";
+        } else if(this.currentFilter == FILTER_TYPES.TOP_RATED) {
           this.filterString = "Top rated";
-        } else if (data.valueOf() == FILTER_TYPES.CUSINE_FILTER.valueOf()) {
-          this.filterString = "Cusines";
+        } else if(this.currentFilter == FILTER_TYPES.CUSINE_FILTER) {
+            this.filterString = "Cusines";
         } else {
-          this.filterString = '';
+          this.filterString = ''
         }
+
         this.showLoading = true;
         this.stores = [];
         this.toggleInfiniteScroll();
@@ -222,18 +222,10 @@ activateDistanceFilter() {
         );
         modal.onDidDismiss()
           .then(data => {
-            if (data !== undefined && data.data !== undefined) {
-              this.toggleInfiniteScroll();
-              this.sharedData.deleteData('filter');
-              if (data.data.currentLocation && data.data.locationChanged) {
-                this.logger.info(this, 'Setting Current Location ', data);
-                this.filter.setFilter(FILTER_TYPES.DISTANCE_WISE);
-              } else if (!data.data.currentLocation && !data.data.distanceChanged) {
-                this.logger.info(this, 'Updating Current Location ', data);
-                this.updatedLocation(data);
-              } else if (data.data.distanceChanged) {
-                this.logger.info(this, 'Distance Changed ', data);
-                this.filter.setFilter(FILTER_TYPES.DISTANCE_WISE);
+            if (data !== undefined) {
+              if(data.data) {
+                this.toggleInfiniteScroll();
+                this.sharedData.deleteData('filter');  
               }
             }
           });
@@ -244,21 +236,23 @@ activateDistanceFilter() {
       });
   }
 
-  updatedLocation(data) {
-    this.logger.info(this, 'Changed Current Location - LatLon ', data);
-    this.filter.setCoordinates(data.data.latLon);
-    this.currentPlaceName = data.data.name;
-    this.currentLatLon = data.data.latLon;
-    this.logger.info(this, 'Setting Distance_wise Filter');
-    this.filter.setFilter(FILTER_TYPES.DISTANCE_WISE);
-    this.logger.info(this, 'Getting Stores');
-  }
-
   backButtonHandler() {
     this.backButtonSubscription = this.platform.backButton.subscribe(() => {
       this.showFilters = false;
     });
   }
+
+    // Banner resize fix
+    @HostListener('window:resize', ['$event'])
+    onResize(event) {
+      this.banner.ngOnInit();
+    }
+  
+    // Fix for Footer
+    ionViewDidEnter() {
+      this.footer.setcurrentRoute('restaurant');
+    }
+  
 
   ngOnDestroy(): void {
     this.backButtonSubscription ? this.backButtonSubscription.unsubscribe() : null;

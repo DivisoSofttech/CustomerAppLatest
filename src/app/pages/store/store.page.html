@@ -170,7 +170,7 @@
             </ng-container>
           </ion-slide>
 
-          <ion-slide>
+          <ion-slide *ngIf="showReview">
             <app-review *ngIf="store != undefined" [store]="store"></app-review>
           </ion-slide>
 
