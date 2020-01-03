@@ -16,6 +16,7 @@ import { ErrorService } from './services/error.service';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { CartService } from './services/cart.service';
+import { LoginSignupComponent } from './components/login-signup/login-signup.component';
 
 
 @Component({
@@ -187,7 +188,12 @@ export class AppComponent {
     this.guestUserService.logInGuest();
   }
 
-  login() {
-    this.util.navigateToLogin();
+  async login() {
+    const modal = await this.modalController.create({
+    component: LoginSignupComponent,
+    });
+  
+    await modal.present();
+  
   }
 }

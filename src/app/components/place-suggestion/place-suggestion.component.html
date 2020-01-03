@@ -1,11 +1,11 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons>
-      <ion-button (click)="dismissDistanceChanged()">
+      <ion-button (click)="dismiss()">
         <ion-icon name="arrow-back"></ion-icon>
       </ion-button>
       <ion-title> 
-          <ion-label>{{currentPlaceName}}</ion-label>
+          <ion-label>{{location.name}}</ion-label>
       </ion-title>
     </ion-buttons>
   </ion-toolbar>
@@ -18,9 +18,9 @@
           </ion-label>    
         </ion-col>
         <ion-col size="12">
-          <ion-range color="light" mode="ios" min="10" max="100" [(ngModel)]="locationModel.maxDistance" (ionChange)="distanceChanged($event)">
+          <ion-range color="light" mode="ios" min="10" max="100" [(ngModel)]="location.maxDistance">
             <ion-label slot="end">
-              <h2>{{locationModel.maxDistance}}KM</h2>
+              <h2>{{location.maxDistance}}KM</h2>
             </ion-label>
           </ion-range>     
         </ion-col>
@@ -32,19 +32,19 @@
 
   <ion-buttons>
     <ion-searchbar #placeSearch  placeholder="Enter Location Name"
-      (ionCancel)="close()" (ionChange)="getPlacePredictions($event)"></ion-searchbar>
+      (ionCancel)="dismiss()" (ionChange)="validateSearchTermAndSearch($event)"></ion-searchbar>
   </ion-buttons>
 
   <!--List Of Available place Suggestions-->
   <ion-spinner color="primary" name="dots" *ngIf="showSpinner"></ion-spinner>
 
-  <ion-list *ngIf="searchTerm === '' && recents.length > 0">
+  <ion-list *ngIf="searchTerm === '' && recentPlaces.length > 0">
     <ion-list-header>
       <ion-label>
         <h4>Recent Place's</h4>
       </ion-label>
     </ion-list-header>
-    <ion-item class="pointer" lines="full" *ngFor="let place of recents" (click)="selectPlace(place.data)">
+    <ion-item class="pointer" lines="full" *ngFor="let place of recentPlaces" (click)="selectPlace(place.data)">
       <ion-label>
         {{place.data.description}}
       </ion-label>

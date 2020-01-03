@@ -173,7 +173,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
             this.logger.error(this, 'oops something went wrong while collecting deliveryinfo ', err);
             this.behaviouralSubjectSubscription.unsubscribe();
             this.util.createToast('Something went wrong try again', 'information-circle-outline');
-            this.errorService.showErrorModal(this);
+            this.errorService.showErrorModal(()=>{
+              // this.ngOnDestroy();
+              // this.ngOnInit():
+            });
           });
         } else {
           this.logger.info(this, 'In else fail loader present');

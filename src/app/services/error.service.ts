@@ -8,7 +8,6 @@ import { NGXLogger } from 'ngx-logger';
 })
 export class ErrorService {
 
-  component;
   modal: HTMLIonModalElement;
   isOnline = true;
 
@@ -17,10 +16,6 @@ export class ErrorService {
     private logger: NGXLogger
   ) { }
 
-  refresh() {
-    this.modalController.dismiss();
-    this.component.ngOnInit();
-  }
 
   checkNetworkStatus() {
     if(navigator.onLine) {
@@ -30,10 +25,9 @@ export class ErrorService {
     }
   }
 
-  async showErrorModal(component?) {
+  async showErrorModal(reset) {
 
     this.checkNetworkStatus();
-    this.component = component;
     this.modal = await this.modalController.create({
     component: ErrorComponent,
     componentProps: {isOnline: this.isOnline},
@@ -43,11 +37,7 @@ export class ErrorService {
 
     this.modal.onDidDismiss()
     .then(()=> {
-      if(this.component) {
-        this.component.ngOnInit();
-      } else {
-        location.reload();
-      }
+      reset()
     })
   
     await this.modal.present();

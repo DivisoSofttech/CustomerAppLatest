@@ -46,6 +46,16 @@ export class OrderService implements OnInit , OnDestroy {
     return this.resource.nextTaskName === taskName;
   }
 
+  updateLoyaltyPoint() {
+    this.commandResourceService.updateLoyaltyPointUsingPOST({
+      point: 1,
+      idpCode: this.user.preferred_username,
+      orderId: this.order.orderId
+    }).subscribe(data => {
+      this.logger.info(this,'Loyality Point Success');      
+    })
+  }
+
   initiateOrder() {
     if (this.offer !== undefined) {
       this.order.appliedOffers.push(this.offer);

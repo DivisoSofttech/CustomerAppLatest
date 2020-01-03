@@ -88,29 +88,17 @@
 </ng-template>
 
 
-<ion-header class="desktop-only" *ngIf="type==='modal'">
+<ion-header>
   <ion-toolbar>
     <ion-title>Login</ion-title>
-    <ion-buttons slot="end" *ngIf="type!=='page'">
+    <ion-buttons slot="end">
       <ion-button color="primary" (click)="dismiss()" >
-        <ion-icon name="close"></ion-icon>
+        <ion-text>Skip</ion-text>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-header class="mobile-only">
-  <ion-toolbar>
-    <ion-title>Login</ion-title>
-    <ion-buttons slot="end" *ngIf="type!=='page'">
-      <ion-button color="primary" (click)="dismiss()" >
-        <ion-icon name="close"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons slot="end" *ngIf="type==='page'">
-      <ion-button color="primary" (click)="navigateRoot()" >SKIP</ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+
 
 <ion-content  class="mobile">
   <ion-segment (ionChange)="slide($event)" [value]="value" class="mobile slider-tabs" >

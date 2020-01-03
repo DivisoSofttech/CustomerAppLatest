@@ -232,6 +232,7 @@
   </ion-item>
   <ion-card
     *ngIf="
+    order.deliveryInfo.deliveryType !== 'collection' &&
       order.deliveryInfo !== null && order.deliveryInfo.deliveryAddress !== null
     "
   >

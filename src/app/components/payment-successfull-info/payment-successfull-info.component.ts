@@ -46,6 +46,7 @@ export class PaymentSuccessfullInfoComponent implements OnInit , OnDestroy {
   }
 
   ngOnInit() {
+    this.orderService.updateLoyaltyPoint();
     this.getRequiredDetails();
   }
 

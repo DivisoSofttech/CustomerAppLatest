@@ -1,4 +1,4 @@
-import { LocationService } from './../../services/location-service';
+import { LocationService, LocationModel } from './../../services/location-service';
 import { Component, OnInit, Input } from '@angular/core';
 import {
   GoogleMapOptions,
@@ -12,7 +12,7 @@ import { Platform } from '@ionic/angular';
 import { Util } from 'src/app/services/util';
 import { NGXLogger } from 'ngx-logger';
 import { Store } from 'src/app/api/models';
-import { LocationModel } from 'src/app/models/location-model';
+
 
 @Component({
   selector: 'app-map',

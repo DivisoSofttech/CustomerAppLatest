@@ -4,9 +4,16 @@ import { MapsAPILoader } from '@agm/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { SharedDataService } from './shared-data.service';
 import { LogService } from './log.service';
-import { LocationModel } from '../models/location-model';
 
 declare var google: any;
+
+export interface LocationModel {
+  latLon: number[];
+  name: string;
+  countryCode?: string;
+  maxDistance?: any;
+  fetchedLocation: boolean;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +51,7 @@ export class LocationService {
   initLocation() {
     this.sharedData.getData('location')
     .then((location: LocationModel) => {
-      if (location !== null) {
+      if (location) {
           this.logger.info(this, "Fetching Existing Location From Storage");
           this.positionAddressObservable.next(location)
       } else {
@@ -111,11 +118,11 @@ export class LocationService {
     return this.geolocation.getCurrentPosition();
   }
 
-  async getCurrentLoactionAddress(func) {
+  getCurrentLoactionAddress(func) {
     return this.getCurrentLocation()
       .then(latData => {
         const latLng = latData.coords.latitude + ',' + latData.coords.longitude;
-        this.mapsAPILoader.load()
+        return this.mapsAPILoader.load()
           .then(() => {
             const googleMapPos = new google.maps.LatLng(latData.coords.latitude, latData.coords.longitude);
             this.geocoder = new google.maps.Geocoder();
@@ -123,7 +130,7 @@ export class LocationService {
               { latLng: googleMapPos },
               (results, status) => {
                 this.logger.info(this, 'Locations All', results);
-                this.logger.info(this, 'Location Adress ', results[0].address_components[0].short_name);
+                this.logger.info(this, 'Location Adrdess ', results[0].address_components[0].short_name);
                 let address = '';
                 results[0].address_components.forEach((addr, i) => {
                   if (i < (results[0].address_components.length - 1)) {
@@ -133,16 +140,25 @@ export class LocationService {
                   }
                 });
 
+                let address_components = results[0].address_components;
+                let countryCode = address_components.filter(r => {
+                  if (r.types[0] == 'country') {
+                    return r;
+                  }
+                }).map(r => {
+                  return r.short_name;
+                })
+
                 this.locationModel = {
                   maxDistance: 25,
                   latLon: [latData.coords.latitude, latData.coords.longitude],
                   name: address,
-                  fetchedLocation: true
+                  fetchedLocation: true,
+                  countryCode: countryCode[0]
                 }
-                this.saveServiceDetailsToStorage(this.locationModel);
                 this.positionAddressObservable.next(this.locationModel);
+                this.saveServiceDetailsToStorage(this.locationModel);
                 func(results, latData);
-
               });
           });
 

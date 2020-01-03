@@ -1,7 +1,7 @@
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { Store } from './../../api/models/store';
 import { FavouriteService } from './../../services/favourite.service';
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { NavController, Platform } from '@ionic/angular';
 import { StoreType, Type, DeliveryInfo, Banner } from 'src/app/api/models';
 import { LogService } from 'src/app/services/log.service';
@@ -102,20 +102,9 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
     private nav: NavController,
     private logger: LogService,
     private locationService: LocationService,
-    private platform: Platform
+    private platform: Platform,
+    private cdr: ChangeDetectorRef
   ) { }
-
-  ngOnDestroy() {
-    this.unsubscribeAll();
-  }
-
-  unsubscribeAll() {
-    this.reviewSubscription ? this.reviewSubscription.unsubscribe() : null;
-    this.storeTypeSubscription ? this.storeTypeSubscription.unsubscribe() : null;
-    this.storeDeliveryTypeSubscription ? this.storeDeliveryTypeSubscription.unsubscribe() : null;
-  }
-
-
 
   ngOnInit() {
 
@@ -142,6 +131,7 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
         currentLatLng,
         restaurantLtLng
       )/1000;  
+      this.forceAngularChangeDetection()
     }
   }
 
@@ -187,6 +177,7 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
         success => {
           this.deliveryTypes = success.content;
           this.checkDeliveryExists();
+          this.forceAngularChangeDetection();
         },
         err => { }
       );
@@ -197,6 +188,7 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
       .subscribe(
         success => {
           this.deliveryInfos = success.content;
+          this.forceAngularChangeDetection();
         },
         err => { }
       );
@@ -245,4 +237,25 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
   showHotelMenu(regno) {
     this.nav.navigateForward('/store/' + regno);
   }
+
+
+   // Invoke Angular Change Detection Manually.
+  // Fix = View Not Automatically Updated For Some Reason.
+  forceAngularChangeDetection() {
+    if (!this.cdr['destroyed'])
+      this.cdr.detectChanges();
+  }
+
+
+  unsubscribeAll() {
+    this.reviewSubscription ? this.reviewSubscription.unsubscribe() : null;
+    this.storeTypeSubscription ? this.storeTypeSubscription.unsubscribe() : null;
+    this.storeDeliveryTypeSubscription ? this.storeDeliveryTypeSubscription.unsubscribe() : null;
+  }
+
+  ngOnDestroy() {
+    this.unsubscribeAll();
+  }
+
+
 }

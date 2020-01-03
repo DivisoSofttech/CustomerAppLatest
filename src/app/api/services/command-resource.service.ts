@@ -71,7 +71,7 @@ class CommandResourceService extends __BaseService {
   static readonly updateReplyUsingPUTPath = '/api/command/replies';
   static readonly deleteReplyUsingDELETEPath = '/api/command/replies/{id}';
   static readonly createTransactionUsingPOSTPath = '/api/command/transaction';
-  static readonly updateLoyaltyPointUsingPOSTPath = '/api/command/updateLoyaltyPoint/{idpCode}/{point}';
+  static readonly updateLoyaltyPointUsingPOSTPath = '/api/command/updateLoyaltyPoint/{idpCode}/{point}/{orderId}';
   static readonly createUserRatingReviewUsingPOSTPath = '/api/command/user-rating-review';
 
   constructor(
@@ -1244,6 +1244,8 @@ class CommandResourceService extends __BaseService {
    *
    * - `point`: point
    *
+   * - `orderId`: orderId
+   *
    * - `idpCode`: idpCode
    *
    * @return OK
@@ -1254,9 +1256,10 @@ class CommandResourceService extends __BaseService {
     let __body: any = null;
 
 
+
     let req = new HttpRequest<any>(
       'POST',
-      this.rootUrl + `/api/command/updateLoyaltyPoint/${params.idpCode}/${params.point}`,
+      this.rootUrl + `/api/command/updateLoyaltyPoint/${params.idpCode}/${params.point}/${params.orderId}`,
       __body,
       {
         headers: __headers,
@@ -1275,6 +1278,8 @@ class CommandResourceService extends __BaseService {
    * @param params The `CommandResourceService.UpdateLoyaltyPointUsingPOSTParams` containing the following parameters:
    *
    * - `point`: point
+   *
+   * - `orderId`: orderId
    *
    * - `idpCode`: idpCode
    *
@@ -1424,6 +1429,11 @@ module CommandResourceService {
      * point
      */
     point: number;
+
+    /**
+     * orderId
+     */
+    orderId: string;
 
     /**
      * idpCode

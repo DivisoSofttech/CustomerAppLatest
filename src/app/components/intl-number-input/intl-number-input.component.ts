@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import * as googleLibphonenumber from 'google-libphonenumber';
 import * as countryList from 'country-list';
-import { ModalController, LoadingController, Platform, PopoverController } from '@ionic/angular';
+import { LoadingController, Platform, PopoverController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { Sim } from '@ionic-native/sim/ngx';
 import { NGXLogger } from 'ngx-logger';
-import { LocationService } from 'src/app/services/location-service';
+import { LocationService , LocationModel } from 'src/app/services/location-service';
 
 @Component({
   selector: 'app-intl-number-input',
@@ -38,7 +38,6 @@ export class IntlNumberInputComponent implements OnInit {
   tmpCountryList: any[];
 
   constructor(
-    private modalController: ModalController,
     private popoverController: PopoverController,
     private storage: Storage,
     private loadingController: LoadingController,
@@ -95,19 +94,12 @@ export class IntlNumberInputComponent implements OnInit {
     );
   }
 
-  getCurrentCountryCode() {
+  getCurrentCountryCode() { 
     this.logger.info('Getting Current Country Code');
-    this.locationService.getCurrentLoactionAddress((results, data) => {
-
-      let address_components = results[0].address_components;
-      let address = address_components.filter(r => {
-        if (r.types[0] == 'country') {
-          return r;
-        }
-      }).map(r => {
-        return r.short_name;
-      })
-      this.selectedCountry = this.countryList.filter(cl => cl.code === address[0])[0];
+    this.locationService.getLocation()
+    .subscribe((location: LocationModel)=>{
+      if(location)
+      this.selectedCountry = this.countryList.filter(cl => cl.code === location.countryCode)[0];
     })
   }
 

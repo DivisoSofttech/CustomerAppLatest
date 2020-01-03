@@ -1,7 +1,7 @@
 <p *ngIf="viewType === 'enter'" class="label">Mobile Number</p>
 <ion-grid *ngIf="viewType === 'enter'" class="ion-no-padding ion-no-margin">
   <ion-row>
-    <ion-col size="12">
+    <ion-col size="12"  *ngIf="selectedCountry">
       <ion-item lines="full">
         <span (click)="countrySelectPopover()" 
           [class]="'flags flag-icon flag-icon-' + (selectedCountry.code | lowercase )"></span>

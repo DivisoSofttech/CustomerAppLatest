@@ -1,7 +1,7 @@
 <ion-header class="mobile-only">
   <app-header 
   [notificationsOn]="!isGuest"
-  (searchEvent)="searchClicked($event)"
+  (searchEvent)="searchBarActivated($event)"
   ></app-header>
 </ion-header>
 <ion-content appScrollbarTheme>
@@ -17,15 +17,15 @@
             <ion-label
               class="pointer"
               text-right
-              *ngIf="currentPlaceName!==''"
+              *ngIf="location.fetchedLocation"
               (click)="showPlaceSelectionModal()"
             >
-              <p class="font-20 heading-one">{{ currentPlaceName}}</p>
+              <p class="font-20 heading-one">{{ location.name}}</p>
             </ion-label>
             <ion-label
               slot="end"
               class="ion-text-center"
-              *ngIf="currentPlaceName===''"
+              *ngIf="!location.fetchedLocation"
             >
               <ion-spinner name="dots"></ion-spinner>
             </ion-label>
@@ -33,19 +33,19 @@
               class="pointer"
               name="create"
               slot="end"
-              *ngIf="currentPlaceName!==''"
+              *ngIf="location.fetchedLocation"
               (click)="showPlaceSelectionModal()"
             ></ion-icon>
           </ion-item>
           <ion-item
             lines="full"
-            *ngIf="filterString !== '' && filterString !== undefined"
+            *ngIf="currentFilterName !== '' && currentFilterName !== undefined"
           >
             <ion-label slot="start">
               Filters Applied
             </ion-label>
             <ion-badge slot="end">
-              {{filterString}}
+              {{currentFilterName}}
             </ion-badge>
           </ion-item>
         </div>
@@ -84,10 +84,10 @@
                     size-lg="6"
                     *ngFor="let store of stores"
                   >
-                   <ng-container *ngIf="currentLatLon">
+                   <ng-container *ngIf="location.latLon">
                     <app-restaurant-card
                     [isGuest]="isGuest"
-                    [currentLatLon]="currentLatLon"
+                    [currentLatLon]="location.latLon"
                     *ngIf="store.name !== null"
                     [store]="store"
                   ></app-restaurant-card>
@@ -122,7 +122,10 @@
     </ion-refresher-content>
   </ion-refresher>
 </ion-content>
-<ion-footer [hidden]="hideFooter">
+<ion-footer [hidden]="(!showFooter)"
+class="animated animation-duration"
+[ngClass]="showFooter? 'slideInUp': 'slideOutDown'"
+>
   <app-filter
     *ngIf="showFilters"
     [showClose]="true"

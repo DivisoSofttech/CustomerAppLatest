@@ -42,7 +42,7 @@ export class FilterComponent implements OnInit , OnDestroy {
 
   ngOnInit() {
     this.logger.info("Setting Filter ");
-    this.filterServiceSubscription = this.filter.getSubscription()
+    this.filterServiceSubscription = this.filter.getFilterSubscription()
     .subscribe(data => {
       if(data) {
         this.currentFilterType = data;
@@ -86,7 +86,7 @@ export class FilterComponent implements OnInit , OnDestroy {
   }
 
   clearFiter() {
-    this.filter.setFilter(FILTER_TYPES.DISTANCE_WISE);
+    this.filter.setCurrentFilter(FILTER_TYPES.DISTANCE_WISE);
     this.closeEvent();
     this.sharedData.deleteData('filter');
   }
@@ -114,7 +114,7 @@ export class FilterComponent implements OnInit , OnDestroy {
 
         this.logger.info('Selected Cusines',cusineArray , this.cusines);
         this.filter.setSelectedCusines(cusineArray);  
-        this.filter.setFilter(this.currentFilterType);
+        this.filter.setCurrentFilter(this.currentFilterType);
       } else {
         this.util.createToast('Select Cusines or Any Other Filter')
       }
@@ -122,7 +122,7 @@ export class FilterComponent implements OnInit , OnDestroy {
       this.cusines.forEach(c => {
         c.checked = false;
       });
-      this.filter.setFilter(this.currentFilterType);
+      this.filter.setCurrentFilter(this.currentFilterType);
     }
    
     this.closeEvent();

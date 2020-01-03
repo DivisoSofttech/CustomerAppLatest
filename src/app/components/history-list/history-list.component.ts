@@ -108,7 +108,6 @@ export class HistoryListComponent implements OnInit , OnDestroy {
     .subscribe(porders => {
       this.showHistoryLoading = false;
       porders.content.forEach(o => {
-        this.logger.info(this , 'Adding Order' , o);
         this.orders.push(o);
         if (this.stores[o.storeId] === undefined) {
           this.getStores(o.storeId);

@@ -19,7 +19,7 @@ export class KeycloakService {
     null
   );
 
-  private isGuestObservable: BehaviorSubject<any> = new BehaviorSubject<any>(true);
+  private isGuestObservable: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   keycloakAdmin: KeycloakAdminClient;
   customer;

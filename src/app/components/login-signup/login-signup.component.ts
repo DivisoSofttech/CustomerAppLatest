@@ -41,8 +41,6 @@ export class LoginSignupComponent implements OnInit {
 
   @ViewChild('slides', null) slides: IonSlides;
 
-  @Input() type = 'page';
-
   termsChecked = false;
 
   signupForm: FormGroup;
@@ -183,18 +181,8 @@ export class LoginSignupComponent implements OnInit {
                 this.logger.info(this, 'Got Customer', customer);
                 this.storage.set('customer', customer);
                 loader?loader.dismiss():'';
-                if (this.type === 'modal') {
                   this.logger.info(this,'Login Success Dismissing Login Page');
                   this.dismissTrue();
-                }
-                this.keycloakService.getCurrentUserDetails()
-                  .then(data => {
-                    this.keycloakService.getUserChangedSubscription().next(data);
-                    if (this.type !== 'modal'){
-                      this.logger.info('Login Success Navigating To Root Page');
-                      this.navigateRoot();
-                    }
-                  });
               });
           } else {
             this.createNewUser();
@@ -221,8 +209,7 @@ export class LoginSignupComponent implements OnInit {
         customer => {
           this.logger.info(this, 'Customer Created', customer);
           this.storage.set('customer', customer);
-          if(this.type === 'modal') this.dismissTrue();
-          else this.navigateRoot();
+          this.dismissTrue();
         },
         error => {
           this.logger.info(this, error);

@@ -31,6 +31,7 @@ import { StockCurrent } from '../models/stock-current';
 import { Store } from '../models/store';
 import { PageOfUserRatingReview } from '../models/page-of-user-rating-review';
 import { PageOfNotification } from '../models/page-of-notification';
+import { PageOfHeaderResult } from '../models/page-of-header-result';
 import { PageOfOrder } from '../models/page-of-order';
 import { Order } from '../models/order';
 import { OrderAggregator } from '../models/order-aggregator';
@@ -39,6 +40,7 @@ import { ProductDTO } from '../models/product-dto';
 import { PageOfStoreType } from '../models/page-of-store-type';
 import { StoreAddress } from '../models/store-address';
 import { StoreSettings } from '../models/store-settings';
+import { HeaderSuggestion } from '../models/header-suggestion';
 import { OpenTask } from '../models/open-task';
 
 /**
@@ -77,6 +79,7 @@ class QueryResourceService extends __BaseService {
   static readonly findUserRatingReviewByRegNoUsingGETPath = '/api/query/findUserRatingReview/{regNo}';
   static readonly findNotificationByReceiverIdUsingGETPath = '/api/query/findnotificationbyreceiverid/{receiverId}';
   static readonly findNotificationCountByReceiverIdAndStatusNameUsingGETPath = '/api/query/findnotificationcount/{receiverId}/{status}';
+  static readonly getHeaderResultUsingGETPath = '/api/query/getHeaderResult';
   static readonly headerUsingGETPath = '/api/query/header/{searchTerm}';
   static readonly findOrderByDatebetweenAndStoreIdUsingGETPath = '/api/query/order/{from}/{to}/{storeId}';
   static readonly findOrderByOrderIdUsingGETPath = '/api/query/orderByOrderId/{orderId}';
@@ -1578,6 +1581,68 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
+   * @param params The `QueryResourceService.GetHeaderResultUsingGETParams` containing the following parameters:
+   *
+   * - `suggestionData`: suggestionData
+   *
+   * - `indexName`: indexName
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  getHeaderResultUsingGETResponse(params: QueryResourceService.GetHeaderResultUsingGETParams): __Observable<__StrictHttpResponse<PageOfHeaderResult>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    if (params.suggestionData != null) __params = __params.set('suggestionData', params.suggestionData.toString());
+    if (params.indexName != null) __params = __params.set('indexName', params.indexName.toString());
+    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
+    if (params.size != null) __params = __params.set('size', params.size.toString());
+    if (params.page != null) __params = __params.set('page', params.page.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/getHeaderResult`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PageOfHeaderResult>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.GetHeaderResultUsingGETParams` containing the following parameters:
+   *
+   * - `suggestionData`: suggestionData
+   *
+   * - `indexName`: indexName
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  getHeaderResultUsingGET(params: QueryResourceService.GetHeaderResultUsingGETParams): __Observable<PageOfHeaderResult> {
+    return this.getHeaderResultUsingGETResponse(params).pipe(
+      __map(_r => _r.body as PageOfHeaderResult)
+    );
+  }
+
+  /**
    * @param params The `QueryResourceService.HeaderUsingGETParams` containing the following parameters:
    *
    * - `searchTerm`: searchTerm
@@ -2579,7 +2644,7 @@ class QueryResourceService extends __BaseService {
    * @param data data
    * @return OK
    */
-  getSuggestionUsingGETResponse(data: string): __Observable<__StrictHttpResponse<Array<string>>> {
+  getSuggestionUsingGETResponse(data: string): __Observable<__StrictHttpResponse<Array<HeaderSuggestion>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -2597,7 +2662,7 @@ class QueryResourceService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Array<string>>;
+        return _r as __StrictHttpResponse<Array<HeaderSuggestion>>;
       })
     );
   }
@@ -2605,9 +2670,9 @@ class QueryResourceService extends __BaseService {
    * @param data data
    * @return OK
    */
-  getSuggestionUsingGET(data: string): __Observable<Array<string>> {
+  getSuggestionUsingGET(data: string): __Observable<Array<HeaderSuggestion>> {
     return this.getSuggestionUsingGETResponse(data).pipe(
-      __map(_r => _r.body as Array<string>)
+      __map(_r => _r.body as Array<HeaderSuggestion>)
     );
   }
 
@@ -3276,6 +3341,37 @@ module QueryResourceService {
      * receiverId
      */
     receiverId: string;
+  }
+
+  /**
+   * Parameters for getHeaderResultUsingGET
+   */
+  export interface GetHeaderResultUsingGETParams {
+
+    /**
+     * suggestionData
+     */
+    suggestionData: string;
+
+    /**
+     * indexName
+     */
+    indexName: string;
+
+    /**
+     * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     */
+    sort?: Array<string>;
+
+    /**
+     * Size of a page
+     */
+    size?: number;
+
+    /**
+     * Page number of the requested page
+     */
+    page?: number;
   }
 
   /**

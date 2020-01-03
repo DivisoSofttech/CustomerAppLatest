@@ -27,7 +27,6 @@ export class ProcessPaymentComponent implements OnInit, OnDestroy {
   constructor(
     private paymentNav: PaymentNavService,
     private orderService: OrderService,
-    private commandResource: CommandResourceService,
     private util: Util,
     private logger: LogService,
     private navController: NavController,
@@ -99,13 +98,9 @@ export class ProcessPaymentComponent implements OnInit, OnDestroy {
     this.navigateBack();
   }
 
+
+
   navigateForward() {
-    this.commandResource.updateLoyaltyPointUsingPOST({
-      point: 1,
-      idpCode: this.orderService.user.preferred_username
-    }).subscribe(data => {
-      this.logger.info(this,'Loyality Point Success');      
-    })
     this.navController.navigateForward('/restaurant');
     this.paymentNav.nav.setRoot(PaymentSuccessfullInfoComponent);
   }

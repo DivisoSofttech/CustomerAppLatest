@@ -4,7 +4,6 @@ import { Util } from 'src/app/services/util';
 import { QueryResourceService, CommandResourceService } from 'src/app/api/services';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { NGXLogger } from 'ngx-logger';
-import { log } from 'util';
 declare var SMSReceive: any;
 
 @Component({
@@ -25,9 +24,7 @@ export class PhoneNumberVerficationComponent implements OnInit {
   constructor(
     private modalController: ModalController,
     private util: Util,
-    private queryResource: QueryResourceService,
     private commandResource: CommandResourceService,
-    private keycloakService: KeycloakService,
     private logger: NGXLogger,
     private platform: Platform
   ) { }
