@@ -90,6 +90,7 @@ class QueryResourceService extends __BaseService {
   static readonly findAndSortProductByPriceUsingGETPath = '/api/query/productByPrice/{from}/{to}';
   static readonly findProductUsingGETPath = '/api/query/products/{id}';
   static readonly findUserRatingReviewCountByRegNoUsingGETPath = '/api/query/review-count/{regNo}';
+  static readonly searchUsingGETPath = '/api/query/search';
   static readonly findAndSortStoreByMinAmountUsingGETPath = '/api/query/sortStoreByMinAmount';
   static readonly findStockCurrentByCategoryNameAndStoreIdUsingGETPath = '/api/query/stock-current-by-categoryname/{categoryName}/{storeId}';
   static readonly findStockCurrentByStoreIdUsingGETPath = '/api/query/stockcurrent/{storeId}';
@@ -2144,6 +2145,53 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
+   * @param params The `QueryResourceService.SearchUsingGETParams` containing the following parameters:
+   *
+   * - `indexName`: indexName
+   *
+   * - `id`: id
+   *
+   * @return OK
+   */
+  searchUsingGETResponse(params: QueryResourceService.SearchUsingGETParams): __Observable<__StrictHttpResponse<{}>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    if (params.indexName != null) __params = __params.set('indexName', params.indexName.toString());
+    if (params.id != null) __params = __params.set('id', params.id.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/search`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<{}>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.SearchUsingGETParams` containing the following parameters:
+   *
+   * - `indexName`: indexName
+   *
+   * - `id`: id
+   *
+   * @return OK
+   */
+  searchUsingGET(params: QueryResourceService.SearchUsingGETParams): __Observable<{}> {
+    return this.searchUsingGETResponse(params).pipe(
+      __map(_r => _r.body as {})
+    );
+  }
+
+  /**
    * @param params The `QueryResourceService.FindAndSortStoreByMinAmountUsingGETParams` containing the following parameters:
    *
    * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -3543,6 +3591,22 @@ module QueryResourceService {
      * Page number of the requested page
      */
     page?: number;
+  }
+
+  /**
+   * Parameters for searchUsingGET
+   */
+  export interface SearchUsingGETParams {
+
+    /**
+     * indexName
+     */
+    indexName?: string;
+
+    /**
+     * id
+     */
+    id?: number;
   }
 
   /**

@@ -183,6 +183,9 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
             this.productsGot = true;
             this.products.length = this.orders.length;
           }
+        },
+        err => {
+  
         });
       }
     });

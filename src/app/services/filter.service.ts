@@ -4,14 +4,15 @@ import { BehaviorSubject } from 'rxjs';
 import { LogService } from './log.service';
 import { SharedDataService } from './shared-data.service';
 
+export const filterKey = 'filter';
+
 export enum FILTER_TYPES {
 
   NO_FILTER,
-
   CATEGORY_WISE,
-  DISTANCE_WISE, // This is the Default filter
+  // This is the Default filter
+  DISTANCE_WISE,
   DELIVERY_TYPE,
-
   // Sort Types
   TOP_RATED,
   DELIVERY_TIME,
@@ -27,9 +28,9 @@ export class FilterService {
 
   private currentFilter: FILTER_TYPES;
   private filterBehaviour: BehaviorSubject<FILTER_TYPES> = new BehaviorSubject<FILTER_TYPES>(this.currentFilter);
-  selectedCusines: string[];
-  currentLatLon = [];
-  distance = 0;
+  private selectedCusines: string[];
+  private currentLatLon = [];
+  private distance = 0;
 
 
   constructor(
@@ -37,28 +38,33 @@ export class FilterService {
     private logger: LogService,
     private shareData: SharedDataService
   ) {
+    this.initFilter();
+  }
+
+  private initFilter() {
+    this.logger.info(this,'Filter Service Created')
     this.getFilterDataFromStorage();
   }
 
   private getFilterDataFromStorage() {
-    this.shareData.getData('filter')
-    .then(data => {
-      if (data) {
-        switch (data.type) {
-          case 'cusine':
-            const tempArray = [];
-            data.cusines.forEach(c => {
-              tempArray.push(c.key);
-            })
-            this.setSelectedCusines(tempArray);
-            this.setCurrentFilter(data.currentFilterType);
-            break;
-          case 'sort':
-            this.setCurrentFilter(data.currentFilterType);
-            break;
+    this.shareData.getData(filterKey)
+      .then(data => {
+        if (data) {
+          switch (data.type) {
+            case 'cusine':
+              const tempArray = [];
+              data.cusines.forEach(c => {
+                tempArray.push(c.key);
+              })
+              this.setSelectedCusines(tempArray);
+              this.setCurrentFilter(data.currentFilterType);
+              break;
+            case 'sort':
+              this.setCurrentFilter(data.currentFilterType);
+              break;
+          }
         }
-      }
-    })
+      })
   }
 
   public getFilterSubscription() {
@@ -114,7 +120,7 @@ export class FilterService {
       err => {
         this.logger.error(this, 'Error Finding Store By Cusine Filter', err);
         error();
-      })
+      });
   }
 
   private getStoreByCusines(pageNumber, success, error?) {
@@ -126,19 +132,19 @@ export class FilterService {
         },
         page: pageNumber
       }
-    )
-      .subscribe(data => {
-        success(data.totalElements, data.totalPages, data.content);
-      },
-        err => {
-          this.logger.error(this, 'Error Finding Store By Cusine Filter', err);
-          error();
-        });
+    ).subscribe(data => {
+      success(data.totalElements, data.totalPages, data.content);
+    },
+      err => {
+        this.logger.error(this, 'Error Finding Store By Cusine Filter', err);
+        error();
+      });
   }
 
   private getStoreByDistance(pageNumber, success, error?) {
     this.queryResource
       .findStoreByNearLocationUsingGET({
+        page: pageNumber,
         lat: this.currentLatLon[0],
         lon: this.currentLatLon[1],
         distanceUnit: 'KILOMETERS',
@@ -156,7 +162,9 @@ export class FilterService {
   private getStoreByRating(pageNumber, success, error?) {
     this.logger.info(this, 'Getting STores Via Rating Filter');
     this.queryResource.findStoreByRatingUsingGET(
-      {}
+      {
+        page: pageNumber
+      }
     ).subscribe(data => {
       success(data.totalElements, data.totalPages, data.content);
     },
@@ -170,28 +178,26 @@ export class FilterService {
     this.logger.info(this, 'Getting STores Via No Filter');
     this.queryResource.findAllStoresUsingGET({
       page: pageNumber
-    })
-      .subscribe(data => {
-        success(data.totalElements, data.totalPages, data.content);
-      },
-        err => {
-          this.logger.error(this, 'Error Finding Stores', err);
-          error();
-        });
+    }).subscribe(data => {
+      success(data.totalElements, data.totalPages, data.content);
+    },
+      err => {
+        this.logger.error(this, 'Error Finding Stores', err);
+        error();
+      });
   }
 
   private getStoreByDeliveryTime(pageNumber, success, error?) {
     this.logger.info(this, 'Getting Stores Via Delivery Time Filter');
     this.queryResource.findAndSortStoreByMinAmountUsingGET({
       page: pageNumber
-    })
-      .subscribe(data => {
-        success(data.totalElements, data.totalPages, data.content);
-      },
-        err => {
-          this.logger.error(this, 'Error Finding Stores', err);
-          error();
-        });
+    }).subscribe(data => {
+      success(data.totalElements, data.totalPages, data.content);
+    },
+      err => {
+        this.logger.error(this, 'Error Finding Stores', err);
+        error();
+      });
   }
 
 }

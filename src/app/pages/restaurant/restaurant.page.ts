@@ -20,34 +20,35 @@ import { BannerComponent } from 'src/app/components/banner/banner.component';
 })
 export class RestaurantPage implements OnInit, OnDestroy {
 
-  page: number = 0;
+  private pageCount: number = 0;
 
-  stores: Store[] = [];
+  public stores: Store[] = [];
 
-  currentFilter: FILTER_TYPES;
-  currentFilterName: string = '';
+  private currentFilter: FILTER_TYPES;
 
-  location: LocationModel = {
+  public currentFilterName: string = '';
+
+  public location: LocationModel = {
     name: '',
     latLon: [],
     fetchedLocation: false
   }
 
-  isGuest: Boolean = false;
+  public isGuest: Boolean = false;
 
-  showFooter: Boolean = true;
-  showLoading: Boolean = true;
-  showFilters: Boolean = false;
+  public showFooter: Boolean = true;
+  public showLoading: Boolean = true;
+  public showFilters: Boolean = false;
 
-  keycloakSubscription: any;
-  backButtonSubscription: any;
-  filterSubscription: any;
-  locationSubscription: any;
+  private keycloakSubscription: any;
+  private backButtonSubscription: any;
+  private filterSubscription: any;
+  private locationSubscription: any;
 
-  @ViewChild(IonInfiniteScroll, null) ionInfiniteScroll: IonInfiniteScroll;
-  @ViewChild(IonRefresher, null) IonRefresher: IonRefresher;
-  @ViewChild(FooterComponent, null) footer: FooterComponent;
-  @ViewChild(BannerComponent, null) banner: BannerComponent;
+  @ViewChild(IonInfiniteScroll, null) private ionInfiniteScroll: IonInfiniteScroll;
+  @ViewChild(IonRefresher, null) private IonRefresher: IonRefresher;
+  @ViewChild(FooterComponent, null) private footer: FooterComponent;
+  @ViewChild(BannerComponent, null) private banner: BannerComponent;
 
   constructor(
     private filterService: FilterService,
@@ -66,12 +67,12 @@ export class RestaurantPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.nativebackButtonHandler();
     this.checkIfGuest();
-    this.getCurrentLocation();
+    this.getLocationDetails();
     this.getStores();
   }
 
 
-  checkIfGuest() {
+  private checkIfGuest() {
     this.logger.info(this, 'Checking if guest')
     this.keycloakSubscription = this.keycloakService.getUserGuestSubscription()
       .subscribe(data => {
@@ -83,7 +84,7 @@ export class RestaurantPage implements OnInit, OnDestroy {
       });
   }
 
-  getCurrentLocation() {
+  private getLocationDetails() {
     this.logger.info(this, 'Getting Current Location');
     this.locationSubscription = this.locationService.getLocation()
       .subscribe((location: LocationModel) => {
@@ -97,12 +98,12 @@ export class RestaurantPage implements OnInit, OnDestroy {
           }
         }
       },
-      err => {
+        err => {
           this.logger.error(this, 'Error Getting Current Location Data From Location Service');
-    });
+        });
   }
 
-  activateDistanceFilter() {
+  private activateDistanceFilter() {
     this.sharedData.getData('filter')
       .then(data => {
         if (!data) {
@@ -112,7 +113,7 @@ export class RestaurantPage implements OnInit, OnDestroy {
       })
   }
 
-  setCurrentFilterName() {
+  private setCurrentFilterName() {
     if (this.currentFilter == FILTER_TYPES.MIN_AMOUNT) {
       this.currentFilterName = "Min Amount";
     } else if (this.currentFilter == FILTER_TYPES.TOP_RATED) {
@@ -125,7 +126,7 @@ export class RestaurantPage implements OnInit, OnDestroy {
   }
 
 
-  getStores() {
+  private getStores() {
     this.filterSubscription = this.filterService.getFilterSubscription().subscribe((data: FILTER_TYPES) => {
       if (data) {
         this.showLoading = true;
@@ -159,18 +160,18 @@ export class RestaurantPage implements OnInit, OnDestroy {
     });
   }
 
-  searchBarActivated(event) {
+  public searchBarActivated(event) {
     this.showFooter = event ? false : true;
   }
 
 
-  loadMoreStores(event) {
+  public loadMoreStores(event) {
     this.logger.info(this, 'Load More Stores if exists');
-    ++this.page;
-    this.filterService.getStores(this.page, (totalElements, totalPages, stores) => {
+    ++this.pageCount;
+    this.filterService.getStores(this.pageCount, (totalElements, totalPages, stores) => {
       event.target.complete();
-      this.logger.info(this, 'Got Stores Page :', this.page, '----', stores);
-      if (this.page === totalPages) {
+      this.logger.info(this, 'Got Stores Page :', this.pageCount, '----', stores);
+      if (this.pageCount === totalPages) {
         this.toggleInfiniteScroll();
       }
       if (totalPages === 1) {
@@ -183,23 +184,23 @@ export class RestaurantPage implements OnInit, OnDestroy {
     });
   }
 
-  doRefresh(event) {
-    this.page = 0;
+  public doRefresh(event) {
+    this.pageCount = 0;
     this.filterSubscription.unsubscribe();
     this.logger.info(this, 'Refreshing Page');
     this.banner.refresh();
     this.getStores();
   }
 
-  toggleInfiniteScroll() {
+  private toggleInfiniteScroll() {
     this.ionInfiniteScroll.disabled = !this.ionInfiniteScroll.disabled;
   }
 
-  toggleIonRefresher() {
+  private toggleIonRefresher() {
     this.IonRefresher.complete();
   }
 
-  toggleFilteromponent(event) {
+  private toggleFilteromponent(event) {
     if (event === 'close') {
       this.showFilters = false;
       this.footer.filterHide = false;
@@ -210,8 +211,8 @@ export class RestaurantPage implements OnInit, OnDestroy {
     }
   }
 
-  
-  async showPlaceSelectionModal() {
+
+  public async showPlaceSelectionModal() {
     this.utilService.createLoader()
       .then(async loader => {
         loader.present();
@@ -237,7 +238,7 @@ export class RestaurantPage implements OnInit, OnDestroy {
   }
 
   // Hide Filter when backbutton is pressed
-  nativebackButtonHandler() {
+  private nativebackButtonHandler() {
     this.backButtonSubscription = this.platform.backButton.subscribe(() => {
       this.showFilters = false;
     });
@@ -245,7 +246,7 @@ export class RestaurantPage implements OnInit, OnDestroy {
 
   // Fix Banner Size on Viewport Size Changed
   @HostListener('window:resize', ['$event'])
-  onResize(event) {
+  private onResize(event) {
     this.banner.ngOnInit();
   }
 
@@ -256,21 +257,21 @@ export class RestaurantPage implements OnInit, OnDestroy {
 
   // Invoke Angular Change Detection Manually.
   // Fix View Not Automatically Updated For Some Reason.
-  forceAngularChangeDetection() {
+  private forceAngularChangeDetection() {
     if (!this.cdr['destroyed'])
       this.cdr.detectChanges();
   }
 
   // Unsubscribe from All Observables
-  unsubscribeAll() {
+  private unsubscribeAll() {
     this.backButtonSubscription ? this.backButtonSubscription.unsubscribe() : null;
     this.filterSubscription ? this.filterSubscription.unsubscribe() : null;
     this.keycloakSubscription ? this.keycloakSubscription.unsubscribe() : null;
-    this.locationSubscription ? this.locationSubscription.unsubscribe(): null;
+    this.locationSubscription ? this.locationSubscription.unsubscribe() : null;
   }
 
   ngOnDestroy(): void {
-   this.unsubscribeAll();
+    this.unsubscribeAll();
   }
 
 }

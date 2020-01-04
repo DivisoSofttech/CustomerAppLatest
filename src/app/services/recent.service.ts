@@ -1,10 +1,10 @@
 import { Injectable, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { NGXLogger } from 'ngx-logger';
 import { SharedDataService } from './shared-data.service';
 import { Store } from '../api/models';
+import { LogService } from './log.service';
 
-const recentKey = 'recent';
+export const recentKey = 'recent';
 
 export enum RecentType {
   STORE , LOCATION , PRODUCT  
@@ -18,40 +18,35 @@ export class Recent {
 @Injectable({
   providedIn: 'root'
 })
-export class RecentService implements OnInit{
-
-  currentStoreBehaviour = new BehaviorSubject<Store>(null);
-
-  setCurrentStore(store) {
-    this.currentStoreBehaviour.next(store);
-  }
-
-  getCurrentStore() {
-    return this.currentStoreBehaviour;
-  }
+export class RecentService {
 
   recents:any[] = [];
 
-  private observableRecents: BehaviorSubject<any> = new BehaviorSubject<any>(this.recents);
+  private currentSelectedStoreBehaviour = new BehaviorSubject<Store>(null);
 
-  private observableRecentLocations:BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  private observableRecents: BehaviorSubject<Recent[]> = new BehaviorSubject<any>(this.recents);
 
-  private observableRecentRestaurants:BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  private observableRecentLocations:BehaviorSubject<Recent[]> = new BehaviorSubject<any>(null);
 
-  private obeservableRecentProducts: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  private observableRecentRestaurants:BehaviorSubject<Recent[]> = new BehaviorSubject<any>(null);
+
+  private obeservableRecentProducts: BehaviorSubject<Recent[]> = new BehaviorSubject<any>(null);
 
   constructor(
     private sharedData: SharedDataService,
-    private logger: NGXLogger) 
-  { 
-    this.logger.info("Created Recent Service");
-    this.getRecentsFromStorage();
+    private logger: LogService
+  ) { 
+    this.initRecent();
   }
 
-  ngOnInit() {
+
+  private initRecent() {
+    this.logger.info(this, "Created Recent Service");
+    this.getRecentDataFromStorage();
   }
 
-  private getRecentsFromStorage() {
+
+  private getRecentDataFromStorage() {
     this.sharedData.getData(recentKey)
     .then(recents => {
       if(recents !== null && recents !== undefined) {
@@ -65,27 +60,35 @@ export class RecentService implements OnInit{
     });
   }
 
-  getRecents() {
+  public setCurrentSelectedStore(store: Store) {
+    this.currentSelectedStoreBehaviour.next(store);
+  }
+
+  public getCurrentSelectedStore() {
+    return this.currentSelectedStoreBehaviour;
+  }
+  
+  public getRecentSearchTerms() {
     return this.observableRecents;
   }
 
-  getRecentLocations() {
+  public getRecentLocationsSearchTerms() {
     return this.observableRecentLocations;
   }
 
-  getRecentRestaurantSearchTerms() {
+  public getRecentRestaurantSearchTerms() {
     return this.observableRecentRestaurants;
   }
 
-  getRecentProductSearchTerms() {
+  public getRecentProductSearchTerms() {
     return this.obeservableRecentProducts;
   }
 
-  saveRecent(data: any) {
+  public saveRecent(data: any) {
     this.recents.push(data);
     this.sharedData.saveToStorage(recentKey, this.recents)
     .then(()=> {
-      this.getRecentsFromStorage();
+      this.getRecentDataFromStorage();
     });
   }
 

@@ -7,6 +7,8 @@ import { LogService } from './log.service';
 
 declare var google: any;
 
+export const locationKey = 'location';
+
 export interface LocationModel {
   latLon: number[];
   name: string;
@@ -24,12 +26,12 @@ export class LocationService {
   private geocoder: any;
   private positionAddressObservable: BehaviorSubject<LocationModel> = new BehaviorSubject<LocationModel>(null);
   private locationModel: LocationModel = {
-    name:'',
+    name: '',
     latLon: [],
     fetchedLocation: false,
     maxDistance: 25
   }
-  
+
 
   constructor(
     private mapsAPILoader: MapsAPILoader,
@@ -37,41 +39,42 @@ export class LocationService {
     private logger: LogService,
     private sharedData: SharedDataService
   ) {
-    this.logger.info(this, 'Location Service Created');
     this.initMapsApi();
   }
 
-  initMapsApi() {
-    this.mapsAPILoader.load().then(() => {
-      this.autoCompleteService = new google.maps.places.AutocompleteService();
-      this.initLocation();
-    });
-  }
 
-  initLocation() {
-    this.sharedData.getData('location')
-    .then((location: LocationModel) => {
-      if (location) {
-          this.logger.info(this, "Fetching Existing Location From Storage");
-          this.positionAddressObservable.next(location)
-      } else {
-        this.logger.info(this, "Fetching Current Location");
-        this.getCurrentLoactionAddress((data, coords) => { })
-      }
-    });
-  }
-
-  calculateDistance(from: any, to: any): number {
-    const distance = google.maps.geometry.spherical.computeDistanceBetween(from,to);
+  public calculateDistance(from: any, to: any): number {
+    const distance = google.maps.geometry.spherical.computeDistanceBetween(from, to);
     return distance;
   }
 
-  setPosition(locationModel) {
+  public setPosition(locationModel) {
     this.saveServiceDetailsToStorage(locationModel);
     this.positionAddressObservable.next(locationModel);
   }
 
-  getPredictions(searchTerm: string): Observable<any[]> {
+  public getCurrentLocation() {
+    return this.geolocation.getCurrentPosition();
+  }
+  public getLocation() {
+    return this.positionAddressObservable;
+  }
+
+  public updateLocation(success) {
+    return this.getCurrentLoactionAddress((data, coords) => {
+      success(data, coords)
+    })
+  }
+
+  public getMaxDistance() {
+    return this.locationModel.maxDistance;
+  }
+
+  public setMaxDistance(value) {
+    this.locationModel.maxDistance;
+  }
+
+  public getPredictions(searchTerm: string): Observable<any[]> {
     this.logger.info(this, 'Getting Predictions');
     return new Observable(observer => {
       this.autoCompleteService.getPlacePredictions(
@@ -95,7 +98,28 @@ export class LocationService {
     });
   }
 
-  async geocodeAddress(placeId: string): Promise<number[]> {
+  private initMapsApi() {
+    this.logger.info(this, 'Location Service Created');
+    this.mapsAPILoader.load().then(() => {
+      this.autoCompleteService = new google.maps.places.AutocompleteService();
+      this.initLocation();
+    });
+  }
+
+  private initLocation() {
+    this.sharedData.getData(locationKey)
+      .then((location: LocationModel) => {
+        if (location) {
+          this.logger.info(this, "Fetching Existing Location From Storage");
+          this.positionAddressObservable.next(location)
+        } else {
+          this.logger.info(this, "Fetching Current Location");
+          this.getCurrentLoactionAddress((data, coords) => { })
+        }
+      });
+  }
+
+  public async geocodeAddress(placeId: string): Promise<number[]> {
 
     return new Promise<number[]>((resolve, reject) => {
       let latlon: number[];
@@ -114,11 +138,8 @@ export class LocationService {
     });
   }
 
-  getCurrentLocation() {
-    return this.geolocation.getCurrentPosition();
-  }
 
-  getCurrentLoactionAddress(func) {
+  private getCurrentLoactionAddress(func) {
     return this.getCurrentLocation()
       .then(latData => {
         const latLng = latData.coords.latitude + ',' + latData.coords.longitude;
@@ -165,21 +186,8 @@ export class LocationService {
       });
   }
 
-  getLocation() {
-    return this.positionAddressObservable;
-  }
-
-
-  getMaxDistance() {
-    return this.locationModel.maxDistance;
-  }
-
-  setMaxDistance(value) {
-    this.locationModel.maxDistance;
-  }
-
-  saveServiceDetailsToStorage(locationModel: LocationModel) {
-    this.sharedData.saveToStorage('location',locationModel);
+  private saveServiceDetailsToStorage(locationModel: LocationModel) {
+    this.sharedData.saveToStorage(locationKey, locationModel);
   }
 
 }

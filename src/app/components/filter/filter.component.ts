@@ -28,7 +28,7 @@ export class FilterComponent implements OnInit , OnDestroy {
 
   filterServiceSubscription;
 
-  type='cusine';
+  type='sort';
 
   storageData;
 
@@ -66,6 +66,7 @@ export class FilterComponent implements OnInit , OnDestroy {
       if(data != null){
         this.storageData = data;
         this.type = data.type;
+        this.setFilterCategoryType(this.type);
         if(data.cusines.length !== 0) {
           this.cusines.forEach((c,i) => {
             const temp = data.cusines.filter(sc=>sc.key === c.key);

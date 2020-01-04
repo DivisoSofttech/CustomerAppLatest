@@ -10,46 +10,57 @@
 
   <!--SearchBar Toggle Button-->
   <ion-buttons slot="end">
-    <ion-button (click)="toggleSearchBar()"  *ngIf="showSearchBar === false">
+    <!-- <ion-button (click)="toggleSearchBar()"  *ngIf="showSearchBar === false">
       <ion-icon name="search" slot="icon-only"></ion-icon>
-    </ion-button>
+    </ion-button> -->
     <ion-button (click)="showNotification()"   *ngIf="showSearchBar === false && notificationsOn === true"    >
-      <ion-icon name="notifications-outline"></ion-icon>
+      <ion-icon name="notifications-outline" ></ion-icon>
       <ion-badge color="success">{{notificationCount}}</ion-badge>
   </ion-button>
+
+  <!-- <ion-button *ngIf="customer">
+    <ion-img *ngIf="customer.imageLink !== ' '"
+    src="customer.imageLink"></ion-img>
+    <ion-icon name="contact" slot="icon-only"></ion-icon>
+  </ion-button> -->
   </ion-buttons>
   <!--SearchBar Toggle Button-->
 
   <!--SearchBar Restaurant-->
   <ion-buttons [ngClass]="(showSearchBar === true)?'':'hidden'">
-    <ion-searchbar #restaurantSearch showCancelButton="always" debounce="500"
-      placeholder="Search Restaurants"
+    <ion-searchbar #search showCancelButton="always"
+      placeholder="Search"
       [(ngModel)]="searchTerm"
       (ionCancel)="toggleSearchBar()"
-      (ionChange)="search($event)"
-      (ionClear)="textCleared()"
+      (ionChange)="fetchSuggestions()"
+   
       class="header-search"
       ></ion-searchbar>
   </ion-buttons>
-  <!--SearchBar Restaurant-->
+  <!--SearchBar Restaurant    (ionClear)="textCleared()"-->
 
 </ion-toolbar>
 
 <ion-content class="container header-search header-content"
   [style.display]="(showSearchPane === true && showSearchBar === true) ? 'block' : 'none'">
   <ion-spinner color="primary" name="dots" *ngIf="showLoading"></ion-spinner>
-  <ion-list *ngIf="recents.length > 0 && searchTerm==='' && !showLoading">
+  <ion-list *ngIf="suggestions.length > 0">
+    <ion-item *ngFor="let suggestion of suggestions" (click)="selectSearchTerm(suggestion)">
+      {{suggestion.suggestionData}}
+    </ion-item>
+  </ion-list>
+  <!-- <ion-list *ngIf="recentSearches.length > 0 && searchTerm==='' && !showLoading">
     <ion-list-header>
       Recent Searches
     </ion-list-header>
-    <div *ngFor="let st of recents">
+    <div *ngFor="let st of recentSearches">
         <ion-item *ngIf="st !== ''" lines="full" (click)="selectSerachTerm(st.data)">
             <ion-label>
               {{st.data}}
             </ion-label>
           </ion-item>      
     </div>
-  </ion-list>
+  </ion-list> -->
   <ion-grid class="resultGrid" *ngIf="!showLoading">
     <ion-row *ngIf="storeSearchResults.length > 0">
       <ion-item color="light" class="full-width">

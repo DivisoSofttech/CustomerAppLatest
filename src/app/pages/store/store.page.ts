@@ -78,7 +78,7 @@ export class StorePage implements OnInit , OnDestroy {
 
   ngOnInit() {
     this.checkIfGuest();
-    this.recentService.setCurrentStore(null);
+    this.recentService.setCurrentSelectedStore(null);
     this.getStoreId();
     this.getStore();
     this.getCategories(0);
@@ -139,7 +139,7 @@ export class StorePage implements OnInit , OnDestroy {
         result => {
           this.logger.info(this,'Got Store ', result.name, result);
           this.store = result;
-          this.recentService.setCurrentStore(this.store);
+          this.recentService.setCurrentSelectedStore(this.store);
           this.showRestaurantLoading = false;
           this.checkPreorderStatus();
           this.checkClosedStatus();

@@ -80,7 +80,7 @@ export class AppComponent {
 
 
   getCurrentStore() {
-    this.recentService.getCurrentStore()
+    this.recentService.getCurrentSelectedStore()
     .subscribe(data => {
       if(data !== null) {
         this.store = data;

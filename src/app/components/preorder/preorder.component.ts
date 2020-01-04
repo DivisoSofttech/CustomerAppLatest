@@ -47,32 +47,33 @@ export class PreorderComponent implements OnInit {
   }
 
   dismissTrue() {
+    const date = new Date().toLocaleDateString();
     let ftime = moment(this.store.openingTime).format('hh:mm a');
     let ttime = moment(this.store.closingTime).format('hh:mm a');
     let stime = moment(this.selectedTime).format('hh:mm a');
 
-    let fdate = moment('2019-12-12' + ' ' + ftime);
-    let tdate = moment('2019-12-12' + ' ' + ttime);
-    let sdate = moment('2019-12-12' + ' ' + stime);
+    let fdate = moment(date + ' ' + ftime);
+    let tdate = moment(date + ' ' + ttime);
+    let sdate = moment(date + ' ' + stime);
 
     if (tdate.isBefore(fdate)) {
       this.logger.info(this, 'Adding One day to Closing Time')
-      tdate = moment('2019-12-13' + ' ' + ttime);
+      tdate.add(1,'day');
       if (sdate.isBefore(fdate)) {
         this.logger.info(this, 'Adding One day to Selected Time')
-        sdate = moment('2019-12-13' + ' ' + stime);
+        sdate.add(1,'day');
       }
     }
 
     this.selectedTime = stime;
  
     if (sdate.isAfter(fdate) && sdate.isBefore(tdate)) {
-      const tempTime = moment('2017-03-13 ' + stime);
+      const tempTime = sdate;
       this.logger.info(this, 'Seleceted Time After Conversion', tempTime.toDate());
       this.cartService.preOrderDate = tempTime.toDate().toISOString();
       this.popoverController.dismiss(true);
     } else {
-      this.util.createToast('Select a Time Betwee ' + `${this.fromTime}` + ' to ' + `${this.toTime}`)
+      this.util.createToast('Select a Time Between ' + `${this.fromTime}` + ' to ' + `${this.toTime}`)
     }
 
   }
