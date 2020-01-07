@@ -190,8 +190,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   checkOut() {
-    this.logger.info(this, 'Delivery info is  ', this.order.deliveryInfo);
     this.setNote();
+    this.logger.info(this, 'Delivery info is  ', this.orderService.deliveryInfo);
     if (this.orderService.resource.nextTaskName === 'Process Payment') {
       this.processPayment();
     } else {

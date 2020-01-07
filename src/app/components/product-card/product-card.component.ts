@@ -73,7 +73,7 @@ export class ProductCardComponent implements OnInit, OnDestroy {
     this.productDiscountSubscription ? this.productDiscountSubscription.unsubscribe() : null;
   }
 
-  async ngOnInit() {
+  ngOnInit() {
     if (this.type === 'full') {
       this.checkIfAlreadyFavourite();
       this.checkIfOrdered();

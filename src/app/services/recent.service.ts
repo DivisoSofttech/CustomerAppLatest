@@ -4,13 +4,13 @@ import { SharedDataService } from './shared-data.service';
 import { Store } from '../api/models';
 import { LogService } from './log.service';
 
-export const recentKey = 'recent';
+export const RECENT_KEY = 'recent';
 
 export enum RecentType {
-  STORE , LOCATION , PRODUCT  
+  STORE , LOCATION , PRODUCT  , HEADER_SUGGESTIONS
 }
 
-export class Recent {
+export interface Recent {
   data: any;
   type: RecentType;
 }
@@ -47,7 +47,7 @@ export class RecentService {
 
 
   private getRecentDataFromStorage() {
-    this.sharedData.getData(recentKey)
+    this.sharedData.getData(RECENT_KEY)
     .then(recents => {
       if(recents !== null && recents !== undefined) {
         console.log('Recents' , recents);
@@ -86,7 +86,7 @@ export class RecentService {
 
   public saveRecent(data: any) {
     this.recents.push(data);
-    this.sharedData.saveToStorage(recentKey, this.recents)
+    this.sharedData.saveToStorage(RECENT_KEY, this.recents)
     .then(()=> {
       this.getRecentDataFromStorage();
     });

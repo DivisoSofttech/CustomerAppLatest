@@ -21,6 +21,8 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
     storeUniqueId: ''
   };
 
+  @Input() storeId = 0;
+
   @Input() viewType: string = 'normal';
 
   @Input() isPreOrderAvailable = false;
@@ -110,6 +112,15 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
 
     this.logger.info(this, 'Current Store ', this.store)
     this.currentTime = new Date();
+    if(this.store.regNo) {
+      this.initRestaurantCard();
+    } else {
+      this.getStoreById();
+    }
+   
+  }
+
+  initRestaurantCard() {
     this.getStoreReview();
     this.getStoreCategory();
     if (this.viewType === 'normal') {
@@ -120,6 +131,14 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
     } else if(this.viewType === 'detailedCard'){
       this.getRestaurantBanners(0);
     }
+  }
+
+  getStoreById() {
+    this.queryResource.findStoreByIdUsingGET(this.storeId)
+    .subscribe(store=> {
+      this.store = store;
+      this.initRestaurantCard();
+    })
   }
 
   getDistance() {
@@ -234,8 +253,8 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
       });
   }
 
-  showHotelMenu(regno) {
-    this.nav.navigateForward('/store/' + regno);
+  showHotelMenu(id) {
+    this.nav.navigateForward('/store/' + id);
   }
 
 

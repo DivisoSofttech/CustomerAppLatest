@@ -18,13 +18,13 @@
           <ion-row>
               <ion-col size="12" class="ion-no-padding">
                   <ion-item lines="full" (click)="setFilterCategoryType('sort')" 
-                  [ngClass]="{'highlight':type==='sort'}">
+                  [ngClass]="{'highlight':filterCategory==='sort'}">
                     Sort
                   </ion-item>
                 </ion-col>
                 <ion-col size="12" class="ion-no-padding">
                   <ion-item lines="full" (click)="setFilterCategoryType('cusine')"
-                  [ngClass]="{'highlight':type==='cusine'}">
+                  [ngClass]="{'highlight':filterCategory==='cusine'}">
                     Cuisines
                   </ion-item>    
                 </ion-col>          
@@ -32,21 +32,21 @@
         </ion-grid>
       </ion-col>
       <ion-col size="7" class="ion-no-padding overflowScroll">
-        <ion-grid class="ion-no-padding">
+        <ion-grid class="ion-no-padding" *ngIf="filterModel">
           <ion-row>
-              <ion-col size="12" class="ion-no-padding" *ngIf="type==='sort'">
-                  <ion-radio-group [(ngModel)]="currentFilterType">
+              <ion-col size="12" class="ion-no-padding" *ngIf="filterCategory==='sort'">
+                  <ion-radio-group [(ngModel)]="filterModel.currentFilterType">
                     <ion-item lines="none" >
-                      <ion-radio value="{{filterTypes.TOP_RATED}}" [checked]="currentFilterType === filterTypes.TOP_RATED"></ion-radio>
+                      <ion-radio value="{{TEMP_FILTER_TYPES.TOP_RATED}}" [checked]="filterModel.currentFilterType === TEMP_FILTER_TYPES.TOP_RATED"></ion-radio>
                       <ion-label class="ion-margin">Rating</ion-label>
                     </ion-item>
                     <ion-item lines="none" >
-                      <ion-radio [checked]="currentFilterType === filterTypes.MIN_AMOUNT" value="{{filterTypes.MIN_AMOUNT}}"></ion-radio>
+                      <ion-radio [checked]="filterModel.currentFilterType === TEMP_FILTER_TYPES.MIN_AMOUNT" value="{{TEMP_FILTER_TYPES.MIN_AMOUNT}}"></ion-radio>
                       <ion-label class="ion-margin">Min Amount</ion-label>
                     </ion-item>
                   </ion-radio-group>
                 </ion-col>  
-                <ion-col size="12" class="ion-no-padding" *ngIf="type==='cusine'">
+                <ion-col size="12" class="ion-no-padding" *ngIf="filterCategory==='cusine'">
                   <ion-list>
                     <ion-item lines="full" *ngFor="let t of cusines">
                     <ion-checkbox color="dark" value="t.key" [(ngModel)]="t.checked" [checked]="t.checked" slot="start"></ion-checkbox>
@@ -61,6 +61,6 @@
   </ion-grid>
 </ion-content>
 <ion-footer *ngIf="showFilters">
-  <ion-button  (click)="setFilterType()" color="success" class="ion-margin" expand="block">Apply</ion-button>
-  <ion-button (click)="clearFiter()" class="ion-margin" expand="block">CLEAR ALL</ion-button>
+  <ion-button  (click)="applyFilter()" color="success" class="ion-margin" expand="block">Apply</ion-button>
+  <ion-button (click)="resetFilter()" class="ion-margin" expand="block">CLEAR ALL</ion-button>
 </ion-footer>

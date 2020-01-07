@@ -6,7 +6,7 @@
     *ngIf="!(currentTime | closed: store.openingTime:store.closingTime)"
     >Closed</span
   >
-  <ion-card-header (click)="showHotelMenu(store.regNo)">
+  <ion-card-header (click)="showHotelMenu(store.id)">
     <ion-item lines="none">
       <ion-img
         slot="start"
@@ -62,7 +62,8 @@
           <h3 class="small fnt-sserif cl-grey" *ngIf="store.minAmount">
             {{ "Min spend: &#8364;" + store.minAmount }}
           </h3>
-          <h3
+          <ng-container *ngIf="store.storeSettings">
+            <h3
             class="small fnt-sserif cl-grey"
             *ngIf="
               store.storeSettings.deliveryCharge !== undefined && deliveryOk
@@ -74,14 +75,16 @@
               }}</span
             >
           </h3>
+          <ion-badge
+          color="success"
+          *ngIf="store.storeSettings.deliveryCharge === 0 && deliveryOk"
+        >
+          Free delivery</ion-badge
+        >
+          </ng-container>
          
             
-          <ion-badge
-            color="success"
-            *ngIf="store.storeSettings.deliveryCharge === 0 && deliveryOk"
-          >
-            Free delivery</ion-badge
-          >
+         
           <h5
             class="medium fnt-sserif cl-grey"
             class="no-wrap"

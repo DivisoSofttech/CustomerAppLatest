@@ -11,7 +11,7 @@
         <ion-label (click)="route(favourite)">
           <p> {{favourite.data.name}}</p>
         </ion-label>
-        <ion-icon name="trash" (click)="removeFromFavourite(favourite , favourite.type)"></ion-icon>
+        <ion-icon name="trash" class="pointer" (click)="removeFromFavourite(favourite , favourite.type)"></ion-icon>
       </ion-item>
     </ion-list>
   </div>

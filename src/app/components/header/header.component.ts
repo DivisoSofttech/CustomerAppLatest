@@ -1,13 +1,12 @@
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { IonInfiniteScroll, IonSearchbar, ModalController, Platform } from '@ionic/angular';
-import { Store } from './../../api/models/store';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { Component, OnInit, ViewChild, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { NotificationService } from 'src/app/services/notification.service';
 import { RecentService, RecentType } from 'src/app/services/recent.service';
 import { LogService } from 'src/app/services/log.service';
-import { HeaderSuggestion, CustomerDTO } from 'src/app/api/models';
-import { SharedDataService } from 'src/app/services/shared-data.service';
+import { HeaderSuggestion, CustomerDTO, HeaderResult } from 'src/app/api/models';
+import { KeycloakService } from 'src/app/services/security/keycloak.service';
 
 @Component({
   selector: 'app-header',
@@ -16,56 +15,76 @@ import { SharedDataService } from 'src/app/services/shared-data.service';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 
-  storeSearchResults: Store[] = [];
+  @Input() public isGuest = false;
+  @Output() public searchEvent: EventEmitter<any> = new EventEmitter();
 
-  showSearchBar = false;
+  @ViewChild(IonInfiniteScroll, null) private infiniteScroll: IonInfiniteScroll;
+  @ViewChild('search', null) private restaurantSearch: IonSearchbar;
 
-  showSearchPane = false;
 
-  showLoading = false;
+  public searchTerm = '';
 
-  searchTerm = '';
+  public customer: CustomerDTO;
 
-  pageCount = 0;
+  public suggestions: HeaderSuggestion[] = [];
 
-  loader: HTMLIonLoadingElement;
+  public results: HeaderResult[] = [];
+  
+  private headerSuggestion: HeaderSuggestion;
 
-  customer: CustomerDTO;
+  public recentSearches: any[] = [];
 
-  recentSearches: any[] = [];
 
-  suggestions: HeaderSuggestion[] = [];
+  public showSearchBar = false;
+  public showSearchPane = false;
+  public showLoading = false;
+  public showNotFound = false;
 
-  @Output() searchEvent: EventEmitter<any> = new EventEmitter();
-  notificationCount = 0;
-  @Input() notificationsOn = false;
+  private pageCount = 0;
 
-  @ViewChild(IonInfiniteScroll, null) infiniteScroll: IonInfiniteScroll;
-  @ViewChild('search', null) restaurantSearch: IonSearchbar;
+  public notificationCount = 0;
 
-  backButtonSubscription: any;
-  headerSuggestion: HeaderSuggestion;
+  private backButtonSubscription: any;
+  private notificationSubscription: any;
+  private recentSubscription: any;
+  private onChangeSubscription: any;
 
   constructor(
-    private queryResource: QueryResourceService,
     private recentService: RecentService,
     private notificationService: NotificationService,
+    private keycloakService: KeycloakService,
     private logger: LogService,
-    private sharedData: SharedDataService,
+    private queryResource: QueryResourceService,
     private modalController: ModalController,
     private platform: Platform
   ) { }
 
   ngOnInit() {
     this.logger.info(this, 'Initializing', HeaderComponent.name);
+    this.onChangeSubscription = this.restaurantSearch.ionChange.subscribe(()=>{
+      this.suggestions = [];
+      this.fetchSuggestions();
+    })
     this.getNotificationCount();
     this.getRecents();
     this.nativeBackButtonHandler();
     this.fetchCustomer();
   }
 
-  ngOnDestroy(): void {
-    this.backButtonSubscription ? this.backButtonSubscription.unsubscribe() : null;
+  private getNotificationCount() {
+    this.notificationSubscription = this.notificationService.notificationBehaviouralSubject
+      .subscribe(count => {
+        this.notificationCount = count;
+      });
+  }
+
+  private getRecents() {
+    this.recentSubscription = this.recentService.getRecentRestaurantSearchTerms()
+      .subscribe(data => {
+        if (data !== null) {
+          this.recentSearches = data;
+        }
+      })
   }
 
   private nativeBackButtonHandler() {
@@ -77,35 +96,63 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getRecents() {
-    this.recentService.getRecentRestaurantSearchTerms()
-      .subscribe(data => {
-        if (data !== null) {
-          this.recentSearches = data;
-        }
-      })
-  }
-
   private fetchCustomer() {
-    this.sharedData.getData('user')
-      .then(user => {
+    this.keycloakService.getUserChangedSubscription()
+      .subscribe(user => {
         if (user) {
           this.queryResource.findCustomerByIdpCodeUsingGET(user.preferred_username)
             .subscribe(customer => {
               this.customer = customer;
             });
-        } else {
-          this.fetchCustomer();
         }
       });
   }
 
-  private getNotificationCount() {
-    this.notificationService.notificationBehaviouralSubject
-      .subscribe(count => {
-        this.notificationCount = count;
-      });
+  public fetchSuggestions() {
+    this.results = [];
+    this.showLoading = true;
+    this.queryResource.getSuggestionUsingGET(this.searchTerm)
+    .subscribe((data: HeaderSuggestion[]) => {
+      this.showLoading = false;
+      this.showNotFound = true;
+      this.suggestions = data;
+    });  }
+
+  public selectSuggestionSearchTerm(headerSuggestion: HeaderSuggestion) {
+    this.onChangeSubscription.unsubscribe();
+    this.showLoading = true;
+    this.headerSuggestion = headerSuggestion;
+    this.suggestions = [];
+    this.showNotFound = false;
+    this.searchTerm = headerSuggestion.suggestionData;
+    this.search();
   }
+
+  private search() {
+    this.fetchSearchResults(0);
+  }
+
+  private fetchSearchResults(i) {
+    // const found = this.recentSearches.some(el => el.data === this.headerSuggestion);
+    // if (!found) {
+    //   this.recentService.saveRecent({ data: this.headerSuggestion, type: RecentType.HEADER_SUGGESTIONS });
+    // }
+    this.queryResource.getHeaderResultUsingGET({
+      suggestionData: this.headerSuggestion.suggestionData,
+      indexName: this.headerSuggestion.indexName,
+      page: i
+
+    }).subscribe(data => {
+      this.showLoading = false;
+      this.results = data.content;
+      this.onChangeSubscription = this.restaurantSearch.ionChange.subscribe(()=>{
+        this.suggestions = [];
+        this.fetchSuggestions();
+      })
+      console.log(data.content);
+    })
+  }
+
 
   toggleSearchBar() {
     this.logger.info(this, 'SearchBar Toggled - View', this.showSearchBar);
@@ -115,8 +162,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.restaurantSearch.setFocus();
       this.searchEvent.emit(true);
     } else {
-      this.storeSearchResults = [];
+      this.results = [];
       this.searchTerm = '';
+      this.headerSuggestion = undefined;
       this.searchEvent.emit(false);
     }
   }
@@ -126,46 +174,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
   }
 
-
-  public fetchSuggestions() {
-    this.queryResource.getSuggestionUsingGET(this.searchTerm)
-      .subscribe((data: HeaderSuggestion[]) => {
-        this.suggestions = data;
-        console.error(data);
-      })
-  }
-
-  public selectSearchTerm(headerSuggestion: HeaderSuggestion) {
-    this.headerSuggestion = headerSuggestion;
-    this.search();
-  }
-
-  private search() {
-    this.fetchSearchResults(0);
-  }
-
-  fetchSearchResults(i) {
-    console.error(this.headerSuggestion);
-    const found = this.recentSearches.some(el => el.data === this.searchTerm);
-    if (!found) {
-      this.recentService.saveRecent({ data: this.searchTerm, type: RecentType.STORE });
-    }
-    this.queryResource.getHeaderResultUsingGET({
-      suggestionData: this.headerSuggestion.suggestionData,
-      indexName: this.headerSuggestion.indexName,
-      page: i
-
-    }).subscribe(data => {
-      console.error(data);
-    })
-  }
-
-
-
   loadMoreData(event) {
     this.logger.info(this, 'Loading More Data');
     ++this.pageCount;
     this.fetchSearchResults(this.pageCount);
+  }
+
+  textClear() {
+    this.suggestions = [];
+    this.results = [];
+    this.restaurantSearch.debounce = 100;
+    this.restaurantSearch.debounce = 1500;
   }
 
   async showNotification() {
@@ -175,4 +194,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
     modal.present();
   }
+
+  private unsubscribeAll() {
+    this.backButtonSubscription ? this.backButtonSubscription.unsubscribe() : null;
+    this.recentSubscription ? this.recentSubscription.unsubscribe() : null;
+    this.notificationSubscription ? this.notificationSubscription.unsubscribe() : null;
+    this.onChangeSubscription ? this.onChangeSubscription.unsubscribe() : null;
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeAll();
+  }
+
 }

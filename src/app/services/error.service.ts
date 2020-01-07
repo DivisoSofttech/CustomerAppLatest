@@ -1,46 +1,46 @@
 import { Injectable } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ErrorComponent } from '../components/error/error.component';
-import { NGXLogger } from 'ngx-logger';
+import { LogService } from './log.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ErrorService {
 
-  modal: HTMLIonModalElement;
+
   isOnline = true;
 
   constructor(
     private modalController: ModalController,
-    private logger: NGXLogger
+    private logger: LogService
   ) { }
 
 
-  checkNetworkStatus() {
-    if(navigator.onLine) {
+  checkCurrentNetworkStatus() {
+    if (navigator.onLine) {
       this.isOnline = true;
     } else {
       this.isOnline = false;
     }
+    this.logger.info(this, 'Network Available', this.isOnline);
   }
 
   async showErrorModal(reset) {
 
-    this.checkNetworkStatus();
-    this.modal = await this.modalController.create({
-    component: ErrorComponent,
-    componentProps: {isOnline: this.isOnline},
-    cssClass:['full'],
-    backdropDismiss: false
+    this.checkCurrentNetworkStatus();
+    const modal = await this.modalController.create({
+      component: ErrorComponent,
+      componentProps: { isOnline: this.isOnline },
+      cssClass: ['full'],
+      backdropDismiss: false
     });
 
-    this.modal.onDidDismiss()
-    .then(()=> {
-      reset()
-    })
-  
-    await this.modal.present();
-  
+    modal.onDidDismiss()
+      .then(() => {
+        reset()
+      })
+    await modal.present();
+
   }
 }

@@ -6,38 +6,27 @@
   <ion-buttons slot="start" class="desktop-only">
     <ion-img class="logo padding-left-desktop" src="/assets/icon/favicon.png"></ion-img>
   </ion-buttons>
-  
+
 
   <!--SearchBar Toggle Button-->
   <ion-buttons slot="end">
-    <!-- <ion-button (click)="toggleSearchBar()"  *ngIf="showSearchBar === false">
+    <ion-button (click)="toggleSearchBar()" *ngIf="showSearchBar === false">
       <ion-icon name="search" slot="icon-only"></ion-icon>
-    </ion-button> -->
-    <ion-button (click)="showNotification()"   *ngIf="showSearchBar === false && notificationsOn === true"    >
-      <ion-icon name="notifications-outline" ></ion-icon>
+    </ion-button>
+    <ion-button (click)="showNotification()" *ngIf="showSearchBar === false && isGuest === true">
+      <ion-icon name="notifications-outline"></ion-icon>
       <ion-badge color="success">{{notificationCount}}</ion-badge>
-  </ion-button>
-
-  <!-- <ion-button *ngIf="customer">
-    <ion-img *ngIf="customer.imageLink !== ' '"
-    src="customer.imageLink"></ion-img>
-    <ion-icon name="contact" slot="icon-only"></ion-icon>
-  </ion-button> -->
+    </ion-button>
   </ion-buttons>
   <!--SearchBar Toggle Button-->
 
   <!--SearchBar Restaurant-->
   <ion-buttons [ngClass]="(showSearchBar === true)?'':'hidden'">
-    <ion-searchbar #search showCancelButton="always"
-      placeholder="Search"
-      [(ngModel)]="searchTerm"
-      (ionCancel)="toggleSearchBar()"
-      (ionChange)="fetchSuggestions()"
-   
-      class="header-search"
-      ></ion-searchbar>
+    <ion-searchbar #search showCancelButton="always" showClearButton="always" placeholder="Search"
+      [(ngModel)]="searchTerm" (ionCancel)="toggleSearchBar()"  (ionClear)="textClear()"
+      class="header-search"></ion-searchbar>
   </ion-buttons>
-  <!--SearchBar Restaurant    (ionClear)="textCleared()"-->
+  <!--SearchBar Restaurant-->
 
 </ion-toolbar>
 
@@ -45,7 +34,7 @@
   [style.display]="(showSearchPane === true && showSearchBar === true) ? 'block' : 'none'">
   <ion-spinner color="primary" name="dots" *ngIf="showLoading"></ion-spinner>
   <ion-list *ngIf="suggestions.length > 0">
-    <ion-item *ngFor="let suggestion of suggestions" (click)="selectSearchTerm(suggestion)">
+    <ion-item *ngFor="let suggestion of suggestions" (click)="selectSuggestionSearchTerm(suggestion)">
       {{suggestion.suggestionData}}
     </ion-item>
   </ion-list>
@@ -54,7 +43,7 @@
       Recent Searches
     </ion-list-header>
     <div *ngFor="let st of recentSearches">
-        <ion-item *ngIf="st !== ''" lines="full" (click)="selectSerachTerm(st.data)">
+        <ion-item *ngIf="st !== ''" lines="full" (click)="selectRecentSearchTerm(st.data)">
             <ion-label>
               {{st.data}}
             </ion-label>
@@ -62,15 +51,25 @@
     </div>
   </ion-list> -->
   <ion-grid class="resultGrid" *ngIf="!showLoading">
-    <ion-row *ngIf="storeSearchResults.length > 0">
+    <ion-row *ngIf="results.length > 0">
       <ion-item color="light" class="full-width">
-        <ion-label slot="start">{{storeSearchResults.length + ' Restaurant Found'}}</ion-label>
+        <ion-label slot="start">{{results.length + ' Results Found'}}</ion-label>
       </ion-item>
       <ion-col class="restaurantCol" size="12">
-        <app-restaurant-card *ngFor="let store of storeSearchResults" [store]="store"></app-restaurant-card>
+        <ng-container *ngFor="let result of results">
+          <app-restaurant-card *ngIf="result.resultType==='store'" [storeId]="result.id"></app-restaurant-card>
+          <ion-item *ngIf="result.resultType==='product'">
+            <ion-thumbnail>
+              <ion-img src="{{result.imageLink}}"></ion-img>
+            </ion-thumbnail>
+            <ion-label>
+              <h1>{{result.name}}</h1>
+            </ion-label>
+          </ion-item>
+        </ng-container>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="storeSearchResults.length === 0 && searchTerm !== ''" class="vertical-align-center">
+    <ion-row *ngIf="suggestions.length === 0 && showNotFound" class="vertical-align-center">
       <ion-col text-center size="12">
         <ion-text class="medium-text">
           <p>No Results Found(0)</p>

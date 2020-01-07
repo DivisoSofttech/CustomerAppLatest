@@ -1,75 +1,85 @@
-import { OAuthService } from 'angular-oauth2-oidc';
-import { Store , Product } from 'src/app/api/models';
+import { Store , Product, CustomerDTO } from 'src/app/api/models';
 import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage';
 import { BehaviorSubject } from 'rxjs';
-import { NGXLogger } from 'ngx-logger';
 import { QueryResourceService, CommandResourceService } from '../api/services';
-import { KeycloakService } from './security/keycloak.service';
 import { LogService } from './log.service';
+import { KeycloakUser } from '../models/keycloak-user';
+import { SharedDataService } from './shared-data.service';
+import { KeycloakService } from './security/keycloak.service';
 
-export class Favourite {
+const FAVOURITE_KEY = 'favourite';
+export interface Favourite {
     route: string;
     type: string;
     data: any;
 }
+
 @Injectable({
   providedIn: 'root'
 })
 export class FavouriteService {
-
-  username;
-
+  
   favouriteDisabled = false;
-
-  private customerId;
-
-  private productsId = [];
-
-  private storesId = [];
 
   private favourites: Favourite[] = [];
 
+  private keycloakUser: KeycloakUser;
+
+  private customer: CustomerDTO;
 
   private favouriteSubject: BehaviorSubject<Favourite[]> = new BehaviorSubject(this.favourites);
 
   constructor(
-    private storage: Storage,
+    private keycloakService: KeycloakService,
+    private sharedData: SharedDataService,
     private logger: LogService,
     private queryResource: QueryResourceService,
     private commandResource: CommandResourceService,
-    private keycloakService: KeycloakService
   ) {
     this.logger.info(this,'Favourite Service Created');
-
-    this.keycloakService.getUserChangedSubscription()
-      .subscribe(user => {
-        this.favourites = [];
-        this.favouriteSubject.next(this.favourites);
-        this.storage.get('customer')
-        .then(data => {
-          if (data !== null) {
-            this.customerId = data.id;
-            if (user !== null) {
-              if (user.preferred_username === 'guest') {
-                this.username = '';
-                this.favouriteDisabled = true;
-              } else if(user.preferred_username !== undefined) {
-                this.username = user.preferred_username;
-                this.favouriteDisabled = false;
-                this.retrieveStoresFav(0);
-                this.retrieveProductFav(0);
-              }
-            }
-        }});
-      });
+    this.initFavourite();
   }
 
-  retrieveProductFav(i) {
+  initFavourite() {
+    this.getKeycloakUser();
+  }
+
+  getKeycloakUser() {
+    this.keycloakService.getUserChangedSubscription()
+    .subscribe(user => {
+     if(user) {
+      this.keycloakUser = user;
+      this.getCustomer();
+      this.fetchFavouriteProducts(0);
+      this.fetchFavouriteStores(0); 
+     }
+    });
+  }
+
+  getCustomer() {
+    this.queryResource.findCustomerByIdpCodeUsingGET(this.keycloakUser.preferred_username)
+    .subscribe(customer => {
+      this.customer = customer;
+    })
+  }
+
+  getFavouriteDetailsFromSTorage() {
+    this.sharedData.getData(FAVOURITE_KEY)
+    .then((favs: Favourite[])=> {
+      if(favs) {
+        this.favouriteSubject.next(favs);
+      } else {
+        this.fetchFavouriteProducts(0);
+        this.fetchFavouriteStores(0);
+      }
+    })
+  }
+
+  fetchFavouriteProducts(i) {
     this.logger.info(this,'Getting Favourite Products');
     this.queryResource.findFavouriteProductsByCustomerIdpCodeUsingGET(
       {
-        idpCode: this.username,
+        idpCode: this.keycloakUser.preferred_username,
         page: i,
       }
     )
@@ -78,25 +88,18 @@ export class FavouriteService {
       if(i < data.totalPages) {
         i++;
         data.content.forEach(fs => {
-         this.getStore(fs.productId);
+         this.fetchProduct(fs.productId);
         });
       }
     });
   }
 
-  getStore(id) {
-    this.queryResource.findProductUsingGET(id)
-    .subscribe(product => {
-      this.favourites.push({data: product , route: '' , type: 'product'});
-      this.favouriteSubject.next(this.favourites);
-    });
-  }
 
-  retrieveStoresFav(i) {
+  fetchFavouriteStores(i) {
     this.logger.info(this,'Getting Favourite Stores');
     this.queryResource.findFavouriteStoresByCustomerIdpCodeUsingGET(
       {
-        idpCode: this.username,
+        idpCode: this.keycloakUser.preferred_username,
         page: i
       }
     )
@@ -104,33 +107,17 @@ export class FavouriteService {
         this.logger.info(this,'Got Favotite Store Page ' , i , data.content);
         if (i < data.totalPages) {
           i++;
-          data.content.forEach(fs => {
-            this.queryResource.findStoreByIdUsingGET(fs.storeId)
-            .subscribe(store => {
-              if(store !== null)
-              this.favourites.push({data: store , route:  '/store/' + store.regNo , type: 'store'});
-              this.favouriteSubject.next(this.favourites);
-            });
-          });
-          this.retrieveStoresFav(i);
+          data.content.forEach(fs => { this.fetchStore(fs.storeId);});
         }
     });
   }
 
-  refresh(reset) {
-    if (reset === false) {
-      this.favouriteSubject.next(this.favourites);
-      this.storage.set(this.username +  '_favourites' , this.favourites);
-    } else {
-      // Get From Server
-    }
-  }
 
   addToFavouriteProduct(product: Product , route) {
-    this.logger.info(this,'Adding to favourites' , product.id , this.customerId);
+    this.logger.info(this,'Adding to favourites' , product.id , this.customer.id);
     this.commandResource.createFavouriteProductUsingPOST({
       productId: product.id,
-      customerId: this.customerId
+      customerId: this.customer.id
     })
     .subscribe(fav => {
       this.favourites.push({data: product , route , type: 'product'});
@@ -139,10 +126,10 @@ export class FavouriteService {
   }
 
   addToFavouriteStore(store: Store , route) {
-    this.logger.info(this,'Adding to favourites' , store.id , this.customerId);
+    this.logger.info(this,'Adding to favourites' , store,this.customer);
     this.commandResource.createFavouriteStoreUsingPOST({
       storeId: store.id,
-      customerId: this.customerId
+      customerId: this.customer.id
     })
     .subscribe(fav => {
       this.favourites.push({data: store , route , type: 'store'});
@@ -160,6 +147,9 @@ export class FavouriteService {
             && favourite.type === type));
           this.favourites = tmpArray;
           this.refresh(false);
+        },
+        err=>{
+          this.refresh(true);
         });
         break;
 
@@ -170,6 +160,9 @@ export class FavouriteService {
             && favourite.type === type));
           this.favourites = tmpArray;
           this.refresh(false);
+        },
+        err=>{
+          this.refresh(true);
         });
         break;
 
@@ -190,7 +183,6 @@ export class FavouriteService {
       idArray.push(fav.data.id);
       }
     }
-
     return idArray;
   }
 
@@ -201,7 +193,39 @@ export class FavouriteService {
       idArray.push(fav.data.id);
       }
     }
-
     return idArray;
   }
+
+  fetchStore(id) {
+    this.queryResource.findStoreByIdUsingGET(id)
+    .subscribe(store => {
+      if(store !== null)
+      this.favourites.push({data: store , route:  '/store/' + store.regNo , type: 'store'});
+      this.favouriteSubject.next(this.favourites);
+    });
+  }
+
+  fetchProduct(id) {
+    this.queryResource.findProductUsingGET(id)
+    .subscribe(product => {
+      this.favourites.push({data: product , route: '' , type: 'product'});
+      this.favouriteSubject.next(this.favourites);
+    });
+  }
+
+  refresh(reset) {
+    if (reset === false) {
+      this.logger.info(this,'Updating Refresh Array');
+      this.favouriteSubject.next(this.favourites);
+      this.sharedData.saveToStorage(FAVOURITE_KEY, this.favourites);
+    } else {
+      this.logger.info(this,'Deleting Data From Storage and Refreshing');
+      this.sharedData.deleteData(FAVOURITE_KEY);
+      this.favourites = [];
+      this.favouriteSubject.next(this.favourites);
+      this.fetchFavouriteStores(0);
+      this.fetchFavouriteProducts(0);
+    }
+  }
+
 }

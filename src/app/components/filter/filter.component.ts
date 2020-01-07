@@ -1,9 +1,10 @@
-import { FilterService , FILTER_TYPES } from './../../services/filter.service';
+import { FilterService , FILTER_TYPES , FILTER_KEY, ResultBucketModel, FilterModel } from './../../services/filter.service';
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services';
-import { NGXLogger } from 'ngx-logger';
 import { SharedDataService } from 'src/app/services/shared-data.service';
 import { Util } from 'src/app/services/util';
+import { ResultBucket } from 'src/app/api/models';
+import { LogService } from 'src/app/services/log.service';
 
 @Component({
   selector: 'app-filter',
@@ -12,110 +13,77 @@ import { Util } from 'src/app/services/util';
 })
 export class FilterComponent implements OnInit , OnDestroy {
 
-  @Input() showFilters = true;
+  cusines: ResultBucketModel[] = [];
 
-  @Output() closeFilter = new EventEmitter();
+  TEMP_FILTER_TYPES = FILTER_TYPES;
 
-  @Input() showClose = true;
+  filterCategory: string = 'sort';
 
-  filterTypes = FILTER_TYPES;
-
-  cusines = [];
-
-  deliveryType = 'Both';
-
-  currentFilterType: FILTER_TYPES = FILTER_TYPES.NO_FILTER;
+  filterModel: FilterModel = {
+    currentFilterType: FILTER_TYPES.DISTANCE_WISE,
+    cusines:[],
+  };
 
   filterServiceSubscription;
 
-  type='sort';
-
-  storageData;
+  @Output() public closeFilter = new EventEmitter();
+  @Input() public showFilters = true;
+  @Input() public showClose = true;
 
   constructor(
-    private filter: FilterService,
+    private filterService: FilterService,
     private queryResource: QueryResourceService,
-    private logger: NGXLogger,
+    private logger: LogService,
     private sharedData: SharedDataService,
     private util: Util
   ) { }
 
   ngOnInit() {
-    this.logger.info("Setting Filter ");
-    this.filterServiceSubscription = this.filter.getFilterSubscription()
+    this.fetchCusines();
+  }
+
+  getFilterSubscription() {
+    this.filterServiceSubscription = this.filterService.getFilterSubscription()
     .subscribe(data => {
       if(data) {
-        this.currentFilterType = data;
+        console.error(data);
+        this.filterModel = data;
+        this.cusines.forEach(c => {
+          const tempCusines = this.filterModel.cusines.filter(stc=>stc.key === c.key)
+          if(tempCusines.length > 0 && tempCusines[0].checked) {
+            c.checked = true;
+          }
+        })
       }
-    });
-    this.getCusines();
+    });  
   }
 
-  saveDataToStrorage() {
-    this.storageData = {
-      type: this.type,
-      cusines: (this.type==='cusine')?this.cusines.filter(c => c.checked):[],
-      currentFilterType: this.currentFilterType
-    }
-    this.sharedData.saveToStorage('filter',this.storageData)
+  saveFilterDetailsToStorage() {
+    this.filterModel.cusines = (this.filterCategory==='cusine')?this.cusines.filter(c => c.checked):[],
+    this.sharedData.saveToStorage(FILTER_KEY,this.filterModel)
   }
 
-  getSavedDataFromStorage() {
-    this.sharedData.getData('filter')
-    .then(data => {
-      if(data != null){
-        this.storageData = data;
-        this.type = data.type;
-        this.setFilterCategoryType(this.type);
-        if(data.cusines.length !== 0) {
-          this.cusines.forEach((c,i) => {
-            const temp = data.cusines.filter(sc=>sc.key === c.key);
-            if(temp.length > 0) {
-              this.cusines[i]['checked']=true;
-            }
-          });
-        }
-        this.currentFilterType = data.currentFilterType; 
-      } else {
-        this.closeFilter.emit();
-      }
-    })
-  }
-
-  closeEvent() {
-    this.closeFilter.emit('close');
-  }
-
-  clearFiter() {
-    this.filter.setCurrentFilter(FILTER_TYPES.DISTANCE_WISE);
+  resetFilter() {
+    this.filterService.setCurrentFilter(FILTER_TYPES.DISTANCE_WISE);
+    this.sharedData.deleteData(FILTER_KEY);
     this.closeEvent();
-    this.sharedData.deleteData('filter');
   }
 
-  setFilterCategoryType(type) {
-    this.type = type;
-    if(type==='cusine') {
-      this.currentFilterType = FILTER_TYPES.CUSINE_FILTER;
-    } else {
-      if(this.storageData)
-      this.currentFilterType = this.storageData.currentFilterType;
+  setFilterCategoryType(filterCategory) {
+    this.filterCategory = filterCategory;
+    if(this.filterCategory === 'cusine') {
+      this.filterModel.currentFilterType = FILTER_TYPES.CUSINE_FILTER
     }
   }
 
-  setFilterType() {
-    this.saveDataToStrorage();
-
-    const cusineArray = [];
-    this.cusines.filter(c=>c.checked)
-    .forEach(cc => {
-      cusineArray.push(cc.key);
-    })  
-    if(this.type==='cusine') {
-      if(cusineArray.length !== 0) {
-
-        this.logger.info('Selected Cusines',cusineArray , this.cusines);
-        this.filter.setSelectedCusines(cusineArray);  
-        this.filter.setCurrentFilter(this.currentFilterType);
+  applyFilter() {
+    this.saveFilterDetailsToStorage();
+    const tempCusines = this.cusines.filter(c=>c.checked);
+    if(this.filterCategory==='cusine') {
+      if(this.cusines.length !== 0) {
+        this.logger.info(this,'Selected Cusines',tempCusines);
+        this.filterService.setSelectedCusines(tempCusines);  
+        this.filterService.setCurrentFilter(this.filterModel.currentFilterType);
       } else {
         this.util.createToast('Select Cusines or Any Other Filter')
       }
@@ -123,18 +91,20 @@ export class FilterComponent implements OnInit , OnDestroy {
       this.cusines.forEach(c => {
         c.checked = false;
       });
-      this.filter.setCurrentFilter(this.currentFilterType);
+      this.filterService.setCurrentFilter(this.filterModel.currentFilterType);
     }
-   
     this.closeEvent();
   }
 
-  getCusines() {
+  fetchCusines() {
     this.queryResource.findStoreTypeAndCountUsingGET({}).subscribe(data => {
       if (data !== undefined) {
-        this.logger.info("Fetched Cusines" , data);
-        this.cusines = data;
-        this.getSavedDataFromStorage();
+        this.logger.info(this,"Fetched Cusines" , data);
+         data.map(a=>{
+          a['checked'] = false;
+          this.cusines.push(this.toResultBucketModel(a));
+        });
+        this.getFilterSubscription();
       }
     });
   }
@@ -142,6 +112,16 @@ export class FilterComponent implements OnInit , OnDestroy {
   ngOnDestroy(): void {
     this.filterServiceSubscription.unsubscribe();
   }
+
+  closeEvent() {
+    this.closeFilter.emit('close');
+  }
+
+  toResultBucketModel(resultBucket: ResultBucket): ResultBucketModel {
+    return Object.assign(resultBucket, {
+        checked: false
+    });
+}
 
 
 }

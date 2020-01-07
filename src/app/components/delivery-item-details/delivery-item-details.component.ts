@@ -81,9 +81,8 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
       this.subTotal = this.cart.subTotal;
       this.subTotal = this.noCommaPipe.transform(this.subTotal);
       if (this.storeSetting !== undefined) {  
-        this.total = this.decimalPipe.transform((this.subTotal + this.storeSetting.deliveryCharge), '1.2-2' );
+        this.total = this.decimalPipe.transform((parseFloat(this.subTotal) + this.storeSetting.deliveryCharge), '1.2-2' );
         this.total = this.noCommaPipe.transform(this.total);
-        this.logger.info('Adding Delivery Charge With Subtotal' ,this.subTotal,'--', this.subTotal , this.storeSetting.deliveryCharge);
       }
       this.store = this.cart.currentShop;
       this.auxilaryItems = this.cart.auxilaryItems;

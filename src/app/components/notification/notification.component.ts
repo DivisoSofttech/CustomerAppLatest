@@ -71,6 +71,10 @@ export class NotificationComponent implements OnInit  , OnDestroy {
       if (i ===notifcatons.body.totalPages) {
         this.logger.info(this,'Toggle disabled');
         this.toggleInfiniteScroll();
+        this.notificationSortedKeys.forEach(key=>{
+          console.warn(key);
+          console.error(this.notificationSorted[key]);
+        })
       }
     } ,
     err => {

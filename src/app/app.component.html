@@ -1,7 +1,7 @@
 <!-- <ngx-loading-bar [height]="'10px'" [color]="'blue'" [includeSpinner]="false"></ngx-loading-bar> -->
 <ion-app>
   <ion-header class="desktop-only">
-    <app-header [notificationsOn]="!guest"></app-header>
+    <app-header [isGuest]="!guest"></app-header>
   </ion-header>
   <ion-split-pane class="margin-top-desktop" when="(min-width:1280px)">
     <ion-menu type="overlay">

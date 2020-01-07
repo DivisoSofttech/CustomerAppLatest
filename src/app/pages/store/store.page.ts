@@ -81,8 +81,6 @@ export class StorePage implements OnInit , OnDestroy {
     this.recentService.setCurrentSelectedStore(null);
     this.getStoreId();
     this.getStore();
-    this.getCategories(0);
-    this.getCategoriesEntry(0);
     this.timeNow = new Date();
 
     this.checkPlatformWidth();
@@ -134,7 +132,7 @@ export class StorePage implements OnInit , OnDestroy {
 
   getStore() {
     this.queryResource
-      .findStoreByRegisterNumberUsingGET(this.storeId)
+      .findStoreByIdUsingGET(this.storeId)
       .subscribe(
         result => {
           this.logger.info(this,'Got Store ', result.name, result);
@@ -143,6 +141,8 @@ export class StorePage implements OnInit , OnDestroy {
           this.showRestaurantLoading = false;
           this.checkPreorderStatus();
           this.checkClosedStatus();
+          this.getCategories(0);
+          this.getCategoriesEntry(0);
           // Show the Store In Map
           if (this.map !== undefined) {
             this.map.loadMap(this.store.location);
@@ -158,7 +158,7 @@ export class StorePage implements OnInit , OnDestroy {
   getCategoriesEntry(i) {
     this.queryResource
       .findCategoryAndCountBystoreIdUsingGET({
-        storeId: this.storeId
+        storeId: this.store.regNo
       })
       .subscribe(
         result => {
@@ -182,7 +182,7 @@ export class StorePage implements OnInit , OnDestroy {
   getCategories(i , event?) {
     this.queryResource
       .findAllCategoriesUsingGET({
-        iDPcode: this.storeId,
+        iDPcode: this.store.regNo,
         page: i
       })
       .subscribe(result => {
@@ -232,7 +232,7 @@ export class StorePage implements OnInit , OnDestroy {
       component: HotelMenuPopoverComponent,
       componentProps: {
         categories: this.entry,
-        storeId: this.storeId,
+        storeId: this.store.regNo,
         selectedCategory: this.selectedCategory
       },
       event: ev,

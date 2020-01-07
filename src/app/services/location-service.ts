@@ -7,7 +7,7 @@ import { LogService } from './log.service';
 
 declare var google: any;
 
-export const locationKey = 'location';
+export const LOCATION_KEY = 'location';
 
 export interface LocationModel {
   latLon: number[];
@@ -15,6 +15,7 @@ export interface LocationModel {
   countryCode?: string;
   maxDistance?: any;
   fetchedLocation: boolean;
+  updated?: Boolean;
 }
 
 @Injectable({
@@ -29,7 +30,8 @@ export class LocationService {
     name: '',
     latLon: [],
     fetchedLocation: false,
-    maxDistance: 25
+    maxDistance: 25,
+    updated: false
   }
 
 
@@ -48,8 +50,9 @@ export class LocationService {
     return distance;
   }
 
-  public setPosition(locationModel) {
+  public setPosition(locationModel: LocationModel) {
     this.saveServiceDetailsToStorage(locationModel);
+    this.locationModel = locationModel;
     this.positionAddressObservable.next(locationModel);
   }
 
@@ -107,10 +110,12 @@ export class LocationService {
   }
 
   private initLocation() {
-    this.sharedData.getData(locationKey)
+    this.sharedData.getData(LOCATION_KEY)
       .then((location: LocationModel) => {
         if (location) {
           this.logger.info(this, "Fetching Existing Location From Storage");
+          location.updated = false;
+          this.locationModel = location;
           this.positionAddressObservable.next(location)
         } else {
           this.logger.info(this, "Fetching Current Location");
@@ -170,13 +175,12 @@ export class LocationService {
                   return r.short_name;
                 })
 
-                this.locationModel = {
-                  maxDistance: 25,
-                  latLon: [latData.coords.latitude, latData.coords.longitude],
-                  name: address,
-                  fetchedLocation: true,
-                  countryCode: countryCode[0]
-                }
+                this.locationModel.maxDistance = 25;                  
+                this.locationModel.latLon = [latData.coords.latitude, latData.coords.longitude],
+                this.locationModel.name = address,
+                this.locationModel.fetchedLocation = true,
+                this.locationModel.countryCode = countryCode[0]
+        
                 this.positionAddressObservable.next(this.locationModel);
                 this.saveServiceDetailsToStorage(this.locationModel);
                 func(results, latData);
@@ -187,7 +191,7 @@ export class LocationService {
   }
 
   private saveServiceDetailsToStorage(locationModel: LocationModel) {
-    this.sharedData.saveToStorage(locationKey, locationModel);
+    this.sharedData.saveToStorage(LOCATION_KEY, locationModel);
   }
 
 }

@@ -1,5 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ErrorService } from 'src/app/services/error.service';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 @Component({
@@ -9,7 +8,7 @@ import { ModalController } from '@ionic/angular';
 })
 export class ErrorComponent implements OnInit {
 
-  isOnline = true;
+  @Input() isOnline = false;
 
   constructor(
     private modalController: ModalController,

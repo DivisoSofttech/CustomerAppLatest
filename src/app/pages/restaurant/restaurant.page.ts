@@ -1,4 +1,4 @@
-import { FilterService, FILTER_TYPES } from './../../services/filter.service';
+import { FilterService, FILTER_TYPES, FILTER_KEY } from './../../services/filter.service';
 import { Component, OnInit, ViewChild, OnDestroy, ChangeDetectorRef, HostListener } from '@angular/core';
 import { Util } from 'src/app/services/util';
 import { IonInfiniteScroll, IonRefresher, ModalController, Platform } from '@ionic/angular';
@@ -24,7 +24,7 @@ export class RestaurantPage implements OnInit, OnDestroy {
 
   public stores: Store[] = [];
 
-  private currentFilter: FILTER_TYPES;
+  public currentFilter: FILTER_TYPES;
 
   public currentFilterName: string = '';
 
@@ -68,7 +68,7 @@ export class RestaurantPage implements OnInit, OnDestroy {
     this.nativebackButtonHandler();
     this.checkIfGuest();
     this.getLocationDetails();
-    this.getStores();
+    this.getFilterSubscription();
   }
 
 
@@ -90,11 +90,16 @@ export class RestaurantPage implements OnInit, OnDestroy {
       .subscribe((location: LocationModel) => {
         if (location) {
           this.location = location;
-          this.filterService.setLocationFilterData(this.location.latLon, this.location.maxDistance);
-          this.logger.info(this, 'Current Place Name ', this.location.name);
-          // Activate Distance Filter if No Other Filter is Applied
-          if (this.location.fetchedLocation) {
-            this.activateDistanceFilter();
+          if (location.fetchedLocation) {
+            if(this.location.updated) {
+              this.filterService.activateDistanceFilter(this.location.latLon, this.location.maxDistance);
+            } else {
+              if(this.filterService.getCurrentFilter() === FILTER_TYPES.DISTANCE_WISE) {
+                this.filterService.activateDistanceFilter(this.location.latLon, this.location.maxDistance);
+              }
+            }
+            this.logger.info(this, 'Current Location Details', this.location);
+            this.forceAngularChangeDetection();
           }
         }
       },
@@ -103,15 +108,6 @@ export class RestaurantPage implements OnInit, OnDestroy {
         });
   }
 
-  private activateDistanceFilter() {
-    this.sharedData.getData('filter')
-      .then(data => {
-        if (!data) {
-          this.logger.info(this, 'Setting DISTANCE_WISE Filter');
-          this.filterService.setCurrentFilter(FILTER_TYPES.DISTANCE_WISE);
-        }
-      })
-  }
 
   private setCurrentFilterName() {
     if (this.currentFilter == FILTER_TYPES.MIN_AMOUNT) {
@@ -126,38 +122,39 @@ export class RestaurantPage implements OnInit, OnDestroy {
   }
 
 
-  private getStores() {
-    this.filterSubscription = this.filterService.getFilterSubscription().subscribe((data: FILTER_TYPES) => {
-      if (data) {
-        this.showLoading = true;
-        this.stores = [];
-        this.currentFilter = data;
-        this.forceAngularChangeDetection();
-        this.setCurrentFilterName();
-        this.toggleInfiniteScroll();
-        this.filterService.getStores(0, (totalElements, totalPages, stores) => {
-          this.stores = [];
-          this.logger.info(this, 'Got Stores ', stores);
-          this.logger.info(this, 'Total Pages', totalPages);
-          this.logger.info(this, 'Total Elements', totalElements);
-          if (totalPages > 1) {
-            this.toggleInfiniteScroll();
-          }
-          stores.forEach(s => {
-            this.stores.push(s);
-          });
-          this.showLoading = false;
-          this.toggleIonRefresher();
-          this.forceAngularChangeDetection();
-        },
-          (err) => {
-            this.errorService.showErrorModal(() => {
-              this.filterSubscription.unsubscribe();
-              this.getStores();
-            });
-          });
-      }
+  private getFilterSubscription() {
+    this.filterSubscription = this.filterService.getFilterSubscription().subscribe((data) => {
+      this.currentFilter = data.currentFilterType;
+      this.getStores();
     });
+  }
+
+  getStores() {
+    this.showLoading = true;
+    this.stores = [];
+    this.setCurrentFilterName();
+    this.toggleInfiniteScroll();
+    this.filterService.getStores(0, (totalElements, totalPages, stores) => {
+      this.stores = [];
+      this.logger.info(this, 'Got Stores ', stores);
+      this.logger.info(this, 'Total Pages', totalPages);
+      this.logger.info(this, 'Total Elements', totalElements);
+      if (totalPages > 1) {
+        this.toggleInfiniteScroll();
+      }
+      stores.forEach(s => {
+        this.stores.push(s);
+      });
+      this.forceAngularChangeDetection();
+      this.showLoading = false;
+      this.toggleIonRefresher();
+    },
+      (err) => {
+        this.errorService.showErrorModal(() => {
+          this.filterSubscription.unsubscribe();
+          this.getStores();
+        });
+      });
   }
 
   public searchBarActivated(event) {
@@ -226,7 +223,7 @@ export class RestaurantPage implements OnInit, OnDestroy {
             if (data !== undefined) {
               if (data.data) {
                 this.toggleInfiniteScroll();
-                this.sharedData.deleteData('filter');
+                this.sharedData.deleteData(FILTER_KEY);
               }
             }
           });

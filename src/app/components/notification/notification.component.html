@@ -18,7 +18,8 @@
   <ion-list class="ion-text-center" *ngFor="let nkey of notificationSortedKeys">
     <ion-list-header color="primary">
         <ion-label>
-          <h2>{{nkey | titlecase}}</h2>
+          <h2 *ngIf="nkey !== 'today' && nkey !=='yesterday'">{{nkey | date: 'dd/MM/yyyy'}}</h2>
+          <h2 *ngIf="nkey === 'today'|| nkey ==='yesterday'">{{nkey | titlecase}}</h2>
         </ion-label>
     </ion-list-header>
     <ion-spinner color="primary" name="dots" *ngIf="showLoading"></ion-spinner>

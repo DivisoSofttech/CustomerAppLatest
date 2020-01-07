@@ -116,6 +116,7 @@ export class PlaceSuggestionComponent implements OnInit, OnDestroy {
       .then(data => {
         this.logger.info(this, 'Found LatLon for selected Location', data);
         this.locationService.setMaxDistance(this.location.maxDistance)
+        this.location.updated = true;
         this.location.latLon = data;
         this.dismiss(true, () => {
           this.locationService.setPosition(this.location);
@@ -129,6 +130,7 @@ export class PlaceSuggestionComponent implements OnInit, OnDestroy {
   public getCurrentLocation() {
     this.dismiss(true, () => {
       this.location.fetchedLocation = false;
+      this.location.updated = true;
       this.locationService.setPosition(this.location);
       this.locationService.updateLocation((data: any, coords: any) => { });
     });
@@ -139,6 +141,7 @@ export class PlaceSuggestionComponent implements OnInit, OnDestroy {
     if (this.oldMaxDistance !== this.location.maxDistance) {
       this.modalController.dismiss(true)
         .then(() => {
+          this.location.updated = true;
           this.locationService.setPosition(this.location);
         })
     } else {
@@ -158,10 +161,14 @@ export class PlaceSuggestionComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
+  private unsubscribeAll() {
     this.backButtonSubscription ? this.backButtonSubscription.unsubscribe() : null;
     this.locationSubscription ? this.locationSubscription.unsubscribe() : null;
     this.recentPlacesSubscription ? this.recentPlacesSubscription.unsubscribe() : null;
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeAll();
   }
 
 }

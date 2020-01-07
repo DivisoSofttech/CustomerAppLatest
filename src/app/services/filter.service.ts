@@ -3,8 +3,19 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { LogService } from './log.service';
 import { SharedDataService } from './shared-data.service';
+import { ResultBucket } from '../api/models';
 
-export const filterKey = 'filter';
+export const FILTER_KEY = 'filter';
+
+export interface ResultBucketModel extends ResultBucket {
+  checked: boolean;
+}
+
+export interface FilterModel {
+  type?: string;
+  cusines?: ResultBucketModel[];
+  currentFilterType?: FILTER_TYPES;
+}
 
 export enum FILTER_TYPES {
 
@@ -26,9 +37,11 @@ export enum FILTER_TYPES {
 export class FilterService {
 
 
-  private currentFilter: FILTER_TYPES;
-  private filterBehaviour: BehaviorSubject<FILTER_TYPES> = new BehaviorSubject<FILTER_TYPES>(this.currentFilter);
-  private selectedCusines: string[];
+  private filterModel: FilterModel = {
+    currentFilterType: FILTER_TYPES.DISTANCE_WISE,
+    cusines: []
+  };
+  private filterBehaviourNew: BehaviorSubject<FilterModel> = new BehaviorSubject<FilterModel>(this.filterModel);
   private currentLatLon = [];
   private distance = 0;
 
@@ -42,68 +55,63 @@ export class FilterService {
   }
 
   private initFilter() {
-    this.logger.info(this,'Filter Service Created')
+    this.logger.info(this, 'Filter Service Created')
     this.getFilterDataFromStorage();
   }
 
   private getFilterDataFromStorage() {
-    this.shareData.getData(filterKey)
+    this.shareData.getData(FILTER_KEY)
       .then(data => {
         if (data) {
-          switch (data.type) {
-            case 'cusine':
-              const tempArray = [];
-              data.cusines.forEach(c => {
-                tempArray.push(c.key);
-              })
-              this.setSelectedCusines(tempArray);
-              this.setCurrentFilter(data.currentFilterType);
-              break;
-            case 'sort':
-              this.setCurrentFilter(data.currentFilterType);
-              break;
+          this.filterModel = data;
+          if (data.currentFilterType !== FILTER_TYPES.DISTANCE_WISE) {
+            this.filterBehaviourNew.next(this.filterModel);
           }
         }
       })
   }
 
   public getFilterSubscription() {
-    return this.filterBehaviour;
+    return this.filterBehaviourNew;
   }
 
   public setCurrentFilter(filter) {
-    this.currentFilter = filter;
-    this.filterBehaviour.next(filter);
+    this.filterModel.currentFilterType = filter;
+    this.filterBehaviourNew.next(this.filterModel);
   }
 
   public getCurrentFilter() {
-    return this.currentFilter;
+    return this.filterModel.currentFilterType;
   }
 
-  public setSelectedCusines(selectedCusines: any) {
-    this.selectedCusines = selectedCusines;
+  public setSelectedCusines(selectedCusines: ResultBucketModel[]) {
+    this.filterModel.cusines = selectedCusines;
   }
 
-  public setLocationFilterData(currentLatLon: any, distance: number) {
-    this.currentLatLon = currentLatLon;
-    this.distance = distance;
+    
+  public activateDistanceFilter(latLon: number[], maxDistance: any) {
+    this.currentLatLon = latLon;
+    this.distance = maxDistance;
+    this.filterModel.currentFilterType = FILTER_TYPES.DISTANCE_WISE;
+    this.filterBehaviourNew.next(this.filterModel);
   }
+
 
   public getStores(pageNumber, success, error?) {
-    if (this.currentFilter == FILTER_TYPES.NO_FILTER.valueOf()) {
+    if (this.filterModel.currentFilterType == FILTER_TYPES.NO_FILTER.valueOf()) {
       this.logger.info(this, 'Finding All Stores');
       this.getStoreNoFilter(pageNumber, success, error);
-    } else if (this.currentFilter == FILTER_TYPES.DELIVERY_TIME.valueOf()) {
+    } else if (this.filterModel.currentFilterType == FILTER_TYPES.DELIVERY_TIME.valueOf()) {
       this.getStoreByDeliveryTime(pageNumber, success, error);
-    } else if (this.currentFilter == FILTER_TYPES.MIN_AMOUNT.valueOf()) {
+    } else if (this.filterModel.currentFilterType == FILTER_TYPES.MIN_AMOUNT.valueOf()) {
       this.getStoreByMinAmount(pageNumber, success, error);
-    } else if (this.currentFilter == FILTER_TYPES.DISTANCE_WISE.valueOf()) {
+    } else if (this.filterModel.currentFilterType == FILTER_TYPES.DISTANCE_WISE.valueOf()) {
       this.logger.info(this, 'Finding Store By Distance and Location', this.distance);
       this.getStoreByDistance(pageNumber, success, error);
-    } else if (this.currentFilter == FILTER_TYPES.TOP_RATED.valueOf()) {
+    } else if (this.filterModel.currentFilterType == FILTER_TYPES.TOP_RATED.valueOf()) {
       this.logger.info(this, 'Finding Store By Rating');
       this.getStoreByRating(pageNumber, success, error);
-    } else if (this.currentFilter == FILTER_TYPES.CUSINE_FILTER.valueOf()) {
+    } else if (this.filterModel.currentFilterType == FILTER_TYPES.CUSINE_FILTER.valueOf()) {
       this.logger.info(this, 'Finding Store By Cusines');
       this.getStoreByCusines(pageNumber, success, error);
     }
@@ -124,11 +132,15 @@ export class FilterService {
   }
 
   private getStoreByCusines(pageNumber, success, error?) {
-    this.logger.info(this, 'Fetching Stores Via Cusines', this.selectedCusines);
+    this.logger.info(this, 'Fetching Stores Via Cusines', this.filterModel.cusines);
+    const tempArray = [];
+    this.filterModel.cusines.forEach(c => {
+      tempArray.push(c.key);
+    })
     this.queryResource.facetSearchByStoreTypeNameUsingPOST(
       {
         storeTypeWrapper: {
-          typeName: this.selectedCusines
+          typeName: tempArray
         },
         page: pageNumber
       }
@@ -142,21 +154,25 @@ export class FilterService {
   }
 
   private getStoreByDistance(pageNumber, success, error?) {
-    this.queryResource
-      .findStoreByNearLocationUsingGET({
-        page: pageNumber,
-        lat: this.currentLatLon[0],
-        lon: this.currentLatLon[1],
-        distanceUnit: 'KILOMETERS',
-        distance: this.distance
-      })
-      .subscribe(data => {
-        success(data.totalElements, data.totalPages, data.content);
-      },
-        err => {
-          this.logger.error(this, 'Error Finding Store By Distance and Location', err);
-          error();
-        });
+    if (this.currentLatLon.length === 2) {
+      this.queryResource
+        .findStoreByNearLocationUsingGET({
+          page: pageNumber,
+          lat: this.currentLatLon[0],
+          lon: this.currentLatLon[1],
+          distanceUnit: 'KILOMETERS',
+          distance: this.distance
+        })
+        .subscribe(data => {
+          success(data.totalElements, data.totalPages, data.content);
+        },
+          err => {
+            this.logger.error(this, 'Error Finding Store By Distance and Location', err);
+            error();
+          });
+    } else {
+      this.logger.warn(this, 'No LatLon Provided');
+    }
   }
 
   private getStoreByRating(pageNumber, success, error?) {
