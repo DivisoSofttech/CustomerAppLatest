@@ -145,8 +145,8 @@ export class RestaurantPage implements OnInit, OnDestroy {
       stores.forEach(s => {
         this.stores.push(s);
       });
-      this.forceAngularChangeDetection();
       this.showLoading = false;
+      this.forceAngularChangeDetection();
       this.toggleIonRefresher();
     },
       (err) => {
