@@ -24,4 +24,6 @@ export interface Order {
   storeId?: string;
   subTotal?: number;
   timeZone?: string;
+  processId?: String;
+  acceptOrderId?:String;
 }
