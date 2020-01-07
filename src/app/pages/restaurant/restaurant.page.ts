@@ -197,7 +197,7 @@ export class RestaurantPage implements OnInit, OnDestroy {
     this.IonRefresher.complete();
   }
 
-  private toggleFilteromponent(event) {
+  public toggleFilterComponent(event) {
     if (event === 'close') {
       this.showFilters = false;
       this.footer.filterHide = false;

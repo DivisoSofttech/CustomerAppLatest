@@ -64,7 +64,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.onChangeSubscription = this.restaurantSearch.ionChange.subscribe(()=>{
       this.suggestions = [];
       this.fetchSuggestions();
-    })
+    });
     this.getNotificationCount();
     this.getRecents();
     this.nativeBackButtonHandler();

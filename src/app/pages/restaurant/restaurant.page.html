@@ -129,7 +129,7 @@ class="animated animation-duration"
   <app-filter
     *ngIf="showFilters"
     [showClose]="true"
-    (closeFilter)="toggleFilteromponent($event)"
+    (closeFilter)="toggleFilterComponent($event)"
   ></app-filter>
-  <app-footer (filter)="toggleFilteromponent('open')"></app-footer>
+  <app-footer (filter)="toggleFilterComponent('open')"></app-footer>
 </ion-footer>
