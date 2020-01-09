@@ -8,6 +8,7 @@ import { KeycloakService } from './security/keycloak.service';
 import { DecimalPipe } from '@angular/common';
 import { NoCommaPipe } from '../pipes/no-comma.pipe';
 import { KeycloakUser } from '../models/keycloak-user';
+import { SharedDataService } from './shared-data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,7 @@ export class OrderService implements OnInit , OnDestroy {
   constructor(
     private commandResourceService: CommandResourceService,
     private logger: NGXLogger,
+    private sharedData: SharedDataService,
     private util: Util,
     private keycloakService: KeycloakService,
     private decimalPipe: DecimalPipe,
@@ -36,6 +38,7 @@ export class OrderService implements OnInit , OnDestroy {
   }
 
   ngOnInit() {
+    
   }
 
   ngOnDestroy(): void {
@@ -44,6 +47,22 @@ export class OrderService implements OnInit , OnDestroy {
 
   isTask(taskName: string): boolean {
     return this.resource.nextTaskName === taskName;
+  }
+
+  getOrderDetailsFromStorage() {
+    this.sharedData.getData('order')
+    .then(data => {
+      if(data) {
+        this.resource = data.resource;
+        this.order = data.order;
+      }
+    })
+  }
+  saveDetailsToStorage(){
+    this.sharedData.saveToStorage('order' , {
+      resource: this.resource,
+      order: this.order
+    });
   }
 
   updateLoyaltyPoint() {

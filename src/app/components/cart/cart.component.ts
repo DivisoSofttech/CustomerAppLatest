@@ -91,6 +91,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
  
+    this.orderService.getOrderDetailsFromStorage();
     this.date = new Date();
     this.getCartDetails();
     this.getCustomer();
@@ -316,6 +317,7 @@ export class CartComponent implements OnInit, OnDestroy {
         resource => {
           this.orderService.setOrder(resource.order);
           this.orderService.setResource(resource.commandResource);
+          this.orderService.saveDetailsToStorage()
           // this.cart.orderLines = resource.order.orderLines;
           this.orderService.orderResourceBehaviour.next(
             resource.commandResource.nextTaskName
@@ -371,6 +373,7 @@ export class CartComponent implements OnInit, OnDestroy {
       .subscribe(order => {
         this.logger.info(this,'Order DTO Updated is ', order);
         this.orderService.order = order;
+        this.orderService.saveDetailsToStorage()
         this.navigateForward();
       },
       err=> {
