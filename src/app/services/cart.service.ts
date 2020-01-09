@@ -28,6 +28,7 @@ export class CartService {
   behaviourDeliveryTypes: BehaviorSubject<any> = new BehaviorSubject<any>(this.currentDeliveryTypes);
   behaviourStore: BehaviorSubject<Store> = new BehaviorSubject<Store>(this.currentShop);
   preOrderDate;
+  selectedDeliveryType: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   dataSaveTimer = null;
   

@@ -213,10 +213,6 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
       );
   }
 
-  getStoreRating() {
-
-  }
-
   getStoreReview() {
     this.reviewSubscription = this.queryResource.findUserRatingReviewCountByRegNoUsingGET(this.store.regNo).subscribe(
       res => {
@@ -244,13 +240,12 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
   }
 
   checkIfAlreadyFavourite() {
-    this.favourite.getFavourites()
-      .subscribe(data => {
-        if (this.favourite.getFavouriteStoresID()
-          .includes(this.store.id)) {
-          this.isFavourite = true;
-        }
-      });
+    this.favourite.getFavouriteStoresID()
+    .subscribe(data => {
+      if(data.includes(this.store.id)) {
+        this.isFavourite = true;        
+      }
+    });
   }
 
   showHotelMenu(id) {

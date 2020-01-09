@@ -131,13 +131,14 @@ export class ProductCardComponent implements OnInit, OnDestroy {
   }
 
   checkIfAlreadyFavourite() {
-    this.favouriteSubscription = this.favourite.getFavourites()
-      .subscribe(data => {
-        if (this.favourite.getFavouriteProductsID()
-          .includes(this.stockCurrent.product.id)) {
-          this.isFavourite = true;
-        }
-      });
+    this.favourite.getFavouriteProductsID()
+    .subscribe(data => {
+      if(data.includes(this.stockCurrent.product.id)) {
+        this.isFavourite = true;
+      } else {
+        this.isFavourite = false;
+      }
+    })
   }
 
   customAdd(stock) {

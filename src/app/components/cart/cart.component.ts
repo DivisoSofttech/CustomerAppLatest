@@ -90,6 +90,7 @@ export class CartComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+ 
     this.date = new Date();
     this.getCartDetails();
     this.getCustomer();
@@ -290,7 +291,8 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   createNewOrder(deliveryType) {
-    this.logger.info(this, 'Creating new order');
+
+    this.logger.info(this, 'Creating new order', this.cart.total,this.cart.subTotal);
     const order: Order = {
       orderLines: this.orderLines,
       appliedOffers: [],
@@ -415,6 +417,7 @@ export class CartComponent implements OnInit, OnDestroy {
     if (this.delivery !== undefined) {
       this.deliveryMode = event.detail.value;
       this.currentSegment = event.detail.value;
+      this.cart.selectedDeliveryType.next(this.currentSegment);
     }
   }
 }

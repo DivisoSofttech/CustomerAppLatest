@@ -19,15 +19,23 @@ export interface Favourite {
 })
 export class FavouriteService {
   
-  favouriteDisabled = false;
+  public favouriteDisabled = false;
 
   private favourites: Favourite[] = [];
+
+  private favouriteStoresId: number[] = [];
+
+  private favouriteProductsId: number[] = [];
 
   private keycloakUser: KeycloakUser;
 
   private customer: CustomerDTO;
 
   private favouriteSubject: BehaviorSubject<Favourite[]> = new BehaviorSubject(this.favourites);
+
+  private favouriteStoresIdSubject: BehaviorSubject<number[]> = new BehaviorSubject(this.favouriteStoresId);
+
+  private favouriteProductsIdSubject: BehaviorSubject<number[]> = new BehaviorSubject(this.favouriteProductsId);
 
   constructor(
     private keycloakService: KeycloakService,
@@ -40,11 +48,11 @@ export class FavouriteService {
     this.initFavourite();
   }
 
-  initFavourite() {
+  private initFavourite() {
     this.getKeycloakUser();
   }
 
-  getKeycloakUser() {
+  private getKeycloakUser() {
     this.keycloakService.getUserChangedSubscription()
     .subscribe(user => {
      if(user) {
@@ -177,23 +185,11 @@ export class FavouriteService {
 
 
   getFavouriteProductsID() {
-    const idArray = [];
-    for (const fav of this.favourites) {
-      if (fav.type === 'product') {
-      idArray.push(fav.data.id);
-      }
-    }
-    return idArray;
+    return this.favouriteProductsIdSubject;
   }
 
   getFavouriteStoresID() {
-    const idArray = [];
-    for (const fav of this.favourites) {
-      if (fav.type === 'store') {
-      idArray.push(fav.data.id);
-      }
-    }
-    return idArray;
+    return this.favouriteStoresIdSubject;   
   }
 
   fetchStore(id) {
@@ -201,7 +197,7 @@ export class FavouriteService {
     .subscribe(store => {
       if(store !== null)
       this.favourites.push({data: store , route:  '/store/' + store.regNo , type: 'store'});
-      this.favouriteSubject.next(this.favourites);
+      this.refresh(false);
     });
   }
 
@@ -209,13 +205,26 @@ export class FavouriteService {
     this.queryResource.findProductUsingGET(id)
     .subscribe(product => {
       this.favourites.push({data: product , route: '' , type: 'product'});
-      this.favouriteSubject.next(this.favourites);
+      this.refresh(false);
     });
+  }
+
+  setFavouriteIds() {
+    const productIdArray = [],storeIdArray = [];
+    this.favourites.forEach(fav=> {
+      if(fav.type==='product') {
+        productIdArray.push(fav.data.id);
+      } else{
+        storeIdArray.push(fav.data.id);
+      }
+    });
+    this.favouriteProductsIdSubject.next(productIdArray);
+    this.favouriteStoresIdSubject.next(storeIdArray);
   }
 
   refresh(reset) {
     if (reset === false) {
-      this.logger.info(this,'Updating Refresh Array');
+      this.setFavouriteIds();
       this.favouriteSubject.next(this.favourites);
       this.sharedData.saveToStorage(FAVOURITE_KEY, this.favourites);
     } else {

@@ -67,6 +67,18 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
     this.getCartDetails();
     this.productBaseAuxItemsArray = this.cart.auxilaryItems;
     this.getOffers();
+    this.cart.selectedDeliveryType.subscribe(data => {
+      if(data) {
+        if(data === 'delivery') {
+          this.total = this.decimalPipe.transform((parseFloat(this.subTotal) + this.storeSetting.deliveryCharge), '1.2-2' );       
+          this.cart.total = this.total;
+        }
+        else {
+          this.total = this.subTotal; 
+          this.cart.total = this.cart.subTotal;
+        }
+      }
+    });
   }
 
   animateSlide() {
