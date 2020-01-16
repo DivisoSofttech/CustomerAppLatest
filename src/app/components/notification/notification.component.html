@@ -7,7 +7,7 @@
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button (click)="dismiss()">
-          <ion-icon name="close"></ion-icon>
+        <ion-icon name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -15,51 +15,47 @@
 
 <ion-content appScrollbarTheme>
 
-  <ion-list class="ion-text-center" *ngFor="let nkey of notificationSortedKeys">
-    <ion-list-header color="primary">
-        <ion-label>
-          <h2 *ngIf="nkey !== 'today' && nkey !=='yesterday'">{{nkey | date: 'dd/MM/yyyy'}}</h2>
-          <h2 *ngIf="nkey === 'today'|| nkey ==='yesterday'">{{nkey | titlecase}}</h2>
-        </ion-label>
-    </ion-list-header>
-    <ion-spinner color="primary" name="dots" *ngIf="showLoading"></ion-spinner>
-    <ion-grid *ngIf="!showLoading && notificationSorted[nkey].length === 0">
-      <ion-row>
-        <ion-col size="12">
-            <ion-text class="ion-margin">No Notifications</ion-text>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-    <ng-container  *ngFor="let notification of notificationSorted[nkey]">
-     <ng-container *ngIf="orders[notification.targetId] && stores[orders[notification.targetId].storeId]">
-        <ng-container *ngIf="orders[notification.targetId].storeId && stores[orders[notification.targetId].storeId].name">
-            <app-notification-card       
-            [notification]="notification"
-            [order]="orders[notification.targetId]"
-            [store]="stores[orders[notification.targetId].storeId]"
-            ></app-notification-card>    
+  <ng-container *ngFor="let nkey of notificationSortedKeys">
+    <ion-list class="ion-text-center"  *ngIf="notificationSorted[nkey].length !== 0">
+      <ng-container>
+        <ion-list-header color="primary">
+          <ion-label>
+            <h2 *ngIf="nkey !== 'today' && nkey !=='yesterday'">{{nkey | date: 'dd/MM/yyyy'}}</h2>
+            <h2 *ngIf="nkey === 'today'|| nkey ==='yesterday'">{{nkey | titlecase}}</h2>
+          </ion-label>
+        </ion-list-header>
+        <ion-spinner color="primary" name="dots" *ngIf="showLoading"></ion-spinner>
+        <ion-grid *ngIf="!showLoading && notificationSorted[nkey].length === 0">
+          <ion-row>
+            <ion-col size="12">
+              <ion-text class="ion-margin">No Notifications</ion-text>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <ng-container *ngFor="let notification of notificationSorted[nkey]">
+          <ng-container *ngIf="orders[notification.targetId] && stores[orders[notification.targetId].storeId]">
+            <ng-container
+              *ngIf="orders[notification.targetId].storeId && stores[orders[notification.targetId].storeId].name">
+              <app-notification-card (click)="readNotification(notification , nkey)" [notification]="notification"
+                [order]="orders[notification.targetId]" [store]="stores[orders[notification.targetId].storeId]">
+              </app-notification-card>
+            </ng-container>
+          </ng-container>
         </ng-container>
-     </ng-container>
-    </ng-container>
-  </ion-list>
+      </ng-container>
+    </ion-list>
+
+  </ng-container>
 
 
 
-  <ion-infinite-scroll
-  threshold="500px"
-  (ionInfinite)="loadMoreData($event)"
-  loadingSpinner="bubbles"
-  loadingText="Loading Users..."
->
-  <ion-infinite-scroll-content></ion-infinite-scroll-content>
-</ion-infinite-scroll>
+  <ion-infinite-scroll threshold="500px" (ionInfinite)="loadMoreData($event)" loadingSpinner="bubbles"
+    loadingText="Loading Users...">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
-<ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
-  <ion-refresher-content
-    pullingIcon="arrow-dropdown"
-    pullingText="Pull to refresh"
-    refreshingSpinner="circles"
-  >
-  </ion-refresher-content>
-</ion-refresher>
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles">
+    </ion-refresher-content>
+  </ion-refresher>
 </ion-content>
