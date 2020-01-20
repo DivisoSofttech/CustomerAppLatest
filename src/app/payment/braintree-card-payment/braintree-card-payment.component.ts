@@ -45,7 +45,7 @@ export class BraintreeCardPaymentComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
+    console.error(this.grandTotal , this.optionsWeb);
     this.grandTotal = this.orderService.order.grandTotal.toString();
     this.optionsWeb.amount = this.orderService.order.grandTotal.toString();
     if(this.platform.is('android' || 'ios')) {

@@ -709,6 +709,7 @@ class CommandResourceService extends __BaseService {
     let __headers = new HttpHeaders();
     let __body: any = null;
     __body = notificationDTO;
+    console.error(__body);
     let req = new HttpRequest<any>(
       'PUT',
       this.rootUrl + `/api/command/notifications`,

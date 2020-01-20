@@ -34,6 +34,7 @@ export class NotificationCardComponent implements OnInit {
 
  
   async showOrderDetails() {
+    
     const modal = await this.modalController.create({
       component: OrderDetailComponent,
       componentProps: {order: this.order , store: this.store , modalType: true}

@@ -42,6 +42,7 @@ export class PaymentSuccessfullInfoComponent implements OnInit , OnDestroy {
     this.orderService.resource = {};
     this.orderService.offer = undefined;
     this.orderService.deliveryInfo = {};
+    this.sharedData.clearKeys('order');
     this.dismiss();
   }
 
