@@ -175,7 +175,7 @@
 
 <!--Cancelled Product Details Start-->
 <ng-template #CamcelledOrderProductDetails>
-  <ion-card color="light">
+  <ion-card color="light" *ngIf="cancelledOrderLines.length !== 0">
     <ion-card-header class="ion-no-padding">
       <ion-item lines="none">
         <ion-label>
