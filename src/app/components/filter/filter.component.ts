@@ -46,7 +46,6 @@ export class FilterComponent implements OnInit , OnDestroy {
     this.filterServiceSubscription = this.filterService.getFilterSubscription()
     .subscribe(data => {
       if(data) {
-        console.error(data);
         this.filterModel = data;
         this.cusines.forEach(c => {
           const tempCusines = this.filterModel.cusines.filter(stc=>stc.key === c.key)
@@ -110,7 +109,7 @@ export class FilterComponent implements OnInit , OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.filterServiceSubscription.unsubscribe();
+    this.filterServiceSubscription?this.filterServiceSubscription.unsubscribe():0;
   }
 
   closeEvent() {

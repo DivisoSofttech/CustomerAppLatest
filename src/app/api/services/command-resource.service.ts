@@ -29,6 +29,7 @@ import { PaymentDTO } from '../models/payment-dto';
 import { OrderResponse } from '../models/order-response';
 import { OrderRequest } from '../models/order-request';
 import { ReplyDTO } from '../models/reply-dto';
+import { Customer } from '../models/customer';
 import { PaymentTransactionResponse } from '../models/payment-transaction-response';
 import { PaymentTransaction } from '../models/payment-transaction';
 import { UserRatingReviewDTO } from '../models/user-rating-review-dto';
@@ -70,6 +71,7 @@ class CommandResourceService extends __BaseService {
   static readonly createReplyUsingPOSTPath = '/api/command/replies';
   static readonly updateReplyUsingPUTPath = '/api/command/replies';
   static readonly deleteReplyUsingDELETEPath = '/api/command/replies/{id}';
+  static readonly saveUsingPOSTPath = '/api/command/test';
   static readonly createTransactionUsingPOSTPath = '/api/command/transaction';
   static readonly updateLoyaltyPointUsingPOSTPath = '/api/command/updateLoyaltyPoint/{idpCode}/{point}/{orderId}';
   static readonly createUserRatingReviewUsingPOSTPath = '/api/command/user-rating-review';
@@ -709,7 +711,6 @@ class CommandResourceService extends __BaseService {
     let __headers = new HttpHeaders();
     let __body: any = null;
     __body = notificationDTO;
-    console.error(__body);
     let req = new HttpRequest<any>(
       'PUT',
       this.rootUrl + `/api/command/notifications`,
@@ -1201,6 +1202,42 @@ class CommandResourceService extends __BaseService {
   deleteReplyUsingDELETE(id: number): __Observable<null> {
     return this.deleteReplyUsingDELETEResponse(id).pipe(
       __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param customer customer
+   * @return OK
+   */
+  saveUsingPOSTResponse(customer: Customer): __Observable<__StrictHttpResponse<string>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = customer;
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/command/test`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'text'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<string>;
+      })
+    );
+  }
+  /**
+   * @param customer customer
+   * @return OK
+   */
+  saveUsingPOST(customer: Customer): __Observable<string> {
+    return this.saveUsingPOSTResponse(customer).pipe(
+      __map(_r => _r.body as string)
     );
   }
 
