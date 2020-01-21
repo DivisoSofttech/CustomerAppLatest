@@ -54,13 +54,13 @@ export class PaymentSuccessfullInfoComponent implements OnInit , OnDestroy {
   getRequiredDetails() {
     this.currentShop = this.cartService.currentShop;
     this.cartService.emptyCart();
-    this.orderService.refresh();
     this.getOrder();
     this.total = this.orderService.order.grandTotal;
     this.method = this.orderService.paymentMethod;
     this.ref = this.orderService.order.orderId;
     this.logger.info(this,'Order in OrderService', this.orderService.order);
     this.sharedData.deleteData('checkout');
+    this.orderService.refresh();
   }
 
   getOrder() {
