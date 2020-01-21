@@ -95,8 +95,6 @@ export class OrderDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.order.cancellationRef=3;
-    this.order.status.name = 'cancellation-requested';
     this.logger.info(this, this.order);
     this.fetchOrderLinesByOrderId(0);
     this.fetchCancelledOrderlines(0);
