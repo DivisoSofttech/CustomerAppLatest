@@ -5,9 +5,11 @@ import { DeliveryInfo } from './delivery-info';
 import { OrderLine } from './order-line';
 import { Status } from './status';
 export interface Order {
+  acceptOrderId?: string;
   allergyNote?: string;
   appliedOffers?: Array<Offer>;
   approvalDetails?: ApprovalDetails;
+  cancellationRef?: number;
   customerId?: string;
   date?: string;
   deliveryInfo?: DeliveryInfo;
@@ -19,11 +21,10 @@ export interface Order {
   paymentMode?: string;
   paymentRef?: string;
   preOrderDate?: string;
+  processId?: string;
   state?: string;
   status?: Status;
   storeId?: string;
   subTotal?: number;
   timeZone?: string;
-  processId?: string;
-  acceptOrderId?:string;
 }

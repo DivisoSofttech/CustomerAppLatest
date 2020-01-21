@@ -236,4 +236,9 @@ export class OrderService implements OnInit , OnDestroy {
   setNote(note) {
     this.deliveryInfo.deliveryNotes = note;
   }
+
+  refresh() {
+    this.sharedData.deleteData('order');
+    
+  }
 }

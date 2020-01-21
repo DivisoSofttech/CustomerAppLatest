@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild, EventEmitter, Output } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services';
-import { Order, OrderLine, Product, Store, AuxilaryOrderLine, Offer } from 'src/app/api/models';
+import { Order, OrderLine, Product, Store, AuxilaryOrderLine, Offer, CancelledOrderLine } from 'src/app/api/models';
 import { CartService } from 'src/app/services/cart.service';
 import { Subscription } from 'rxjs';
 import { MatStepper, MatHorizontalStepper } from '@angular/material';
@@ -35,6 +35,8 @@ export class OrderDetailComponent implements OnInit {
 
   orderLines: OrderLine[] = [];
 
+  cancelledOrderLines: CancelledOrderLine[] = [];
+
   offer: Offer[] = [];
 
   products: Product[] = [];
@@ -48,12 +50,17 @@ export class OrderDetailComponent implements OnInit {
   // OrderLine id as Key and auxLine Total + OrdrLine total as Value
   total: Map<Number, Number> = new Map<Number, Number>();
 
+  cancellationTotal: number = 0
 
   addressString: String;
 
   orderPlaced: Boolean;
   orderApproved: Boolean;
   orderDelivered: Boolean;
+  orderCancelled: Boolean;
+  orderRefundCompleted: Boolean;
+
+  showCancellation: Boolean = false;
 
 
   taskDetailsSubscription: Subscription;
@@ -88,8 +95,11 @@ export class OrderDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.order.cancellationRef=3;
+    this.order.status.name = 'cancellation-requested';
     this.logger.info(this, this.order);
     this.fetchOrderLinesByOrderId(0);
+    this.fetchCancelledOrderlines(0);
     this.fetchAppliedOffers(this.order.id);
     this.checkOrderType();
   }
@@ -115,6 +125,14 @@ export class OrderDetailComponent implements OnInit {
         this.orderPlaced = false;
         this.orderApproved = false;
         this.orderDelivered = true;
+        break;
+      case 'cancellation-requested':
+        this.orderCancelled = true;
+        this.orderRefundCompleted = false;
+        break;
+      case 'refund-completed':
+        this.orderCancelled = true;
+        this.orderRefundCompleted = true;
         break;
       default: break;
     }
@@ -145,6 +163,32 @@ export class OrderDetailComponent implements OnInit {
         this.util.createToast('Érror getting order details');
       });
   }
+
+
+  fetchCancelledOrderlines(i) {
+    if(this.order.cancellationRef !== null) {
+      this.queryResource.findCancelledOrderLinesByCancellationRequestIdUsingGET({
+        id: this.order.cancellationRef
+      })
+      .subscribe(cancelledOrderLines => {
+        cancelledOrderLines.content.forEach(co => {
+          this.cancellationTotal += co.ammount;
+          this.auxilariesProducts[co.productId] = [];
+          this.auxilaryOrderLines[co.id] = [];
+          this.cancelledOrderLines.push(co);
+          this.fetchProducts(co.productId);
+          this.fetchAuxilaryOrderLines(co, 0);
+        });
+        i++;
+        if (i < cancelledOrderLines.totalPages) {
+          this.fetchCancelledOrderlines(i);
+        } else {
+          this.logger.info(this, 'Completed Fetching Cancelled OrderLines')
+        }
+      });  
+    }
+  }
+
 
   fetchAppliedOffers(id) {
     this.queryResource.findOfferLinesByOrderIdUsingGET(id)
@@ -231,6 +275,10 @@ export class OrderDetailComponent implements OnInit {
     this.continueEvent.emit();
   }
 
+  toggleCancellation() {
+    this.showCancellation = !this.showCancellation;
+  }
+  
   dismiss() {
     this.backEvent.emit();
   }

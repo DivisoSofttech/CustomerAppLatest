@@ -113,10 +113,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.showLoading = true;
     this.queryResource.getSuggestionUsingGET(this.searchTerm)
     .subscribe((data: HeaderSuggestion[]) => {
+      console.error(data);
       this.showLoading = false;
       this.showNotFound = true;
       this.suggestions = data;
-    });  }
+    });  
+  }
 
   public selectSuggestionSearchTerm(headerSuggestion: HeaderSuggestion) {
     this.onChangeSubscription.unsubscribe();

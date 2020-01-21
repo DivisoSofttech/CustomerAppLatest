@@ -22,6 +22,7 @@ import { PageOfFavouriteStore } from '../models/page-of-favourite-store';
 import { PageOfCategory } from '../models/page-of-category';
 import { PageOfOrderLine } from '../models/page-of-order-line';
 import { PageOfAuxilaryOrderLine } from '../models/page-of-auxilary-order-line';
+import { PageOfCancelledOrderLine } from '../models/page-of-cancelled-order-line';
 import { ResultBucket } from '../models/result-bucket';
 import { Offer } from '../models/offer';
 import { Product } from '../models/product';
@@ -65,6 +66,7 @@ class QueryResourceService extends __BaseService {
   static readonly findAllCategoriesUsingGETPath = '/api/query/findAllCategories/{iDPcode}';
   static readonly findAllOrderLinesByOrderIdUsingGETPath = '/api/query/findAllOrderLinesByOrderId/{orderId}';
   static readonly findAuxilaryOrderLineByOrderLineIdUsingGETPath = '/api/query/findAuxilaryOrderLineByOrderLineId/{orderLineId}';
+  static readonly findCancelledOrderLinesByCancellationRequestIdUsingGETPath = '/api/query/findCancelledOrderLinesByCancellationRequestId/{id}';
   static readonly findCategoryAndCountBystoreIdUsingGETPath = '/api/query/findCategoryAndCountBystoreId/{storeId}';
   static readonly findByMobileNumberUsingGETPath = '/api/query/findCustomerByMobileNumber/{mobileNumber}';
   static readonly findLoyaltyPointByIdpCodeUsingGETPath = '/api/query/findLoyaltyPointByIdpCode/{idpCode}';
@@ -77,6 +79,7 @@ class QueryResourceService extends __BaseService {
   static readonly findStoreByNearLocationUsingGETPath = '/api/query/findStoreByNearLocation/{lat}/{lon}/{distance}/{distanceUnit}';
   static readonly findStoreTypeAndCountUsingGETPath = '/api/query/findStoreTypeAndCount';
   static readonly findUserRatingReviewByRegNoUsingGETPath = '/api/query/findUserRatingReview/{regNo}';
+  static readonly findNotificationByCustomerIdUsingGETPath = '/api/query/findnotificationbyCustomerid/{receiverId}';
   static readonly findNotificationByReceiverIdUsingGETPath = '/api/query/findnotificationbyreceiverid/{receiverId}';
   static readonly findNotificationCountByReceiverIdAndStatusNameUsingGETPath = '/api/query/findnotificationcount/{receiverId}/{status}';
   static readonly getHeaderResultUsingGETPath = '/api/query/getHeaderResult';
@@ -86,6 +89,7 @@ class QueryResourceService extends __BaseService {
   static readonly findOrderByStatusNameUsingGETPath = '/api/query/orderStatus/{statusName}';
   static readonly getOrderAggregatorUsingGETPath = '/api/query/orderaggregator/{orderNumber}';
   static readonly getAllSavedAddressUsingGETPath = '/api/query/orders/addresses/{customerId}';
+  static readonly findOrdersByCustIdUsingGETPath = '/api/query/ordersByCustId/{customerId}/{date}';
   static readonly findOrdersByCustomerIdUsingGETPath = '/api/query/ordersByCustomerId/{customerId}';
   static readonly findAndSortProductByPriceUsingGETPath = '/api/query/productByPrice/{from}/{to}';
   static readonly findProductUsingGETPath = '/api/query/products/{id}';
@@ -879,6 +883,63 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
+   * @param params The `QueryResourceService.FindCancelledOrderLinesByCancellationRequestIdUsingGETParams` containing the following parameters:
+   *
+   * - `id`: id
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findCancelledOrderLinesByCancellationRequestIdUsingGETResponse(params: QueryResourceService.FindCancelledOrderLinesByCancellationRequestIdUsingGETParams): __Observable<__StrictHttpResponse<PageOfCancelledOrderLine>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
+    if (params.size != null) __params = __params.set('size', params.size.toString());
+    if (params.page != null) __params = __params.set('page', params.page.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/findCancelledOrderLinesByCancellationRequestId/${params.id}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PageOfCancelledOrderLine>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.FindCancelledOrderLinesByCancellationRequestIdUsingGETParams` containing the following parameters:
+   *
+   * - `id`: id
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findCancelledOrderLinesByCancellationRequestIdUsingGET(params: QueryResourceService.FindCancelledOrderLinesByCancellationRequestIdUsingGETParams): __Observable<PageOfCancelledOrderLine> {
+    return this.findCancelledOrderLinesByCancellationRequestIdUsingGETResponse(params).pipe(
+      __map(_r => _r.body as PageOfCancelledOrderLine)
+    );
+  }
+
+  /**
    * @param params The `QueryResourceService.FindCategoryAndCountBystoreIdUsingGETParams` containing the following parameters:
    *
    * - `storeId`: storeId
@@ -1478,6 +1539,68 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
+   * @param params The `QueryResourceService.FindNotificationByCustomerIdUsingGETParams` containing the following parameters:
+   *
+   * - `receiverId`: receiverId
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * - `date`: date
+   *
+   * @return OK
+   */
+  findNotificationByCustomerIdUsingGETResponse(params: QueryResourceService.FindNotificationByCustomerIdUsingGETParams): __Observable<__StrictHttpResponse<PageOfNotification>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
+    if (params.size != null) __params = __params.set('size', params.size.toString());
+    if (params.page != null) __params = __params.set('page', params.page.toString());
+    if (params.date != null) __params = __params.set('date', params.date.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/findnotificationbyCustomerid/${params.receiverId}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PageOfNotification>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.FindNotificationByCustomerIdUsingGETParams` containing the following parameters:
+   *
+   * - `receiverId`: receiverId
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * - `date`: date
+   *
+   * @return OK
+   */
+  findNotificationByCustomerIdUsingGET(params: QueryResourceService.FindNotificationByCustomerIdUsingGETParams): __Observable<PageOfNotification> {
+    return this.findNotificationByCustomerIdUsingGETResponse(params).pipe(
+      __map(_r => _r.body as PageOfNotification)
+    );
+  }
+
+  /**
    * @param params The `QueryResourceService.FindNotificationByReceiverIdUsingGETParams` containing the following parameters:
    *
    * - `receiverId`: receiverId
@@ -1950,6 +2073,68 @@ class QueryResourceService extends __BaseService {
   getAllSavedAddressUsingGET(params: QueryResourceService.GetAllSavedAddressUsingGETParams): __Observable<PageOfAddress> {
     return this.getAllSavedAddressUsingGETResponse(params).pipe(
       __map(_r => _r.body as PageOfAddress)
+    );
+  }
+
+  /**
+   * @param params The `QueryResourceService.FindOrdersByCustIdUsingGETParams` containing the following parameters:
+   *
+   * - `date`: date
+   *
+   * - `customerId`: customerId
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findOrdersByCustIdUsingGETResponse(params: QueryResourceService.FindOrdersByCustIdUsingGETParams): __Observable<__StrictHttpResponse<PageOfOrder>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+
+    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
+    if (params.size != null) __params = __params.set('size', params.size.toString());
+    if (params.page != null) __params = __params.set('page', params.page.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/ordersByCustId/${params.customerId}/${params.date}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PageOfOrder>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.FindOrdersByCustIdUsingGETParams` containing the following parameters:
+   *
+   * - `date`: date
+   *
+   * - `customerId`: customerId
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findOrdersByCustIdUsingGET(params: QueryResourceService.FindOrdersByCustIdUsingGETParams): __Observable<PageOfOrder> {
+    return this.findOrdersByCustIdUsingGETResponse(params).pipe(
+      __map(_r => _r.body as PageOfOrder)
     );
   }
 
@@ -3148,6 +3333,32 @@ module QueryResourceService {
   }
 
   /**
+   * Parameters for findCancelledOrderLinesByCancellationRequestIdUsingGET
+   */
+  export interface FindCancelledOrderLinesByCancellationRequestIdUsingGETParams {
+
+    /**
+     * id
+     */
+    id: number;
+
+    /**
+     * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     */
+    sort?: Array<string>;
+
+    /**
+     * Size of a page
+     */
+    size?: number;
+
+    /**
+     * Page number of the requested page
+     */
+    page?: number;
+  }
+
+  /**
    * Parameters for findCategoryAndCountBystoreIdUsingGET
    */
   export interface FindCategoryAndCountBystoreIdUsingGETParams {
@@ -3350,6 +3561,37 @@ module QueryResourceService {
   }
 
   /**
+   * Parameters for findNotificationByCustomerIdUsingGET
+   */
+  export interface FindNotificationByCustomerIdUsingGETParams {
+
+    /**
+     * receiverId
+     */
+    receiverId: string;
+
+    /**
+     * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     */
+    sort?: Array<string>;
+
+    /**
+     * Size of a page
+     */
+    size?: number;
+
+    /**
+     * Page number of the requested page
+     */
+    page?: number;
+
+    /**
+     * date
+     */
+    date?: string;
+  }
+
+  /**
    * Parameters for findNotificationByReceiverIdUsingGET
    */
   export interface FindNotificationByReceiverIdUsingGETParams {
@@ -3514,6 +3756,37 @@ module QueryResourceService {
    * Parameters for getAllSavedAddressUsingGET
    */
   export interface GetAllSavedAddressUsingGETParams {
+
+    /**
+     * customerId
+     */
+    customerId: string;
+
+    /**
+     * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     */
+    sort?: Array<string>;
+
+    /**
+     * Size of a page
+     */
+    size?: number;
+
+    /**
+     * Page number of the requested page
+     */
+    page?: number;
+  }
+
+  /**
+   * Parameters for findOrdersByCustIdUsingGET
+   */
+  export interface FindOrdersByCustIdUsingGETParams {
+
+    /**
+     * date
+     */
+    date: string;
 
     /**
      * customerId

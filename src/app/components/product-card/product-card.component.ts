@@ -2,7 +2,7 @@ import { CartService } from './../../services/cart.service';
 import { Router } from '@angular/router';
 import { FavouriteService } from './../../services/favourite.service';
 import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
-import { StockCurrent, AuxilaryLineItem, ComboLineItem, Discount, OrderLine, AuxilaryOrderLine } from 'src/app/api/models';
+import { StockCurrent, AuxilaryLineItem, ComboLineItem, Discount, OrderLine, AuxilaryOrderLine, CancelledOrderLine, Product } from 'src/app/api/models';
 import { PopoverController, IonInput } from '@ionic/angular';
 import { QueryResourceService } from 'src/app/api/services';
 import { ShowAuxilaryModalComponent } from '../show-auxilary-modal/show-auxilary-modal.component';
@@ -30,11 +30,13 @@ export class ProductCardComponent implements OnInit, OnDestroy {
 
   @Input() orderLine: OrderLine;
 
+  @Input() cancelledOrderLine: CancelledOrderLine;
+
   @Input() auxilaryOrderLine: AuxilaryOrderLine[] = [];
 
   @Input() auxilariesProducts = [];
 
-  @Input() product;
+  @Input() product: Product;
 
   @Input() auxTotal = 0;
 

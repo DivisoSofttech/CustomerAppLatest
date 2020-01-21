@@ -33,7 +33,7 @@ export class PaymentSuccessfullInfoComponent implements OnInit , OnDestroy {
     private queryResource: QueryResourceService,
     private util: Util,
     private sharedData: SharedDataService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
   ) { }
 
   async continueShopping() {
@@ -54,6 +54,7 @@ export class PaymentSuccessfullInfoComponent implements OnInit , OnDestroy {
   getRequiredDetails() {
     this.currentShop = this.cartService.currentShop;
     this.cartService.emptyCart();
+    this.orderService.refresh();
     this.getOrder();
     this.total = this.orderService.order.grandTotal;
     this.method = this.orderService.paymentMethod;

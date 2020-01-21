@@ -18,17 +18,14 @@
     <ng-content *ngTemplateOutlet="OrderStepper"></ng-content>
     <ng-content *ngTemplateOutlet="OrderDetails"></ng-content>
     <ng-content *ngTemplateOutlet="OrderProductDetails"></ng-content>
+    <ng-content *ngTemplateOutlet="CamcelledOrderProductDetails"></ng-content>
     <ng-content *ngTemplateOutlet="OrderExtraDetails"></ng-content>
   </div>
   <div class="footer" *ngIf="orderDelivered">
-    <ion-button expand="block" class="ion-margin" (click)="reorder()"
-      >Reorder</ion-button
-    >
+    <ion-button expand="block" class="ion-margin" (click)="reorder()">Reorder</ion-button>
   </div>
   <div class="footer" *ngIf="ShowContinueShopping">
-    <ion-button expand="block" class="ion-margin" (click)="continue()"
-      >Continue Shopping</ion-button
-    >
+    <ion-button expand="block" class="ion-margin" (click)="continue()">Continue Shopping</ion-button>
   </div>
 </ion-content>
 
@@ -54,6 +51,12 @@
   </ion-item>
   <ion-item *ngIf="orderDelivered" color="success" lines="full">
     <ion-text>Order Delivered</ion-text>
+  </ion-item>
+  <ion-item *ngIf="orderCancelled && !orderRefundCompleted" color="warning" lines="full">
+    <ion-text>Cancellation Requseted</ion-text>
+  </ion-item>
+  <ion-item *ngIf="orderCancelled && orderRefundCompleted" color="success" lines="full">
+    <ion-text>Refund Completed</ion-text>
   </ion-item>
 </ng-template>
 <!--Order Status End-->
@@ -107,43 +110,25 @@
         <ion-text slot="start" class="font-small">
           Subtotal
         </ion-text>
-        <ion-text
-          *ngIf="order.deliveryInfo !== null"
-          slot="start"
-          slot="end"
-          class="ion-text-right font-small"
-        >
+        <ion-text *ngIf="order.deliveryInfo !== null" slot="start" slot="end" class="ion-text-right font-small">
           + &#8364;{{ order.subTotal | number: "1.2-2" }}
         </ion-text>
       </ion-item>
       <ion-item lines="none" *ngIf="offer.length !== 0">
-        <ion-icon
-          name="done-all"
-          slot="start"
-          no-margin
-          color="success"
-        ></ion-icon>
+        <ion-icon name="done-all" slot="start" no-margin color="success"></ion-icon>
         <ion-text slot="start" class="font-small" color="success">
           <p>
             10% FoodExp discount
           </p>
         </ion-text>
-        <ion-text
-          *ngFor="let offerline of offer"
-          slot="start"
-          slot="end"
-          class="ion-text-right font-small"
-        >
+        <ion-text *ngFor="let offerline of offer" slot="start" slot="end" class="ion-text-right font-small">
           - &#8364;{{ offerline.orderDiscountAmount | number: "1.2-2" }}
         </ion-text>
       </ion-item>
-      <ion-item
-        lines="none"
-        *ngIf="
+      <ion-item lines="none" *ngIf="
           order.deliveryInfo !== null &&
           order.deliveryInfo.deliveryType === 'delivery'
-        "
-      >
+        ">
         <ion-text slot="start" class="font-small">
           Delivery
         </ion-text>
@@ -151,46 +136,22 @@
           + &#8364;{{ order.deliveryInfo.deliveryCharge | number: "1.2-2" }}
         </ion-text>
       </ion-item>
-      <!-- <ion-item
-        lines="none"
-        *ngIf="
-          order.deliveryInfo !== null &&
-          order.deliveryInfo.deliveryType === 'collection'
-        "
-      >
-        <ion-text slot="start" class="font-small">
-          Collection
-        </ion-text>
-        <ion-text slot="start" slot="end" class="font-small ion-text-right">
-          &#8364; 0
-        </ion-text>
-      </ion-item> -->
     </ion-card-header>
     <ion-card-content class="ion-no-padding">
       <ion-item lines="none">
         <ion-text slot="start" class="font-small">
           <b>Total</b>
         </ion-text>
-        <ion-text
-          slot="start"
-          slot="end"
-          class="ion-text-right font-small"
-          *ngIf="
+        <ion-text slot="start" slot="end" class="ion-text-right font-small" *ngIf="
             order.deliveryInfo !== null &&
             order.deliveryInfo.deliveryType === 'delivery'
-          "
-        >
+          ">
           <b>&#8364;{{ order.grandTotal | number: "1.2-2" }}</b>
         </ion-text>
-        <ion-text
-          slot="start"
-          slot="end"
-          class="ion-text-right font-small"
-          *ngIf="
+        <ion-text slot="start" slot="end" class="ion-text-right font-small" *ngIf="
             order.deliveryInfo !== null &&
             order.deliveryInfo.deliveryType === 'collection'
-          "
-        >
+          ">
           <b>&#8364;{{ order.grandTotal | number: "1.2-2" }}</b>
         </ion-text>
       </ion-item>
@@ -206,17 +167,35 @@
       <ion-spinner name="dots"></ion-spinner>
     </ion-card-content>
   </ion-card>
-  <app-product-card
-    [type]="'minimal'"
-    *ngFor="let orderLine of orderLines"
-    [auxTotal]="total[orderLine.id]"
-    [auxilariesProducts]="auxilariesProducts[orderLine.productId]"
-    [product]="products[orderLine.productId]"
-    [orderLine]="orderLine"
-    [auxilaryOrderLine]="auxilaryOrderLines[orderLine.id]"
-  ></app-product-card>
+  <app-product-card [type]="'minimal'" *ngFor="let orderLine of orderLines" [auxTotal]="total[orderLine.id]"
+    [auxilariesProducts]="auxilariesProducts[orderLine.productId]" [product]="products[orderLine.productId]"
+    [orderLine]="orderLine" [auxilaryOrderLine]="auxilaryOrderLines[orderLine.id]"></app-product-card>
 </ng-template>
 <!--Order Product Details End-->
+
+<!--Cancelled Product Details Start-->
+<ng-template #CamcelledOrderProductDetails>
+  <ion-card color="light">
+    <ion-card-header class="ion-no-padding">
+      <ion-item lines="none">
+        <ion-label>
+          <h1>Cancelled Products</h1>
+        </ion-label>
+        <ion-icon name="arrow-dropdown-circle" *ngIf="!showCancellation" (click)="toggleCancellation()"></ion-icon>
+        <ion-icon name="arrow-dropup-circle" *ngIf="showCancellation" (click)="toggleCancellation()"></ion-icon>
+      </ion-item>
+    </ion-card-header>
+    <ion-card-content class="ion-no-padding" *ngIf="showCancellation">
+      <app-product-card [type]="'minimal'" *ngFor="let cancelledOrderLine of cancelledOrderLines"
+        [product]="products[cancelledOrderLine.productId]" [cancelledOrderLine]="cancelledOrderLine"></app-product-card>
+      <ion-item>
+        <ion-lable>Total</ion-lable>
+        <ion-lable slot="end">{{cancellationTotal |  number: "1.1-2"}}</ion-lable>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+</ng-template>
+<!--Cancelled Product Details End-->
 
 <!--Order Extra Details Start-->
 <ng-template #OrderExtraDetails>
@@ -230,12 +209,10 @@
       </h3>
     </ion-label>
   </ion-item>
-  <ion-card
-    *ngIf="
+  <ion-card *ngIf="
     order.deliveryInfo.deliveryType !== 'collection' &&
       order.deliveryInfo !== null && order.deliveryInfo.deliveryAddress !== null
-    "
-  >
+    ">
     <ion-card-header color="light">
       <ion-card-title>
         <h1>Address</h1>
@@ -262,11 +239,9 @@
       </ng-container>
     </ion-card-content>
   </ion-card>
-  <ion-card
-    *ngIf="
+  <ion-card *ngIf="
       order.deliveryInfo !== null && order.deliveryInfo.deliveryNotes !== null
-    "
-  >
+    ">
     <ion-card-header color="light">
       <ion-card-title>
         <h1>Note</h1>
