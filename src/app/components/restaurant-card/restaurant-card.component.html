@@ -1,6 +1,6 @@
 <!--Normal View-->
 
-<ion-card class="ion-no-padding" *ngIf="viewType === 'normal'">
+<ion-card class="ion-no-padding" *ngIf="viewType === 'normal' && store.name">
   <span
     class="ribbon6"
     *ngIf="!(currentTime | closed: store.openingTime:store.closingTime)"
@@ -26,7 +26,7 @@
       </ion-icon>
       <ion-label style="margin-left:15px">
         <ion-text word-wrap text-wrap class="category">
-          <h2 class="store-name fnt-sserif">
+          <h2 class="store-name fnt-sserif" *ngIf="store.name">
             {{ store.name + ', ' | titlecase }}
             <small *ngIf="store.storeAddress" class="cl-grey">{{
               (store.storeAddress.city | titlecase)

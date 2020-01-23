@@ -93,6 +93,7 @@
           <app-category-wise-products-card
             *ngIf="store !== undefined"
             [category]="category"
+            [highlightProductId]="highlightProductId"
             [store]="store"
             [isGuest]="isGuest"
             [showData]="categoryShow[category.id]"

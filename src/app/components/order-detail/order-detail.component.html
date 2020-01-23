@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header *ngIf="viewType==='full'">
   <ion-toolbar>
     <ion-buttons>
       <ion-button (click)="dismiss()" *ngIf="!modalType">
@@ -12,7 +12,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content appScrollbarTheme>
+<ion-content appScrollbarTheme *ngIf="viewType==='full'">
   <div class="content">
     <ng-content *ngTemplateOutlet="OrderStatus"></ng-content>
     <ng-content *ngTemplateOutlet="OrderStepper"></ng-content>
@@ -21,7 +21,7 @@
     <ng-content *ngTemplateOutlet="CamcelledOrderProductDetails"></ng-content>
     <ng-content *ngTemplateOutlet="OrderExtraDetails"></ng-content>
   </div>
-  <div class="footer" *ngIf="orderDelivered">
+  <div class="footer" *ngIf="orderDelivered || orderRefundCompleted">
     <ion-button expand="block" class="ion-margin" (click)="reorder()">Reorder</ion-button>
   </div>
   <div class="footer" *ngIf="ShowContinueShopping">
@@ -90,8 +90,8 @@
 <!--Order Details Start-->
 <ng-template #OrderDetails>
   <ion-item *ngIf="store" lines="full">
-    <ion-avatar mode="ios">
-      <ion-img [src]="store.imageLink"></ion-img>
+    <ion-avatar mode="ios" >
+      <ion-img class="storeimage" [src]="store.imageLink"></ion-img>
     </ion-avatar>
     <ion-text class="ion-margin">
       {{ store.name | titlecase }}
@@ -177,7 +177,7 @@
 <ng-template #CamcelledOrderProductDetails>
   <ion-card color="light" *ngIf="cancelledOrderLines.length !== 0">
     <ion-card-header class="ion-no-padding">
-      <ion-item lines="none">
+      <ion-item lines="none" color="light">
         <ion-label>
           <h1>Cancelled Products</h1>
         </ion-label>
@@ -190,7 +190,7 @@
         [product]="products[cancelledOrderLine.productId]" [cancelledOrderLine]="cancelledOrderLine"></app-product-card>
       <ion-item>
         <ion-lable>Total</ion-lable>
-        <ion-lable slot="end">{{cancellationTotal |  number: "1.1-2"}}</ion-lable>
+        <ion-lable slot="end">&euro;{{cancellationTotal |  number: "1.1-2"}}</ion-lable>
       </ion-item>
     </ion-card-content>
   </ion-card>

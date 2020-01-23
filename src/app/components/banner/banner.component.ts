@@ -12,16 +12,16 @@ import { Banner } from 'src/app/api/models';
 export class BannerComponent implements OnInit , OnDestroy {
 
   showLoading: Boolean = true;
-  @Input() direction: string = 'horizontal';
+  @Input() direction: string;
   @ViewChild('slides', null) slides: IonSlides;
   banners: Banner[] = [];
   bannerSubscription: any;
 
-
   slideOpts = {
+    direction: this.direction,
     preloadImages:true,
     lazy:false,
-    slidesPerView: this.platform.width() < 1280?this.platform.width()<400?1:2:3,
+    slidesPerView: this.platform.width() < 1280?this.platform.width()<400?2:1:2,
     on: {
       beforeInit() {
         const swiper = this;
@@ -68,6 +68,7 @@ export class BannerComponent implements OnInit , OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.slideOpts.direction = this.direction;
     this.getBanners(0);
     this.slides.startAutoplay();
   }

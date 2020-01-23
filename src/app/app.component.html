@@ -52,8 +52,10 @@
       </ion-content>
     </ion-menu>
     <ion-router-outlet main></ion-router-outlet>
-    <app-filter class="extra" [showClose]="false" *ngIf="showFilter" main></app-filter>
-    <app-review class="extra" [viewType]="'full'" *ngIf="store !== null && showReview" [store]="store" main></app-review>
-    <div class="extra" *ngIf="(!showFilter && !showReview) || (store === null && !showFilter)" main></div>
+    <app-banner class="extra desktop-only" *ngIf="showBanners" [direction]="'vertical'" main></app-banner>
+    <app-delivery-item-details class="extra desktop-only" *ngIf="showOrderDetails" [viewType]="'minimal'" main></app-delivery-item-details>
+    <app-filter class="extra desktop-only" [showClose]="false" *ngIf="showFilter" main></app-filter>
+    <app-review class="extra desktop-only" [viewType]="'full'" *ngIf="store !== null && showReview" [store]="store" main></app-review>
+    <div class="extra desktop-only" *ngIf="(!showFilter && !showReview && !showOrderDetails && !showBanners) || (store === null && !showFilter && !showOrderDetails && !showBanners)" main></div>
   </ion-split-pane>
 </ion-app>

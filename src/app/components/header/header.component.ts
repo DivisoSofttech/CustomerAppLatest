@@ -1,7 +1,7 @@
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
-import { IonInfiniteScroll, IonSearchbar, ModalController, Platform } from '@ionic/angular';
+import { IonInfiniteScroll, IonSearchbar, ModalController, Platform, NavController } from '@ionic/angular';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
-import { Component, OnInit, ViewChild, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { NotificationService } from 'src/app/services/notification.service';
 import { RecentService, RecentType } from 'src/app/services/recent.service';
 import { LogService } from 'src/app/services/log.service';
@@ -27,6 +27,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public customer: CustomerDTO;
 
   public suggestions: HeaderSuggestion[] = [];
+
+  private tempSuggestions: HeaderSuggestion[] = [];
 
   public results: HeaderResult[] = [];
   
@@ -56,14 +58,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private logger: LogService,
     private queryResource: QueryResourceService,
     private modalController: ModalController,
-    private platform: Platform
+    private platform: Platform,
+    private navController: NavController
   ) { }
 
   ngOnInit() {
     this.logger.info(this, 'Initializing', HeaderComponent.name);
-    this.onChangeSubscription = this.restaurantSearch.ionChange.subscribe(()=>{
-      this.suggestions = [];
-      this.fetchSuggestions();
+    this.onChangeSubscription = this.restaurantSearch.ionChange.subscribe((data)=>{
+      if(data.detail.value.trim() !== '') {
+        this.suggestions = [];
+        this.fetchSuggestions();  
+      }
     });
     this.getNotificationCount();
     this.getRecents();
@@ -113,10 +118,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.showLoading = true;
     this.queryResource.getSuggestionUsingGET(this.searchTerm)
     .subscribe((data: HeaderSuggestion[]) => {
-      console.error(data);
       this.showLoading = false;
       this.showNotFound = true;
       this.suggestions = data;
+    },err=>{
+      this.showLoading = false;
+      this.showNotFound = false;
     });  
   }
 
@@ -124,6 +131,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.onChangeSubscription.unsubscribe();
     this.showLoading = true;
     this.headerSuggestion = headerSuggestion;
+    this.tempSuggestions = this.suggestions;
     this.suggestions = [];
     this.showNotFound = false;
     this.searchTerm = headerSuggestion.suggestionData;
@@ -135,24 +143,37 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   private fetchSearchResults(i) {
-    // const found = this.recentSearches.some(el => el.data === this.headerSuggestion);
-    // if (!found) {
-    //   this.recentService.saveRecent({ data: this.headerSuggestion, type: RecentType.HEADER_SUGGESTIONS });
-    // }
     this.queryResource.getHeaderResultUsingGET({
       suggestionData: this.headerSuggestion.suggestionData,
       indexName: this.headerSuggestion.indexName,
       page: i
 
     }).subscribe(data => {
+      console.error(data);
       this.showLoading = false;
       this.results = data.content;
       this.onChangeSubscription = this.restaurantSearch.ionChange.subscribe(()=>{
         this.suggestions = [];
         this.fetchSuggestions();
       })
-      console.log(data.content);
     })
+  }
+
+  fetchResult(result: HeaderResult) {
+    this.queryResource.searchUsingGET(
+      {
+        indexName: result.resultType,
+        id: result.id
+      }
+    ).subscribe((data: any)=>{
+      if(result.resultType === 'product') {
+        this.navController.navigateForward('/store/search/' + data.idpcode + '/p/' + data.id + '/' + data.category.id);
+      } else if(result.resultType === 'category') {
+        this.navController.navigateForward('/store/search/' + data.idpcode + '/c/' + data.id);
+      } else {
+
+      }
+    });
   }
 
 
@@ -160,6 +181,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.logger.info(this, 'SearchBar Toggled - View', this.showSearchBar);
     this.showSearchBar = !this.showSearchBar;
     this.showSearchPane = !this.showSearchPane;
+    this.showLoading = false;
     if (this.showSearchBar === true) {
       this.restaurantSearch.setFocus();
       this.searchEvent.emit(true);

@@ -5,10 +5,10 @@
   ></app-header>
 </ion-header>
 <ion-content appScrollbarTheme>
-  <ion-grid class="ion-no-padding ion-no-margin full-height">
+  <ion-grid class="ion-no-padding ion-no-margin">
     <ion-row class="ion-no-padding ion-no-margin full-height">
       <ion-col size="12" size-md="12" class="ion-no-padding ion-no-margin">
-        <app-banner></app-banner>
+        <app-banner [direction]="'horizontal'"></app-banner>
         <div class="posSticky">
           <ion-item lines="none" color="light">
             <ion-label slot="start">

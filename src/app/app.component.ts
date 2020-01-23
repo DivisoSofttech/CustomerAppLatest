@@ -1,6 +1,6 @@
 import { Util } from './services/util';
 import { KeycloakService } from './services/security/keycloak.service';
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, ChangeDetectorRef } from '@angular/core';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { Platform,ModalController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -41,6 +41,8 @@ export class AppComponent {
   currentUrl: string;
 
   cartSize = 0;
+  showOrderDetails: boolean;
+  showBanners: boolean;
 
   constructor(
     private platform: Platform,
@@ -56,10 +58,12 @@ export class AppComponent {
     private localNotifications: LocalNotifications,
     private router: Router,
     private guestUserService: GuestUserService,
+    private cref: ChangeDetectorRef
   ) {
     registerLocaleData(localeFr, 'fr');
     this.cartService.observableTickets.subscribe(data => {
       this.cartSize = data.length;
+      this.cref.detectChanges();
     });
     this.getCurrentStore();
     this.appPages = APP_SIDE_MENU;
@@ -97,15 +101,35 @@ export class AppComponent {
           this.logger.info(this,'Turning On Filter View')
           this.showFilter = true;
           this.showReview = false;
+          this.showOrderDetails = false;
+          this.showBanners = false;
         } 
         else if(val.slice(0,7)==='/store/'){
           this.logger.info(this,'Turning On Review View')
           this.showReview = true;
           this.showFilter = false;
+          this.showOrderDetails = false;
+          this.showBanners = false;
+        }
+        else if(val==='/basket'){
+          this.logger.info(this,'Turning On Basket View')
+          this.showBanners = true;
+          this.showReview = false;
+          this.showFilter = false;
+          this.showOrderDetails = false;
+        }
+        else if(val==='/checkout'){
+          this.logger.info(this,'Turning On OrderDetails View')
+          this.showReview = false;
+          this.showFilter = false;
+          this.showBanners = false;
+          this.showOrderDetails = true;
         }else {
           this.logger.info(this,'Turning Off Filter View')
+          this.showOrderDetails = false;
           this.showFilter = false;
           this.showReview = false;
+          this.showBanners = false;
         }
       }  else {
         this.logger.info(this,'Turning On Filter View Window Small')
