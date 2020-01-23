@@ -18,6 +18,7 @@ import { NoCommaPipe } from 'src/app/pipes/no-comma.pipe';
 })
 export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
 
+  @Input() viewType = 'full';
   orders: OrderLine[] = [];
 
   total;

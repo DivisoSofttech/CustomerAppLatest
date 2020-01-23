@@ -41,6 +41,8 @@ export class AppComponent {
   currentUrl: string;
 
   cartSize = 0;
+  showOrderDetails: boolean;
+  showBanners: boolean;
 
   constructor(
     private platform: Platform,
@@ -97,15 +99,35 @@ export class AppComponent {
           this.logger.info(this,'Turning On Filter View')
           this.showFilter = true;
           this.showReview = false;
+          this.showOrderDetails = false;
+          this.showBanners = false;
         } 
         else if(val.slice(0,7)==='/store/'){
           this.logger.info(this,'Turning On Review View')
           this.showReview = true;
           this.showFilter = false;
+          this.showOrderDetails = false;
+          this.showBanners = false;
+        }
+        else if(val==='/basket'){
+          this.logger.info(this,'Turning On Basket View')
+          this.showBanners = true;
+          this.showReview = false;
+          this.showFilter = false;
+          this.showOrderDetails = false;
+        }
+        else if(val==='/checkout'){
+          this.logger.info(this,'Turning On OrderDetails View')
+          this.showReview = false;
+          this.showFilter = false;
+          this.showBanners = false;
+          this.showOrderDetails = true;
         }else {
           this.logger.info(this,'Turning Off Filter View')
+          this.showOrderDetails = false;
           this.showFilter = false;
           this.showReview = false;
+          this.showBanners = false;
         }
       }  else {
         this.logger.info(this,'Turning On Filter View Window Small')

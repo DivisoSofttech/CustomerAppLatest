@@ -1,9 +1,9 @@
-import { IonSlides, IonRefresher, PopoverController, NavController, Platform, IonInfiniteScroll} from '@ionic/angular';
+import { IonSlides, IonRefresher, PopoverController, NavController, Platform, IonInfiniteScroll } from '@ionic/angular';
 import { ViewChild, OnDestroy, HostListener } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services/query-resource.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { StockCurrent,  Category, Store } from 'src/app/api/models';
+import { StockCurrent, Category, Store } from 'src/app/api/models';
 import { HotelMenuPopoverComponent } from 'src/app/components/hotel-menu-popover/hotel-menu-popover.component';
 import { MapComponent } from 'src/app/components/map/map.component';
 import { ClosedPipe } from 'src/app/pipes/closed.pipe';
@@ -16,10 +16,10 @@ import { KeycloakService } from 'src/app/services/security/keycloak.service';
   templateUrl: './store.page.html',
   styleUrls: ['./store.page.scss']
 })
-export class StorePage implements OnInit , OnDestroy {
+export class StorePage implements OnInit, OnDestroy {
 
 
-  slideOptions = {autoHeight: true};
+  slideOptions = { autoHeight: true };
 
   storeId;
 
@@ -63,6 +63,8 @@ export class StorePage implements OnInit , OnDestroy {
   categoryShow = {};
   showFooter: any = true;
   showReview: any = true;
+  highlightCategoryId;
+  highlightProductId;
 
   constructor(
     private queryResource: QueryResourceService,
@@ -74,17 +76,14 @@ export class StorePage implements OnInit , OnDestroy {
     private closedPipe: ClosedPipe,
     private recentService: RecentService,
     private keycloakService: KeycloakService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.checkIfGuest();
     this.recentService.setCurrentSelectedStore(null);
     this.getStoreId();
-    this.getStore();
     this.timeNow = new Date();
-
     this.checkPlatformWidth();
-
     // temp Fix for sliderHeight
     this.fixSliderHeight();
   }
@@ -96,7 +95,7 @@ export class StorePage implements OnInit , OnDestroy {
 
 
   checkPlatformWidth() {
-    if(this.platform.width() >= 1280) {
+    if (this.platform.width() >= 1280) {
       this.showReview = false;
     } else {
       this.showReview = true;
@@ -105,17 +104,17 @@ export class StorePage implements OnInit , OnDestroy {
 
   checkIfGuest() {
     this.keycloakSubscription = this.keycloakService.getUserGuestSubscription()
-    .subscribe(data => {
-      if(data !== null) {
-        this.isGuest= data;
-      } else {
-        this.isGuest = true;
-      }
-    });
+      .subscribe(data => {
+        if (data !== null) {
+          this.isGuest = data;
+        } else {
+          this.isGuest = true;
+        }
+      });
   }
 
   fixSliderHeight() {
-    this.slideWidthChecker =  setInterval(() => {
+    this.slideWidthChecker = setInterval(() => {
       if (this.ionSlides !== undefined) {
         this.ionSlides.updateAutoHeight();
       }
@@ -123,11 +122,50 @@ export class StorePage implements OnInit , OnDestroy {
   }
 
   ngOnDestroy(): void {
-   clearInterval(this.slideWidthChecker);
+    clearInterval(this.slideWidthChecker);
   }
 
   getStoreId() {
     this.storeId = this.route.snapshot.paramMap.get('id');
+    if (!this.storeId) {
+      const idpcode = this.route.snapshot.paramMap.get('idpcode');
+      this.filterSearchedItem();
+      this.getStoreByIdpCode(idpcode)
+    } else {
+      this.getStore();
+    }
+  }
+
+  filterSearchedItem() {
+    const type = this.route.snapshot.paramMap.get('type');
+    this.highlightProductId = this.route.snapshot.paramMap.get('tid');
+    this.highlightCategoryId  = this.route.snapshot.paramMap.get('cid');
+  }
+
+  getStoreDetails() {
+    this.recentService.setCurrentSelectedStore(this.store);
+    this.showRestaurantLoading = false;
+    this.checkPreorderStatus();
+    this.checkClosedStatus();
+    this.getCategories(0);
+    this.getCategoriesEntry(0);
+    // Show the Store In Map
+    if (this.map !== undefined) {
+      this.map.loadMap(this.store.location);
+    }
+  }
+
+  getStoreByIdpCode(idpcode) {
+    this.queryResource.findStoreByRegisterNumberUsingGET(idpcode)
+      .subscribe(result => {
+        this.logger.info(this, 'Got Store ', result.name, result);
+        this.store = result;
+        this.getStoreDetails();
+      },
+        err => {
+          this.showRestaurantLoading = false;
+          this.logger.fatal('Error Fetching Stores', err);
+        })
   }
 
   getStore() {
@@ -135,18 +173,9 @@ export class StorePage implements OnInit , OnDestroy {
       .findStoreByIdUsingGET(this.storeId)
       .subscribe(
         result => {
-          this.logger.info(this,'Got Store ', result.name, result);
+          this.logger.info(this, 'Got Store ', result.name, result);
           this.store = result;
-          this.recentService.setCurrentSelectedStore(this.store);
-          this.showRestaurantLoading = false;
-          this.checkPreorderStatus();
-          this.checkClosedStatus();
-          this.getCategories(0);
-          this.getCategoriesEntry(0);
-          // Show the Store In Map
-          if (this.map !== undefined) {
-            this.map.loadMap(this.store.location);
-          }
+          this.getStoreDetails();
         },
         err => {
           this.showRestaurantLoading = false;
@@ -162,7 +191,7 @@ export class StorePage implements OnInit , OnDestroy {
       })
       .subscribe(
         result => {
-          this.logger.info(this,'Got Categories Entry', result);
+          this.logger.info(this, 'Got Categories Entry', result);
           this.entry = result;
         },
         err => {
@@ -174,39 +203,46 @@ export class StorePage implements OnInit , OnDestroy {
   toggleCategoryShow(id) {
     this.categoryShow[id] = !this.categoryShow[id];
     this.ionSlides.updateAutoHeight()
-    .then(()=> {
-      document.body.scrollTo(0,0);
-    });
+      .then(() => {
+        document.body.scrollTo(0, 0);
+      });
   }
 
-  getCategories(i , event?) {
+  getCategories(i, event?) {
     this.queryResource
       .findAllCategoriesUsingGET({
         iDPcode: this.store.regNo,
         page: i
       })
       .subscribe(result => {
-        this.logger.info(this,this,'Got Categories', result);
+        this.logger.info(this, this, 'Got Categories', result);
         let j = 0;
-        if(i === 0 && result.content.length === 0) {
+        if (i === 0 && result.content.length === 0) {
           this.emptyStore = true;
         }
         result.content.forEach(c => {
-          this.categories.push(c);
-          if(i < 1 && j < 2 && this.platform.width() < 1280 ) {
-            this.categoryShow[c.id] =  true;
+          if(c.id == this.highlightCategoryId) {
+            this.categories.unshift(c);
+            this.categoryShow[c.id] = true;
+          } else {
+            this.categories.push(c);
+          }
+          if (i < 1 && j < 2 && this.platform.width() < 1280) {
+            this.categoryShow[c.id] = true;
             j++;
-          } else if(i < 1 && j < 4 && this.platform.width() >= 1280 ){
-            this.categoryShow[c.id] =  true;
+          } else if (i < 1 && j < 4 && this.platform.width() >= 1280) {
+            this.categoryShow[c.id] = true;
             j++;
           } else {
-            this.categoryShow[c.id] =  false;
+            if(c.id != this.highlightCategoryId) {
+              this.categoryShow[c.id] = false;
+            }
           }
         });
-        if(i > 0 && event) {
+        if (i > 0 && event) {
           event.target.complete()
         }
-        if(i === result.totalPages) {
+        if (i === result.totalPages) {
           this.toggleInfiniteScroll();
         }
         this.toggleIonRefresher();
@@ -216,8 +252,8 @@ export class StorePage implements OnInit , OnDestroy {
 
   loadMoreCategories(event) {
     ++this.pageNum;
-    this.logger.info(this,'Fetching More Categories' , this.pageNum);
-    this.getCategories(this.pageNum , event);
+    this.logger.info(this, 'Fetching More Categories', this.pageNum);
+    this.getCategories(this.pageNum, event);
   }
 
   toggleInfiniteScroll() {
@@ -265,7 +301,7 @@ export class StorePage implements OnInit , OnDestroy {
   }
 
   navigateBasket() {
-    this.logger.info(this,'Routing to basket');
+    this.logger.info(this, 'Routing to basket');
     this.navController.navigateForward('/basket');
   }
 
@@ -275,7 +311,7 @@ export class StorePage implements OnInit , OnDestroy {
       this.ionSlides.slideTo(0);
     } else if (this.currentSegment === 'reviews' && this.showReview) {
       this.ionSlides.slideTo(1);
-    } else if(this.currentSegment === 'info' && !this.showReview) {
+    } else if (this.currentSegment === 'info' && !this.showReview) {
       this.ionSlides.slideTo(1);
     } else {
       this.ionSlides.slideTo(2);
@@ -292,7 +328,7 @@ export class StorePage implements OnInit , OnDestroy {
         this.currentSegment = 'menu';
       } else if (index === 1 && this.showReview) {
         this.currentSegment = 'reviews';
-      } else if(index === 1 && !this.showReview){
+      } else if (index === 1 && !this.showReview) {
         this.currentSegment = 'info';
       } else {
         this.currentSegment = 'info';
@@ -312,8 +348,8 @@ export class StorePage implements OnInit , OnDestroy {
   }
 
   toggleFabButtonAndFooter(val) {
-    this.logger.info(this,val, '----');
-    this.logger.info(this,'Hiding Fab Button');
+    this.logger.info(this, val, '----');
+    this.logger.info(this, 'Hiding Fab Button');
     this.showCatgeoryFilterFab = val;
     this.showFooter = val;
   }
@@ -325,13 +361,13 @@ export class StorePage implements OnInit , OnDestroy {
     // Preorder Should be Avialable
     // And Current Time should be between preorder[fromTime and toTime]
     const currentTime = new Date();
-    this.isOrderAvailable = !this.closedPipe.transform(currentTime,this.store.openingTime,this.store.closingTime)
-    && this.store.preOrderSettings.isPreOrderAvailable
-    && this.closedPipe.transform(currentTime, this.store.preOrderSettings.fromTime,this.store.preOrderSettings.toTime);
+    this.isOrderAvailable = !this.closedPipe.transform(currentTime, this.store.openingTime, this.store.closingTime)
+      && this.store.preOrderSettings.isPreOrderAvailable
+      && this.closedPipe.transform(currentTime, this.store.preOrderSettings.fromTime, this.store.preOrderSettings.toTime);
   }
 
   checkClosedStatus() {
     const currentTime = new Date();
-    this.isClosed = !this.closedPipe.transform(currentTime,this.store.openingTime,this.store.closingTime)
+    this.isClosed = !this.closedPipe.transform(currentTime, this.store.openingTime, this.store.closingTime)
   }
 }

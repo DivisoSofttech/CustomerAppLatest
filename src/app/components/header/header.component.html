@@ -23,8 +23,8 @@
   <!--SearchBar Restaurant-->
   <ion-buttons [ngClass]="(showSearchBar === true)?'':'hidden'">
     <ion-searchbar #search showCancelButton="always" showClearButton="always" placeholder="Search"
-      [(ngModel)]="searchTerm" (ionCancel)="toggleSearchBar()"  (ionClear)="textClear()"
-      class="header-search"></ion-searchbar>
+      [(ngModel)]="searchTerm" (ionCancel)="toggleSearchBar()" (ionClear)="textClear()" class="header-search">
+    </ion-searchbar>
   </ion-buttons>
   <!--SearchBar Restaurant-->
 
@@ -32,10 +32,16 @@
 
 <ion-content class="container header-search header-content"
   [style.display]="(showSearchPane === true && showSearchBar === true) ? 'block' : 'none'">
-  <ion-spinner color="primary" name="dots" *ngIf="showLoading"></ion-spinner>
+  <ion-spinner color="primary" name="dots" *ngIf="showLoading && suggestions.length === 0"></ion-spinner>
   <ion-list *ngIf="suggestions.length > 0">
-    <ion-item *ngFor="let suggestion of suggestions" (click)="selectSuggestionSearchTerm(suggestion)">
-      {{suggestion.suggestionData}}
+    <ion-item *ngFor="let suggestion of suggestions" lines="full" (click)="selectSuggestionSearchTerm(suggestion)">
+      <ion-icon slot="start" name="search"></ion-icon>
+      <ion-label>
+        <h1>{{suggestion.suggestionData}}</h1>
+        <p *ngIf="suggestion.indexName === 'product'">in Recipies</p>
+        <p *ngIf="suggestion.indexName === 'category'">in Cusines</p>
+        <p *ngIf="suggestion.indexName === 'store'">in Restaurants</p>
+      </ion-label>
     </ion-item>
   </ion-list>
   <!-- <ion-list *ngIf="recentSearches.length > 0 && searchTerm==='' && !showLoading">
@@ -57,22 +63,28 @@
       </ion-item>
       <ion-col class="restaurantCol" size="12">
         <ng-container *ngFor="let result of results">
-          <app-restaurant-card *ngIf="result.resultType==='store'" [storeId]="result.id"></app-restaurant-card>
-          <ion-item *ngIf="result.resultType==='product'">
+          <app-restaurant-card (click)="fetchResult(result)" *ngIf="result.resultType==='store'" [storeId]="result.id">
+          </app-restaurant-card>
+          <ion-item (click)="fetchResult(result)" *ngIf="result.resultType==='product'">
             <ion-thumbnail>
               <ion-img src="{{result.imageLink}}"></ion-img>
             </ion-thumbnail>
             <ion-label>
-              <h1>{{result.name}}</h1>
+              <ion-text>
+                <h1>{{result.name}}</h1>
+                <p>in Recipies</p>
+              </ion-text>
             </ion-label>
           </ion-item>
-          <ion-item *ngIf="result.resultType==='category'">
+          <ion-item (click)="fetchResult(result)" *ngIf="result.resultType==='category'">
             <ion-thumbnail>
               <ion-img src="{{result.imageLink}}"></ion-img>
             </ion-thumbnail>
             <ion-label>
-              <h1>{{result.name}}</h1>
-              <p>Category</p>
+              <ion-text>
+                <h1>{{result.name}}</h1>
+                <p>in Cusines</p>
+              </ion-text>
             </ion-label>
           </ion-item>
         </ng-container>

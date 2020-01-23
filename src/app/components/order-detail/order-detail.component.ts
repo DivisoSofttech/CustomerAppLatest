@@ -27,6 +27,8 @@ export class OrderDetailComponent implements OnInit {
 
   @Input() order: Order;
 
+  @Input() viewType = 'full';
+
   @Input() ShowContinueShopping: Boolean = false;
 
   @Input() modalType: Boolean = false;
@@ -95,11 +97,13 @@ export class OrderDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.logger.info(this, this.order);
-    this.fetchOrderLinesByOrderId(0);
-    this.fetchCancelledOrderlines(0);
-    this.fetchAppliedOffers(this.order.id);
-    this.checkOrderType();
+    if(this.viewType==='full') {
+      this.logger.info(this, this.order);
+      this.fetchOrderLinesByOrderId(0);
+      this.fetchCancelledOrderlines(0);
+      this.fetchAppliedOffers(this.order.id);
+      this.checkOrderType();  
+    }
   }
 
   ngAfterViewInit() {
@@ -224,6 +228,7 @@ export class OrderDetailComponent implements OnInit {
   fetchProducts(id, pid?) {
     this.productByProductIdSubscrption = this.queryResource.findProductByIdUsingGET(id)
       .subscribe(data => {
+        console.error(data);
         this.products[data.id] = data;
         if (pid) {
           this.auxilariesProducts[pid + ''][id + ''] = data;

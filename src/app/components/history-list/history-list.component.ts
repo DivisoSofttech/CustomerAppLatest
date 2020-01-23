@@ -6,6 +6,7 @@ import { Order, OpenTask, CommandResource } from 'src/app/api/models';
 import { OrderService } from 'src/app/services/order.service';
 import { Util } from 'src/app/services/util';
 import { LogService } from 'src/app/services/log.service';
+import * as moment from 'moment';
 
 
 @Component({
@@ -99,10 +100,11 @@ export class HistoryListComponent implements OnInit , OnDestroy {
 
   getOrders(i, event) {
     this.logger.info(this,'Page ' , i);
-    this.queryResource.findOrdersByCustomerIdUsingGET({
+    this.queryResource.findOrdersByCustIdUsingGET({
       customerId: this.keyCloakUser.preferred_username,
       page: i,
       size: 20,
+      date: moment().format('YYYY-MM-DD'),
       sort: ['desc']
     })
     .subscribe(porders => {

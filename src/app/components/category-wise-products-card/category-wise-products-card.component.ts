@@ -3,6 +3,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { QueryResourceService } from 'src/app/api/services';
 import { LogService } from 'src/app/services/log.service';
+import { StockCurrent } from 'src/app/api/models';
 
 @Component({
   selector: 'app-category-wise-products-card',
@@ -15,7 +16,9 @@ export class CategoryWiseProductsCardComponent implements OnInit {
 
   @Input() store;
 
-  stockCurrents = [];
+  @Input() highlightProductId;
+
+  stockCurrents: StockCurrent[] = [];
 
   showLoading = true;
 
@@ -49,7 +52,13 @@ export class CategoryWiseProductsCardComponent implements OnInit {
       categoryId: this.category.id
     })
     .subscribe(s => {
-      this.stockCurrents = s;
+      s.forEach(stockCurrent=> {
+        if(stockCurrent.id == this.highlightProductId) {
+          this.stockCurrents.unshift(stockCurrent);
+        } else {
+          this.stockCurrents.push(stockCurrent);
+        }
+      })
       this.showLoading = false;
     });
   }
