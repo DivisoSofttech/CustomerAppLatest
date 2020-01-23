@@ -228,7 +228,6 @@ export class OrderDetailComponent implements OnInit {
   fetchProducts(id, pid?) {
     this.productByProductIdSubscrption = this.queryResource.findProductByIdUsingGET(id)
       .subscribe(data => {
-        console.error(data);
         this.products[data.id] = data;
         if (pid) {
           this.auxilariesProducts[pid + ''][id + ''] = data;

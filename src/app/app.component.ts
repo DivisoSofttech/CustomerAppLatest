@@ -1,6 +1,6 @@
 import { Util } from './services/util';
 import { KeycloakService } from './services/security/keycloak.service';
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, ChangeDetectorRef } from '@angular/core';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { Platform,ModalController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -58,10 +58,12 @@ export class AppComponent {
     private localNotifications: LocalNotifications,
     private router: Router,
     private guestUserService: GuestUserService,
+    private cref: ChangeDetectorRef
   ) {
     registerLocaleData(localeFr, 'fr');
     this.cartService.observableTickets.subscribe(data => {
       this.cartSize = data.length;
+      this.cref.detectChanges();
     });
     this.getCurrentStore();
     this.appPages = APP_SIDE_MENU;
