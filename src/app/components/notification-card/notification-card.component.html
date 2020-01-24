@@ -1,6 +1,6 @@
   <app-loading *ngIf="showLoading === true" [type]="'notification'"></app-loading>
   <ion-item class="pointer" 
-  [ngClass]="notification.status === 'read' ? 'read': 'slideOutDown'"   
+  [ngClass]="notification.status === 'unread' ? 'unread': 'slideOutDown'"   
   *ngIf="store" lines="full" (click)="showOrderDetails()">
 
       <ion-thumbnail margin>
