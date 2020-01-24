@@ -59,6 +59,9 @@ import { PaymentflowNavComponent } from './paymentflow-nav/paymentflow-nav.compo
 import {  PaymentProvidersModule } from '../payment/payment-providers.module';
 import { NoCommaPipe } from '../pipes/no-comma.pipe';
 import { TermsAndPolicyComponent } from './terms-and-policy/terms-and-policy.component';
+import { AboutComponent } from './about/about.component';
+import { HelpComponent } from './help/help.component';
+import { SlidesComponent } from './slides/slides.component';
 
 @NgModule({
   providers: [ClosedPipe,DatePipe,    NoCommaPipe],
@@ -94,6 +97,8 @@ import { TermsAndPolicyComponent } from './terms-and-policy/terms-and-policy.com
     CategoryWiseProductsCardComponent,
     AuxilaryProductCardComponent,
     ShowAuxilaryModalComponent,
+    AboutComponent,
+    HelpComponent,
     ArrayFormaterPipe,
     ClosedPipe,
     DateDifferencePipe,
@@ -110,7 +115,8 @@ import { TermsAndPolicyComponent } from './terms-and-policy/terms-and-policy.com
     PlaceSuggestionComponent,
     PreorderComponent,
     PaymentflowNavComponent,
-    TermsAndPolicyComponent
+    TermsAndPolicyComponent,
+    SlidesComponent
   ],
 
   imports: [
@@ -148,6 +154,8 @@ import { TermsAndPolicyComponent } from './terms-and-policy/terms-and-policy.com
     BannerComponent,
     FilterComponent,
     AllergyComponent,
+    AboutComponent,
+    HelpComponent,
     ProfileInfoComponent,
     ProfileEditComponent,
     FrequentlyOrderedListComponent,
@@ -170,7 +178,8 @@ import { TermsAndPolicyComponent } from './terms-and-policy/terms-and-policy.com
     NotificationCardComponent,
     PlaceSuggestionComponent,
     PreorderComponent,
-    PaymentflowNavComponent
+    PaymentflowNavComponent,
+    SlidesComponent
   ],
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -185,6 +194,7 @@ import { TermsAndPolicyComponent } from './terms-and-policy/terms-and-policy.com
     DeliveryItemDetailsComponent,
     AllergyComponent,
     ProfileEditComponent,
+    HelpComponent,
     AddressListComponent,
     AddAddressComponent,
     LoadingComponent,

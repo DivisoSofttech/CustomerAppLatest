@@ -31,10 +31,8 @@
       <ion-item [lines]="lineFlag" class="order" *ngIf="
               order.status.name === 'payment-processed-unapproved' ||
               order.status?.name === 'delivered' ||
-              order.status.name === 'payment-processed-approved' ||
-              order.status.name === 'refund-completed' ||
-              order.status.name === 'cancellation-requested'
-            " margin (click)="showOrderDetails(order)">
+              order.status.name === 'payment-processed-approved'" 
+              margin (click)="showOrderDetails(order)">
         <ion-thumbnail mode="ios" class="image" slot="start" *ngIf="
                 stores[order.storeId] !== null ||
                 stores[order.storeId].imageLink !== ' '
@@ -49,21 +47,21 @@
           <h2 *ngIf="stores[order.storeId] !== null">
             {{ stores[order.storeId].name }}
           </h2>
-          <ion-text color="warning" *ngIf="order.status.name === 'payment-processed-unapproved'">
+          <ion-text color="warning" *ngIf="order.status.name === 'payment-processed-unapproved' && !order.cancellationRef">
             Order Placed
           </ion-text>
-          <ion-text color="primary" *ngIf="order.status.name === 'payment-processed-approved'">
+          <ion-text color="primary" *ngIf="order.status.name === 'payment-processed-approved'  && !order.cancellationRef">
             Order Approved
           </ion-text>
-          <ion-text color="warning" *ngIf="order.status.name === 'cancellation-requested'">
-            Cancellation Requested
-          </ion-text>
-          <ion-text color="success" *ngIf="order.status.name === 'refund-completed'">
-            Refund Completed
-          </ion-text>
-          <ion-text color="success" *ngIf="order.status.name === 'delivered'">
+          <ion-text color="success" *ngIf="order.status.name === 'delivered'  && !order.cancellationRef">
             Delivered
           </ion-text>
+          <ion-text color="warning" *ngIf="order.cancellationRef">
+            Cancellation Requested
+          </ion-text>
+          <!-- <ion-text color="success" *ngIf="order.status.name === 'refund-completed'">
+            Refund Completed
+          </ion-text> -->
           <p>{{ order.date | date: "medium" }}</p>
           <p>&#8364;{{ order.grandTotal | number: "1.2-2" }}</p>
         </ion-label>

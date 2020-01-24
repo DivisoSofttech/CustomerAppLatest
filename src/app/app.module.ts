@@ -10,7 +10,7 @@ import { AuthInterceptor } from './services/security/auth-interceptor';
 import { ConfigsModule } from './configs/configs.module';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouteReuseStrategy} from '@angular/router';
+import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
@@ -45,6 +45,10 @@ import { RecentService } from './services/recent.service';
 import { LogService } from './services/log.service';
 import { PaymentNavService } from './services/payment-nav.service';
 import { NoCommaPipe } from './pipes/no-comma.pipe';
+import { AboutComponent } from './components/about/about.component';
+import { HelpComponent } from './components/help/help.component';
+import { AppVersion } from '@ionic-native/app-version/ngx';
+import { SlidesComponent } from './components/slides/slides.component';
 
 const config: SocketIoConfig = { url: 'https://dev.ci2.divisosofttech.com:9999', options: {} };
 
@@ -52,7 +56,7 @@ const config: SocketIoConfig = { url: 'https://dev.ci2.divisosofttech.com:9999',
 
   declarations: [AppComponent, NoCommaPipe],
 
-  entryComponents: [BannerComponent, NotificationComponent, HistoryListComponent],
+  entryComponents: [BannerComponent, SlidesComponent,NotificationComponent, HistoryListComponent, AboutComponent, HelpComponent],
 
   imports: [
     BrowserModule,
@@ -82,6 +86,7 @@ const config: SocketIoConfig = { url: 'https://dev.ci2.divisosofttech.com:9999',
 
   providers: [
     StatusBar,
+    AppVersion,
     ScreenOrientation,
     Util,
     SplashScreen,

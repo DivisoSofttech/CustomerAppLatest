@@ -16,6 +16,7 @@ import { LoadingComponent } from 'src/app/components/loading/loading.component';
 import { FooterComponent } from 'src/app/components/footer/footer.component';
 import { MapComponent } from 'src/app/components/map/map.component';
 import { DirectiveModule } from 'src/app/directives/directive.module';
+import { SlidesComponent } from 'src/app/components/slides/slides.component';
 
 const routes: Routes = [
   {
@@ -34,7 +35,7 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   declarations: [RestaurantPage],
-  entryComponents: [HeaderComponent ,     FooterComponent, BannerComponent , RestaurantCardComponent , 
+  entryComponents: [HeaderComponent ,  SlidesComponent,   FooterComponent, BannerComponent , RestaurantCardComponent , 
     FilterComponent, LoadingComponent,   MapComponent , NotificationComponent]
 })
 export class RestaurantPageModule {}

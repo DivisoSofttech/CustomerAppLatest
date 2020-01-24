@@ -24,9 +24,8 @@ ion-content {
     height: 100%;
 }
 
-.full-height ion-row ion-col:first-child
-{
-    background: #e6dcdc45;
+
+.borderright {
     border-right: 1px solid grey;
 }
 
@@ -59,12 +58,15 @@ ion-list {
     color: blue;
 }
 
+ion-footer {    background: white}
+
 
 @media (min-width: 1280px) and (max-width: 2280px) {
  ion-footer {
      position: fixed;
      bottom: 0px;
      width: 25%;
+     
  }
  ion-content {
      height: 85%;

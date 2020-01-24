@@ -1,0 +1,82 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Help & Support</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" no-padding>
+        <ion-card>
+          <ion-grid>
+            <ion-row>
+              <ion-col size="2" size-lg="1" class="custom-col">
+                <ion-icon name="call"></ion-icon>
+              </ion-col>
+              <ion-col size="10" size-lg="10" class="custom-col">
+                <ion-spinner name="dots" *ngIf="contact === undefined"></ion-spinner>
+                <ion-text *ngIf="contact !== undefined">
+                  <a href=tel:{{contact.phone}}>{{contact.phone}}</a>
+                </ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card>
+      </ion-col>
+      <ion-col size="12" no-padding>
+        <ion-card>
+          <ion-grid>
+            <ion-row>
+              <ion-col size="2" size-lg="1" class="custom-col">
+                <ion-icon name="mail"></ion-icon>
+              </ion-col>
+              <ion-col size="10" size-lg="10" class="custom-col">
+                <ion-spinner name="dots" *ngIf="contact === undefined"></ion-spinner>
+                <ion-text *ngIf="contact !== undefined">
+                  <a href="mailto:{{contact.mail}}?Subject=Report">{{contact.mail}}</a>
+                </ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <div>
+    <ion-item lines="full" class="bordertop">
+      <ion-text>
+        <h2>Feedback</h2>
+      </ion-text>
+    </ion-item>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12">
+          <form [formGroup]="helpForm">
+            <ion-item>
+              <ion-input formControlName="email" placeholder="Email"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input formControlName="number" placeholder="Phone Number"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input formControlName="subject" placeholder="Subject"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-textarea formControlName="description" rows="6" cols="20" placeholder="Description (400 characters)">
+              </ion-textarea>
+            </ion-item>
+          </form>
+        </ion-col>
+        <ion-col size="12">
+          <ion-button expand="block" [disabled]="isDisabled()">Submit</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

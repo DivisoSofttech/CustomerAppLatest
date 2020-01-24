@@ -1,8 +1,8 @@
 import { Util } from './services/util';
 import { KeycloakService } from './services/security/keycloak.service';
-import { Component, HostListener, ChangeDetectorRef } from '@angular/core';
+import { Component, HostListener, ChangeDetectorRef, OnInit } from '@angular/core';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
-import { Platform,ModalController } from '@ionic/angular';
+import { Platform,ModalController, NavController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
@@ -17,6 +17,9 @@ import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { CartService } from './services/cart.service';
 import { LoginSignupComponent } from './components/login-signup/login-signup.component';
+import { AboutComponent } from './components/about/about.component';
+import { HelpComponent } from './components/help/help.component';
+import { SharedDataService } from './services/shared-data.service';
 
 
 @Component({
@@ -24,7 +27,7 @@ import { LoginSignupComponent } from './components/login-signup/login-signup.com
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
 
   guest = true;
 
@@ -43,6 +46,7 @@ export class AppComponent {
   cartSize = 0;
   showOrderDetails: boolean;
   showBanners: boolean;
+  isFirstTime: boolean;
 
   constructor(
     private platform: Platform,
@@ -58,8 +62,13 @@ export class AppComponent {
     private localNotifications: LocalNotifications,
     private router: Router,
     private guestUserService: GuestUserService,
-    private cref: ChangeDetectorRef
-  ) {
+    private cref: ChangeDetectorRef,
+    private navController: NavController,
+    private sharedData: SharedDataService
+  ) {}
+
+  ngOnInit() {
+    // this.checkIfStartingForFirstTime();
     registerLocaleData(localeFr, 'fr');
     this.cartService.observableTickets.subscribe(data => {
       this.cartSize = data.length;
@@ -82,6 +91,19 @@ export class AppComponent {
     }
   }
 
+  // checkIfStartingForFirstTime() {
+  //   this.sharedData.getData('isFirstTime')
+  //   .then(data => {
+  //     console.error(data);
+  //     if(data === true || data === undefined || data === null) {
+  //       this.logger.info(this,'App is starting for first time');
+  //       this.isFirstTime = true;
+  //       this.navController.navigateForward('/slides');
+  //     } else {
+  //       this.navController.navigateRoot('/restaurant');
+  //     }
+  //   })
+  // }
 
   getCurrentStore() {
     this.recentService.getCurrentSelectedStore()
@@ -210,6 +232,21 @@ export class AppComponent {
     }
     this.util.createToast('You\'ve been logged out');
     this.guestUserService.logInGuest();
+  }
+
+  async aboutModal() {
+    const modal = await this.modalController.create({
+    component: AboutComponent,
+    });
+    await modal.present();
+  }
+
+  async helpModal() {
+    const modal = await this.modalController.create({
+    component: HelpComponent,
+    backdropDismiss: false
+    });
+    await modal.present();
   }
 
   async login() {
