@@ -111,32 +111,37 @@ export class OrderDetailComponent implements OnInit {
   }
 
   checkOrderType() {
-    switch (this.order.status.name) {
+    if(!this.order.cancellationRef) {
+      switch (this.order.status.name) {
 
-      case 'payment-processed-unapproved':
-        this.orderPlaced = true;
-        this.orderApproved = false;
-        this.orderDelivered = false;
-        break;
-      case 'payment-processed-approved':
-        this.orderPlaced = false;
-        this.orderApproved = true;
-        this.orderDelivered = false;
-        break;
-      case 'delivered':
-        this.orderPlaced = false;
-        this.orderApproved = false;
-        this.orderDelivered = true;
-        break;
-      case 'cancellation-requested':
-        this.orderCancelled = true;
-        this.orderRefundCompleted = false;
-        break;
-      case 'refund-completed':
-        this.orderCancelled = true;
-        this.orderRefundCompleted = true;
-        break;
-      default: break;
+        case 'payment-processed-unapproved':
+          this.orderPlaced = true;
+          this.orderApproved = false;
+          this.orderDelivered = false;
+          break;
+        case 'payment-processed-approved':
+          this.orderPlaced = false;
+          this.orderApproved = true;
+          this.orderDelivered = false;
+          break;
+        case 'delivered':
+          this.orderPlaced = false;
+          this.orderApproved = false;
+          this.orderDelivered = true;
+          break;
+        // case 'cancellation-requested':
+        //   this.orderCancelled = true;
+        //   this.orderRefundCompleted = false;
+        //   break;
+        // case 'refund-completed':
+        //   this.orderCancelled = true;
+        //   this.orderRefundCompleted = true;
+        //   break;
+        default: break;
+      }  
+    } else {
+      this.orderCancelled = true;
+      this.orderRefundCompleted = false;
     }
   }
 

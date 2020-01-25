@@ -121,10 +121,10 @@ export class RestaurantPage implements OnInit, OnDestroy {
     }
   }
 
-
   private getFilterSubscription() {
     this.filterSubscription = this.filterService.getFilterSubscription().subscribe((data) => {
       this.currentFilter = data.currentFilterType;
+      this.ionInfiniteScroll.disabled = false;
       this.getStores();
     });
   }
@@ -133,7 +133,6 @@ export class RestaurantPage implements OnInit, OnDestroy {
     this.showLoading = true;
     this.stores = [];
     this.setCurrentFilterName();
-    this.toggleInfiniteScroll();
     this.filterService.getStores(0, (totalElements, totalPages, stores) => {
       this.stores = [];
       this.logger.info(this, 'Got Stores ', stores);

@@ -188,9 +188,6 @@
                   <ion-text *ngIf="store.info">
                     <p>{{ store.info }}</p>
                   </ion-text>
-                  <ion-text *ngIf="!store.info">
-                    <p>------------------</p>
-                  </ion-text>
                 </ion-col>
               </ion-row>
             </ion-grid>
@@ -206,7 +203,6 @@
   >
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
-      loadingText="Loading more data..."
     >
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>

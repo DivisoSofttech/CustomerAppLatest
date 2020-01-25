@@ -1,0 +1,25 @@
+<ion-content>
+  <ion-slides>
+    <ion-slide *ngFor="let s of [1,2,3]">
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            {{s}}
+            <ion-text class="ion-justify-content-center">
+              Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.
+              Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis,
+              ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo,
+              fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae,
+              justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus
+            </ion-text>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-button expand="block" *ngIf="s===3" (click)="skipSlide()">Continue</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-slide>
+  </ion-slides>
+</ion-content>
