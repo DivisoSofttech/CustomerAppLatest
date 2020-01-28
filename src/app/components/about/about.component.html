@@ -30,9 +30,16 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-    <ion-item lines="full" *ngIf="version">
+    <ion-item lines="full" *ngIf="!isBrowser">
       <ion-label slot="start">Version</ion-label>
-    <ion-label slot="end">{{version}}</ion-label>
+      <ion-label class="ion-text-right" slot="end">
+        {{version}}
+      </ion-label>
+    </ion-item>
+    <ion-item lines="full" *ngIf="!isBrowser" (click)="rateApp()">
+      <ion-label slot="start">Rate us</ion-label>
+      <ion-icon slot="end" name="star"></ion-icon>
+      <ion-icon slot="end" name="star"></ion-icon>
     </ion-item>
     <app-terms-and-policy></app-terms-and-policy>
   </ion-content>

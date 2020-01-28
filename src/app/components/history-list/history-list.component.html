@@ -44,7 +44,7 @@
                 stores[order.storeId].imageLink === ' '
               "></ion-icon>
         <ion-label>
-          <h2 *ngIf="stores[order.storeId] !== null">
+          <h2 class="textoverflow" *ngIf="stores[order.storeId] !== null">
             {{ stores[order.storeId].name }}
           </h2>
           <ion-text color="warning" *ngIf="order.status.name === 'payment-processed-unapproved' && !order.cancellationRef">

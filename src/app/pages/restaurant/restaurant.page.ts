@@ -115,7 +115,7 @@ export class RestaurantPage implements OnInit, OnDestroy {
     } else if (this.currentFilter == FILTER_TYPES.TOP_RATED) {
       this.currentFilterName = "Top rated";
     } else if (this.currentFilter == FILTER_TYPES.CUSINE_FILTER) {
-      this.currentFilterName = "Cusines";
+      this.currentFilterName = "Cuisines";
     } else {
       this.currentFilterName = ''
     }

@@ -28,7 +28,7 @@ export class HistoryListComponent implements OnInit , OnDestroy {
 
   @Input() lineFlag = "full";
   @Input() keyCloakUser;
-  @ViewChild(IonInfiniteScroll, null) inifinitScroll: IonInfiniteScroll;
+  @ViewChild(IonInfiniteScroll, {static: false}) inifinitScroll: IonInfiniteScroll;
 
   pageNumber = 0;
   backButtonSubscription: any;

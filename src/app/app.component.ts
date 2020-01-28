@@ -2,7 +2,7 @@ import { Util } from './services/util';
 import { KeycloakService } from './services/security/keycloak.service';
 import { Component, HostListener, ChangeDetectorRef, OnInit } from '@angular/core';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
-import { Platform,ModalController, NavController } from '@ionic/angular';
+import { Platform,ModalController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
@@ -12,15 +12,13 @@ import { Router, NavigationEnd } from '@angular/router';
 import { LogService } from './services/log.service';
 import {APP_SIDE_MENU} from './configs/app-side-menu';
 import { RecentService } from './services/recent.service';
-import { ErrorService } from './services/error.service';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { CartService } from './services/cart.service';
 import { LoginSignupComponent } from './components/login-signup/login-signup.component';
 import { AboutComponent } from './components/about/about.component';
 import { HelpComponent } from './components/help/help.component';
-import { SharedDataService } from './services/shared-data.service';
-
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 @Component({
   selector: 'app-root',
@@ -63,8 +61,7 @@ export class AppComponent implements OnInit{
     private router: Router,
     private guestUserService: GuestUserService,
     private cref: ChangeDetectorRef,
-    private navController: NavController,
-    private sharedData: SharedDataService
+    private socialSharing: SocialSharing
   ) {}
 
   ngOnInit() {
@@ -91,19 +88,9 @@ export class AppComponent implements OnInit{
     }
   }
 
-  // checkIfStartingForFirstTime() {
-  //   this.sharedData.getData('isFirstTime')
-  //   .then(data => {
-  //     console.error(data);
-  //     if(data === true || data === undefined || data === null) {
-  //       this.logger.info(this,'App is starting for first time');
-  //       this.isFirstTime = true;
-  //       this.navController.navigateForward('/slides');
-  //     } else {
-  //       this.navController.navigateRoot('/restaurant');
-  //     }
-  //   })
-  // }
+  shareApp() {
+    this.socialSharing.share('Share','Share','http://www.google.com');
+  }
 
   getCurrentStore() {
     this.recentService.getCurrentSelectedStore()
