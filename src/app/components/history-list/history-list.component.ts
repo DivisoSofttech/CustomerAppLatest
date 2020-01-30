@@ -1,4 +1,4 @@
-import { ModalController, IonInfiniteScroll, NavController, Platform } from '@ionic/angular';
+import { ModalController, IonInfiniteScroll, NavController, Platform, IonRefresher } from '@ionic/angular';
 import { MakePaymentComponent } from './../make-payment/make-payment.component';
 import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { QueryResourceService } from 'src/app/api/services';
@@ -29,6 +29,7 @@ export class HistoryListComponent implements OnInit , OnDestroy {
   @Input() lineFlag = "full";
   @Input() keyCloakUser;
   @ViewChild(IonInfiniteScroll, {static: false}) inifinitScroll: IonInfiniteScroll;
+  @ViewChild(IonRefresher, {static: false}) refresher: IonRefresher;
 
   pageNumber = 0;
   backButtonSubscription: any;
@@ -45,7 +46,13 @@ export class HistoryListComponent implements OnInit , OnDestroy {
 
   
   ngOnInit() {
-    this.getOrders(0, 'event');
+  
+  }
+
+  ngAfterViewInit() {
+    this.showHistoryLoading = true;
+    this.pageNumber = 0;
+    this.getOrders(0, undefined);
     this.backButtonHandler();
   }
 
@@ -100,7 +107,7 @@ export class HistoryListComponent implements OnInit , OnDestroy {
 
   getOrders(i, event) {
     this.logger.info(this,'Page ' , i);
-    this.queryResource.findOrdersByCustIdUsingGET({
+    this.queryResource.findOrdersByCustomerIdUsingGET({
       customerId: this.keyCloakUser.preferred_username,
       page: i,
       size: 20,
@@ -108,13 +115,19 @@ export class HistoryListComponent implements OnInit , OnDestroy {
       sort: ['desc']
     })
     .subscribe(porders => {
-      this.showHistoryLoading = false;
+      if(this.pageNumber === 0) {
+        this.orders = porders.content
+      } else {
+        porders.content.forEach(o => {
+          this.orders.push(o);   
+        });
+      }
       porders.content.forEach(o => {
-        this.orders.push(o);
         if (this.stores[o.storeId] === undefined) {
           this.getStores(o.storeId);
         }     
       });
+      this.showHistoryLoading = false;
       if ( i !== 0 && event) {
         this.logger.info(this,'Loading Page Completed ' , i);
         event.target.complete();
@@ -154,11 +167,16 @@ export class HistoryListComponent implements OnInit , OnDestroy {
   }
 
   refresh(event) {
-    this.pageNumber = 0;
-    this.orders = [];
-    this.showHistoryLoading = true;
-    this.getOrders(0,event);
-    event.target.complete();
+    this.ngOnDestroy();
+    this.ngAfterViewInit();
+    this.refresher.disabled = true;
+    setTimeout(()=>{
+      this.refresher.disabled = false;
+    },6000)
+    setTimeout(()=>{
+      event.target.complete();
+    },2000);
+
   }
 
   showList() {

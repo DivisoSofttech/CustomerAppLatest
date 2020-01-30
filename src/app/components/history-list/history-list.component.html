@@ -34,15 +34,11 @@
               order.status.name === 'payment-processed-approved'" 
               margin (click)="showOrderDetails(order)">
         <ion-thumbnail mode="ios" class="image" slot="start" *ngIf="
-                stores[order.storeId] !== null ||
+                !stores[order.storeId] ||
                 stores[order.storeId].imageLink !== ' '
-              ">
+          ">
           <ion-img [src]="stores[order.storeId].imageLink"></ion-img>
         </ion-thumbnail>
-        <ion-icon slot="start" name="image" class="icon-big" *ngIf="
-                stores[order.storeId] === null ||
-                stores[order.storeId].imageLink === ' '
-              "></ion-icon>
         <ion-label>
           <h2 class="textoverflow" *ngIf="stores[order.storeId] !== null">
             {{ stores[order.storeId].name }}
@@ -70,7 +66,7 @@
     </ng-container>
   </ion-list>
 
-  <ion-infinite-scroll (ionInfinite)="loadMoreData($event)" loadingSpinner="bubbles" loadingText="..." threshold="20px">
+  <ion-infinite-scroll (ionInfinite)="loadMoreData($event)" threshold="20px">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 

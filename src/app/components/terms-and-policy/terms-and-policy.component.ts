@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { QueryResourceService } from 'src/app/api/services';
 
 @Component({
   selector: 'app-terms-and-policy',
@@ -9,7 +10,10 @@ import { ModalController } from '@ionic/angular';
 export class TermsAndPolicyComponent implements OnInit {
 
 
-  constructor(private modalController: ModalController) { }
+  constructor(
+    private modalController: ModalController,
+    private queryResourceService: QueryResourceService,
+    ) { }
 
   ngOnInit() {}
 

@@ -35,7 +35,6 @@
     "@ionic-native/google-maps": "^5.5.0",
     "@ionic-native/in-app-browser": "^5.12.0",
     "@ionic-native/local-notifications": "^5.14.0",
-    "@ionic-native/paypal": "^5.12.0",
     "@ionic-native/screen-orientation": "^5.13.0",
     "@ionic-native/sim": "^5.14.0",
     "@ionic-native/social-sharing": "^5.20.0",
@@ -48,7 +47,6 @@
     "@ngx-loading-bar/http-client": "^4.2.0",
     "angular-oauth2-oidc": "^8.0.4",
     "card.io.cordova.mobilesdk": "^2.1.0",
-    "com.paypal.cordova.mobilesdk": "^3.5.0",
     "cordova": "^7.1.0",
     "cordova-android": "8.1.0",
     "cordova-android-support-gradle-release": "^3.0.1",
@@ -99,7 +97,8 @@
     "npm": "^6.7.0",
     "rxjs": "~6.5.1",
     "tslib": "^1.9.0",
-    "zone.js": "~0.9.1"
+    "zone.js": "~0.9.1",
+    "com.paypal.cordova.mobilesdk": "^3.5.0"
   },
   "devDependencies": {
     "@angular-devkit/architect": "~0.801.2",
@@ -142,7 +141,6 @@
       "cordova-plugin-ionic-keyboard": {},
       "cordova-sqlite-storage": {},
       "cordova-plugin-geolocation": {},
-      "com.paypal.cordova.mobilesdk": {},
       "cordova-plugin-inappbrowser": {},
       "cordova-plugin-screen-orientation": {},
       "cordova-plugin-sim": {},
@@ -159,7 +157,8 @@
         "ANDROID_SUPPORT_V4_VERSION": "24.1.1+",
         "PHOTO_LIBRARY_ADD_USAGE_DESCRIPTION": "This app requires photo library access to function properly.",
         "PHOTO_LIBRARY_USAGE_DESCRIPTION": "This app requires photo library access to function properly."
-      }
+      },
+      "com.paypal.cordova.mobilesdk": {}
     },
     "platforms": [
       "android",

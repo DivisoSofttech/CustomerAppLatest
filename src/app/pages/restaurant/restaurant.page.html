@@ -9,7 +9,7 @@
     <ion-row class="ion-no-padding ion-no-margin full-height">
       <ion-col size="12" size-md="12" class="ion-no-padding ion-no-margin">
         <app-banner [direction]="'horizontal'"></app-banner>
-        <div class="posSticky">
+        <div class="posSticky" [hidden]="(!showFooter)">
           <ion-item lines="none" color="light">
             <ion-label slot="start">
               <span class="font-20 heading-one">What's Nearby! </span>
@@ -84,7 +84,7 @@
                     size-lg="6"
                     *ngFor="let store of stores"
                   >
-                   <ng-container *ngIf="location.latLon">
+                   <ng-container *ngIf="location.latLon && !showLoading">
                     <app-restaurant-card
                     [isGuest]="isGuest"
                     [currentLatLon]="location.latLon"
@@ -107,9 +107,7 @@
   </ion-grid>
 
   <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreStores($event)">
-    <ion-infinite-scroll-content
-      loadingSpinner="bubbles"
-    >
+    <ion-infinite-scroll-content>
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
@@ -122,8 +120,6 @@
   </ion-refresher>
 </ion-content>
 <ion-footer [hidden]="(!showFooter)"
-class="animated animation-duration"
-[ngClass]="showFooter? 'slideInUp': 'slideOutDown'"
 >
   <app-filter
     *ngIf="showFilters"

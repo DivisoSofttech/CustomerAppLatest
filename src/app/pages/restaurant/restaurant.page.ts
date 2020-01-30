@@ -46,7 +46,7 @@ export class RestaurantPage implements OnInit, OnDestroy {
   private locationSubscription: any;
 
   @ViewChild(IonInfiniteScroll, null) private ionInfiniteScroll: IonInfiniteScroll;
-  @ViewChild(IonRefresher, null) private IonRefresher: IonRefresher;
+  @ViewChild(IonRefresher, {static: false}) private IonRefresher: IonRefresher;
   @ViewChild(FooterComponent, null) private footer: FooterComponent;
   @ViewChild(BannerComponent, null) private banner: BannerComponent;
 
@@ -130,23 +130,17 @@ export class RestaurantPage implements OnInit, OnDestroy {
   }
 
   getStores() {
-    this.showLoading = true;
-    this.stores = [];
     this.setCurrentFilterName();
     this.filterService.getStores(0, (totalElements, totalPages, stores) => {
-      this.stores = [];
       this.logger.info(this, 'Got Stores ', stores);
       this.logger.info(this, 'Total Pages', totalPages);
       this.logger.info(this, 'Total Elements', totalElements);
       if (totalPages > 1) {
         this.toggleInfiniteScroll();
       }
-      stores.forEach(s => {
-        this.stores.push(s);
-      });
       this.showLoading = false;
+      this.stores = stores;
       this.forceAngularChangeDetection();
-      this.toggleIonRefresher();
     },
       (err) => {
         this.errorService.showErrorModal(() => {
@@ -181,11 +175,18 @@ export class RestaurantPage implements OnInit, OnDestroy {
   }
 
   public doRefresh(event) {
+    this.showLoading = true;
     this.pageCount = 0;
-    this.filterSubscription.unsubscribe();
-    this.logger.info(this, 'Refreshing Page');
-    this.banner.refresh();
-    this.getStores();
+    this.ngOnDestroy();
+    this.ngOnInit();
+    this.IonRefresher.disabled = true;
+    setTimeout(()=>{
+      event.target.complete();
+    },2000)
+    setTimeout(()=>{
+      this.IonRefresher.disabled = false;
+    },6000)
+
   }
 
   private toggleInfiniteScroll() {

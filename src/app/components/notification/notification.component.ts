@@ -8,6 +8,7 @@ import { DatePipe } from '@angular/common';
 import { LogService } from 'src/app/services/log.service';
 import { CommandResourceService } from 'src/app/api/services';
 import { NotificationService } from 'src/app/services/notification.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-notification',
@@ -58,13 +59,14 @@ export class NotificationComponent implements OnInit, OnDestroy {
   }
 
   getNotifications(i, event) {
-    this.notificationSubscription = this.queryResource.findNotificationByReceiverIdUsingGETResponse(
+    this.notificationSubscription = this.queryResource.findNotificationByCustomerIdUsingGET(
       {
         receiverId: this.user.preferred_username,
-        page: i
+        page: i,
+        date: moment().format('YYYY-MM-DD')
       }
     ).subscribe(notifcatons => {
-      notifcatons.body.content.forEach(n => {
+      notifcatons.content.forEach(n => {
         this.getOrder(n.targetId);
         this.sortNotifications(n);
       });
@@ -72,7 +74,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
       if (i !== 0) {
         event.target.complete();
       }
-      if (i === notifcatons.body.totalPages) {
+      if (i === notifcatons.totalPages) {
         this.logger.info(this, 'Toggle disabled');
         this.toggleInfiniteScroll();
         this.notificationSortedKeys.forEach(key => {
