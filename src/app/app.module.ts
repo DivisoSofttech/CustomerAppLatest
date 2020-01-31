@@ -49,6 +49,8 @@ import { AboutComponent } from './components/about/about.component';
 import { HelpComponent } from './components/help/help.component';
 import { AppVersion } from '@ionic-native/app-version/ngx';
 import { SlidesComponent } from './components/slides/slides.component';
+import { AppRate } from '@ionic-native/app-rate/ngx';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 const config: SocketIoConfig = { url: 'https://dev.ci2.divisosofttech.com:9999', options: {} };
 
@@ -88,6 +90,8 @@ const config: SocketIoConfig = { url: 'https://dev.ci2.divisosofttech.com:9999',
     StatusBar,
     AppVersion,
     ScreenOrientation,
+    AppRate,
+    SocialSharing,
     Util,
     SplashScreen,
     DecimalPipe,

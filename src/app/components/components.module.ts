@@ -41,7 +41,6 @@ import { ShowAuxilaryModalComponent } from './show-auxilary-modal/show-auxilary-
 import { AuxilaryProductCardComponent } from './auxilary-product-card/auxilary-product-card.component';
 import { WaitInformatonPopoverComponent } from './wait-informaton-popover/wait-informaton-popover.component';
 import { OrderCardComponent } from './order-card/order-card.component';
-import { PaypalPaymentComponent } from '../payment/paypal-payment/paypal-payment.component';
 import { LoginSignupComponent } from './login-signup/login-signup.component';
 import { PhoneNumberVerficationComponent } from './phone-number-verfication/phone-number-verfication.component';
 import { IntlNumberInputComponent } from './intl-number-input/intl-number-input.component';
@@ -216,7 +215,6 @@ import { SlidesComponent } from './slides/slides.component';
     PreorderComponent,
     PaymentflowNavComponent,
     TermsAndPolicyComponent,
-    PaypalPaymentComponent,
     BraintreeCardPaymentComponent
   ]
 })

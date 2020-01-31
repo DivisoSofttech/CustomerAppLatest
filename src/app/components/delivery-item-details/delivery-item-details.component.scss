@@ -3,6 +3,11 @@
     margin: 10px;
 }
 
+ion-label h2{
+    overflow: hidden !important;
+    white-space: normal;
+  }
+
 textarea {
     width: 95vw;
     height: 100px;

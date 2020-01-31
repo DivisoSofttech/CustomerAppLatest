@@ -10,29 +10,29 @@
 </ion-header>
 <ion-content>
 
-  <ion-content>
-    <ion-grid>
+  <ion-content >
+    <ion-grid  *ngIf="!showLoading && abouts.length > 0">
       <ion-row>
         <ion-col>
-          <ion-text class="ion-text-center">
-            <p>
-              Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.
-              Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis,
-              ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo,
-              fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae,
-              justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum
-              semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend
-              ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut
-              metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur
-              ullamcorper ultricies nisi.
+          <ion-text >
+            <p >
+              {{abouts[0].description}}
             </p>
           </ion-text>
         </ion-col>
+    
       </ion-row>
     </ion-grid>
-    <ion-item lines="full" *ngIf="version">
+    <ion-item lines="full" *ngIf="!isBrowser">
       <ion-label slot="start">Version</ion-label>
-    <ion-label slot="end">{{version}}</ion-label>
+      <ion-label class="ion-text-right" slot="end">
+        {{version}}
+      </ion-label>
+    </ion-item>
+    <ion-item lines="full" *ngIf="!isBrowser" (click)="rateApp()">
+      <ion-label slot="start">Rate us</ion-label>
+      <ion-icon slot="end" name="star"></ion-icon>
+      <ion-icon slot="end" name="star"></ion-icon>
     </ion-item>
     <app-terms-and-policy></app-terms-and-policy>
   </ion-content>

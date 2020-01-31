@@ -63,6 +63,7 @@ export class FilterComponent implements OnInit , OnDestroy {
   }
 
   resetFilter() {
+    console.error('dkjdjkdjd');
     this.filterService.setCurrentFilter(FILTER_TYPES.DISTANCE_WISE);
     this.sharedData.deleteData(FILTER_KEY);
     this.closeEvent();

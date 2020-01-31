@@ -18,6 +18,7 @@ import { DeliveryInfoDTO } from '../models/delivery-info-dto';
 import { DeliveryInfo } from '../models/delivery-info';
 import { FavouriteProductDTO } from '../models/favourite-product-dto';
 import { FavouriteStoreDTO } from '../models/favourite-store-dto';
+import { FeedbackDTO } from '../models/feedback-dto';
 import { NotificationDTO } from '../models/notification-dto';
 import { Order } from '../models/order';
 import { OrderInitiateResponse } from '../models/order-initiate-response';
@@ -58,6 +59,7 @@ class CommandResourceService extends __BaseService {
   static readonly deleteFavouriteProductUsingDELETEPath = '/api/command/favouriteproduct/{id}';
   static readonly createFavouriteStoreUsingPOSTPath = '/api/command/favouritestore';
   static readonly deleteFavouriteStoreUsingDELETEPath = '/api/command/favouritestore/{id}';
+  static readonly createFeedbackUsingPOSTPath = '/api/command/feedback';
   static readonly updateNotificationUsingPUTPath = '/api/command/notifications';
   static readonly editOrderUsingPUTPath = '/api/command/order';
   static readonly initiateOrderUsingPOSTPath = '/api/command/order/initiateOrder';
@@ -699,6 +701,42 @@ class CommandResourceService extends __BaseService {
   deleteFavouriteStoreUsingDELETE(id: number): __Observable<null> {
     return this.deleteFavouriteStoreUsingDELETEResponse(id).pipe(
       __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param feedbackDTO feedbackDTO
+   * @return OK
+   */
+  createFeedbackUsingPOSTResponse(feedbackDTO: FeedbackDTO): __Observable<__StrictHttpResponse<FeedbackDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = feedbackDTO;
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/command/feedback`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<FeedbackDTO>;
+      })
+    );
+  }
+  /**
+   * @param feedbackDTO feedbackDTO
+   * @return OK
+   */
+  createFeedbackUsingPOST(feedbackDTO: FeedbackDTO): __Observable<FeedbackDTO> {
+    return this.createFeedbackUsingPOSTResponse(feedbackDTO).pipe(
+      __map(_r => _r.body as FeedbackDTO)
     );
   }
 

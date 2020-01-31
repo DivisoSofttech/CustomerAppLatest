@@ -13,7 +13,7 @@ export class BannerComponent implements OnInit , OnDestroy {
 
   showLoading: Boolean = true;
   @Input() direction: string;
-  @ViewChild('slides', null) slides: IonSlides;
+  @ViewChild('slides', {static: false}) slides: IonSlides;
   banners: Banner[] = [];
   bannerSubscription: any;
 
@@ -70,6 +70,7 @@ export class BannerComponent implements OnInit , OnDestroy {
   ngOnInit() {
     this.slideOpts.direction = this.direction;
     this.getBanners(0);
+    if(this.slides)
     this.slides.startAutoplay();
   }
 

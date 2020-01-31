@@ -97,7 +97,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   async showAddresses() {
     const modal = await this.modalController.create({
-      component: AddressListComponent
+      component: AddressListComponent,
+      componentProps:{mode:'modal'}
     });
     modal.onDidDismiss()
       .then(data => {

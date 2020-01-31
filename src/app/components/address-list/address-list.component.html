@@ -1,8 +1,8 @@
 <!--Address List Template Start-->
 <ng-template #addressList>
-  <ion-list *ngIf="showLoading" class="ion-text-center">
-    <ion-spinner name="crescent"></ion-spinner>
-  </ion-list>
+  <div *ngIf="showLoading" class="loadingdiv">
+    <ion-spinner name="bubbles"></ion-spinner>
+  </div>
   <ion-list
     class="ion-no-padding"
     *ngIf="addresses !== undefined || addresses.length !== 0"
@@ -52,7 +52,7 @@
 <!--Modal View Start-->
 <ion-header *ngIf="mode === 'modal'">
   <ion-toolbar>
-    <ion-buttons slot="start">
+    <ion-buttons>
       <ion-title>Select Address</ion-title>
     </ion-buttons>
     <ion-buttons slot="end">

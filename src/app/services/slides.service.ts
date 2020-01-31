@@ -34,7 +34,6 @@ export class SlidesService implements CanActivate {
       } else {
         this.sharedData.getData('isFirstTime')
         .then(data => {
-          console.error(data);
           if(data === true || data === undefined || data === null) {
             this.logger.info(this,'App is starting for first time',data);
             this.isFirstTime = true;

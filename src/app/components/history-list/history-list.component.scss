@@ -2,6 +2,12 @@ ion-list {
   width: 100%;
 }
 
+.textoverflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+}
+
 app-order-detail {
   height: 100%;
 }

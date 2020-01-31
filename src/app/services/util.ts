@@ -33,12 +33,12 @@ export class Util {
     });
   }
 
-  createToast(msg: string, iconName?: string) {
+  createToast(msg: string, iconName?: string , duration?:any) {
     const width = window.innerWidth;
 
     if(width >= 1280) {
         this._snackBar.open(msg,'', {
-          duration: 2000,
+          duration: duration?duration:2000,
           horizontalPosition:'right',
           verticalPosition:'top'
         });

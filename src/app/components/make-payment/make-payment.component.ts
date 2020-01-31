@@ -42,7 +42,7 @@ export class MakePaymentComponent implements OnInit {
   checkPlatform() {
     if (this.platform.is('android') || this.platform.is('ios')) {
       this.logger.info(this,'Paypal Supported [Android , IOS]');
-      this.paymentOptions.push({ name: 'Paypal Wallet/Card', value: 'paypal' , isChecked: false , icon: 'wallet'});
+      // this.paymentOptions.push({ name: 'Paypal Wallet/Card', value: 'paypal' , isChecked: false , icon: 'wallet'});
     } else if (this.platform.is('desktop') || this.platform.is('pwa')) {
       this.logger.info(this,'Paypal not Supported [Browser, PWA]')
     }

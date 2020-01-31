@@ -70,7 +70,7 @@ export class CartComponent implements OnInit, OnDestroy {
   @Output() viewClick = new EventEmitter();
 
 
-  @ViewChild(DeliveryItemDetailsComponent, null) delivery: DeliveryItemDetailsComponent;
+  @ViewChild(DeliveryItemDetailsComponent, {static: false}) delivery: DeliveryItemDetailsComponent;
   deliveryMode: any;
   isOrderAvailable: any = true;
   isClosed: boolean = false;

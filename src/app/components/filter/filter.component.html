@@ -25,7 +25,7 @@
                 <ion-col size="12" class="ion-no-padding">
                   <ion-item lines="full" (click)="setFilterCategoryType('cusine')"
                   [ngClass]="{'highlight':filterCategory==='cusine'}">
-                    Cusines
+                    Cuisines
                   </ion-item>    
                 </ion-col>          
           </ion-row>
@@ -38,11 +38,11 @@
                   <ion-radio-group [(ngModel)]="filterModel.currentFilterType">
                     <ion-item lines="none" >
                       <ion-radio value="{{TEMP_FILTER_TYPES.TOP_RATED}}" [checked]="filterModel.currentFilterType === TEMP_FILTER_TYPES.TOP_RATED"></ion-radio>
-                      <ion-label class="ion-margin">Rating</ion-label>
+                      <ion-label class="ion-margin">Top Rated</ion-label>
                     </ion-item>
                     <ion-item lines="none" >
                       <ion-radio [checked]="filterModel.currentFilterType === TEMP_FILTER_TYPES.MIN_AMOUNT" value="{{TEMP_FILTER_TYPES.MIN_AMOUNT}}"></ion-radio>
-                      <ion-label class="ion-margin">Min Amount</ion-label>
+                      <ion-label class="ion-margin">Minimum Amount</ion-label>
                     </ion-item>
                   </ion-radio-group>
                 </ion-col>  
