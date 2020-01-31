@@ -100,7 +100,7 @@ const config: SocketIoConfig = { url: 'https://dev.ci2.divisosofttech.com:9999',
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     // Extra Services
     LocationService,
-    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    // { provide: LocationStrategy, useClass: HashLocationStrategy },
     Geolocation,
     GoogleMapsAPIWrapper,
     { provide: PaymentNavService, useClass: PaymentNavService },
