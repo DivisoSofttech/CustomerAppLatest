@@ -1,12 +1,18 @@
-<ion-list>
+<div *ngIf="showLoading" style=" width: 100%;padding:10px;text-align:center">
+  <ion-spinner name="lines-small"></ion-spinner>
+</div>
+<ion-list *ngIf="!showLoading && terms.length > 0">
   <ion-list-header>
     <ion-text>
       <h1>Terms & Policies</h1>
     </ion-text>
   </ion-list-header>
-  <ion-item lines="full">
-    <ion-text>
-      I agree to share contact number and mail address with the store.
-    </ion-text>
-  </ion-item>
+  <div style="padding: 10px;">
+    <h3 *ngIf="terms[0]">{{terms[0].title|titlecase}}</h3>
+    <ul *ngIf="subterms.get(terms[0].id)">
+      <li *ngFor="let subterm of subterms.get(terms[0].id)">
+        <p >{{subterm.termDescription}}</p>
+      </li>
+    </ul>      
+  </div>
 </ion-list>

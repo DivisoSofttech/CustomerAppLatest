@@ -41,6 +41,16 @@
 
 }
 
+.loadingdiv {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+
+
 .pointer {
   cursor: pointer;
 }
@@ -83,6 +93,10 @@ address p {
 }
 .full-width-vw {
   width: 100vw;
+}
+
+.wordbreak {
+  white-space: pre-wrap !important;
 }
 
 ion-modal.modal-popover {

@@ -27,8 +27,6 @@ export class HelpComponent implements OnInit {
 
   constructor(
     private modalController: ModalController,
-    private sharedDataService: SharedDataService,
-    private queryResource: QueryResourceService,
     private commadResource:CommandResourceService,
     private logger: LogService,
     private formBuilder: FormBuilder,

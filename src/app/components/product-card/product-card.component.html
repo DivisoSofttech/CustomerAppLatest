@@ -105,12 +105,12 @@ class="ion-no-padding">
               >
               </ion-img>
             </ion-thumbnail>
-            <ion-label class="ion-margin" *ngIf="orderLine !== undefined">
+            <ion-label class="ion-margin wordbreak" *ngIf="orderLine !== undefined">
               <h1 class="font-small">{{product.name}}</h1>
               <span>{{orderLine.quantity + ' x &#8364;' + orderLine.pricePerUnit + ' '}}</span>
               <span>{{'Total: &#8364;' + (orderLine.total - auxTotal |  number: "1.1-2")}}</span>
             </ion-label>   
-            <ion-label class="ion-margin" *ngIf="cancelledOrderLine !== undefined">
+            <ion-label class="ion-margin wordbreak" *ngIf="cancelledOrderLine !== undefined">
               <h1 class="font-small">{{product.name}}</h1>
               <span>{{cancelledOrderLine.quantity + ' x &#8364;' + product.sellingPrice + ' '}}</span>
               <span>{{'Total: &#8364;' + (cancelledOrderLine.ammount - auxTotal |  number: "1.1-2")}}</span>

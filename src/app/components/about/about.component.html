@@ -10,17 +10,17 @@
 </ion-header>
 <ion-content>
 
-  <ion-content>
-    <ion-grid>
+  <ion-content >
+    <ion-grid  *ngIf="!showLoading && abouts.length > 0">
       <ion-row>
         <ion-col>
-          <ion-spinner name="dots" *ngIf="showLoading"></ion-spinner>
-          <ion-text class="ion-text-center">
-            <p *ngIf="!showLoading && abouts.length > 0">
+          <ion-text >
+            <p >
               {{abouts[0].description}}
             </p>
           </ion-text>
         </ion-col>
+    
       </ion-row>
     </ion-grid>
     <ion-item lines="full" *ngIf="!isBrowser">
