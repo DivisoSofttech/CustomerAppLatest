@@ -101,7 +101,7 @@
   </ion-card>
 
   <ion-card>
-    <ion-item *ngIf="currentDeliveryMode ==='delivery'">
+    <ion-item >
       <ion-label class="ion-text-start">
         <h3><strong>Subtotal</strong></h3>
       </ion-label>
@@ -135,16 +135,12 @@
         <h3> <strong>Total</strong></h3>
       </ion-label>
       <ion-label text-end>
-        <h3 *ngIf="currentDeliveryMode === 'delivery'">
+        <h3 >
           <strong>
             &euro;{{ total}}
           </strong>
         </h3>
-        <h3 *ngIf="currentDeliveryMode === 'collection'">
-          <strong>
-            &euro;{{ total }}
-          </strong>
-        </h3>
+       
       </ion-label>
     </ion-item>
   </ion-card>

@@ -68,7 +68,7 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
     this.getCartDetails();
     this.productBaseAuxItemsArray = this.cart.auxilaryItems;
     this.getOffers();
-    this.cart.selectedDeliveryType.subscribe(data => {      
+    this.cart.selectedDeliveryType.subscribe(data => {
       if(data) {
         if(data === 'delivery') {
 
@@ -79,7 +79,7 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
         else {
           this.total = this.subTotal;
           this.total = this.decimalPipe.transform(this.total - this.offer.orderDiscountAmount, '1.2-2');
-          this.cart.total = this.cart.subTotal;
+          this.cart.total = this.total;
         }
       }
     });
