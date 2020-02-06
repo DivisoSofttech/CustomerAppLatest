@@ -27,6 +27,14 @@
   <div class="footer" *ngIf="ShowContinueShopping">
     <ion-button expand="block" class="ion-margin" (click)="continue()">Continue Shopping</ion-button>
   </div>
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+    >
+    </ion-refresher-content>
+  </ion-refresher>
 </ion-content>
 
 <!--Order Status Start-->

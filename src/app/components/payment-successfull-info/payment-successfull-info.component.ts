@@ -38,17 +38,21 @@ export class PaymentSuccessfullInfoComponent implements OnInit , OnDestroy {
 
   async continueShopping() {
     this.logger.info(this,'Closing the PaymentSuccessfullModal');
+    this.dismiss();
+  }
+
+  clearAllKeys() {
     this.cartService.emptyCart();
     this.orderService.resource = {};
     this.orderService.offer = undefined;
     this.orderService.deliveryInfo = {};
     this.sharedData.clearKeys('order');
-    this.dismiss();
   }
 
   ngOnInit() {
     this.orderService.updateLoyaltyPoint();
     this.getRequiredDetails();
+    this.clearAllKeys();
   }
 
   getRequiredDetails() {

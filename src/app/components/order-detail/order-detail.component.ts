@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { MatStepper, MatHorizontalStepper } from '@angular/material';
 import { MAT_STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { LogService } from 'src/app/services/log.service';
-import { ModalController } from '@ionic/angular';
+import { ModalController, IonRefresher } from '@ionic/angular';
 import { Util } from 'src/app/services/util';
 
 @Component({
@@ -79,6 +79,7 @@ export class OrderDetailComponent implements OnInit {
   ) { }
 
   @ViewChild(MatHorizontalStepper, null) stepper: MatStepper;
+  @ViewChild(IonRefresher , null) refresher: IonRefresher;
 
   initStepper() {
     if (this.orderPlaced) {
@@ -272,10 +273,37 @@ export class OrderDetailComponent implements OnInit {
         o.requiedAuxilaries = this.auxilaryOrderLines[o.id];
         this.cartService.auxilaryItems[o.productId] = this.auxilariesProducts[o.productId];
       }
-      this.cartService.addOrder(o);
+      this.cartService.addOrder(o,this.store);
     });
     this.reorderEvent.emit();
 
+  }
+
+  refresh(event) {
+    this.orderLines = [];
+    this.cancelledOrderLines = [];
+    this.offer = [];
+    this.products = [];
+    this.auxilariesProducts = new Map<Number, Product[]>();
+    this.auxilaryOrderLines = new Map<Number, AuxilaryOrderLine[]>();
+    this.total = new Map<Number, Number>();
+    this.cancellationTotal = 0
+    this.addressString  = undefined;
+    this.orderPlaced  = false;
+    this.orderApproved  = false;
+    this.orderDelivered = false;
+    this.orderCancelled = false;
+    this.orderRefundCompleted = false;
+    this.showCancellation = false;
+    this.ngOnInit();
+    this.ngAfterViewInit();
+    this.refresher.disabled = true;
+    setTimeout(()=>{
+      event.target.complete();
+    },2000);
+    setTimeout(()=>{
+      this.refresher.disabled = false;
+    },6000)
   }
 
   continue() {

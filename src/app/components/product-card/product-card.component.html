@@ -6,72 +6,67 @@
   </div>
   <ion-item lines="none">
     <ion-thumbnail>
-      <ion-img
-        [src]="stockCurrent.product.imageLink"
-        class="imageShow"
-      >
+      <ion-img *ngIf="stockCurrent.product.imageLink" [src]="stockCurrent.product.imageLink" class="imageShow">
+      </ion-img>
+      <ion-img *ngIf="!stockCurrent.product.imageLink" src="/assets/food.jpg" class="imageShow blur">
       </ion-img>
     </ion-thumbnail>
-      <ion-grid>
-        <ion-row>
-          <ion-col (click)="toggleDescription()" class="title-card" margin-top padding-top>
-            <ion-card-title>{{ stockCurrent.product.name | titlecase }}</ion-card-title>
+    <ion-grid>
+      <ion-row>
+        <ion-col (click)="toggleDescription()" class="title-card" margin-top padding-top>
+          <ion-card-title>{{ stockCurrent.product.name | titlecase }}</ion-card-title>
 
-            <ion-text *ngIf="!(discount!=null && discount.rate !== null && discount.rate > 0)"><strong>&#8364;{{ stockCurrent.product.sellingPrice }}</strong></ion-text>
-            <ion-text class="strike-through" *ngIf="discount!=null && discount.rate !== null && discount.rate > 0"><strong><s>&#8364;{{ stockCurrent.product.sellingPrice }}</s></strong></ion-text>
+          <ion-text *ngIf="!(discount!=null && discount.rate !== null && discount.rate > 0)">
+            <strong>&#8364;{{ stockCurrent.product.sellingPrice }}</strong></ion-text>
+          <ion-text class="strike-through" *ngIf="discount!=null && discount.rate !== null && discount.rate > 0">
+            <strong><s>&#8364;{{ stockCurrent.product.sellingPrice }}</s></strong></ion-text>
 
-            <ion-text class="margin-left-25" *ngIf="(discount!=null && discount.rate !== null && discount.rate > 0)"><strong>&#8364;{{ stockCurrent.sellPrice }}</strong></ion-text>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col size="8" *ngIf="!auxilaryLoadComplete">
-            <ion-text>
-                <ion-skeleton-text animated></ion-skeleton-text>
-            </ion-text>
-          </ion-col>
-          <ion-col size="8"    *ngIf="auxilaryLoadComplete" >
-            <ion-buttons>
-              <ion-button  class="cartButtons" (click)="remove(0, stockCurrent)">
-                <ion-icon name="remove"></ion-icon>
-              </ion-button>
-              <ion-button >
-                <ion-label>{{orderCount}}</ion-label>
-              </ion-button>
-              <!-- <ion-input disabled #orderCountInput class="orderCount" (ionChange)="add(0,stockCurrent)" [placeholder]="orderCount"></ion-input> -->
-              <ion-button  class="cartButtons" (click)="add(0, stockCurrent)" >
-                <ion-icon name="add"></ion-icon>
-              </ion-button>
-            </ion-buttons>
-          </ion-col>
-          <ion-col size="4" >
-            <ion-buttons class="ion-justify-content-end" >
-              <ion-button
-               
-                slot="end"
-                fill="none"
-                (click)="addToFavourite(stockCurrent.product)"
-                *ngIf="!isFavourite && !isGuest">
-                <ion-icon slot="icon-only" name="heart-empty"></ion-icon>
-              </ion-button>
-              <ion-button
-                slot="end"
-                fill="none"
-                (click)="removeFromFavourite(stockCurrent.product)"
-                *ngIf="isFavourite && !isGuest">
-                <ion-icon
-                  color="danger"
-                  slot="icon-only"
-                  name="heart"
-                ></ion-icon>
-              </ion-button>
-            </ion-buttons>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+          <ion-text class="margin-left-25" *ngIf="(discount!=null && discount.rate !== null && discount.rate > 0)">
+            <strong>&#8364;{{ stockCurrent.sellPrice }}</strong></ion-text>
+        </ion-col>
+        <ion-col class="custom-col" (click)="toggleDescription()">
+          <ion-icon *ngIf="!showDescription" name="arrow-dropdown-circle"></ion-icon>
+          <ion-icon *ngIf="showDescription" name="arrow-dropup-circle"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="8" *ngIf="!auxilaryLoadComplete">
+          <ion-text>
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-text>
+        </ion-col>
+        <ion-col size="8" *ngIf="auxilaryLoadComplete">
+          <ion-buttons>
+            <ion-button class="cartButtons" (click)="remove(0, stockCurrent)">
+              <ion-icon name="remove"></ion-icon>
+            </ion-button>
+            <ion-button>
+              <ion-label>{{orderCount}}</ion-label>
+            </ion-button>
+            <!-- <ion-input disabled #orderCountInput class="orderCount" (ionChange)="add(0,stockCurrent)" [placeholder]="orderCount"></ion-input> -->
+            <ion-button class="cartButtons" (click)="add(0, stockCurrent)">
+              <ion-icon name="add"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-col>
+        <ion-col size="4">
+          <ion-buttons class="ion-justify-content-end">
+            <ion-button slot="end" fill="none" (click)="addToFavourite(stockCurrent.product)"
+              *ngIf="!isFavourite && !isGuest">
+              <ion-icon slot="icon-only" name="heart-empty"></ion-icon>
+            </ion-button>
+            <ion-button slot="end" fill="none" (click)="removeFromFavourite(stockCurrent.product)"
+              *ngIf="isFavourite && !isGuest">
+              <ion-icon color="danger" slot="icon-only" name="heart"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-item>
   <div *ngIf="showDescription === true && stockCurrent !== null">
     <ion-text>
-     <p>{{stockCurrent.product.reference}}</p>
+      <p>{{stockCurrent.product.reference}}</p>
     </ion-text>
     <ion-list text-left *ngIf=" comboLineItems.length > 0">
       <ion-item lines="full" color="light">
@@ -79,12 +74,9 @@
       </ion-item>
       <ion-item lines="none" *ngFor="let combo of comboLineItems">
         <ion-thumbnail class="comboPhoto">
-          <ion-img
-            [src]=" combo.comboItem.imageLink"
-            class="imageShow"
-          >
+          <ion-img [src]=" combo.comboItem.imageLink" class="imageShow">
           </ion-img>
-          </ion-thumbnail>
+        </ion-thumbnail>
         <ion-text>
           <p>{{combo.comboItem.name}}</p>
           <p *ngIf="combo.quantity !== null">{{combo.quantity}}</p>
@@ -94,54 +86,49 @@
   </div>
 </ion-card>
 
-<ion-card *ngIf="product !== undefined && type === 'minimal'"
-class="ion-no-padding"> 
+<ion-card *ngIf="product !== undefined && type === 'minimal'" class="ion-no-padding">
   <ion-card-header class="ion-no-padding">
-      <ion-item lines="full">
-          <ion-thumbnail class="img-small">
-              <ion-img
-                [src]="product.imageLink"
-                class="imageShow"
-              >
-              </ion-img>
-            </ion-thumbnail>
-            <ion-label class="ion-margin wordbreak" *ngIf="orderLine !== undefined">
-              <h1 class="font-small">{{product.name}}</h1>
-              <span>{{orderLine.quantity + ' x &#8364;' + orderLine.pricePerUnit + ' '}}</span>
-              <span>{{'Total: &#8364;' + (orderLine.total - auxTotal |  number: "1.1-2")}}</span>
-            </ion-label>   
-            <ion-label class="ion-margin wordbreak" *ngIf="cancelledOrderLine !== undefined">
-              <h1 class="font-small">{{product.name}}</h1>
-              <span>{{cancelledOrderLine.quantity + ' x &#8364;' + product.sellingPrice + ' '}}</span>
-              <span>{{'Total: &#8364;' + (cancelledOrderLine.ammount - auxTotal |  number: "1.1-2")}}</span>
-            </ion-label>   
-      </ion-item> 
+    <ion-item lines="full">
+      <ion-thumbnail class="img-small">
+        <ion-img *ngIf="product.imageLink" [src]="product.imageLink" class="imageShow">
+        </ion-img>
+        <ion-img *ngIf="!product.imageLink" src="/assets/food.jpg" class="imageShow blur">
+        </ion-img>
+      </ion-thumbnail>
+      <ion-label class="ion-margin wordbreak" *ngIf="orderLine !== undefined">
+        <h1 class="font-small">{{product.name}}</h1>
+        <span>{{orderLine.quantity + ' x &#8364;' + orderLine.pricePerUnit + ' '}}</span>
+        <span>{{'Total: &#8364;' + (orderLine.total - auxTotal |  number: "1.1-2")}}</span>
+      </ion-label>
+      <ion-label class="ion-margin wordbreak" *ngIf="cancelledOrderLine !== undefined">
+        <h1 class="font-small">{{product.name}}</h1>
+        <span>{{cancelledOrderLine.quantity + ' x &#8364;' + product.sellingPrice + ' '}}</span>
+        <span>{{'Total: &#8364;' + (cancelledOrderLine.ammount - auxTotal |  number: "1.1-2")}}</span>
+      </ion-label>
+    </ion-item>
   </ion-card-header>
   <ng-container *ngIf="auxilaryOrderLine !== undefined">
-      <ion-card-content *ngIf="auxilaryOrderLine.length > 0" class="ion-no-padding" color="primary">
-          <ion-list lines="none">
-              <ion-list-header>
-                <ion-text>
-                  <h2>Extras</h2>
-                </ion-text>
-              </ion-list-header>
-              <ion-item lines="none" *ngFor="let auxLine of auxilaryOrderLine" lines="none">
-                <ion-thumbnail *ngIf="auxilariesProducts[auxLine.productId] !== null
+    <ion-card-content *ngIf="auxilaryOrderLine.length > 0" class="ion-no-padding" color="primary">
+      <ion-list lines="none">
+        <ion-list-header>
+          <ion-text>
+            <h2>Extras</h2>
+          </ion-text>
+        </ion-list-header>
+        <ion-item lines="none" *ngFor="let auxLine of auxilaryOrderLine" lines="none">
+          <ion-thumbnail *ngIf="auxilariesProducts[auxLine.productId] !== null
                 && auxilariesProducts[auxLine.productId] !== undefined" class="img-small">
-                  <ion-img 
-                    [src]="auxilariesProducts[auxLine.productId].imageLink"
-                    class="imageShow"
-                  >
-                  </ion-img>
-                </ion-thumbnail>
-                <ion-label margin *ngIf="auxilariesProducts[auxLine.productId] !== null &&
+            <ion-img [src]="auxilariesProducts[auxLine.productId].imageLink" class="imageShow">
+            </ion-img>
+          </ion-thumbnail>
+          <ion-label margin *ngIf="auxilariesProducts[auxLine.productId] !== null &&
                 auxilariesProducts[auxLine.productId] !== undefined">
-                  <h1 class="font-tiny">{{auxilariesProducts[auxLine.productId].name}}</h1>
-                  <span >{{auxLine.quantity + ' x &#8364;' + auxLine.pricePerUnit + ' '}}</span>
-                  <span>{{'Total: &#8364;' + (auxLine.total |  number: "1.1-2")}}</span>
-                </ion-label>
-              </ion-item>
-            </ion-list>  
-      </ion-card-content>
+            <h1 class="font-tiny">{{auxilariesProducts[auxLine.productId].name}}</h1>
+            <span>{{auxLine.quantity + ' x &#8364;' + auxLine.pricePerUnit + ' '}}</span>
+            <span>{{'Total: &#8364;' + (auxLine.total |  number: "1.1-2")}}</span>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
   </ng-container>
 </ion-card>

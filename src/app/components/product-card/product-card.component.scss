@@ -8,6 +8,15 @@
   left: 0;
 }
 
+.blur{
+  filter:blur(3px);
+}
+
+.custom-col {
+  text-align: right;
+  padding: 20px;
+}
+
 .cartButtons {
   background: #3a7df9;
   border-radius: 100%;

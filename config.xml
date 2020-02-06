@@ -104,6 +104,7 @@
         <splash height="828" src="resources/ios/splash/Default-Landscape-1792h~iphone.png" width="1792" />
     </platform>
     <allow-navigation href="http://localhost:8100" sessionid="f266920c" />
+    <allow-navigation href="http://localhost:8101" sessionid="1fcd4ebb" />
     <engine name="android" spec="8.1.0" />
     <engine name="ios" spec="5.1.1" />
     <engine name="browser" spec="5.0.4" />

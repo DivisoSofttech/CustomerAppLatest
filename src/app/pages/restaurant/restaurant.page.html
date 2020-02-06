@@ -121,10 +121,6 @@
 </ion-content>
 <ion-footer [hidden]="(!showFooter)"
 >
-  <app-filter
-    *ngIf="showFilters"
-    [showClose]="true"
-    (closeFilter)="toggleFilterComponent($event)"
-  ></app-filter>
-  <app-footer (filter)="toggleFilterComponent('open')"></app-footer>
+
+  <app-footer (filter)="showFilterModal()"></app-footer>
 </ion-footer>

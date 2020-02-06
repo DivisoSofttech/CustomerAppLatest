@@ -76,7 +76,8 @@
             (click)="toggleCategoryShow(category.id)"
           >
             <ion-avatar>
-              <ion-img [src]="category.imageLink" class="imageShow"> </ion-img>
+              <ion-img *ngIf="category.imageLink" [src]="category.imageLink" class="imageShow"> </ion-img>
+              <ion-icon *ngIf="!category.imageLink" name="image" class="imageShow temp"> </ion-icon>
             </ion-avatar>
             <ion-label margin>{{category.name | titlecase}}</ion-label>
             <ion-icon
