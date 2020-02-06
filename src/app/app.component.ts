@@ -236,6 +236,11 @@ export class AppComponent implements OnInit{
     await modal.present();
   }
 
+
+  async showProfile() {
+    
+  }
+
   async login() {
     const modal = await this.modalController.create({
     component: LoginSignupComponent,

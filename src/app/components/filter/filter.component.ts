@@ -5,6 +5,7 @@ import { SharedDataService } from 'src/app/services/shared-data.service';
 import { Util } from 'src/app/services/util';
 import { ResultBucket } from 'src/app/api/models';
 import { LogService } from 'src/app/services/log.service';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-filter',
@@ -32,6 +33,7 @@ export class FilterComponent implements OnInit , OnDestroy {
 
   constructor(
     private filterService: FilterService,
+    private modalController: ModalController,
     private queryResource: QueryResourceService,
     private logger: LogService,
     private sharedData: SharedDataService,
@@ -67,6 +69,7 @@ export class FilterComponent implements OnInit , OnDestroy {
     this.filterService.setCurrentFilter(FILTER_TYPES.DISTANCE_WISE);
     this.sharedData.deleteData(FILTER_KEY);
     this.closeEvent();
+    this.dismiss();
   }
 
   setFilterCategoryType(filterCategory) {
@@ -92,6 +95,7 @@ export class FilterComponent implements OnInit , OnDestroy {
         c.checked = false;
       });
       this.filterService.setCurrentFilter(this.filterModel.currentFilterType);
+      this.dismiss();
     }
     this.closeEvent();
   }
@@ -121,7 +125,11 @@ export class FilterComponent implements OnInit , OnDestroy {
     return Object.assign(resultBucket, {
         checked: false
     });
-}
+  }
+
+  dismiss() {
+    this.modalController.dismiss()
+  }
 
 
 }

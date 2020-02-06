@@ -20,6 +20,7 @@ export class FavouriteListComponent implements OnInit {
     this.getFavourites();
   }
 
+
   getFavourites() {
     this.favourite.getFavourites()
     .subscribe(fav => {

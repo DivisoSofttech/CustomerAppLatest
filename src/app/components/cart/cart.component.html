@@ -58,7 +58,7 @@
   <!--No Orders End-->
 
   <!--Orders List Start-->
-  <ion-grid *ngIf="orderLines.length > 0" class="ion-no-padding">
+  <ion-grid *ngIf="orderLines.length > 0 && store" class="ion-no-padding">
     <ion-row justify-content-center class="ion-margin-top">
       <ion-col size="12" text-center>
         <ion-label class="fntbig-cursive">

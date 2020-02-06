@@ -98,10 +98,10 @@ export class ProfilePage implements OnInit {
       }, {
         text: 'Okay',
         handler: () => {
-          this.keycloakService.logout(true);
           this.cartService.emptyCart();
           this.orderService.resource = {};
           this.orderService.offer = undefined;
+          this.keycloakService.logout(true);
           this.guestUserService.logInGuest();
         }
       }]

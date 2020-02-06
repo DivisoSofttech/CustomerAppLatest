@@ -11,6 +11,7 @@ import { LogService } from 'src/app/services/log.service';
 import { KeycloakService } from 'src/app/services/security/keycloak.service';
 import { SharedDataService } from 'src/app/services/shared-data.service';
 import { BannerComponent } from 'src/app/components/banner/banner.component';
+import { FilterComponent } from 'src/app/components/filter/filter.component';
 
 
 @Component({
@@ -197,15 +198,19 @@ export class RestaurantPage implements OnInit, OnDestroy {
     this.IonRefresher.complete();
   }
 
-  public toggleFilterComponent(event) {
-    if (event === 'close') {
-      this.showFilters = false;
-      this.footer.filterHide = false;
-      this.footer.setcurrentRoute('restaurant');
-    } else {
-      this.showFilters = true;
-      this.footer.filterHide = true;
-    }
+  async showFilterModal() {
+     const modal = await this.modalController.create(
+        {
+          component: FilterComponent
+        }
+      );
+      modal.onDidDismiss()
+      .then(()=>{
+        this.showFilters = false;
+        this.footer.filterHide = false;
+        this.footer.setcurrentRoute('restaurant');
+      })
+      modal.present();
   }
 
 

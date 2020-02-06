@@ -94,11 +94,11 @@ export class FavouriteService {
     .subscribe(data => {
       this.logger.info(this,'Got Favotite Product Page ' , i , data.content);
       if(i < data.totalPages) {
-        i++;
         data.content.forEach(fs => {
          this.fetchProduct(fs.productId);
         });
       }
+      i++;
     });
   }
 
@@ -114,9 +114,9 @@ export class FavouriteService {
     .subscribe(data => {
         this.logger.info(this,'Got Favotite Store Page ' , i , data.content);
         if (i < data.totalPages) {
-          i++;
           data.content.forEach(fs => { this.fetchStore(fs.storeId);});
         }
+        i++;
     });
   }
 

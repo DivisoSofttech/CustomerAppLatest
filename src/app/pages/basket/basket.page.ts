@@ -33,15 +33,14 @@ export class BasketPage implements OnInit {
   }
 
   getStore() {
-    this.logger.info('Basket Page Getting Store' ,     this.cart.currentShop.regNo);
     this.queryResource.findStoreByRegisterNumberUsingGET(this.cart.currentShop.regNo)
     .subscribe(store => {
-      if(this.store !== undefined) {
-        this.store = store;
-        this.orderService.acceptType = store?store.storeSettings.orderAcceptType:null;
-        console.log(' Accept type is ', this.orderService.acceptType);  
-      }
-    });
+        if(this.store !== undefined) {
+          this.store = store;
+          this.orderService.acceptType = store?store.storeSettings.orderAcceptType:null;
+          console.log(' Accept type is ', this.orderService.acceptType);  
+        }
+      });
   }
 
   clearCart() {

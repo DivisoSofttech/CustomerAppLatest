@@ -4,9 +4,4 @@ export const APP_SIDE_MENU = [
       url: '/restaurant',
       icon: 'business'
     },
-    {
-      title: 'Profile',
-      url: '/profile',
-      icon: 'person'
-    },
   ];

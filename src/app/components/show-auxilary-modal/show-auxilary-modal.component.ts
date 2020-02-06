@@ -15,6 +15,8 @@ export class ShowAuxilaryModalComponent implements OnInit {
 
   @Input() product: Product;
 
+  @Input() store;
+
   orderLine: OrderLine;
 
   @Input()stockCurrent: StockCurrent;
@@ -67,7 +69,8 @@ export class ShowAuxilaryModalComponent implements OnInit {
     this.orderLine.requiedAuxilaries = this.auxilaryOrderLines;
     this.orderLine.total = this.orderLine.pricePerUnit + total;
     this.logger.info('Adding Order Line ' , this.orderLine);
-    this.cart.addOrder(this.orderLine);
+    console.error(this.cart.currentShop);
+    this.cart.addOrder(this.orderLine,this.store);
     this.dismiss();
 
   }

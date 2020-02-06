@@ -185,7 +185,8 @@ export class ProductCardComponent implements OnInit, OnDestroy {
       componentProps: {
         auxilaryItems: this.auxilaries,
         product: this.stockCurrent.product,
-        stockCurrent: this.stockCurrent
+        stockCurrent: this.stockCurrent,
+        store: this.store
       }
     });
     return await popoverElement.present();

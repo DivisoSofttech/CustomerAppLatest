@@ -344,7 +344,7 @@ export class KeycloakService {
 
   logout(navigateBack) {
     this.oauthService.logOut();
-    this.sharedData.clearAll();
+    this.sharedData.clearKeys('order','cart','user','customer','contact','address');
     this.userChangedBehaviour.next(null);
     this.isGuestObservable.next(null);
     if(navigateBack) {

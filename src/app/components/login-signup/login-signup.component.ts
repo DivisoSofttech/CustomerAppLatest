@@ -88,6 +88,7 @@ export class LoginSignupComponent implements OnInit {
             this.logger.info(this, 'Logged in+++++++');
             this.util.createToast('Logged in successfully', 'checkmark-circle-outline');
             this.createUserIfNotExists(this.username , loader);
+            this.dismiss();
           }, () => {
             loader.dismiss();
             this.util.createToast('You are not authorized / Please signup');

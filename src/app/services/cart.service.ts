@@ -294,7 +294,11 @@ export class CartService {
       this.getStoreSettings();
   }
 
-  addOrder(order: OrderLine) {
+  addOrder(order: OrderLine,store) {
+    console.error(store);
+    if(!this.currentShop) {
+      this.currentShop = store;
+    }
     this.orderLines.push(order);
     this.logger.info(this,this.orderLines.length);
     this.updateCart();
