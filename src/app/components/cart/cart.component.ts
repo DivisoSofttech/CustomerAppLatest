@@ -377,7 +377,7 @@ export class CartComponent implements OnInit, OnDestroy {
         this.orderService.saveDetailsToStorage()
         this.navigateForward();
       },
-      err=> {
+      err => {
         this.enableContinue =true;
       });
   }

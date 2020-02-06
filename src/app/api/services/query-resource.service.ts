@@ -39,7 +39,6 @@ import { PageOfTerm } from '../models/page-of-term';
 import { PageOfNotification } from '../models/page-of-notification';
 import { PageOfHeaderResult } from '../models/page-of-header-result';
 import { Order } from '../models/order';
-import { OrderAggregator } from '../models/order-aggregator';
 import { PageOfAddress } from '../models/page-of-address';
 import { ProductDTO } from '../models/product-dto';
 import { PageOfStoreType } from '../models/page-of-store-type';
@@ -82,6 +81,7 @@ class QueryResourceService extends __BaseService {
   static readonly findProductsByCategoryNameUsingGETPath = '/api/query/findProductsByCategoryName/{name}';
   static readonly findStockCurrentByProductNameAndStoreIdUsingGETPath = '/api/query/findStockCurrentByProductNameStoreId/{name}/{storeId}';
   static readonly findStockCurrentByStoreIdAndCategoryIdUsingGETPath = '/api/query/findStockCurrentByStoreIdAndCategoryId/{userId}/{categoryId}';
+  static readonly findStoreByDeliveryTypeUsingGETPath = '/api/query/findStoreByDeliveryType/{deliveryType}';
   static readonly findStoreByIdUsingGETPath = '/api/query/findStoreById/{id}';
   static readonly findStoreByNearLocationUsingGETPath = '/api/query/findStoreByNearLocation/{lat}/{lon}/{distance}/{distanceUnit}';
   static readonly findStoreTypeAndCountUsingGETPath = '/api/query/findStoreTypeAndCount';
@@ -96,7 +96,6 @@ class QueryResourceService extends __BaseService {
   static readonly findOrderByDatebetweenAndStoreIdUsingGETPath = '/api/query/order/{from}/{to}/{storeId}';
   static readonly findOrderByOrderIdUsingGETPath = '/api/query/orderByOrderId/{orderId}';
   static readonly findOrderByStatusNameUsingGETPath = '/api/query/orderStatus/{statusName}';
-  static readonly getOrderAggregatorUsingGETPath = '/api/query/orderaggregator/{orderNumber}';
   static readonly getAllSavedAddressUsingGETPath = '/api/query/orders/addresses/{customerId}';
   static readonly findAndSortProductByPriceUsingGETPath = '/api/query/productByPrice/{from}/{to}';
   static readonly findProductUsingGETPath = '/api/query/products/{id}';
@@ -1429,6 +1428,63 @@ class QueryResourceService extends __BaseService {
   }
 
   /**
+   * @param params The `QueryResourceService.FindStoreByDeliveryTypeUsingGETParams` containing the following parameters:
+   *
+   * - `deliveryType`: deliveryType
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findStoreByDeliveryTypeUsingGETResponse(params: QueryResourceService.FindStoreByDeliveryTypeUsingGETParams): __Observable<__StrictHttpResponse<PageOfStore>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    (params.sort || []).forEach(val => {if (val != null) __params = __params.append('sort', val.toString())});
+    if (params.size != null) __params = __params.set('size', params.size.toString());
+    if (params.page != null) __params = __params.set('page', params.page.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/query/findStoreByDeliveryType/${params.deliveryType}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<PageOfStore>;
+      })
+    );
+  }
+  /**
+   * @param params The `QueryResourceService.FindStoreByDeliveryTypeUsingGETParams` containing the following parameters:
+   *
+   * - `deliveryType`: deliveryType
+   *
+   * - `sort`: Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   *
+   * - `size`: Size of a page
+   *
+   * - `page`: Page number of the requested page
+   *
+   * @return OK
+   */
+  findStoreByDeliveryTypeUsingGET(params: QueryResourceService.FindStoreByDeliveryTypeUsingGETParams): __Observable<PageOfStore> {
+    return this.findStoreByDeliveryTypeUsingGETResponse(params).pipe(
+      __map(_r => _r.body as PageOfStore)
+    );
+  }
+
+  /**
    * @param id id
    * @return OK
    */
@@ -2170,42 +2226,6 @@ class QueryResourceService extends __BaseService {
   findOrderByStatusNameUsingGET(params: QueryResourceService.FindOrderByStatusNameUsingGETParams): __Observable<PageOfOrder> {
     return this.findOrderByStatusNameUsingGETResponse(params).pipe(
       __map(_r => _r.body as PageOfOrder)
-    );
-  }
-
-  /**
-   * @param orderNumber orderNumber
-   * @return OK
-   */
-  getOrderAggregatorUsingGETResponse(orderNumber: string): __Observable<__StrictHttpResponse<OrderAggregator>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-    let req = new HttpRequest<any>(
-      'GET',
-      this.rootUrl + `/api/query/orderaggregator/${orderNumber}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<OrderAggregator>;
-      })
-    );
-  }
-  /**
-   * @param orderNumber orderNumber
-   * @return OK
-   */
-  getOrderAggregatorUsingGET(orderNumber: string): __Observable<OrderAggregator> {
-    return this.getOrderAggregatorUsingGETResponse(orderNumber).pipe(
-      __map(_r => _r.body as OrderAggregator)
     );
   }
 
@@ -3629,6 +3649,32 @@ module QueryResourceService {
      * categoryId
      */
     categoryId: number;
+
+    /**
+     * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     */
+    sort?: Array<string>;
+
+    /**
+     * Size of a page
+     */
+    size?: number;
+
+    /**
+     * Page number of the requested page
+     */
+    page?: number;
+  }
+
+  /**
+   * Parameters for findStoreByDeliveryTypeUsingGET
+   */
+  export interface FindStoreByDeliveryTypeUsingGETParams {
+
+    /**
+     * deliveryType
+     */
+    deliveryType: string;
 
     /**
      * Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.

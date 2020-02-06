@@ -25,7 +25,6 @@ import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 import { OrderService } from './services/order.service';
 import { LoggerModule } from 'ngx-logger';
 import { environment } from '../environments/environment';
-import { PayPal } from '@ionic-native/paypal/ngx';
 import { LocationStrategy, HashLocationStrategy, Location, DecimalPipe } from '@angular/common';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -98,13 +97,12 @@ const config: SocketIoConfig = { url: 'https://dev.ci2.divisosofttech.com:9999',
     LocalNotifications,
     AndroidPermissions,
     // ForegroundService,
-    PayPal,
     Sim,
     InAppBrowser,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     // Extra Services
     LocationService,
-    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    // { provide: LocationStrategy, useClass: HashLocationStrategy },
     Geolocation,
     GoogleMapsAPIWrapper,
     { provide: PaymentNavService, useClass: PaymentNavService },
