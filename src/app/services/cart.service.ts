@@ -256,14 +256,14 @@ export class CartService {
     this.observableTickets.next(this.orderLines);
     this.observablePrice.next(this.subTotal);
     
-    if(!this.dataSaveTimer) {
-      this.logger.info(this,'Setting Timer to Save Cart Details');
-      this.dataSaveTimer = setTimeout(()=>{
-        this.saveCartDetailsToSharedMemory();
-        clearTimeout(this.dataSaveTimer);
-        this.dataSaveTimer = null;
-      },10000);
-    }
+    // if(!this.dataSaveTimer) {
+    //   this.logger.info(this,'Setting Timer to Save Cart Details');
+    //   this.dataSaveTimer = setTimeout(()=>{
+    //     this.saveCartDetailsToSharedMemory();
+    //     clearTimeout(this.dataSaveTimer);
+    //     this.dataSaveTimer = null;
+    //   },10000);
+    // }
   }
 
   emptyCart() {

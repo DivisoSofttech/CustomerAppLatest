@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { SlidesComponent } from './components/slides/slides.component';
-import { SlidesService } from './services/slides.service';
 
 const routes: Routes = [
 
@@ -11,11 +10,10 @@ const routes: Routes = [
     path: '',
     redirectTo: 'restaurant',
     pathMatch: 'full',
-    canActivate: [SlidesService]
   },
 
   { path: 'login', loadChildren: './pages/login-signup/login-signup.module#LoginSignupPageModule'},
-  { path: 'restaurant', loadChildren: './pages/restaurant/restaurant.module#RestaurantPageModule' , canActivate: [AuthGuardService, SlidesService]},
+  { path: 'restaurant', loadChildren: './pages/restaurant/restaurant.module#RestaurantPageModule' , canActivate: [AuthGuardService]},
   { path: 'store/:id', loadChildren: './pages/store/store.module#StorePageModule' , canActivate: [AuthGuardService]},
   { path: 'store/search/:idpcode/:type/:tid/:cid', loadChildren: './pages/store/store.module#StorePageModule' , canActivate: [AuthGuardService]},
   { path: 'store/search/:idpcode/:type/:cid', loadChildren: './pages/store/store.module#StorePageModule' , canActivate: [AuthGuardService]},

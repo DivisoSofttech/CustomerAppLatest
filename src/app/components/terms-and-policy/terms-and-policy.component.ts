@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { QueryResourceService } from 'src/app/api/services';
 import { Term, SubTerm } from 'src/app/api/models';
@@ -10,6 +10,8 @@ import { Term, SubTerm } from 'src/app/api/models';
 })
 export class TermsAndPolicyComponent implements OnInit {
 
+  @Input() viewType = 'modal';
+  
   public showLoading = true;
 
   public terms: Term[] = [];

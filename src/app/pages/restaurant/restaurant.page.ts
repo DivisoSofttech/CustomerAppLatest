@@ -36,6 +36,7 @@ export class RestaurantPage implements OnInit, OnDestroy {
   }
 
   public isGuest: Boolean = false;
+  public isFirstTime;
 
   public showFooter: Boolean = true;
   public showLoading: Boolean = true;
@@ -46,10 +47,10 @@ export class RestaurantPage implements OnInit, OnDestroy {
   private filterSubscription: any;
   private locationSubscription: any;
 
-  @ViewChild(IonInfiniteScroll, null) private ionInfiniteScroll: IonInfiniteScroll;
+  @ViewChild(IonInfiniteScroll, {static: false}) private ionInfiniteScroll: IonInfiniteScroll;
   @ViewChild(IonRefresher, {static: false}) private IonRefresher: IonRefresher;
-  @ViewChild(FooterComponent, null) private footer: FooterComponent;
-  @ViewChild(BannerComponent, null) private banner: BannerComponent;
+  @ViewChild(FooterComponent, {static: false}) private footer: FooterComponent;
+  @ViewChild(BannerComponent, {static: false}) private banner: BannerComponent;
 
   constructor(
     private filterService: FilterService,
@@ -66,6 +67,7 @@ export class RestaurantPage implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+    this.checkIfFirstTimeStartingApp();
     this.nativebackButtonHandler();
     this.checkIfGuest();
     this.getLocationDetails();
@@ -125,7 +127,7 @@ export class RestaurantPage implements OnInit, OnDestroy {
   private getFilterSubscription() {
     this.filterSubscription = this.filterService.getFilterSubscription().subscribe((data) => {
       this.currentFilter = data.currentFilterType;
-      this.ionInfiniteScroll.disabled = false;
+      this.toggleInfiniteScroll(false);
       this.getStores();
     });
   }
@@ -137,7 +139,7 @@ export class RestaurantPage implements OnInit, OnDestroy {
       this.logger.info(this, 'Total Pages', totalPages);
       this.logger.info(this, 'Total Elements', totalElements);
       if (totalPages > 1) {
-        this.toggleInfiniteScroll();
+        this.toggleInfiniteScroll(false);
       }
       this.showLoading = false;
       this.stores = stores;
@@ -163,10 +165,10 @@ export class RestaurantPage implements OnInit, OnDestroy {
       event.target.complete();
       this.logger.info(this, 'Got Stores Page :', this.pageCount, '----', stores);
       if (this.pageCount === totalPages) {
-        this.toggleInfiniteScroll();
+        this.toggleInfiniteScroll(true);
       }
       if (totalPages === 1) {
-        this.toggleInfiniteScroll();
+        this.toggleInfiniteScroll(true);
       } else {
         stores.forEach(s => {
           this.stores.push(s);
@@ -190,13 +192,32 @@ export class RestaurantPage implements OnInit, OnDestroy {
 
   }
 
-  private toggleInfiniteScroll() {
-    this.ionInfiniteScroll.disabled = !this.ionInfiniteScroll.disabled;
+  private toggleInfiniteScroll(value) {
+    if(this.ionInfiniteScroll)
+    this.ionInfiniteScroll.disabled = value;
   }
 
   private toggleIonRefresher() {
     this.IonRefresher.complete();
   }
+
+  checkIfFirstTimeStartingApp() {
+    if(this.platform.width() < 1280) {
+      this.sharedData.getData('isFirstTime')
+      .then(data => {
+        if(data === true || data === undefined || data === null) {
+          this.logger.info(this,'App is starting for first time',data);
+          this.isFirstTime = true;
+        } else {
+          this.logger.info(this,'App is Not starting for first time',data);
+          this.isFirstTime = false;
+        }
+      });        
+    } else {
+      this.isFirstTime=false;
+    }
+  }
+
 
   async showFilterModal() {
      const modal = await this.modalController.create(
@@ -227,7 +248,7 @@ export class RestaurantPage implements OnInit, OnDestroy {
           .then(data => {
             if (data !== undefined) {
               if (data.data) {
-                this.toggleInfiniteScroll();
+                this.toggleInfiniteScroll(false);
                 this.sharedData.deleteData(FILTER_KEY);
               }
             }
@@ -254,6 +275,7 @@ export class RestaurantPage implements OnInit, OnDestroy {
 
   // Fix for Footer Active Tab Selection
   ionViewDidEnter() {
+    if(this.footer)
     this.footer.setcurrentRoute('restaurant');
   }
 

@@ -261,6 +261,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
   checkRestaurantStatus(deliveryType) {
 
+    this.cart.saveCartDetailsToSharedMemory();
     this.logger.info(this, 'Checking if Store is Closed', this.store);
     this.checkPreorderStatus();
     this.checkClosedStatus();

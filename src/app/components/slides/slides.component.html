@@ -3,15 +3,13 @@
     <ion-slide  *ngFor="let s of [1,2,3]">
       <div class="container">
         <div class="imageContainer">
-          <img src="./assets/images/slides/slide-{{s}}.png"/>
+          <img src="./assets/slide-{{s}}.jpg"/>
         </div>
-        <div class="textContainer">
-          <ion-text class="ion-justify-content-center">
-           <h3> Blah Blah Blah Blah Blah Blah Blah</h3>
-          </ion-text>
-        </div>
+
         <div *ngIf="s===3" class="buttonContainer">
-          <ion-button (click)="skipSlide()" expand="block">Continue</ion-button>
+          <ion-button style="opacity: 0.7;" shape="round" (click)="skipSlide()" color="dark" expand="block">
+            <ion-icon name="arrow-round-forward"></ion-icon>
+          </ion-button>
         </div>
       </div>
     </ion-slide>

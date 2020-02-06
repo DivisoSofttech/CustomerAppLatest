@@ -73,7 +73,7 @@
         <ion-list-label margin>Combo's</ion-list-label>
       </ion-item>
       <ion-item lines="none" *ngFor="let combo of comboLineItems">
-        <ion-thumbnail class="comboPhoto">
+        <ion-thumbnail class="comboPhoto" *ngIf="combo.comboItem.imageLink">
           <ion-img [src]=" combo.comboItem.imageLink" class="imageShow">
           </ion-img>
         </ion-thumbnail>

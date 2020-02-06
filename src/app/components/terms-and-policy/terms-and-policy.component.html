@@ -1,18 +1,49 @@
-<div *ngIf="showLoading" style=" width: 100%;padding:10px;text-align:center">
-  <ion-spinner name="lines-small"></ion-spinner>
-</div>
-<ion-list *ngIf="!showLoading && terms.length > 0">
-  <ion-list-header>
-    <ion-text>
-      <h1>Terms & Policies</h1>
-    </ion-text>
-  </ion-list-header>
-  <div style="padding: 10px;">
-    <h3 *ngIf="terms[0]">{{terms[0].title|titlecase}}</h3>
-    <ul *ngIf="subterms.get(terms[0].id)">
-      <li *ngFor="let subterm of subterms.get(terms[0].id)">
-        <p >{{subterm.termDescription}}</p>
-      </li>
-    </ul>      
+
+
+<ion-header *ngIf="viewType==='modal'">
+  <ion-toolbar>
+    <ion-title>Terms & Policies</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content *ngIf="viewType==='modal'">
+  <div *ngIf="showLoading" style=" width: 100%;padding:10px;text-align:center">
+    <ion-spinner name="lines-small"></ion-spinner>
   </div>
-</ion-list>
+  <ion-list *ngIf="!showLoading && terms.length > 0">
+    <div style="padding: 10px;">
+      <h3 *ngIf="terms[0]">{{terms[0].title|titlecase}}</h3>
+      <ul *ngIf="subterms.get(terms[0].id)">
+        <li *ngFor="let subterm of subterms.get(terms[0].id)">
+          <p >{{subterm.termDescription}}</p>
+        </li>
+      </ul>      
+    </div>
+  </ion-list>
+</ion-content>
+
+<ng-container *ngIf="viewType!=='modal'">
+  <div *ngIf="showLoading" style=" width: 100%;padding:10px;text-align:center">
+    <ion-spinner name="lines-small"></ion-spinner>
+  </div>
+  <ion-list *ngIf="!showLoading && terms.length > 0">
+    <ion-list-header >
+      <ion-text>
+        <h1>Terms & Policies</h1>
+      </ion-text>
+    </ion-list-header>
+    <div style="padding: 10px;">
+      <h3 *ngIf="terms[0]">{{terms[0].title|titlecase}}</h3>
+      <ul *ngIf="subterms.get(terms[0].id)">
+        <li *ngFor="let subterm of subterms.get(terms[0].id)">
+          <p >{{subterm.termDescription}}</p>
+        </li>
+      </ul>      
+    </div>
+  </ion-list>
+  
+</ng-container>

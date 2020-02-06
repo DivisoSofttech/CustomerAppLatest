@@ -88,7 +88,7 @@ export class FilterService {
     this.filterModel.cusines = selectedCusines;
   }
 
-    
+
   public activateDistanceFilter(latLon: number[], maxDistance: any) {
     this.currentLatLon = latLon;
     this.distance = maxDistance;

@@ -19,6 +19,7 @@ import { LoginSignupComponent } from './components/login-signup/login-signup.com
 import { AboutComponent } from './components/about/about.component';
 import { HelpComponent } from './components/help/help.component';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { SharedDataService } from './services/shared-data.service';
 
 @Component({
   selector: 'app-root',
@@ -44,7 +45,6 @@ export class AppComponent implements OnInit{
   cartSize = 0;
   showOrderDetails: boolean;
   showBanners: boolean;
-  isFirstTime: boolean;
 
   constructor(
     private platform: Platform,
@@ -61,7 +61,8 @@ export class AppComponent implements OnInit{
     private router: Router,
     private guestUserService: GuestUserService,
     private cref: ChangeDetectorRef,
-    private socialSharing: SocialSharing
+    private socialSharing: SocialSharing,
+    private sharedData: SharedDataService
   ) {}
 
   ngOnInit() {
@@ -80,14 +81,14 @@ export class AppComponent implements OnInit{
         this.toggleFilterView(val.url);      
       }
     });
-
     this.getUser();
     this.initializeApp();
     if (this.platform.is('pwa') || this.platform.is('cordova')) {
       this.browser = true;
     }
   }
-
+  
+ 
   shareApp() {
     this.socialSharing.share('Share','Share','http://www.google.com');
   }

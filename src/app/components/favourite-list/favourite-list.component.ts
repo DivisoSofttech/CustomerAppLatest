@@ -35,8 +35,8 @@ export class FavouriteListComponent implements OnInit {
     this.navController.navigateForward(routeURL);
   }
 
-  removeFromFavourite(product) {
-    this.favourite.removeFromFavorite(product.data, product.type);
+  removeFromFavourite(fav) {
+    this.favourite.removeFromFavorite(fav, fav.type);
     this.getFavourites();
   }
 

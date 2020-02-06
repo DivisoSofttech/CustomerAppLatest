@@ -12,6 +12,7 @@ export interface Favourite {
     route: string;
     type: string;
     data: any;
+    id:any;
 }
 
 @Injectable({
@@ -95,7 +96,7 @@ export class FavouriteService {
       this.logger.info(this,'Got Favotite Product Page ' , i , data.content);
       if(i < data.totalPages) {
         data.content.forEach(fs => {
-         this.fetchProduct(fs.productId);
+         this.fetchProduct(fs.productId,fs);
         });
       }
       i++;
@@ -114,7 +115,7 @@ export class FavouriteService {
     .subscribe(data => {
         this.logger.info(this,'Got Favotite Store Page ' , i , data.content);
         if (i < data.totalPages) {
-          data.content.forEach(fs => { this.fetchStore(fs.storeId);});
+          data.content.forEach(fs => { this.fetchStore(fs.storeId , fs);});
         }
         i++;
     });
@@ -128,7 +129,7 @@ export class FavouriteService {
       customerId: this.customer.id
     })
     .subscribe(fav => {
-      this.favourites.push({data: product , route , type: 'product'});
+      this.favourites.push({id: fav.id,data: product , route , type: 'product'});
       this.refresh(false);
     });
   }
@@ -140,7 +141,7 @@ export class FavouriteService {
       customerId: this.customer.id
     })
     .subscribe(fav => {
-      this.favourites.push({data: store , route , type: 'store'});
+      this.favourites.push({id: fav.id,data: store , route , type: 'store'});
       this.refresh(false);
     });
   }
@@ -151,7 +152,7 @@ export class FavouriteService {
       case 'product':
         this.commandResource.deleteFavouriteProductUsingDELETE(data.id)
         .subscribe(() => {
-          const tmpArray = this.favourites.filter(favourite => !(favourite.data.id === data.id
+          const tmpArray = this.favourites.filter(favourite => !(favourite.id === data.id
             && favourite.type === type));
           this.favourites = tmpArray;
           this.refresh(false);
@@ -162,11 +163,13 @@ export class FavouriteService {
         break;
 
         case 'store':
+  
         this.commandResource.deleteFavouriteStoreUsingDELETE(data.id)
         .subscribe(() => {
-          const tmpArray = this.favourites.filter(favourite => !(favourite.data.id === data.id
+          const tmpArray = this.favourites.filter(favourite => !(favourite.id === data.id
             && favourite.type === type));
           this.favourites = tmpArray;
+          console.error('>>>>',data);
           this.refresh(false);
         },
         err=>{
@@ -192,19 +195,19 @@ export class FavouriteService {
     return this.favouriteStoresIdSubject;   
   }
 
-  fetchStore(id) {
+  fetchStore(id,s) {
     this.queryResource.findStoreByIdUsingGET(id)
     .subscribe(store => {
       if(store !== null)
-      this.favourites.push({data: store , route:  '/store/' + store.regNo , type: 'store'});
+      this.favourites.push({id: s.id,data: store , route:  '/store/' + store.regNo , type: 'store'});
       this.refresh(false);
     });
   }
 
-  fetchProduct(id) {
+  fetchProduct(id,s) {
     this.queryResource.findProductUsingGET(id)
     .subscribe(product => {
-      this.favourites.push({data: product , route: '' , type: 'product'});
+      this.favourites.push({id: s.id ,data: product , route: '' , type: 'product'});
       this.refresh(false);
     });
   }

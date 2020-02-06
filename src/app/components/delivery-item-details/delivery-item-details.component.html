@@ -16,7 +16,7 @@
   <ion-card *ngFor="let orderLine of orders">
     <!--Main Product Start -->
     <ion-item color="light" *ngIf="viewType==='minimal'">
-      <ion-avatar class="desktop-only ion-margin">
+      <ion-avatar class="desktop-only ion-margin" *ngIf="products[orderLine.productId].imageLink">
         <ion-img [src]="products[orderLine.productId].imageLink">
         </ion-img>
       </ion-avatar>
@@ -29,7 +29,7 @@
     </ion-item>
 
     <ion-item color="primary" *ngIf="products[orderLine.productId] !== undefined && viewType==='full'">
-      <ion-avatar class="desktop-only ion-margin">
+      <ion-avatar class="desktop-only ion-margin" *ngIf="products[orderLine.productId].imageLink">
         <ion-img [src]="products[orderLine.productId].imageLink">
         </ion-img>
       </ion-avatar>

@@ -73,10 +73,12 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
         if(data === 'delivery') {
           this.total = this.decimalPipe.transform((parseFloat(this.subTotal) + this.storeSetting.deliveryCharge), '1.2-2' );       
           this.cart.total = this.total;
+          this.currentDeliveryMode = data;
         }
         else {
           this.total = this.subTotal; 
           this.cart.total = this.cart.subTotal;
+          this.currentDeliveryMode = data;
         }
       }
     });

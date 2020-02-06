@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { SharedDataService } from 'src/app/services/shared-data.service';
 import { NavController } from '@ionic/angular';
 
@@ -8,6 +8,8 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./slides.component.scss'],
 })
 export class SlidesComponent implements OnInit {
+
+  @Output() slideEnd = new EventEmitter();
 
   slideOpts = {
     coverflowEffect: {
@@ -26,8 +28,10 @@ export class SlidesComponent implements OnInit {
   ngOnInit() {}
 
   skipSlide() {
-    this.sharedData.saveToStorage('isFirstTime',false);
-    this.navController.navigateRoot('/restaurant');
+    this.sharedData.saveToStorage('isFirstTime',false)
+    .then(()=>{
+      this.slideEnd.emit();
+    })
   }
 
 }
