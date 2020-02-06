@@ -1,12 +1,30 @@
+
 <div *ngIf="showLoading" style=" width: 100%;padding:10px;text-align:center">
   <ion-spinner name="lines-small"></ion-spinner>
 </div>
 <ion-list *ngIf="!showLoading && terms.length > 0">
   <ion-list-header>
     <ion-text>
-      <h1>Terms & Policies</h1>
+      <h1 >Terms & Policies</h1>
     </ion-text>
   </ion-list-header>
+  <ion-grid>
+  <ion-row>
+    <ion-col>
+      <ion-text>
+        <h2 >IMPORTANT LEGAL NOTICE</h2>
+      <p>
+        This page (together with our Cookies Policy) sets out the terms and conditions ("Website Terms") on which we, Food Exp Ltd. ("we", "our" or "Food Exp"), provide access to our website https://www.foodexp.ie and any FoodExp mobile application and ordering platform through which you order products. Please read these Website Terms carefully before ordering any products through the Website. By ordering products through the Website (whether now or in the future), you agree to be bound by these Website Terms. Use of the Website is also subject to these Website Terms.
+    We reserve the right to change these Website Terms from time to time by changing them on this page. We advise you to print a copy of these Website Terms for future reference. These Website Terms are only in the English language.
+    Use of your personal information submitted via the Website or mobile application is governed by our Privacy Policy and Cookies Policy.
+    For the avoidance of doubt, please note that references to "Website" in these Website Terms include any current or future version of our website https://www.foodexp.ie and any Food Exp mobile application through which you access and use our Website, in each case whether accessed through any current or future platform or device (including without limitation any mobile website, mobile application, affiliate website or related website for accessing and using our Website that may be developed from time to time).
+    By accessing any part of the Website, you indicate that you accept these Website Terms. If you do not accept these Website Terms, you should leave the Website immediately, and you will not be able to order any products through the Website.
+      </p>
+    </ion-text>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+
   <div style="padding: 10px;">
     <h3 *ngIf="terms[0]">{{terms[0].title|titlecase}}</h3>
     <ul *ngIf="subterms.get(terms[0].id)">

@@ -23,9 +23,11 @@ export enum FILTER_TYPES {
   CATEGORY_WISE,
   // This is the Default filter
   DISTANCE_WISE,
-  DELIVERY_TYPE,
+
   // Sort Types
   TOP_RATED,
+  MODE_OF_DELIVERY_DELIVERY,
+  MODE_OF_DELIVERY_PICKUP,
   DELIVERY_TIME,
   MIN_AMOUNT,
   CUSINE_FILTER
@@ -114,10 +116,24 @@ export class FilterService {
     } else if (this.filterModel.currentFilterType == FILTER_TYPES.CUSINE_FILTER.valueOf()) {
       this.logger.info(this, 'Finding Store By Cusines');
       this.getStoreByCusines(pageNumber, success, error);
+    } else if (this.filterModel.currentFilterType == FILTER_TYPES.MODE_OF_DELIVERY_DELIVERY.valueOf()){
+      this.getStoresByModeOfDelivery('delivery', pageNumber, success, error);
+    } else if (this.filterModel.currentFilterType == FILTER_TYPES.MODE_OF_DELIVERY_PICKUP.valueOf()){
+      this.getStoresByModeOfDelivery('collection', pageNumber, success, error);
     }
 
   }
 
+  private getStoresByModeOfDelivery(modeOfDelivery: any, pageNumber: any, success: any, error: any) {
+    this.logger.info(this, 'Fetching stores by mode of delivery', modeOfDelivery);
+    this.queryResource.findStoreByDeliveryTypeUsingGET({deliveryType: modeOfDelivery,page: pageNumber })
+      .subscribe(data => {
+        success(data.totalElements, data.totalPages, data.content);
+      }, err => {
+        this.logger.info('Something went wrong when fetching stores by mode of delivery filter ', modeOfDelivery);
+        error();
+      });
+  }
   private getStoreByMinAmount(pageNumber: any, success: any, error: any) {
     this.logger.info(this, 'Fetching Store by Min Amount');
     this.queryResource.findAndSortStoreByMinAmountUsingGET({

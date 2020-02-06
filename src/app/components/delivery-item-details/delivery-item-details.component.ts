@@ -68,14 +68,17 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
     this.getCartDetails();
     this.productBaseAuxItemsArray = this.cart.auxilaryItems;
     this.getOffers();
-    this.cart.selectedDeliveryType.subscribe(data => {
+    this.cart.selectedDeliveryType.subscribe(data => {      
       if(data) {
         if(data === 'delivery') {
+
           this.total = this.decimalPipe.transform((parseFloat(this.subTotal) + this.storeSetting.deliveryCharge), '1.2-2' );       
+          this.total = this.decimalPipe.transform(this.total - this.offer.orderDiscountAmount, '1.2-2');
           this.cart.total = this.total;
         }
         else {
-          this.total = this.subTotal; 
+          this.total = this.subTotal;
+          this.total = this.decimalPipe.transform(this.total - this.offer.orderDiscountAmount, '1.2-2');
           this.cart.total = this.cart.subTotal;
         }
       }
@@ -217,7 +220,6 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
   }
 
   getOffers() {
-
     this.util.createCustomLoader('circles', 'Fetching Offers').then(loader => {
     loader.present();
     let offerPrice;

@@ -22,6 +22,12 @@
                     Sort
                   </ion-item>
                 </ion-col>
+                <ion-col size="12" class="ion-no-padding ">
+                  <ion-item lines="full" (click)="setFilterCategoryType('deliveryType')" 
+                  [ngClass]="{'highlight':filterCategory==='deliveryType'}">
+                    Mode Of Delivery
+                  </ion-item>
+                </ion-col>
                 <ion-col size="12" class="ion-no-padding">
                   <ion-item lines="full" (click)="setFilterCategoryType('cusine')"
                   [ngClass]="{'highlight':filterCategory==='cusine'}">
@@ -46,6 +52,18 @@
                     </ion-item>
                   </ion-radio-group>
                 </ion-col>  
+                <ion-col size="12" class="ion-no-padding" *ngIf="filterCategory==='deliveryType'">
+                  <ion-radio-group [(ngModel)]="filterModel.currentFilterType">
+                    <ion-item lines="none" >
+                      <ion-radio value="{{TEMP_FILTER_TYPES.MODE_OF_DELIVERY_DELIVERY}}" [checked]="filterModel.currentFilterType === TEMP_FILTER_TYPES.MODE_OF_DELIVERY_DELIVERY"></ion-radio>
+                      <ion-label class="ion-margin">Delivery</ion-label>
+                    </ion-item>
+                    <ion-item lines="none" >
+                      <ion-radio [checked]="filterModel.currentFilterType === TEMP_FILTER_TYPES.MODE_OF_DELIVERY_PICKUP" value="{{TEMP_FILTER_TYPES.MODE_OF_DELIVERY_PICKUP}}"></ion-radio>
+                      <ion-label class="ion-margin">Pickup</ion-label>
+                    </ion-item>
+                  </ion-radio-group>
+                </ion-col> 
                 <ion-col size="12" class="ion-no-padding" *ngIf="filterCategory==='cusine'">
                   <ion-list>
                     <ion-item lines="full" *ngFor="let t of cusines">
