@@ -75,10 +75,10 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
           this.total = this.decimalPipe.transform((parseFloat(this.subTotal) + this.storeSetting.deliveryCharge), '1.2-2' );       
           this.total = this.decimalPipe.transform(this.total - this.offer.orderDiscountAmount, '1.2-2');
           this.cart.total = this.total;
-          this.currentDeliveryMode = data;
+          // this.currentDeliveryMode = data;
         }
         else {
-          this.currentDeliveryMode = data;
+          // this.currentDeliveryMode = data;
           this.total = this.subTotal;
           this.total = this.decimalPipe.transform(this.total - this.offer.orderDiscountAmount, '1.2-2');
           this.cart.total = this.total;

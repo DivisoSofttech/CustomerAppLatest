@@ -223,7 +223,7 @@ export class RestaurantCardComponent implements OnInit, OnDestroy {
 
   addToFavourite(store: Store) {
     this.isFavourite = true;
-    this.favourite.addToFavouriteStore(store, '/store/' + store.regNo);
+    this.favourite.addToFavouriteStore(store, '/store/');
   }
 
   removeFromFavourite(store) {

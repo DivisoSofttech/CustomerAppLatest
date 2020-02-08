@@ -31,7 +31,7 @@ export class FavouriteListComponent implements OnInit {
   }
 
   route(favourite: Favourite) {
-    const routeURL = favourite.route + '#' + favourite.data.id;
+    const routeURL = favourite.route;
     this.navController.navigateForward(routeURL);
   }
 

@@ -141,7 +141,7 @@ export class FavouriteService {
       customerId: this.customer.id
     })
     .subscribe(fav => {
-      this.favourites.push({id: fav.id,data: store , route , type: 'store'});
+      this.favourites.push({id: fav.id,data: store , route: route + store.id , type: 'store'});
       this.refresh(false);
     });
   }
