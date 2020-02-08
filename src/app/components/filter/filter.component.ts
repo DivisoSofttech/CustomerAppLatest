@@ -90,12 +90,12 @@ export class FilterComponent implements OnInit , OnDestroy {
       } else {
         this.util.createToast('Select Cusines or Any Other Filter')
       }
+      this.dismiss();
     } else {
       this.cusines.forEach(c => {
         c.checked = false;
       });
       this.filterService.setCurrentFilter(this.filterModel.currentFilterType);
-      this.dismiss();
     }
     this.closeEvent();
   }

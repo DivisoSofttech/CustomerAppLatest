@@ -1,6 +1,6 @@
 import { CartService } from '../../services/cart.service';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { OrderLine, Store,AuxilaryLineItem, Offer } from 'src/app/api/models';
+import { OrderLine, Store, AuxilaryLineItem, Offer } from 'src/app/api/models';
 import { QueryResourceService } from 'src/app/api/services';
 import { NGXLogger } from 'ngx-logger';
 import { ShowAuxilaryModalComponent } from '../show-auxilary-modal/show-auxilary-modal.component';
@@ -69,18 +69,23 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
     this.productBaseAuxItemsArray = this.cart.auxilaryItems;
     this.getOffers();
     this.cart.selectedDeliveryType.subscribe(data => {
-      if(data) {
-        if(data === 'delivery') {
+      if (data) {
+        if (data === 'delivery') {
 
-          this.total = this.decimalPipe.transform((parseFloat(this.subTotal) + this.storeSetting.deliveryCharge), '1.2-2' );       
-          this.total = this.decimalPipe.transform(this.total - this.offer.orderDiscountAmount, '1.2-2');
+          this.total = this.decimalPipe.transform((parseFloat(this.subTotal) + this.storeSetting.deliveryCharge), '1.2-2' );
+          console.log('Total after adding delivery charge is ', this.total);
+          if (this.offer) {
+            this.total = this.decimalPipe.transform(this.total - this.offer.orderDiscountAmount, '1.2-2');
+          }
+          console.log('Total after adding discount is ', this.total);
           this.cart.total = this.total;
-          // this.currentDeliveryMode = data;
-        }
-        else {
-          // this.currentDeliveryMode = data;
+          this.currentDeliveryMode = data;
+        } else {
+          this.currentDeliveryMode = data;
           this.total = this.subTotal;
+          if (this.offer) {
           this.total = this.decimalPipe.transform(this.total - this.offer.orderDiscountAmount, '1.2-2');
+          }
           this.cart.total = this.total;
         }
       }
@@ -98,7 +103,7 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
       this.storeSetting = this.cart.currentShop.storeSettings;
       this.subTotal = this.cart.subTotal;
       this.subTotal = this.noCommaPipe.transform(this.subTotal);
-      if (this.storeSetting !== undefined) {  
+      if (this.storeSetting !== undefined) {
         this.total = this.decimalPipe.transform((parseFloat(this.subTotal) + this.storeSetting.deliveryCharge), '1.2-2' );
         this.total = this.noCommaPipe.transform(this.total);
       }
@@ -202,7 +207,7 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
           }
         },
         err => {
-  
+
         });
       }
     });
@@ -251,7 +256,7 @@ export class DeliveryItemDetailsComponent implements OnInit, OnDestroy {
         }
         loader.dismiss();
       },
-      err=> {
+      err => {
         loader.dismiss();
         // this.errorService.showErrorModal(this);
       });
