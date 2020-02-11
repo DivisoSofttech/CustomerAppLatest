@@ -10,9 +10,9 @@
 </ion-header>
 <div class="container">
   <ion-item>
-    <ion-label position="floating">Allergy Message</ion-label>
-    <ion-textarea
-      placeholder="Enter you allergy message here..."
+    <ion-label position="floating">Allergy Message</ion-label> 
+    <ion-textarea maxlength="100"
+      placeholder="Enter you allergy message here... (Max 100 chars)"
       [(ngModel)]="msg"
     >
     </ion-textarea>

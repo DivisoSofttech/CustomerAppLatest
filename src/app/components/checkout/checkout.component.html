@@ -38,14 +38,14 @@
           <p class="ion-padding">
             Leave a note for the restaurant with anything they need to know
             (e.g. the doorbell doesn't work). Do not include any details about
-            allergy.
+            allergy. (Max 250 chars)
           </p>
         </ion-text>
         <ion-item>
           <ion-label position="floating">Note</ion-label>
-          <ion-textarea [(ngModel)]="note" class="textArea"
+          <ion-textarea [(ngModel)]="note" maxlength="250" class="textArea"
             (ionChange)="saveDataToStorage()"
-            placeholder="E.g. The doorbell doesn't work.Do not include any details about allergy" rows="5">
+            placeholder="E.g. The doorbell doesn't work.Do not include any details about allergy (Max 250 chars)" rows="5">
           </ion-textarea>
         </ion-item>
       </ion-col>

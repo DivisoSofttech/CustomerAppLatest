@@ -92,5 +92,6 @@ disconnectToMyNotifications() {
       this.notificationListenSubscription.unsubscribe();
     }
     this.socket.disconnect();
+    this.notificationCount = 0;
   }
 }
