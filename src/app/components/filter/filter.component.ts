@@ -97,7 +97,7 @@ export class FilterComponent implements OnInit , OnDestroy {
       });
       this.filterService.setCurrentFilter(this.filterModel.currentFilterType);
     }
-    this.closeEvent();
+    this.dismiss();
   }
 
   fetchCusines() {

@@ -19,7 +19,7 @@ export class SlidesComponent implements OnInit {
       modifier: 1,
       slideShadows: true,
     }
-  }
+  };
   constructor(
     private sharedData: SharedDataService,
     private navController: NavController
@@ -28,10 +28,10 @@ export class SlidesComponent implements OnInit {
   ngOnInit() {}
 
   skipSlide() {
-    this.sharedData.saveToStorage('isFirstTime',false)
-    .then(()=>{
+    this.sharedData.saveToStorage('isFirstTime', false)
+    .then(() => {
       this.slideEnd.emit();
-    })
+    });
   }
 
 }

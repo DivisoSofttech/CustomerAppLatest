@@ -19,16 +19,16 @@ export class BannerComponent implements OnInit , OnDestroy {
 
   slideOpts = {
     direction: this.direction,
-    preloadImages:true,
-    lazy:false,
-    slidesPerView: this.platform.width() < 1280?1:2,
+    preloadImages: true,
+    lazy: false,
+    slidesPerView: this.platform.width() < 1280 ? 1 : 2,
     on: {
       beforeInit() {
         const swiper = this;
-  
+
         swiper.classNames.push(`${swiper.params.containerModifierClass}coverflow`);
         swiper.classNames.push(`${swiper.params.containerModifierClass}3d`);
-  
+
         swiper.params.watchSlidesProgress = true;
         swiper.originalParams.watchSlidesProgress = true;
       },
@@ -59,7 +59,7 @@ export class BannerComponent implements OnInit , OnDestroy {
           .transition(duration);
       }
     }
-  }
+  };
 
   constructor(
     private platform: Platform,
@@ -70,8 +70,9 @@ export class BannerComponent implements OnInit , OnDestroy {
   ngOnInit() {
     this.slideOpts.direction = this.direction;
     this.getBanners(0);
-    if(this.slides)
+    if (this.slides) {
     this.slides.startAutoplay();
+    }
   }
 
   ngOnDestroy() {
@@ -81,14 +82,14 @@ export class BannerComponent implements OnInit , OnDestroy {
 
   getBanners(i) {
     this.bannerSubscription = this.queryResource.findPremiumBannersUsingGET({
-      page:i
+      page: i
     }).subscribe(
       data => {
-        data.content.forEach(b=>{
+        data.content.forEach(b => {
           this.banners.push(b);
         });
         ++i;
-        if(i < data.totalPages) {
+        if (i < data.totalPages) {
           this.getBanners(i);
         } else {
           this.showLoading = false;

@@ -21,19 +21,19 @@ import { FilterComponent } from 'src/app/components/filter/filter.component';
 })
 export class RestaurantPage implements OnInit, OnDestroy {
 
-  private pageCount: number = 0;
+  private pageCount = 0;
 
   public stores: Store[] = [];
 
   public currentFilter: FILTER_TYPES;
 
-  public currentFilterName: string = '';
+  public currentFilterName = '';
 
   public location: LocationModel = {
     name: '',
     latLon: [],
     fetchedLocation: false
-  }
+  };
 
   public isGuest: Boolean = false;
   public isFirstTime;
@@ -76,7 +76,7 @@ export class RestaurantPage implements OnInit, OnDestroy {
 
 
   private checkIfGuest() {
-    this.logger.info(this, 'Checking if guest')
+    this.logger.info(this, 'Checking if guest');
     this.keycloakSubscription = this.keycloakService.getUserGuestSubscription()
       .subscribe(data => {
         if (data !== null) {
@@ -94,10 +94,10 @@ export class RestaurantPage implements OnInit, OnDestroy {
         if (location) {
           this.location = location;
           if (location.fetchedLocation) {
-            if(this.location.updated) {
+            if (this.location.updated) {
               this.filterService.activateDistanceFilter(this.location.latLon, this.location.maxDistance);
             } else {
-              if(this.filterService.getCurrentFilter() === FILTER_TYPES.DISTANCE_WISE) {
+              if (this.filterService.getCurrentFilter() === FILTER_TYPES.DISTANCE_WISE) {
                 this.filterService.activateDistanceFilter(this.location.latLon, this.location.maxDistance);
               }
             }
@@ -113,15 +113,20 @@ export class RestaurantPage implements OnInit, OnDestroy {
 
 
   private setCurrentFilterName() {
-    if (this.currentFilter == FILTER_TYPES.MIN_AMOUNT) {
-      this.currentFilterName = "Min Amount";
-    } else if (this.currentFilter == FILTER_TYPES.TOP_RATED) {
-      this.currentFilterName = "Top rated";
-    } else if (this.currentFilter == FILTER_TYPES.CUSINE_FILTER) {
-      this.currentFilterName = "Cuisines";
+    if (this.currentFilter === FILTER_TYPES.MIN_AMOUNT) {
+      this.currentFilterName = 'Min Amount';
+    } else if (this.currentFilter === FILTER_TYPES.TOP_RATED) {
+      this.currentFilterName = 'Top rated';
+    } else if (this.currentFilter === FILTER_TYPES.CUSINE_FILTER) {
+      this.currentFilterName = 'Cuisines';
+    } else if (this.currentFilter === FILTER_TYPES.MODE_OF_DELIVERY_DELIVERY) {     
+      this.currentFilterName = 'delivery';
+    } else if (this.currentFilter === FILTER_TYPES.MODE_OF_DELIVERY_PICKUP) {
+      this.currentFilterName = 'pickup';
     } else {
-      this.currentFilterName = ''
+      this.currentFilterName = '';
     }
+
   }
 
   private getFilterSubscription() {
@@ -183,18 +188,19 @@ export class RestaurantPage implements OnInit, OnDestroy {
     this.ngOnDestroy();
     this.ngOnInit();
     this.IonRefresher.disabled = true;
-    setTimeout(()=>{
+    setTimeout(() => {
       event.target.complete();
-    },2000)
-    setTimeout(()=>{
+    }, 2000);
+    setTimeout(() => {
       this.IonRefresher.disabled = false;
-    },6000)
+    }, 6000);
 
   }
 
   private toggleInfiniteScroll(value) {
-    if(this.ionInfiniteScroll)
+    if (this.ionInfiniteScroll) {
     this.ionInfiniteScroll.disabled = value;
+    }
   }
 
   private toggleIonRefresher() {
@@ -202,19 +208,19 @@ export class RestaurantPage implements OnInit, OnDestroy {
   }
 
   checkIfFirstTimeStartingApp() {
-    if(this.platform.width() < 1280) {
+    if (this.platform.width() < 1280) {
       this.sharedData.getData('isFirstTime')
       .then(data => {
-        if(data === true || data === undefined || data === null) {
-          this.logger.info(this,'App is starting for first time',data);
+        if (data === true || data === undefined || data === null) {
+          this.logger.info(this, 'App is starting for first time', data);
           this.isFirstTime = true;
         } else {
-          this.logger.info(this,'App is Not starting for first time',data);
+          this.logger.info(this, 'App is Not starting for first time', data);
           this.isFirstTime = false;
         }
-      });        
+      });
     } else {
-      this.isFirstTime=false;
+      this.isFirstTime = false;
     }
   }
 
@@ -225,13 +231,13 @@ export class RestaurantPage implements OnInit, OnDestroy {
           component: FilterComponent
         }
       );
-      modal.onDidDismiss()
-      .then(()=>{
+     modal.onDidDismiss()
+      .then(() => {
         this.showFilters = false;
         this.footer.filterHide = false;
         this.footer.setcurrentRoute('restaurant');
-      })
-      modal.present();
+      });
+     modal.present();
   }
 
 
@@ -275,15 +281,17 @@ export class RestaurantPage implements OnInit, OnDestroy {
 
   // Fix for Footer Active Tab Selection
   ionViewDidEnter() {
-    if(this.footer)
+    if (this.footer) {
     this.footer.setcurrentRoute('restaurant');
+    }
   }
 
   // Invoke Angular Change Detection Manually.
   // Fix View Not Automatically Updated For Some Reason.
   private forceAngularChangeDetection() {
-    if (!this.cdr['destroyed'])
+    if (!this.cdr['destroyed']) {
       this.cdr.detectChanges();
+    }
   }
 
   // Unsubscribe from All Observables
@@ -297,5 +305,9 @@ export class RestaurantPage implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.unsubscribeAll();
   }
+  clearFilter() {
+    this.filterService.setCurrentFilter(FILTER_TYPES.DISTANCE_WISE);
 
+  }
+  
 }
