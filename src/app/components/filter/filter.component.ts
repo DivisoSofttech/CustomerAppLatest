@@ -68,7 +68,6 @@ export class FilterComponent implements OnInit , OnDestroy {
     console.error('dkjdjkdjd');
     this.filterService.setCurrentFilter(FILTER_TYPES.DISTANCE_WISE);
     this.sharedData.deleteData(FILTER_KEY);
-    this.closeEvent();
     this.dismiss();
   }
 
@@ -115,10 +114,6 @@ export class FilterComponent implements OnInit , OnDestroy {
 
   ngOnDestroy(): void {
     this.filterServiceSubscription?this.filterServiceSubscription.unsubscribe():0;
-  }
-
-  closeEvent() {
-    this.closeFilter.emit('close');
   }
 
   toResultBucketModel(resultBucket: ResultBucket): ResultBucketModel {
