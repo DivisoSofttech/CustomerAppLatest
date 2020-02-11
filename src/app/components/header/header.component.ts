@@ -30,6 +30,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private tempSuggestions: HeaderSuggestion[] = [];
 
+  public totalResultsFound  = 0;
+
   public results: HeaderResult[] = [];
   
   private headerSuggestion: HeaderSuggestion;
@@ -63,6 +65,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.toggleInfiniteScroll(true);
     this.logger.info(this, 'Initializing', HeaderComponent.name);
     this.onChangeSubscription = this.restaurantSearch.ionChange.subscribe((data)=>{
       if(data.detail.value.trim() !== '') {
@@ -112,19 +115,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
         }
       });
   }
-
   public fetchSuggestions() {
+    this.toggleInfiniteScroll(true);
     this.results = [];
     this.showLoading = true;
     this.queryResource.getSuggestionUsingGET(this.searchTerm)
-    .subscribe((data: HeaderSuggestion[]) => {
-      this.showLoading = false;
-      this.showNotFound = true;
-      this.suggestions = data;
-    },err=>{
-      this.showLoading = false;
-      this.showNotFound = false;
-    });  
+      .subscribe((data: HeaderSuggestion[]) => {
+        this.showLoading = false;
+        this.showNotFound = true;
+        this.suggestions = data;
+      }, err => {
+        this.showLoading = false;
+        this.showNotFound = false;
+      });
   }
 
   public selectSuggestionSearchTerm(headerSuggestion: HeaderSuggestion) {
@@ -135,6 +138,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.suggestions = [];
     this.showNotFound = false;
     this.searchTerm = headerSuggestion.suggestionData;
+    this.toggleInfiniteScroll(false);
+    setTimeout(()=>{
+      this.onChangeSubscription = this.restaurantSearch.ionChange.subscribe(() => {
+        this.suggestions = [];
+        this.fetchSuggestions();
+      });
+    },3000)
     this.search();
   }
 
@@ -142,20 +152,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.fetchSearchResults(0);
   }
 
-  private fetchSearchResults(i) {
+  private fetchSearchResults(i , event?) {
     this.queryResource.getHeaderResultUsingGET({
       suggestionData: this.headerSuggestion.suggestionData,
       indexName: this.headerSuggestion.indexName,
       page: i
 
     }).subscribe(data => {
-      console.error(data);
+      this.totalResultsFound = data.totalElements;
       this.showLoading = false;
-      this.results = data.content;
-      this.onChangeSubscription = this.restaurantSearch.ionChange.subscribe(()=>{
-        this.suggestions = [];
-        this.fetchSuggestions();
-      })
+      data.content.forEach(result => {
+        this.results.push(result);
+      });
+      if(event) event.target.complete();
+      if(data.totalPages===i) {
+        this.toggleInfiniteScroll(true);
+      }
     })
   }
 
@@ -165,10 +177,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
         indexName: result.resultType,
         id: result.id
       }
-    ).subscribe((data: any)=>{
-      if(result.resultType === 'product') {
+    ).subscribe((data: any) => {
+      if (result.resultType === 'product') {
         this.navController.navigateForward('/store/search/' + data.idpcode + '/p/' + data.id + '/' + data.category.id);
-      } else if(result.resultType === 'category') {
+      } else if (result.resultType === 'category') {
         this.navController.navigateForward('/store/search/' + data.idpcode + '/c/' + data.id);
       } else {
 
@@ -185,23 +197,26 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (this.showSearchBar === true) {
       this.restaurantSearch.setFocus();
       this.searchEvent.emit(true);
+      this.toggleInfiniteScroll(false);
     } else {
       this.results = [];
       this.searchTerm = '';
       this.headerSuggestion = undefined;
+      this.showNotFound = false;
       this.searchEvent.emit(false);
+      this.toggleInfiniteScroll(true);
     }
   }
 
-  toggleInfiniteScroll() {
+  toggleInfiniteScroll(value) {
     this.logger.info(this, 'InfiniteScroll Toggled ', this.infiniteScroll.disabled);
-    this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
+    this.infiniteScroll.disabled = value;
   }
 
   loadMoreData(event) {
     this.logger.info(this, 'Loading More Data');
     ++this.pageCount;
-    this.fetchSearchResults(this.pageCount);
+    this.fetchSearchResults(this.pageCount,event);
   }
 
   textClear() {
@@ -210,7 +225,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.restaurantSearch.debounce = 100;
     this.restaurantSearch.debounce = 1500;
   }
-
   async showNotification() {
     const modal = await this.modalController.create({
       component: NotificationComponent,

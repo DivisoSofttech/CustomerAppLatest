@@ -17,12 +17,12 @@
           <ion-card-title>{{ stockCurrent.product.name | titlecase }}</ion-card-title>
 
           <ion-text *ngIf="!(discount!=null && discount.rate !== null && discount.rate > 0)">
-            <strong>&#8364;{{ stockCurrent.product.sellingPrice }}</strong></ion-text>
+            <strong>&#8364;{{ stockCurrent.product.sellingPrice | number: "1.2-2" }}</strong></ion-text>
           <ion-text class="strike-through" *ngIf="discount!=null && discount.rate !== null && discount.rate > 0">
-            <strong><s>&#8364;{{ stockCurrent.product.sellingPrice }}</s></strong></ion-text>
+            <strong><s>&#8364;{{ stockCurrent.product.sellingPrice | number: "1.2-2" }}</s></strong></ion-text>
 
           <ion-text class="margin-left-25" *ngIf="(discount!=null && discount.rate !== null && discount.rate > 0)">
-            <strong>&#8364;{{ stockCurrent.sellPrice }}</strong></ion-text>
+            <strong>&#8364;{{ stockCurrent.sellPrice | number: "1.2-2" }}</strong></ion-text>
         </ion-col>
         <ion-col class="custom-col" (click)="toggleDescription()">
           <ion-icon *ngIf="!showDescription" name="arrow-dropdown-circle"></ion-icon>

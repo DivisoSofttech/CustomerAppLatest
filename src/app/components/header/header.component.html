@@ -44,22 +44,11 @@
       </ion-label>
     </ion-item>
   </ion-list>
-  <!-- <ion-list *ngIf="recentSearches.length > 0 && searchTerm==='' && !showLoading">
-    <ion-list-header>
-      Recent Searches
-    </ion-list-header>
-    <div *ngFor="let st of recentSearches">
-        <ion-item *ngIf="st !== ''" lines="full" (click)="selectRecentSearchTerm(st.data)">
-            <ion-label>
-              {{st.data}}
-            </ion-label>
-          </ion-item>      
-    </div>
-  </ion-list> -->
+
   <ion-grid class="resultGrid" *ngIf="!showLoading">
     <ion-row *ngIf="results.length > 0">
       <ion-item color="light" class="full-width">
-        <ion-label slot="start">{{results.length + ' Results Found'}}</ion-label>
+        <ion-label slot="start">{{totalResultsFound + ' Results Found'}}</ion-label>
       </ion-item>
       <ion-col class="restaurantCol" size="12">
         <ng-container *ngFor="let result of results">
