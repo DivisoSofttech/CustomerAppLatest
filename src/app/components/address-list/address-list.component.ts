@@ -113,6 +113,7 @@ export class AddressListComponent implements OnInit {
           if(element.id === data.data.id) {
             this.addresses[index] = data.data;
             this.updateStorageData(data);
+            this.dismissData(data.data);
           }
         })  
       }
@@ -131,6 +132,7 @@ export class AddressListComponent implements OnInit {
       if(data.data !== undefined) {
         this.addresses.push(data.data);
         this.updateStorageData(data);
+        this.dismissData(data.data);
       }
     })
     await modal.present();
