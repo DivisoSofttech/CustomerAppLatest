@@ -107,9 +107,19 @@
         " , " + (store.storeAddress.city | titlecase)
       }}</small>
     </ion-text>
-    <ion-badge mode="ios" color="success" slot="end" padding>{{
+    <ion-badge mode="ios" *ngIf="orderPlaced"  color="warning" slot="end" padding>{{
       "Order " + order.orderId
     }}</ion-badge>
+    <ion-badge mode="ios" *ngIf="orderApproved"  color="primary" slot="end" padding>{{
+      "Order " + order.orderId
+    }}</ion-badge>
+    <ion-badge mode="ios" *ngIf="orderDelivered"  color="success" slot="end" padding>{{
+      "Order " + order.orderId
+    }}</ion-badge>
+    <ion-badge mode="ios" *ngIf="orderCancelled"  color="danger" slot="end" padding>{{
+      "Order " + order.orderId
+    }}</ion-badge>
+ 
   </ion-item>
 
   <ion-card class="ion-no-padding">

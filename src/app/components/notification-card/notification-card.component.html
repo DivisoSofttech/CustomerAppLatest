@@ -10,8 +10,11 @@
           "
         ></ion-img>
       </ion-thumbnail>
-        <ion-label>
-          <h2>{{(notification.title | titlecase)}}</h2>
+        <ion-label *ngIf="notification.title == 'Order Accepted'"  >
+          <h2 >
+            <ion-text color="primary">{{(notification.title | titlecase)}}
+            </ion-text>
+            </h2>
           <h3>{{(store.name | titlecase)}}
             <small class="cl-grey">{{' , ' + (store.storeAddress.city | titlecase)}}</small>
           </h3>
@@ -19,4 +22,13 @@
           <p>{{notification.message}}</p>
           <b><p>{{notification.date | date: 'dd/MM/yyyy hh:mm a'}}</p></b>
         </ion-label>  
+        <ion-label *ngIf="notification.title== 'Order Placed'" >
+          <h2 >{{(notification.title | titlecase)}}</h2>
+          <h3>{{(store.name | titlecase)}}
+            <small class="cl-grey">{{' , ' + (store.storeAddress.city | titlecase)}}</small>
+          </h3>
+          <ion-badge color="warning">{{order.orderId}}</ion-badge>
+          <p>{{notification.message}}</p>
+          <b><p>{{notification.date | date: 'dd/MM/yyyy hh:mm a'}}</p></b>
+        </ion-label>
     </ion-item>

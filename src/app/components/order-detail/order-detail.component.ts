@@ -52,7 +52,7 @@ export class OrderDetailComponent implements OnInit {
   // OrderLine id as Key and auxLine Total + OrdrLine total as Value
   total: Map<Number, Number> = new Map<Number, Number>();
 
-  cancellationTotal: number = 0
+  cancellationTotal = 0;
 
   addressString: String;
 
@@ -98,12 +98,12 @@ export class OrderDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(this.viewType==='full') {
+    if (this.viewType === 'full') {
       this.logger.info(this, this.order);
       this.fetchOrderLinesByOrderId(0);
       this.fetchCancelledOrderlines(0);
       this.fetchAppliedOffers(this.order.id);
-      this.checkOrderType();  
+      this.checkOrderType();
     }
   }
 
@@ -112,7 +112,7 @@ export class OrderDetailComponent implements OnInit {
   }
 
   checkOrderType() {
-    if(!this.order.cancellationRef) {
+    if (!this.order.cancellationRef) {
       switch (this.order.status.name) {
 
         case 'payment-processed-unapproved':
@@ -139,7 +139,7 @@ export class OrderDetailComponent implements OnInit {
         //   this.orderRefundCompleted = true;
         //   break;
         default: break;
-      }  
+      }
     } else {
       this.orderCancelled = true;
       this.orderRefundCompleted = false;
@@ -163,18 +163,18 @@ export class OrderDetailComponent implements OnInit {
         if (i < orderLines.totalPages) {
           this.fetchOrderLinesByOrderId(i);
         } else {
-          this.logger.info(this, 'Completed Fetching OrderLines')
+          this.logger.info(this, 'Completed Fetching OrderLines');
         }
       },
       err => {
-        this.logger.error(this,'Érror Fetching OrderLines');
+        this.logger.error(this, 'Érror Fetching OrderLines');
         this.util.createToast('Érror getting order details');
       });
   }
 
 
   fetchCancelledOrderlines(i) {
-    if(this.order.cancellationRef !== null) {
+    if (this.order.cancellationRef !== null) {
       this.queryResource.findCancelledOrderLinesByCancellationRequestIdUsingGET({
         id: this.order.cancellationRef
       })
@@ -191,9 +191,9 @@ export class OrderDetailComponent implements OnInit {
         if (i < cancelledOrderLines.totalPages) {
           this.fetchCancelledOrderlines(i);
         } else {
-          this.logger.info(this, 'Completed Fetching Cancelled OrderLines')
+          this.logger.info(this, 'Completed Fetching Cancelled OrderLines');
         }
-      });  
+      });
     }
   }
 
@@ -205,7 +205,7 @@ export class OrderDetailComponent implements OnInit {
         this.offer = offerLines;
       },
       err => {
-        this.logger.error(this,'Érror Fetching Offer Details');
+        this.logger.error(this, 'Érror Fetching Offer Details');
       });
   }
 
@@ -217,7 +217,7 @@ export class OrderDetailComponent implements OnInit {
         auxLines.content.forEach(auxLine => {
           this.total[o.id] += auxLine.total;
           this.auxilaryOrderLines[o.id].push(auxLine);
-          this.fetchProducts(o.productId, auxLine.productId)
+          this.fetchProducts(o.productId, auxLine.productId);
         });
         i++;
         if (i < auxLines.totalPages) {
@@ -227,8 +227,8 @@ export class OrderDetailComponent implements OnInit {
         }
       },
       err => {
-        this.logger.error(this,'Érror Fetching Auxilary OrderLines');
-      })
+        this.logger.error(this, 'Érror Fetching Auxilary OrderLines');
+      });
   }
 
   fetchProducts(id, pid?) {
@@ -240,7 +240,7 @@ export class OrderDetailComponent implements OnInit {
         }
       },
       err => {
-        this.logger.error(this,'Érror Fetching Product',id);
+        this.logger.error(this, 'Érror Fetching Product', id);
       });
   }
 
@@ -254,7 +254,7 @@ export class OrderDetailComponent implements OnInit {
     } else {
       this.cartService.presentRestaurantCheckout(() => {
         this.cartService.emptyCart();
-        this.addToCart()
+        this.addToCart();
       });
     }
   }
@@ -262,7 +262,7 @@ export class OrderDetailComponent implements OnInit {
   addToCart() {
     this.cartService.addShop(this.store);
     const tempOrderLines = [];
-    this.orderLines.forEach(o=>tempOrderLines.push({ ...o }));
+    this.orderLines.forEach(o => tempOrderLines.push({ ...o }));
 
     tempOrderLines.forEach(o => {
       // Delete Id Of Each OrderLine.
@@ -273,7 +273,7 @@ export class OrderDetailComponent implements OnInit {
         o.requiedAuxilaries = this.auxilaryOrderLines[o.id];
         this.cartService.auxilaryItems[o.productId] = this.auxilariesProducts[o.productId];
       }
-      this.cartService.addOrder(o,this.store);
+      this.cartService.addOrder(o, this.store);
     });
     this.reorderEvent.emit();
 
@@ -287,7 +287,7 @@ export class OrderDetailComponent implements OnInit {
     this.auxilariesProducts = new Map<Number, Product[]>();
     this.auxilaryOrderLines = new Map<Number, AuxilaryOrderLine[]>();
     this.total = new Map<Number, Number>();
-    this.cancellationTotal = 0
+    this.cancellationTotal = 0;
     this.addressString  = undefined;
     this.orderPlaced  = false;
     this.orderApproved  = false;
@@ -298,12 +298,12 @@ export class OrderDetailComponent implements OnInit {
     this.ngOnInit();
     this.ngAfterViewInit();
     this.refresher.disabled = true;
-    setTimeout(()=>{
+    setTimeout(() => {
       event.target.complete();
-    },2000);
-    setTimeout(()=>{
+    }, 2000);
+    setTimeout(() => {
       this.refresher.disabled = false;
-    },6000)
+    }, 4000);
   }
 
   continue() {
@@ -313,7 +313,7 @@ export class OrderDetailComponent implements OnInit {
   toggleCancellation() {
     this.showCancellation = !this.showCancellation;
   }
-  
+
   dismiss() {
     this.backEvent.emit();
   }
