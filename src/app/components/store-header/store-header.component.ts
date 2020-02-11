@@ -49,12 +49,13 @@ export class StoreHeaderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.toggleInfiniteScroll(true);
     this.getRecents();
     this.backButtonHandler();
   }
 
   ngOnDestroy(): void {
-    this.backButtonSubscription?this.backButtonSubscription.unsubscribe():null;
+    this.backButtonSubscription ? this.backButtonSubscription.unsubscribe() : null;
   }
 
   backButtonHandler() {
@@ -93,8 +94,8 @@ export class StoreHeaderComponent implements OnInit {
     }
   }
 
-  toggleInfiniteScroll() {
-    this.infiniteScroll.disabled = !this.infiniteScroll.disabled;
+  toggleInfiniteScroll(value) {
+    this.infiniteScroll.disabled = value;
   }
 
   getProductsByName(i) {
@@ -116,7 +117,7 @@ export class StoreHeaderComponent implements OnInit {
           ++i;
           this.logger.info('Found products For ', this.searchTerm, data.content, 'page ', i);
           if (i === data.totalPages || data.totalPages === 0) {
-            this.toggleInfiniteScroll();
+            this.toggleInfiniteScroll(true);
           } else {
             this.getProductsByName(i);
           }

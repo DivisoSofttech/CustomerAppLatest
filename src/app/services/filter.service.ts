@@ -134,6 +134,7 @@ export class FilterService {
         error();
       });
   }
+  
   private getStoreByMinAmount(pageNumber: any, success: any, error: any) {
     this.logger.info(this, 'Fetching Store by Min Amount');
     this.queryResource.findAndSortStoreByMinAmountUsingGET({
