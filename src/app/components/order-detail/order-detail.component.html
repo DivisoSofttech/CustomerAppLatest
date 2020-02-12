@@ -61,7 +61,7 @@
     <ion-text>Order Delivered</ion-text>
   </ion-item>
   <ion-item *ngIf="orderCancelled" color="warning" lines="full">
-    <ion-text>Cancellation Requseted</ion-text>
+    <ion-text>Cancellation Requested</ion-text>
   </ion-item>
   <!-- <ion-item *ngIf="orderCancelled && orderRefundCompleted" color="success" lines="full">
     <ion-text>Refund Completed</ion-text>
@@ -107,9 +107,19 @@
         " , " + (store.storeAddress.city | titlecase)
       }}</small>
     </ion-text>
-    <ion-badge mode="ios" color="success" slot="end" padding>{{
+    <ion-badge mode="ios" *ngIf="orderPlaced"  color="warning" slot="end" padding>{{
       "Order " + order.orderId
     }}</ion-badge>
+    <ion-badge mode="ios" *ngIf="orderApproved"  color="primary" slot="end" padding>{{
+      "Order " + order.orderId
+    }}</ion-badge>
+    <ion-badge mode="ios" *ngIf="orderDelivered"  color="success" slot="end" padding>{{
+      "Order " + order.orderId
+    }}</ion-badge>
+    <ion-badge mode="ios" *ngIf="orderCancelled"  color="danger" slot="end" padding>{{
+      "Order " + order.orderId
+    }}</ion-badge>
+ 
   </ion-item>
 
   <ion-card class="ion-no-padding">

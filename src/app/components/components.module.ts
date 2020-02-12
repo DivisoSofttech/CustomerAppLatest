@@ -61,6 +61,7 @@ import { TermsAndPolicyComponent } from './terms-and-policy/terms-and-policy.com
 import { AboutComponent } from './about/about.component';
 import { HelpComponent } from './help/help.component';
 import { SlidesComponent } from './slides/slides.component';
+import { RewardsComponent } from './rewards/rewards.component';
 
 @NgModule({
   providers: [ClosedPipe,DatePipe,    NoCommaPipe],
@@ -104,6 +105,7 @@ import { SlidesComponent } from './slides/slides.component';
     WaitInformatonPopoverComponent,
     NotificationComponent,
     OrderCardComponent,
+    RewardsComponent,
     OrderDetailComponent,
     LoginSignupComponent,
     PhoneNumberVerficationComponent,
@@ -147,6 +149,7 @@ import { SlidesComponent } from './slides/slides.component';
     ProductCardComponent,
     CartComponent,
     CheckoutComponent,
+    RewardsComponent,
     MapComponent,
     DeliveryItemDetailsComponent,
     ReviewComponent,
@@ -186,6 +189,7 @@ import { SlidesComponent } from './slides/slides.component';
   entryComponents: [
     ImageSelectorComponent,
     ProcessPaymentComponent,
+    RewardsComponent,
     MakePaymentComponent,
     PaymentSuccessfullInfoComponent,
     RestaurantCardComponent,

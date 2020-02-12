@@ -59,7 +59,7 @@
     <!-- <ion-text color="success" *ngIf="order.status.name === 'refund-completed'">
       Refund Completed
     </ion-text> -->
-    <p>{{ order.date | date: "medium" }}</p>
+    <p>{{ order.date | date: "short" }}</p>
     <p>&#8364;{{ order.grandTotal | number: "1.2-2" }}</p>
   </ion-label>
   <ion-badge mode="ios" slot="end">{{ order.orderId }}</ion-badge>

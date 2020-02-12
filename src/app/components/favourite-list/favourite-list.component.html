@@ -5,7 +5,9 @@
 
       <ion-item *ngFor="let favourite of favourites" lines="full">
         <ion-avatar slot="start">
-          <ion-img [src]="favourite.data.imageLink">
+          <ion-img *ngIf="favourite.data.imageLink"  [src]="favourite.data.imageLink">
+          </ion-img>
+          <ion-img *ngIf="!favourite.data.imageLink"  [src]="'./assets/food.jpg'">
           </ion-img>
         </ion-avatar>
         <ion-label (click)="route(favourite)">

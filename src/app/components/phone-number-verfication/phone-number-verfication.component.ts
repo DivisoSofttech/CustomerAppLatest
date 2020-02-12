@@ -15,8 +15,8 @@ export class PhoneNumberVerficationComponent implements OnInit {
 
   @Input() number;
 
-  expire = '5:00';
-
+  expire = '2:00';
+  showRecent: boolean;
   @ViewChild('timer' , null) timer;
   OTP: any;
   OTPmessage: string;
@@ -132,12 +132,14 @@ export class PhoneNumberVerficationComponent implements OnInit {
   resend() {
     this.stopSMSListener();
     this.initSMSSender();
+    this.showRecent = false;
     this.timer.restart();
   }
 
   timerEvent(event) {
     if (event.action === 'done') {
-      // alert('OTP Expired');
+      this.showRecent = true;
+      alert('OTP Expired');
     }
   }
 

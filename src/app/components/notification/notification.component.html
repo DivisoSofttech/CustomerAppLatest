@@ -14,9 +14,8 @@
 </ion-header>
 
 <ion-content appScrollbarTheme>
-
   <ng-container *ngFor="let nkey of notificationSortedKeys">
-    <ion-list class="ion-text-center"  *ngIf="notificationSorted[nkey].length !== 0">
+    <ion-list class="ion-text-center" *ngIf="notificationSorted[nkey].length !== 0">
       <ng-container>
         <ion-list-header color="primary">
           <ion-label>
@@ -44,16 +43,11 @@
         </ng-container>
       </ng-container>
     </ion-list>
-
   </ng-container>
-
-
-
   <ion-infinite-scroll threshold="500px" (ionInfinite)="loadMoreData($event)" loadingSpinner="bubbles"
     loadingText="Loading Users...">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
-
   <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
     <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles">
     </ion-refresher-content>

@@ -44,10 +44,12 @@
     <ion-row>
         <ion-col size="12" class="ion-text-left">
             <ul class="small-padding">
-              <li class="cl-grey ion-margin">The OTP will Expire in <b>
+              <!-- <li class="cl-grey ion-margin">The OTP will Expire in <b>
                 <countdown #timer [config]="{leftTime: 360, notify: [ 2, 5 ]}" (event)="timerEvent($event)"></countdown>
-              </b></li>
-              <li class="cl-grey ion-margin">Didn't Recieve the code ? <span class="cl-blue"
+              </b></li> -->
+              <li class="cl-grey ion-margin">Didn't Recieve the code ?<b>
+                <countdown class="countdown" #timer [config]="{leftTime: 120, notify: [ 2, 5 ]}" (event)="timerEvent($event)"></countdown>
+              </b> <span *ngIf="showRecent==true"  class="cl-blue"
                 (click)="resend()">Resend</span></li>
             </ul>
           </ion-col>    
