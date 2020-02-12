@@ -119,6 +119,10 @@ export class RestaurantPage implements OnInit, OnDestroy {
       this.currentFilterName = "Top rated";
     } else if (this.currentFilter == FILTER_TYPES.CUSINE_FILTER) {
       this.currentFilterName = "Cuisines";
+    } else if (this.currentFilter == FILTER_TYPES.MODE_OF_DELIVERY_DELIVERY) {
+      this.currentFilterName = "Delivery Only";
+    } else if (this.currentFilter == FILTER_TYPES.MODE_OF_DELIVERY_PICKUP) {
+      this.currentFilterName = "Pickup";
     } else {
       this.currentFilterName = ''
     }
