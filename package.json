@@ -50,7 +50,7 @@
     "cordova": "^7.1.0",
     "cordova-android": "8.1.0",
     "cordova-android-support-gradle-release": "^3.0.1",
-    "cordova-browser": "5.0.4",
+    "cordova-browser": "6.0.0",
     "cordova-ios": "5.1.1",
     "cordova-plugin-android-permissions": "^1.0.2",
     "cordova-plugin-app-version": "^0.1.9",
